@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, ClassVar
 
-from pyspark.sql import Row, SparkSession
+from pyspark.sql import DataFrame, Row, SparkSession
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.types import (
     DoubleType,
@@ -18,13 +18,27 @@ class BronzeWeatherWriter:
     """
     Persist parsed Open-Meteo records into the Bronze layer.
 
-    The Bronze layer stores structured records while preserving
-    source-level values and ingestion metadata.
+    Responsibilities:
+        - Validate input records and writer configuration
+        - Enrich parsed records with request metadata
+        - Build a Spark DataFrame using an explicit schema
+        - Add technical ingestion metadata
+        - Persist the DataFrame as a Delta table
+
+    Business transformations should not be performed in this layer.
     """
 
-    SCHEMA = StructType(
+    INGESTION_TIMESTAMP_COLUMN: ClassVar[str] = (
+        "ingestion_timestamp"
+    )
+
+    SCHEMA: ClassVar[StructType] = StructType(
         [
-            StructField("request_id", StringType(), False),
+            StructField(
+                "request_id",
+                StringType(),
+                False,
+            ),
             StructField(
                 "requested_latitude",
                 DoubleType(),
@@ -35,7 +49,11 @@ class BronzeWeatherWriter:
                 DoubleType(),
                 False,
             ),
-            StructField("date", StringType(), False),
+            StructField(
+                "date",
+                StringType(),
+                False,
+            ),
             StructField(
                 "temperature_2m_mean",
                 DoubleType(),
@@ -92,7 +110,7 @@ class BronzeWeatherWriter:
                 True,
             ),
             StructField(
-                "ingestion_timestamp",
+                INGESTION_TIMESTAMP_COLUMN,
                 TimestampType(),
                 False,
             ),
@@ -116,11 +134,43 @@ class BronzeWeatherWriter:
         requested_latitude: float,
         requested_longitude: float,
     ) -> None:
+        """
+        Build and persist Bronze weather records.
+
+        Empty record collections are ignored.
+        """
+
         self._validate_records(records)
         self._validate_request_id(request_id)
+        self._validate_coordinates(
+            requested_latitude,
+            requested_longitude,
+        )
 
         if not records:
             return
+
+        dataframe = self._build_dataframe(
+            records=records,
+            request_id=request_id,
+            requested_latitude=requested_latitude,
+            requested_longitude=requested_longitude,
+        )
+
+        self._write_dataframe(dataframe)
+
+    def _build_dataframe(
+        self,
+        records: list[dict[str, Any]],
+        request_id: str,
+        requested_latitude: float,
+        requested_longitude: float,
+    ) -> DataFrame:
+        """
+        Convert parsed weather records into a Spark DataFrame.
+
+        Request-level metadata is added to every weather record.
+        """
 
         enriched_records = [
             {
@@ -132,34 +182,52 @@ class BronzeWeatherWriter:
             for record in records
         ]
 
-        schema_without_timestamp = StructType(
-            [
-                field
-                for field in self.SCHEMA.fields
-                if field.name != "ingestion_timestamp"
-            ]
-        )
-
         spark_rows = [
             Row(**record)
             for record in enriched_records
         ]
 
-        df = self.spark.createDataFrame(
+        dataframe = self.spark.createDataFrame(
             spark_rows,
-            schema=schema_without_timestamp,
+            schema=self._schema_without_ingestion_timestamp(),
         )
 
-        df = df.withColumn(
-            "ingestion_timestamp",
+        return dataframe.withColumn(
+            self.INGESTION_TIMESTAMP_COLUMN,
             current_timestamp(),
         )
 
+    def _write_dataframe(
+        self,
+        dataframe: DataFrame,
+    ) -> None:
+        """
+        Persist a Spark DataFrame as a Delta table.
+        """
+
         (
-            df.write
+            dataframe.write
             .format("delta")
             .mode("append")
             .saveAsTable(self.target_table)
+        )
+
+    @classmethod
+    def _schema_without_ingestion_timestamp(
+        cls,
+    ) -> StructType:
+        """
+        Return the Bronze schema excluding the generated
+        ingestion timestamp column.
+        """
+
+        return StructType(
+            [
+                field
+                for field in cls.SCHEMA.fields
+                if field.name
+                != cls.INGESTION_TIMESTAMP_COLUMN
+            ]
         )
 
     @staticmethod
@@ -206,3 +274,31 @@ class BronzeWeatherWriter:
             raise ValueError(
                 "request_id cannot be empty."
             )
+
+    @staticmethod
+    def _validate_coordinates(
+        latitude: float,
+        longitude: float,
+    ) -> None:
+        if not isinstance(latitude, (int, float)):
+            raise TypeError(
+                "requested_latitude must be numeric."
+            )
+
+        if not isinstance(longitude, (int, float)):
+            raise TypeError(
+                "requested_longitude must be numeric."
+            )
+
+        if not -90 <= latitude <= 90:
+            raise ValueError(
+                "requested_latitude must be between "
+                "-90 and 90."
+            )
+
+        if not -180 <= longitude <= 180:
+            raise ValueError(
+                "requested_longitude must be between "
+                "-180 and 180."
+            )
+
