@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Any, ClassVar
 
 from pyspark.sql import DataFrame, Row, SparkSession
+from pyspark.sql import functions as F
+from pyspark.sql.functions import col as C
 from pyspark.sql.functions import current_timestamp
+from pyspark.sql.functions import lit as L
 from pyspark.sql.types import (
     DoubleType,
     IntegerType,
@@ -133,6 +137,7 @@ class BronzeWeatherWriter:
         request_id: str,
         requested_latitude: float,
         requested_longitude: float,
+        overwrite: bool = False,
     ) -> None:
         """
         Build and persist Bronze weather records.
@@ -157,7 +162,10 @@ class BronzeWeatherWriter:
             requested_longitude=requested_longitude,
         )
 
-        self._write_dataframe(dataframe)
+        self._write_dataframe(
+            dataframe=dataframe,
+            overwrite=overwrite,
+        )
 
     def _build_dataframe(
         self,
@@ -197,18 +205,130 @@ class BronzeWeatherWriter:
             current_timestamp(),
         )
 
+    @staticmethod
+    def _build_replace_where(
+        min_date: date,
+        max_date: date,
+        latitude: float,
+        longitude: float,
+    ) -> str:
+        return (
+            f"date >= DATE '{min_date.isoformat()}' "
+            f"AND date <= DATE '{max_date.isoformat()}' "
+            f"AND requested_latitude = {latitude} "
+            f"AND requested_longitude = {longitude}"
+        )
+
+    def _get_dataframe_metadata(
+        self,
+        dataframe: DataFrame,
+    ) -> dict[str, Any] | None:
+        metadata = (
+            dataframe
+            .select(
+                F.min("date").alias("min_date"),
+                F.max("date").alias("max_date"),
+                F.first(
+                    "requested_latitude"
+                ).alias("latitude"),
+                F.first(
+                    "requested_longitude"
+                ).alias("longitude"),
+            )
+            .first()
+        )
+
+        if metadata is None:
+            return None
+
+        return {
+            "min_date": metadata["min_date"],
+            "max_date": metadata["max_date"],
+            "latitude": metadata["latitude"],
+            "longitude": metadata["longitude"],
+        }
+
+    @staticmethod
+    def _build_existing_data_condition(
+        min_date: date,
+        max_date: date,
+        latitude: float,
+        longitude: float,
+    ):
+        return (
+            C("date").between(
+                L(min_date),
+                L(max_date),
+            )
+            & (
+                C("requested_latitude")
+                == L(latitude)
+            )
+            & (
+                C("requested_longitude")
+                == L(longitude)
+            )
+        )
+
     def _write_dataframe(
         self,
         dataframe: DataFrame,
+        overwrite: bool = False,
     ) -> None:
-        """
-        Persist a Spark DataFrame as a Delta table.
-        """
+        metadata = self._get_dataframe_metadata(dataframe)
+
+        if metadata is None:
+            return
+
+        min_date = metadata["min_date"]
+        max_date = metadata["max_date"]
+        latitude = metadata["latitude"]
+        longitude = metadata["longitude"]
+
+        condition = self._build_existing_data_condition(
+            min_date=min_date,
+            max_date=max_date,
+            latitude=latitude,
+            longitude=longitude,
+        )
+
+        if self.spark.catalog.tableExists(
+            self.target_table
+        ):
+            existing_data = (
+                self.spark
+                .table(self.target_table)
+                .where(condition)
+            )
+
+            if (
+                not existing_data.isEmpty()
+                and not overwrite
+            ):
+                raise ValueError(
+                    "Bronze weather data already exists for "
+                    f"latitude={latitude}, "
+                    f"longitude={longitude}, "
+                    f"period={min_date} to {max_date}. "
+                    "Use overwrite=True to reprocess."
+                )
+
+        replace_where = self._build_replace_where(
+            min_date=min_date,
+            max_date=max_date,
+            latitude=latitude,
+            longitude=longitude,
+        )
 
         (
             dataframe.write
             .format("delta")
-            .mode("append")
+            .mode("overwrite")
+            .option(
+                "replaceWhere",
+                replace_where,
+            )
+            .partitionBy("date")
             .saveAsTable(self.target_table)
         )
 

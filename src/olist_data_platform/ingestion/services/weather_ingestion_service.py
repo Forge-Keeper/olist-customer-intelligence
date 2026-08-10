@@ -57,6 +57,7 @@ class WeatherIngestionService:
         end_date: date,
         daily_variables: list[str] | None = None,
         timezone: str = "auto",
+        overwrite: bool = False,
     ) -> str:
         """
         Ingest historical weather data into RAW and Bronze.
@@ -83,6 +84,7 @@ class WeatherIngestionService:
             start_date=start_date,
             end_date=end_date,
             response=response,
+            
         )
 
         records = WeatherResponseParser.parse(
@@ -94,6 +96,7 @@ class WeatherIngestionService:
             request_id=request_id,
             requested_latitude=latitude,
             requested_longitude=longitude,
+            overwrite=overwrite
         )
 
         return request_id
