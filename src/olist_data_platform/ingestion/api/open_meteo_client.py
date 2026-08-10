@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from datetime import date
 from typing import Any, ClassVar
 
-from src.ingestion.api.api_client import APIClient
+from olist_data_platform.ingestion.api.api_client import APIClient
 
 
 class OpenMeteoClient(APIClient):
@@ -19,13 +19,13 @@ class OpenMeteoClient(APIClient):
 
     HISTORICAL_ENDPOINT : ClassVar[str]= "/v1/archive"
 
-    DEFAULT_DAILY_VARIABLES: ClassVar[list[Any]] = [
+    DEFAULT_DAILY_VARIABLES: ClassVar[tuple[str, ...]] = (
         "temperature_2m_mean",
         "temperature_2m_max",
         "temperature_2m_min",
         "rain_sum",
         "wind_speed_10m_max",
-    ]
+    )
 
     def __init__(
         self,

@@ -260,14 +260,14 @@ def test_should_reject_invalid_headers_type(headers):
 def test_should_reject_non_string_header_key():
     # Arrange
     headers = {
-        "123": "value",
+        123: "value",
     }
 
     # Act / Assert
     with pytest.raises(TypeError):
         APIClient(
             base_url="https://api.example.com",
-            headers=headers,
+            headers=headers,  # ty: ignore[invalid-argument-type]
         )
 
 
