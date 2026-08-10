@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections.abc import Sequence
 from datetime import date
 from typing import Any, ClassVar
 
@@ -120,11 +121,12 @@ class OpenMeteoClient(APIClient):
 
     @staticmethod
     def _validate_daily_variables(
-        daily_variables: list[str],
+        daily_variables: Sequence[str],
     ) -> None:
-        if not isinstance(daily_variables, list):
+        if isinstance(daily_variables, (str, bytes)):
             raise TypeError(
-                "daily_variables must be a list."
+                "daily_variables must be a sequence of strings, "
+                "not a single string."
             )
 
         if not daily_variables:
