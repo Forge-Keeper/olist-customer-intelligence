@@ -234,6 +234,42 @@ def test_should_write_parsed_records_to_bronze(
         request_id="request-123",
         requested_latitude=-23.5505,
         requested_longitude=-46.6333,
+        overwrite=False,
+    )
+
+
+@patch(
+    "olist_data_platform.ingestion.services."
+    "weather_ingestion_service.WeatherResponseParser.parse"
+)
+def test_should_forward_overwrite_to_bronze_writer(
+    mock_parse: Mock,
+    service: WeatherIngestionService,
+    client: Mock,
+    bronze_writer: Mock,
+    weather_response: dict,
+    parsed_records: list[dict],
+) -> None:
+    client.get_historical_weather.return_value = (
+        weather_response
+    )
+
+    mock_parse.return_value = parsed_records
+
+    service.ingest(
+        latitude=-23.5505,
+        longitude=-46.6333,
+        start_date=date(2018, 1, 1),
+        end_date=date(2018, 1, 2),
+        overwrite=True,
+    )
+
+    bronze_writer.write.assert_called_once_with(
+        records=parsed_records,
+        request_id="request-123",
+        requested_latitude=-23.5505,
+        requested_longitude=-46.6333,
+        overwrite=True,
     )
 
 
