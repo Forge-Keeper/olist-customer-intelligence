@@ -1,6 +1,6 @@
 import pytest
 
-from src.ingestion.api.api_client import APIClient
+from olist_data_platform.ingestion.api.api_client import APIClient
 
 # ---------------------------------------------------------------------------
 # Client initialization

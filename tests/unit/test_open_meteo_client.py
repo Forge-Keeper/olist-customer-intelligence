@@ -3,7 +3,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from src.ingestion.api.open_meteo_client import (
+from olist_data_platform.ingestion.api.open_meteo_client import (
     OpenMeteoClient,
 )
 
