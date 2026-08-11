@@ -1,27 +1,28 @@
 from __future__ import annotations
 
-import time
 from typing import Any
-from urllib.parse import urlparse
 
 import requests
-from requests import Response
-from requests.exceptions import RequestException
+from requests import Response, Session
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
+from olist_data_platform.common.logging import LoggerFactory
+
+logger = LoggerFactory.get_logger(__name__)
 
 
 class APIClient:
     """
-    Generic HTTP client for REST APIs.
+    Generic HTTP API client.
 
     Responsibilities:
-        - Validate client configuration
-        - Build HTTP requests
-        - Handle timeouts
-        - Handle retries
-        - Validate HTTP responses
-        - Return parsed JSON
-
-    API-specific behavior should be implemented by subclasses.
+        - Validate HTTP client configuration
+        - Configure retries and backoff
+        - Execute GET requests
+        - Raise errors for unsuccessful HTTP responses
+        - Return decoded JSON responses
+        - Provide technical logging for API communication
     """
 
     def __init__(
@@ -32,7 +33,6 @@ class APIClient:
         backoff_factor: float = 1.0,
         headers: dict[str, str] | None = None,
     ) -> None:
-
         self._validate_base_url(base_url)
         self._validate_timeout(timeout)
         self._validate_max_retries(max_retries)
@@ -45,30 +45,206 @@ class APIClient:
         self.backoff_factor = backoff_factor
         self.headers = headers or {}
 
+        self.session = self._create_session()
+
+        logger.debug(
+            "api_client_created | "
+            "base_url=%s | "
+            "timeout=%s | "
+            "max_retries=%s | "
+            "backoff_factor=%s",
+            self.base_url,
+            self.timeout,
+            self.max_retries,
+            self.backoff_factor,
+        )
+
+    def get(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+    ) -> dict[str, Any] | list[Any]:
+        """
+        Execute a GET request and return the decoded JSON response.
+        """
+
+        self._validate_endpoint(endpoint)
+
+        url = self._build_url(endpoint)
+
+        logger.debug(
+            "api_get_started | "
+            "url=%s | "
+            "has_params=%s",
+            url,
+            params is not None,
+        )
+
+        try:
+            response = self.session.get(
+                url=url,
+                params=params,
+                timeout=self.timeout,
+            )
+
+            logger.debug(
+                "api_response_received | "
+                "url=%s | "
+                "status_code=%s",
+                url,
+                response.status_code,
+            )
+
+            response.raise_for_status()
+
+            payload = response.json()
+
+            logger.debug(
+                "api_get_completed | "
+                "url=%s | "
+                "status_code=%s",
+                url,
+                response.status_code,
+            )
+
+            return payload
+
+        except requests.Timeout:
+            logger.warning(
+                "api_request_timeout | "
+                "url=%s | "
+                "timeout=%s",
+                url,
+                self.timeout,
+            )
+            raise
+
+        except requests.ConnectionError:
+            logger.warning(
+                "api_connection_error | "
+                "url=%s",
+                url,
+            )
+            raise
+
+        except requests.HTTPError as exc:
+            status_code = (
+                exc.response.status_code
+                if exc.response is not None
+                else None
+            )
+
+            logger.warning(
+                "api_http_error | "
+                "url=%s | "
+                "status_code=%s",
+                url,
+                status_code,
+            )
+            raise
+
+        except requests.JSONDecodeError:
+            logger.warning(
+                "api_invalid_json_response | "
+                "url=%s",
+                url,
+            )
+            raise
+
+    def _create_session(self) -> Session:
+        """
+        Create an HTTP session configured with retry behavior.
+        """
+
+        retry_strategy = Retry(
+            total=self.max_retries,
+            connect=self.max_retries,
+            read=self.max_retries,
+            status=self.max_retries,
+            backoff_factor=self.backoff_factor,
+            status_forcelist=(
+                429,
+                500,
+                502,
+                503,
+                504,
+            ),
+            allowed_methods=(
+                "GET",
+            ),
+            raise_on_status=False,
+        )
+
+        adapter = HTTPAdapter(
+            max_retries=retry_strategy
+        )
+
+        session = requests.Session()
+
+        session.mount(
+            "https://",
+            adapter,
+        )
+
+        session.mount(
+            "http://",
+            adapter,
+        )
+
+        if self.headers:
+            session.headers.update(
+                self.headers
+            )
+
+        return session
+
+    def _build_url(
+        self,
+        endpoint: str,
+    ) -> str:
+        return (
+            f"{self.base_url}/"
+            f"{endpoint.lstrip('/')}"
+        )
+
     @staticmethod
-    def _validate_base_url(base_url: str) -> None:
+    def _validate_base_url(
+        base_url: str,
+    ) -> None:
         if not isinstance(base_url, str):
-            raise TypeError("base_url must be a string.")
+            raise TypeError(
+                "base_url must be a string."
+            )
 
         if not base_url.strip():
-            raise ValueError("base_url cannot be empty.")
-
-        parsed_url = urlparse(base_url)
-
-        if parsed_url.scheme not in {"http", "https"}:
             raise ValueError(
-                "base_url must use HTTP or HTTPS."
+                "base_url cannot be empty."
             )
 
-        if not parsed_url.netloc:
+        if not base_url.startswith(
+            ("http://", "https://")
+        ):
             raise ValueError(
-                "base_url must contain a valid hostname."
+                "base_url must start with "
+                "'http://' or 'https://'."
+            )
+
+        if base_url in (
+            "http://",
+            "https://",
+        ):
+            raise ValueError(
+                "base_url must contain a valid host."
             )
 
     @staticmethod
-    def _validate_timeout(timeout: int) -> None:
+    def _validate_timeout(
+        timeout: int,
+    ) -> None:
         if not isinstance(timeout, int):
-            raise TypeError("timeout must be an integer.")
+            raise TypeError(
+                "timeout must be an integer."
+            )
 
         if timeout <= 0:
             raise ValueError(
@@ -76,7 +252,9 @@ class APIClient:
             )
 
     @staticmethod
-    def _validate_max_retries(max_retries: int) -> None:
+    def _validate_max_retries(
+        max_retries: int,
+    ) -> None:
         if not isinstance(max_retries, int):
             raise TypeError(
                 "max_retries must be an integer."
@@ -91,9 +269,12 @@ class APIClient:
     def _validate_backoff_factor(
         backoff_factor: float,
     ) -> None:
-        if not isinstance(backoff_factor, (int, float)):
+        if not isinstance(
+            backoff_factor,
+            float,
+        ):
             raise TypeError(
-                "backoff_factor must be numeric."
+                "backoff_factor must be a float."
             )
 
         if backoff_factor < 0:
@@ -113,58 +294,27 @@ class APIClient:
                 "headers must be a dictionary."
             )
 
-        if not all(
-            isinstance(key, str) and isinstance(value, str)
-            for key, value in headers.items()
-        ):
-            raise TypeError(
-                "header keys and values must be strings."
-            )
-
-    def get(
-        self,
-        endpoint: str,
-        params: dict[str, Any] | None = None,
-    ) -> dict[str, Any] | list[Any]:
-
-        if not isinstance(endpoint, str):
-            raise TypeError("endpoint must be a string.")
-
-        if not endpoint.strip():
-            raise ValueError("endpoint cannot be empty.")
-
-        url = f"{self.base_url}/{endpoint.lstrip('/')}"
-
-        for attempt in range(self.max_retries + 1):
-            try:
-                response = requests.get(
-                    url=url,
-                    params=params,
-                    headers=self.headers,
-                    timeout=self.timeout,
+        for key, value in headers.items():
+            if not isinstance(key, str):
+                raise TypeError(
+                    "header keys must be strings."
                 )
 
-                self._validate_response(response)
-
-                return response.json()
-
-            except RequestException as exc:
-
-                if attempt >= self.max_retries:
-                    raise RuntimeError(
-                        f"API request failed after "
-                        f"{self.max_retries + 1} attempts: "
-                        f"{url}"
-                    ) from exc
-
-                sleep_time = (
-                    self.backoff_factor * (2 ** attempt)
+            if not isinstance(value, str):
+                raise TypeError(
+                    "header values must be strings."
                 )
-
-                time.sleep(sleep_time)
-
-        raise RuntimeError("Unexpected API client state.")
 
     @staticmethod
-    def _validate_response(response: Response) -> None:
-        response.raise_for_status()
+    def _validate_endpoint(
+        endpoint: str,
+    ) -> None:
+        if not isinstance(endpoint, str):
+            raise TypeError(
+                "endpoint must be a string."
+            )
+
+        if not endpoint.strip():
+            raise ValueError(
+                "endpoint cannot be empty."
+            )

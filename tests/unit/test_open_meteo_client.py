@@ -1,5 +1,5 @@
 from datetime import date
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 import pytest
 
@@ -202,7 +202,7 @@ def test_should_reject_unexpected_list_response():
 
     with pytest.raises(
         TypeError,
-        match="Unexpected Open-Meteo response format",
+        match="Open-Meteo historical response must be a dictionary",
     ):
         client.get_historical_weather(
             latitude=-26.3045,
@@ -456,4 +456,36 @@ def test_should_reject_non_string_daily_variable():
             end_date=date(2024, 1, 1),
             daily_variables=invalid_variables,  # ty: ignore[invalid-argument-type]
         )
+
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
+
+
+@patch(
+    "olist_data_platform.ingestion.api."
+    "open_meteo_client.logger"
+)
+def test_should_log_debug_for_historical_weather_request(
+    mock_logger,
+):
+    client = OpenMeteoClient()
+
+    client.get = Mock(
+        return_value={
+            "latitude": -26.3045,
+            "longitude": -48.8487,
+            "daily": {},
+        }
+    )
+
+    client.get_historical_weather(
+        latitude=-26.3045,
+        longitude=-48.8487,
+        start_date=date(2024, 1, 1),
+        end_date=date(2024, 1, 31),
+        timezone="America/Sao_Paulo",
+    )
+
+    assert mock_logger.debug.call_count == 2
 

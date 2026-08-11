@@ -1,4 +1,7 @@
+from unittest.mock import Mock, patch
+
 import pytest
+import requests
 
 from olist_data_platform.ingestion.api.api_client import APIClient
 
@@ -317,3 +320,54 @@ def test_should_reject_non_string_endpoint():
     # Act / Assert
     with pytest.raises(TypeError):
         client.get(None) # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
+
+@patch(
+    "olist_data_platform.ingestion.api."
+    "api_client.logger"
+)
+def test_should_log_warning_when_request_times_out(
+    mock_logger,
+):
+    client = APIClient(
+        base_url="https://api.example.com"
+    )
+
+    client.session.get = Mock(
+        side_effect=requests.Timeout()
+    )
+
+    with pytest.raises(requests.Timeout):
+        client.get("/weather")
+
+    mock_logger.warning.assert_called_once()
+
+@patch(
+    "olist_data_platform.ingestion.api."
+    "api_client.logger"
+)
+
+def test_should_log_warning_when_http_error_occurs(
+    mock_logger,
+):
+    client = APIClient(
+        base_url="https://api.example.com"
+    )
+
+    response = Mock()
+    response.status_code = 500
+
+    http_error = requests.HTTPError()
+    http_error.response = response
+
+    response.raise_for_status.side_effect = (
+        http_error
+    )
+
+    client.session.get = Mock(
+        return_value=response
+    )
+
+    with pytest.raises(requests.HTTPError):
+        client.get("/weather")
+
+    mock_logger.warning.assert_called_once()

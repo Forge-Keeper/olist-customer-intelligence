@@ -4,8 +4,10 @@ from collections.abc import Sequence
 from datetime import date
 from typing import Any, ClassVar
 
+from olist_data_platform.common.logging import LoggerFactory
 from olist_data_platform.ingestion.api.api_client import APIClient
 
+logger = LoggerFactory.get_logger(__name__)
 
 class OpenMeteoClient(APIClient):
     """
@@ -17,7 +19,7 @@ class OpenMeteoClient(APIClient):
 
     DEFAULT_BASE_URL: ClassVar[str] = "https://archive-api.open-meteo.com"
 
-    HISTORICAL_ENDPOINT : ClassVar[str]= "/v1/archive"
+    HISTORICAL_ENDPOINT: ClassVar[str] = "/v1/archive"
 
     DEFAULT_DAILY_VARIABLES: ClassVar[tuple[str, ...]] = (
         "temperature_2m_mean",
@@ -49,17 +51,80 @@ class OpenMeteoClient(APIClient):
         daily_variables: list[str] | None = None,
         timezone: str = "auto",
     ) -> dict[str, Any]:
-        self._validate_coordinates(latitude, longitude)
-        self._validate_date_range(start_date, end_date)
-        self._validate_timezone(timezone)
+        """
+        Retrieve historical daily weather data from Open-Meteo.
+
+        Args:
+            latitude:
+                Latitude of the requested location.
+
+            longitude:
+                Longitude of the requested location.
+
+            start_date:
+                First date of the requested period.
+
+            end_date:
+                Last date of the requested period.
+
+            daily_variables:
+                Optional list of daily weather variables.
+                Uses DEFAULT_DAILY_VARIABLES when not provided.
+
+            timezone:
+                Timezone used by Open-Meteo.
+
+        Returns:
+            Open-Meteo historical weather response.
+
+        Raises:
+            TypeError:
+                If input argument types are invalid.
+
+            ValueError:
+                If coordinates, dates, variables, or timezone
+                contain invalid values.
+        """
+
+        self._validate_coordinates(
+            latitude,
+            longitude,
+        )
+
+        self._validate_date_range(
+            start_date,
+            end_date,
+        )
+
+        self._validate_timezone(
+            timezone,
+        )
 
         variables = (
             daily_variables
             if daily_variables is not None
-            else self.DEFAULT_DAILY_VARIABLES
+            else list(self.DEFAULT_DAILY_VARIABLES)
         )
 
-        self._validate_daily_variables(variables)
+        self._validate_daily_variables(
+            variables
+        )
+
+        logger.debug(
+            "open_meteo_historical_weather_requested | "
+            "latitude=%s | "
+            "longitude=%s | "
+            "start_date=%s | "
+            "end_date=%s | "
+            "timezone=%s | "
+            "daily_variables=%s",
+            latitude,
+            longitude,
+            start_date,
+            end_date,
+            timezone,
+            variables,
+        )
 
         params = {
             "latitude": latitude,
@@ -77,8 +142,21 @@ class OpenMeteoClient(APIClient):
 
         if not isinstance(response, dict):
             raise TypeError(
-                "Unexpected Open-Meteo response format: expected JSON object."
+                "Open-Meteo historical response "
+                "must be a dictionary."
             )
+
+        logger.debug(
+            "open_meteo_historical_weather_received | "
+            "latitude=%s | "
+            "longitude=%s | "
+            "start_date=%s | "
+            "end_date=%s",
+            latitude,
+            longitude,
+            start_date,
+            end_date,
+        )
 
         return response
 
