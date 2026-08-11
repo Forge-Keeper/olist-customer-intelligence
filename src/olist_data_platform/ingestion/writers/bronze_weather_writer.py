@@ -17,6 +17,11 @@ from pyspark.sql.types import (
     TimestampType,
 )
 
+from olist_data_platform.common.logging import (
+    LoggerFactory,
+)
+
+logger = LoggerFactory.get_logger(__name__)
 
 class BronzeWeatherWriter:
     """
@@ -153,6 +158,14 @@ class BronzeWeatherWriter:
         )
 
         if not records:
+            logger.warning(
+                "bronze_weather_write_skipped | "
+                "target_table=%s | "
+                "reason=no_records | "
+                "request_id=%s",
+                self.target_table,
+                request_id,
+            )
             return
 
         dataframe = self._build_dataframe(
@@ -275,15 +288,39 @@ class BronzeWeatherWriter:
         dataframe: DataFrame,
         overwrite: bool = False,
     ) -> None:
-        metadata = self._get_dataframe_metadata(dataframe)
+        metadata = self._get_dataframe_metadata(
+            dataframe
+        )
 
         if metadata is None:
+            logger.warning(
+                "bronze_weather_write_skipped | "
+                "target_table=%s | "
+                "reason=empty_dataframe",
+                self.target_table,
+            )
             return
 
         min_date = metadata["min_date"]
         max_date = metadata["max_date"]
         latitude = metadata["latitude"]
         longitude = metadata["longitude"]
+
+        logger.info(
+            "bronze_weather_write_started | "
+            "target_table=%s | "
+            "latitude=%s | "
+            "longitude=%s | "
+            "start_date=%s | "
+            "end_date=%s | "
+            "overwrite=%s",
+            self.target_table,
+            latitude,
+            longitude,
+            min_date,
+            max_date,
+            overwrite,
+        )
 
         condition = self._build_existing_data_condition(
             min_date=min_date,
@@ -305,6 +342,22 @@ class BronzeWeatherWriter:
                 not existing_data.isEmpty()
                 and not overwrite
             ):
+                logger.warning(
+                    "bronze_weather_data_already_exists | "
+                    "target_table=%s | "
+                    "latitude=%s | "
+                    "longitude=%s | "
+                    "start_date=%s | "
+                    "end_date=%s | "
+                    "overwrite=%s",
+                    self.target_table,
+                    latitude,
+                    longitude,
+                    min_date,
+                    max_date,
+                    overwrite,
+                )
+
                 raise ValueError(
                     "Bronze weather data already exists for "
                     f"latitude={latitude}, "
@@ -320,6 +373,14 @@ class BronzeWeatherWriter:
             longitude=longitude,
         )
 
+        logger.debug(
+            "bronze_weather_replace_where_built | "
+            "target_table=%s | "
+            "predicate=%s",
+            self.target_table,
+            replace_where,
+        )
+
         (
             dataframe.write
             .format("delta")
@@ -330,6 +391,22 @@ class BronzeWeatherWriter:
             )
             .partitionBy("date")
             .saveAsTable(self.target_table)
+        )
+
+        logger.info(
+            "bronze_weather_write_completed | "
+            "target_table=%s | "
+            "latitude=%s | "
+            "longitude=%s | "
+            "start_date=%s | "
+            "end_date=%s | "
+            "overwrite=%s",
+            self.target_table,
+            latitude,
+            longitude,
+            min_date,
+            max_date,
+            overwrite,
         )
 
     @classmethod

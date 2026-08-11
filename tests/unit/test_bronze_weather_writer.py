@@ -430,3 +430,78 @@ def test_should_forward_overwrite_to_write_dataframe(
         dataframe=dataframe,
         overwrite=True,
     )
+
+@patch(
+    "olist_data_platform.ingestion.writers."
+    "bronze_weather_writer.logger"
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_existing_data_condition",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_get_dataframe_metadata",
+)
+def test_should_log_warning_when_data_already_exists(
+    mock_get_metadata,
+    mock_build_condition,
+    mock_logger,
+    bronze_metadata,
+    existing_data_condition,
+):
+    spark = Mock()
+    dataframe = Mock()
+    target_dataframe = Mock()
+    filtered_dataframe = Mock()
+
+    mock_get_metadata.return_value = bronze_metadata
+    mock_build_condition.return_value = (
+        existing_data_condition
+    )
+
+    spark.catalog.tableExists.return_value = True
+    spark.table.return_value = target_dataframe
+
+    target_dataframe.where.return_value = (
+        filtered_dataframe
+    )
+
+    filtered_dataframe.isEmpty.return_value = False
+
+    writer = BronzeWeatherWriter(
+        spark=spark,
+        target_table="prd.bronze.weather_daily",
+    )
+
+    with pytest.raises(ValueError):
+        writer._write_dataframe(
+            dataframe=dataframe,
+            overwrite=False,
+        )
+
+    mock_logger.warning.assert_called_once()
+
+@patch(
+    "olist_data_platform.ingestion.writers."
+    "bronze_weather_writer.logger"
+)
+def test_should_log_warning_when_records_are_empty(
+    mock_logger,
+):
+    spark = Mock()
+
+    writer = BronzeWeatherWriter(
+        spark=spark,
+        target_table="prd.bronze.weather_daily",
+    )
+
+    writer.write(
+        records=[],
+        request_id="request-123",
+        requested_latitude=-23.55,
+        requested_longitude=-46.63,
+    )
+
+    mock_logger.warning.assert_called_once()
+    spark.createDataFrame.assert_not_called()
