@@ -14,6 +14,12 @@ from pyspark.sql.types import (
     TimestampType,
 )
 
+from olist_data_platform.common.logging import (
+    LoggerFactory,
+)
+
+logger = LoggerFactory.get_logger(__name__)
+
 
 class RawWeatherWriter:
     """
@@ -26,8 +32,8 @@ class RawWeatherWriter:
         - Add technical ingestion metadata
         - Persist the DataFrame as a Delta table
 
-    No transformation of the API response should be performed
-    in this layer.
+    RAW data is append-only. Every API response is preserved,
+    including repeated requests for the same period.
     """
 
     INGESTION_TIMESTAMP_COLUMN: ClassVar[str] = (
@@ -111,6 +117,22 @@ class RawWeatherWriter:
 
         self._validate_response(response)
 
+        logger.info(
+            "raw_weather_write_started | "
+            "request_id=%s | "
+            "target_table=%s | "
+            "latitude=%s | "
+            "longitude=%s | "
+            "start_date=%s | "
+            "end_date=%s",
+            request_id,
+            self.target_table,
+            requested_latitude,
+            requested_longitude,
+            start_date,
+            end_date,
+        )
+
         dataframe = self._build_dataframe(
             request_id=request_id,
             requested_latitude=requested_latitude,
@@ -120,7 +142,10 @@ class RawWeatherWriter:
             response=response,
         )
 
-        self._write_dataframe(dataframe)
+        self._write_dataframe(
+            dataframe=dataframe,
+            request_id=request_id,
+        )
 
     def _build_dataframe(
         self,
@@ -136,16 +161,26 @@ class RawWeatherWriter:
         a single-row Spark DataFrame.
         """
 
+        response_json = json.dumps(
+            response,
+            ensure_ascii=False,
+        )
+
+        logger.debug(
+            "raw_weather_response_serialized | "
+            "request_id=%s | "
+            "response_size_bytes=%s",
+            request_id,
+            len(response_json.encode("utf-8")),
+        )
+
         raw_record = {
             "request_id": request_id,
             "requested_latitude": requested_latitude,
             "requested_longitude": requested_longitude,
             "start_date": start_date.isoformat(),
             "end_date": end_date.isoformat(),
-            "response_json": json.dumps(
-                response,
-                ensure_ascii=False,
-            ),
+            "response_json": response_json,
         }
 
         spark_row = Row(**raw_record)
@@ -163,9 +198,10 @@ class RawWeatherWriter:
     def _write_dataframe(
         self,
         dataframe: DataFrame,
+        request_id: str,
     ) -> None:
         """
-        Persist a Spark DataFrame as a Delta table.
+        Persist a Spark DataFrame as an append-only Delta table.
         """
 
         (
@@ -173,6 +209,14 @@ class RawWeatherWriter:
             .format("delta")
             .mode("append")
             .saveAsTable(self.target_table)
+        )
+
+        logger.info(
+            "raw_weather_write_completed | "
+            "request_id=%s | "
+            "target_table=%s",
+            request_id,
+            self.target_table,
         )
 
     @classmethod
@@ -276,4 +320,3 @@ class RawWeatherWriter:
             raise TypeError(
                 "response must be a dictionary."
             )
-
