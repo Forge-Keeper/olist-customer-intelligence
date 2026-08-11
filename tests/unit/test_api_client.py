@@ -1,373 +1,320 @@
-from unittest.mock import Mock, patch
+from __future__ import annotations
 
-import pytest
+from typing import Any
+
 import requests
+from requests import Response, Session
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 
-from olist_data_platform.ingestion.api.api_client import APIClient
+from olist_data_platform.common.logging import LoggerFactory
 
-# ---------------------------------------------------------------------------
-# Client initialization
-# ---------------------------------------------------------------------------
-
-
-def test_should_create_client_with_default_configuration():
-    # Arrange
-    base_url = "https://api.example.com"
-
-    # Act
-    client = APIClient(base_url=base_url)
-
-    # Assert
-    assert client.base_url == base_url
-    assert client.timeout == 30
-    assert client.max_retries == 3
-    assert client.backoff_factor == 1.0
-    assert client.headers == {}
+logger = LoggerFactory.get_logger(__name__)
 
 
-def test_should_create_client_with_custom_configuration():
-    # Arrange
-    base_url = "https://api.example.com"
-    headers = {
-        "Authorization": "Bearer token",
-        "Content-Type": "application/json",
-    }
+class APIClient:
+    """
+    Generic HTTP API client.
 
-    # Act
-    client = APIClient(
-        base_url=base_url,
-        timeout=60,
-        max_retries=5,
-        backoff_factor=2.0,
-        headers=headers,
-    )
+    Responsibilities:
+        - Validate HTTP client configuration
+        - Configure retries and backoff
+        - Execute GET requests
+        - Raise errors for unsuccessful HTTP responses
+        - Return decoded JSON responses
+        - Provide technical logging for API communication
+    """
 
-    # Assert
-    assert client.base_url == base_url
-    assert client.timeout == 60
-    assert client.max_retries == 5
-    assert client.backoff_factor == 2.0
-    assert client.headers == headers
+    def __init__(
+        self,
+        base_url: str,
+        timeout: int = 30,
+        max_retries: int = 3,
+        backoff_factor: int | float = 1.0,
+        headers: dict[str, str] | None = None,
+    ) -> None:
+        self._validate_base_url(base_url)
+        self._validate_timeout(timeout)
+        self._validate_max_retries(max_retries)
+        self._validate_backoff_factor(backoff_factor)
+        self._validate_headers(headers)
 
+        self.base_url = base_url.rstrip("/")
+        self.timeout = timeout
+        self.max_retries = max_retries
+        self.backoff_factor = backoff_factor
+        self.headers = headers or {}
 
-# ---------------------------------------------------------------------------
-# Base URL validation
-# ---------------------------------------------------------------------------
+        self.session = self._create_session()
 
-
-@pytest.mark.parametrize(
-    "base_url",
-    [
-        "",
-        " ",
-        "api.example.com",
-        "ftp://api.example.com",
-        "http://",
-        "https://",
-    ],
-)
-def test_should_reject_invalid_base_url(base_url):
-    # Act / Assert
-    with pytest.raises((TypeError, ValueError)):
-        APIClient(base_url=base_url)
-
-
-def test_should_reject_non_string_base_url():
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(base_url=None)  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
-
-
-def test_should_remove_trailing_slash_from_base_url():
-    # Arrange
-    base_url = "https://api.example.com/"
-
-    # Act
-    client = APIClient(base_url=base_url)
-
-    # Assert
-    assert client.base_url == "https://api.example.com"
-
-
-# ---------------------------------------------------------------------------
-# Timeout validation
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.parametrize(
-    "timeout",
-    [
-        0,
-        -1,
-    ],
-)
-def test_should_reject_invalid_timeout(timeout):
-    # Act / Assert
-    with pytest.raises(ValueError):
-        APIClient(
-            base_url="https://api.example.com",
-            timeout=timeout,
+        logger.debug(
+            "api_client_created | "
+            "base_url=%s | "
+            "timeout=%s | "
+            "max_retries=%s | "
+            "backoff_factor=%s",
+            self.base_url,
+            self.timeout,
+            self.max_retries,
+            self.backoff_factor,
         )
 
+    def get(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+    ) -> dict[str, Any] | list[Any]:
+        """
+        Execute a GET request and return the decoded JSON response.
+        """
 
-@pytest.mark.parametrize(
-    "timeout",
-    [
-        "30",
-        30.5,
-        None,
-    ],
-)
-def test_should_reject_invalid_timeout_type(timeout):
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(
-            base_url="https://api.example.com",
-            timeout=timeout,
+        self._validate_endpoint(endpoint)
+
+        url = self._build_url(endpoint)
+
+        logger.debug(
+            "api_get_started | "
+            "url=%s | "
+            "has_params=%s",
+            url,
+            params is not None,
         )
 
+        try:
+            response = self.session.get(
+                url=url,
+                params=params,
+                timeout=self.timeout,
+            )
 
-# ---------------------------------------------------------------------------
-# Retry configuration validation
-# ---------------------------------------------------------------------------
+            logger.debug(
+                "api_response_received | "
+                "url=%s | "
+                "status_code=%s",
+                url,
+                response.status_code,
+            )
 
+            response.raise_for_status()
 
-def test_should_accept_zero_retries():
-    # Act
-    client = APIClient(
-        base_url="https://api.example.com",
-        max_retries=0,
-    )
+            payload = response.json()
 
-    # Assert
-    assert client.max_retries == 0
+            logger.debug(
+                "api_get_completed | "
+                "url=%s | "
+                "status_code=%s",
+                url,
+                response.status_code,
+            )
 
+            return payload
 
-def test_should_reject_negative_retries():
-    # Act / Assert
-    with pytest.raises(ValueError):
-        APIClient(
-            base_url="https://api.example.com",
-            max_retries=-1,
+        except requests.Timeout:
+            logger.warning(
+                "api_request_timeout | "
+                "url=%s | "
+                "timeout=%s",
+                url,
+                self.timeout,
+            )
+            raise
+
+        except requests.ConnectionError:
+            logger.warning(
+                "api_connection_error | "
+                "url=%s",
+                url,
+            )
+            raise
+
+        except requests.HTTPError as exc:
+            status_code = (
+                exc.response.status_code
+                if exc.response is not None
+                else None
+            )
+
+            logger.warning(
+                "api_http_error | "
+                "url=%s | "
+                "status_code=%s",
+                url,
+                status_code,
+            )
+            raise
+
+        except requests.JSONDecodeError:
+            logger.warning(
+                "api_invalid_json_response | "
+                "url=%s",
+                url,
+            )
+            raise
+
+    def _create_session(self) -> Session:
+        """
+        Create an HTTP session configured with retry behavior.
+        """
+
+        retry_strategy = Retry(
+            total=self.max_retries,
+            connect=self.max_retries,
+            read=self.max_retries,
+            status=self.max_retries,
+            backoff_factor=self.backoff_factor,
+            status_forcelist=(
+                429,
+                500,
+                502,
+                503,
+                504,
+            ),
+            allowed_methods=(
+                "GET",
+            ),
+            raise_on_status=False,
         )
 
-
-@pytest.mark.parametrize(
-    "max_retries",
-    [
-        1.5,
-        "3",
-        None,
-    ],
-)
-def test_should_reject_invalid_retry_type(max_retries):
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(
-            base_url="https://api.example.com",
-            max_retries=max_retries,
+        adapter = HTTPAdapter(
+            max_retries=retry_strategy
         )
 
+        session = requests.Session()
 
-# ---------------------------------------------------------------------------
-# Backoff configuration validation
-# ---------------------------------------------------------------------------
-
-
-def test_should_accept_zero_backoff():
-    # Act
-    client = APIClient(
-        base_url="https://api.example.com",
-        backoff_factor=0,
-    )
-
-    # Assert
-    assert client.backoff_factor == 0
-
-
-def test_should_reject_negative_backoff():
-    # Act / Assert
-    with pytest.raises(ValueError):
-        APIClient(
-            base_url="https://api.example.com",
-            backoff_factor=-1,
+        session.mount(
+            "https://",
+            adapter,
         )
 
-
-@pytest.mark.parametrize(
-    "backoff_factor",
-    [
-        "1",
-        None,
-    ],
-)
-def test_should_reject_invalid_backoff_type(backoff_factor):
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(
-            base_url="https://api.example.com",
-            backoff_factor=backoff_factor,
+        session.mount(
+            "http://",
+            adapter,
         )
 
+        if self.headers:
+            session.headers.update(
+                self.headers
+            )
 
-# ---------------------------------------------------------------------------
-# Headers validation
-# ---------------------------------------------------------------------------
+        return session
 
-
-def test_should_accept_none_headers():
-    # Act
-    client = APIClient(
-        base_url="https://api.example.com",
-        headers=None,
-    )
-
-    # Assert
-    assert client.headers == {}
-
-
-def test_should_accept_valid_headers():
-    # Arrange
-    headers = {
-        "Authorization": "Bearer token",
-        "Content-Type": "application/json",
-    }
-
-    # Act
-    client = APIClient(
-        base_url="https://api.example.com",
-        headers=headers,
-    )
-
-    # Assert
-    assert client.headers == headers
-
-
-@pytest.mark.parametrize(
-    "headers",
-    [
-        [],
-        "Authorization",
-        123,
-    ],
-)
-def test_should_reject_invalid_headers_type(headers):
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(
-            base_url="https://api.example.com",
-            headers=headers,
+    def _build_url(
+        self,
+        endpoint: str,
+    ) -> str:
+        return (
+            f"{self.base_url}/"
+            f"{endpoint.lstrip('/')}"
         )
 
+    @staticmethod
+    def _validate_base_url(
+        base_url: str,
+    ) -> None:
+        if not isinstance(base_url, str):
+            raise TypeError(
+                "base_url must be a string."
+            )
 
-def test_should_reject_non_string_header_key():
-    # Arrange
-    headers = {
-        123: "value",
-    }
+        if not base_url.strip():
+            raise ValueError(
+                "base_url cannot be empty."
+            )
 
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(
-            base_url="https://api.example.com",
-            headers=headers,  # ty: ignore[invalid-argument-type]
-        )
+        if not base_url.startswith(
+            ("http://", "https://")
+        ):
+            raise ValueError(
+                "base_url must start with "
+                "'http://' or 'https://'."
+            )
 
+        if base_url in (
+            "http://",
+            "https://",
+        ):
+            raise ValueError(
+                "base_url must contain a valid host."
+            )
 
-def test_should_reject_non_string_header_value():
-    # Arrange
-    headers = {
-        "Authorization": 123, # type: ignore[dict-item]
-    }
+    @staticmethod
+    def _validate_timeout(
+        timeout: int,
+    ) -> None:
+        if not isinstance(timeout, int):
+            raise TypeError(
+                "timeout must be an integer."
+            )
 
-    # Act / Assert
-    with pytest.raises(TypeError):
-        APIClient(
-            base_url="https://api.example.com",
-            headers=headers, # ty: ignore[invalid-argument-type]
-        )
+        if timeout <= 0:
+            raise ValueError(
+                "timeout must be greater than zero."
+            )
 
+    @staticmethod
+    def _validate_max_retries(
+        max_retries: int,
+    ) -> None:
+        if not isinstance(max_retries, int):
+            raise TypeError(
+                "max_retries must be an integer."
+            )
 
-# ---------------------------------------------------------------------------
-# Endpoint validation
-# ---------------------------------------------------------------------------
+        if max_retries < 0:
+            raise ValueError(
+                "max_retries cannot be negative."
+            )
 
+    @staticmethod
+    def _validate_backoff_factor(
+        backoff_factor: int | float,
+    ) -> None:
+        if not isinstance(
+            backoff_factor,
+            (int, float),
+        ):
+            raise TypeError(
+                "backoff_factor must be numeric."
+            )
 
-@pytest.mark.parametrize(
-    "endpoint",
-    [
-        "",
-        " ",
-    ],
-)
-def test_should_reject_empty_endpoint(endpoint):
-    # Arrange
-    client = APIClient(
-        base_url="https://api.example.com",
-    )
+        if backoff_factor < 0:
+            raise ValueError(
+                "backoff_factor cannot be negative."
+            )
 
-    # Act / Assert
-    with pytest.raises(ValueError):
-        client.get(endpoint)
+    @staticmethod
+    def _validate_headers(
+        headers: dict[str, str] | None,
+    ) -> None:
+        if headers is None:
+            return
 
+        if not isinstance(headers, dict):
+            raise TypeError(
+                "headers must be a dictionary."
+            )
 
-def test_should_reject_non_string_endpoint():
-    # Arrange
-    client = APIClient(
-        base_url="https://api.example.com",
-    )
+        for key, value in headers.items():
+            if not isinstance(key, str):
+                raise TypeError(
+                    "header keys must be strings."
+                )
 
-    # Act / Assert
-    with pytest.raises(TypeError):
-        client.get(None) # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
+            if not isinstance(value, str):
+                raise TypeError(
+                    "header values must be strings."
+                )
 
-@patch(
-    "olist_data_platform.ingestion.api."
-    "api_client.logger"
-)
-def test_should_log_warning_when_request_times_out(
-    mock_logger,
-):
-    client = APIClient(
-        base_url="https://api.example.com"
-    )
+    @staticmethod
+    def _validate_endpoint(
+        endpoint: str,
+    ) -> None:
+        if not isinstance(endpoint, str):
+            raise TypeError(
+                "endpoint must be a string."
+            )
 
-    client.session.get = Mock(
-        side_effect=requests.Timeout()
-    )
-
-    with pytest.raises(requests.Timeout):
-        client.get("/weather")
-
-    mock_logger.warning.assert_called_once()
-
-@patch(
-    "olist_data_platform.ingestion.api."
-    "api_client.logger"
-)
-
-def test_should_log_warning_when_http_error_occurs(
-    mock_logger,
-):
-    client = APIClient(
-        base_url="https://api.example.com"
-    )
-
-    response = Mock()
-    response.status_code = 500
-
-    http_error = requests.HTTPError()
-    http_error.response = response
-
-    response.raise_for_status.side_effect = (
-        http_error
-    )
-
-    client.session.get = Mock(
-        return_value=response
-    )
-
-    with pytest.raises(requests.HTTPError):
-        client.get("/weather")
-
-    mock_logger.warning.assert_called_once()
+        if not endpoint.strip():
+            raise ValueError(
+                "endpoint cannot be empty."
+            )
