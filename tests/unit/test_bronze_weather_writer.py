@@ -1,4 +1,3 @@
-from datetime import date
 from unittest.mock import Mock, patch
 
 import pytest
@@ -28,8 +27,8 @@ def _weather_record():
 @pytest.fixture
 def bronze_metadata():
     return {
-        "min_date": date(2018, 1, 1),
-        "max_date": date(2018, 1, 3),
+        "min_date": "2018-01-01",
+        "max_date": "2018-01-03",
         "latitude": -23.5505,
         "longitude": -46.6333,
     }
@@ -141,15 +140,15 @@ def test_should_write_bronze_records_as_delta(
 
 def test_should_build_replace_where_condition():
     replace_where = BronzeWeatherWriter._build_replace_where(
-        min_date=date(2018, 1, 1),
-        max_date=date(2018, 1, 3),
+        min_date="2018-01-01",
+        max_date="2018-01-03",
         latitude=-23.5505,
         longitude=-46.6333,
     )
 
     assert replace_where == (
-        "date >= DATE '2018-01-01' "
-        "AND date <= DATE '2018-01-03' "
+        "date >= '2018-01-01' "
+        "AND date <= '2018-01-03' "
         "AND requested_latitude = -23.5505 "
         "AND requested_longitude = -46.6333"
     )
@@ -170,7 +169,7 @@ def test_should_write_when_target_table_does_not_exist(
 
     mock_get_metadata.return_value = bronze_metadata
     mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = "date >= DATE '2018-01-01'"
+    mock_build_replace_where.return_value = "date >= '2018-01-01'"
     spark.catalog.tableExists.return_value = False
 
     writer = BronzeWeatherWriter(
@@ -188,15 +187,15 @@ def test_should_write_when_target_table_does_not_exist(
     )
 
     mock_build_condition.assert_called_once_with(
-        min_date=date(2018, 1, 1),
-        max_date=date(2018, 1, 3),
+        min_date="2018-01-01",
+        max_date="2018-01-03",
         latitude=-23.5505,
         longitude=-46.6333,
     )
 
     mock_build_replace_where.assert_called_once_with(
-        min_date=date(2018, 1, 1),
-        max_date=date(2018, 1, 3),
+        min_date="2018-01-01",
+        max_date="2018-01-03",
         latitude=-23.5505,
         longitude=-46.6333,
     )
@@ -211,7 +210,7 @@ def test_should_write_when_target_table_does_not_exist(
         .mode.return_value
         .option.assert_called_once_with(
             "replaceWhere",
-            "date >= DATE '2018-01-01'",
+            "date >= '2018-01-01'",
         )
     )
     (
@@ -289,8 +288,8 @@ def test_should_replace_existing_data_when_overwrite_is_true(
     mock_get_metadata.return_value = bronze_metadata
     mock_build_condition.return_value = existing_data_condition
     mock_build_replace_where.return_value = (
-        "date >= DATE '2018-01-01' "
-        "AND date <= DATE '2018-01-03' "
+        "date >= '2018-01-01' "
+        "AND date <= '2018-01-03' "
         "AND requested_latitude = -23.5505 "
         "AND requested_longitude = -46.6333"
     )
@@ -344,7 +343,7 @@ def test_should_write_when_table_exists_but_data_does_not(
 
     mock_get_metadata.return_value = bronze_metadata
     mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = "date >= DATE '2018-01-01'"
+    mock_build_replace_where.return_value = "date >= '2018-01-01'"
     spark.catalog.tableExists.return_value = True
     spark.table.return_value = target_dataframe
     target_dataframe.where.return_value = filtered_dataframe
@@ -383,7 +382,7 @@ def test_should_not_raise_when_data_exists_and_overwrite_is_true(
 
     mock_get_metadata.return_value = bronze_metadata
     mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = "date >= DATE '2018-01-01'"
+    mock_build_replace_where.return_value = "date >= '2018-01-01'"
     spark.catalog.tableExists.return_value = True
     spark.table.return_value = target_dataframe
     target_dataframe.where.return_value = filtered_dataframe

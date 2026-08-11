@@ -1,6 +1,4 @@
 from __future__ import annotations
-
-from datetime import date
 from typing import Any, ClassVar
 
 from pyspark.sql import DataFrame, Row, SparkSession
@@ -220,14 +218,14 @@ class BronzeWeatherWriter:
 
     @staticmethod
     def _build_replace_where(
-        min_date: date,
-        max_date: date,
+        min_date: str,
+        max_date: str,
         latitude: float,
         longitude: float,
     ) -> str:
         return (
-            f"date >= DATE '{min_date.isoformat()}' "
-            f"AND date <= DATE '{max_date.isoformat()}' "
+            f"date >= '{min_date}' "
+            f"AND date <= '{max_date}' "
             f"AND requested_latitude = {latitude} "
             f"AND requested_longitude = {longitude}"
         )
@@ -263,8 +261,8 @@ class BronzeWeatherWriter:
 
     @staticmethod
     def _build_existing_data_condition(
-        min_date: date,
-        max_date: date,
+        min_date: str,
+        max_date: str,
         latitude: float,
         longitude: float,
     ):
@@ -498,4 +496,3 @@ class BronzeWeatherWriter:
                 "requested_longitude must be between "
                 "-180 and 180."
             )
-
