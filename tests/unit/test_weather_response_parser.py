@@ -1,3 +1,5 @@
+from datetime import date
+
 import pytest
 
 from olist_data_platform.ingestion.parsers.weather_response_parser import (
@@ -49,11 +51,6 @@ def valid_weather_response():
     }
 
 
-# ---------------------------------------------------------------------------
-# Successful parsing
-# ---------------------------------------------------------------------------
-
-
 def test_should_parse_weather_response_into_records(
     valid_weather_response,
 ):
@@ -72,7 +69,7 @@ def test_should_parse_first_weather_record_correctly(
     )
 
     assert records[0] == {
-        "date": "2018-01-01",
+        "dt_base": date(2018, 1, 1),
         "temperature_2m_mean": 22.5,
         "temperature_2m_max": 25.7,
         "temperature_2m_min": 19.9,
@@ -87,6 +84,24 @@ def test_should_parse_first_weather_record_correctly(
     }
 
 
+def test_should_parse_dt_base_as_date(
+    valid_weather_response,
+):
+    records = WeatherResponseParser.parse(
+        valid_weather_response
+    )
+
+    assert records[0]["dt_base"] == date(
+        2018,
+        1,
+        1,
+    )
+    assert isinstance(
+        records[0]["dt_base"],
+        date,
+    )
+
+
 def test_should_preserve_weather_coordinates(
     valid_weather_response,
 ):
@@ -94,34 +109,42 @@ def test_should_preserve_weather_coordinates(
         valid_weather_response
     )
 
-    assert records[0]["weather_latitude"] == -23.514938
-    assert records[0]["weather_longitude"] == -46.610504
-
-
-# ---------------------------------------------------------------------------
-# Optional metadata
-# ---------------------------------------------------------------------------
+    assert (
+        records[0]["weather_latitude"]
+        == -23.514938
+    )
+    assert (
+        records[0]["weather_longitude"]
+        == -46.610504
+    )
 
 
 def test_should_accept_missing_optional_metadata(
     valid_weather_response,
 ):
-    valid_weather_response.pop("elevation")
-    valid_weather_response.pop("timezone_abbreviation")
-    valid_weather_response.pop("utc_offset_seconds")
+    valid_weather_response.pop(
+        "elevation"
+    )
+    valid_weather_response.pop(
+        "timezone_abbreviation"
+    )
+    valid_weather_response.pop(
+        "utc_offset_seconds"
+    )
 
     records = WeatherResponseParser.parse(
         valid_weather_response
     )
 
     assert records[0]["elevation"] is None
-    assert records[0]["timezone_abbreviation"] is None
-    assert records[0]["utc_offset_seconds"] is None
-
-
-# ---------------------------------------------------------------------------
-# Root response validation
-# ---------------------------------------------------------------------------
+    assert (
+        records[0]["timezone_abbreviation"]
+        is None
+    )
+    assert (
+        records[0]["utc_offset_seconds"]
+        is None
+    )
 
 
 def test_should_reject_non_dictionary_response():
@@ -144,7 +167,9 @@ def test_should_reject_missing_required_root_field(
     valid_weather_response,
     missing_field,
 ):
-    valid_weather_response.pop(missing_field)
+    valid_weather_response.pop(
+        missing_field
+    )
 
     with pytest.raises(
         ValueError,
@@ -167,11 +192,6 @@ def test_should_reject_non_dictionary_daily(
         WeatherResponseParser.parse(
             valid_weather_response
         )
-
-
-# ---------------------------------------------------------------------------
-# Daily field validation
-# ---------------------------------------------------------------------------
 
 
 @pytest.mark.parametrize(
@@ -218,11 +238,6 @@ def test_should_reject_non_list_daily_field(
         )
 
 
-# ---------------------------------------------------------------------------
-# Array consistency
-# ---------------------------------------------------------------------------
-
-
 def test_should_reject_different_daily_field_lengths(
     valid_weather_response,
 ):
@@ -245,10 +260,25 @@ def test_should_accept_empty_daily_arrays(
     for field in (
         WeatherResponseParser.REQUIRED_DAILY_FIELDS
     ):
-        valid_weather_response["daily"][field] = []
+        valid_weather_response[
+            "daily"
+        ][field] = []
 
     records = WeatherResponseParser.parse(
         valid_weather_response
     )
 
     assert records == []
+
+
+def test_should_reject_invalid_daily_date(
+    valid_weather_response,
+):
+    valid_weather_response["daily"][
+        "time"
+    ][0] = "2018-02-31"
+
+    with pytest.raises(ValueError):
+        WeatherResponseParser.parse(
+            valid_weather_response
+        )

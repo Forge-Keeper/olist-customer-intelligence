@@ -1,3 +1,4 @@
+from datetime import date
 from unittest.mock import Mock, patch
 
 import pytest
@@ -9,7 +10,7 @@ from olist_data_platform.ingestion.writers.bronze_weather_writer import (
 
 def _weather_record():
     return {
-        "date": "2018-01-01",
+        "dt_base": date(2018, 1, 1),
         "temperature_2m_mean": 22.5,
         "temperature_2m_max": 25.7,
         "temperature_2m_min": 19.9,
@@ -27,8 +28,8 @@ def _weather_record():
 @pytest.fixture
 def bronze_metadata():
     return {
-        "min_date": "2018-01-01",
-        "max_date": "2018-01-03",
+        "min_dt_base": date(2018, 1, 1),
+        "max_dt_base": date(2018, 1, 3),
         "latitude": -23.5505,
         "longitude": -46.6333,
     }
@@ -36,7 +37,9 @@ def bronze_metadata():
 
 @pytest.fixture
 def existing_data_condition() -> Mock:
-    return Mock(name="existing_data_condition")
+    return Mock(
+        name="existing_data_condition"
+    )
 
 
 def test_should_create_bronze_writer():
@@ -48,7 +51,17 @@ def test_should_create_bronze_writer():
     )
 
     assert writer.spark == spark
-    assert writer.target_table == "bronze.weather_daily"
+    assert (
+        writer.target_table
+        == "bronze.weather_daily"
+    )
+
+
+def test_should_define_dt_base_as_clustering_key():
+    assert (
+        BronzeWeatherWriter.CLUSTERING_COLUMNS
+        == ("dt_base",)
+    )
 
 
 def test_should_not_write_when_records_are_empty():
@@ -102,19 +115,25 @@ def test_should_reject_non_dictionary_records():
         )
 
 
-@patch.object(BronzeWeatherWriter, "_write_dataframe")
-@patch.object(BronzeWeatherWriter, "_build_dataframe")
+@patch.object(
+    BronzeWeatherWriter,
+    "_write_dataframe",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_dataframe",
+)
 def test_should_write_bronze_records_as_delta(
     mock_build_dataframe,
     mock_write_dataframe,
 ):
-    spark = Mock()
     dataframe = Mock()
-
-    mock_build_dataframe.return_value = dataframe
+    mock_build_dataframe.return_value = (
+        dataframe
+    )
 
     writer = BronzeWeatherWriter(
-        spark=spark,
+        spark=Mock(),
         target_table="bronze.weather_daily",
     )
 
@@ -139,25 +158,45 @@ def test_should_write_bronze_records_as_delta(
 
 
 def test_should_build_replace_where_condition():
-    replace_where = BronzeWeatherWriter._build_replace_where(
-        min_date="2018-01-01",
-        max_date="2018-01-03",
-        latitude=-23.5505,
-        longitude=-46.6333,
+    replace_where = (
+        BronzeWeatherWriter
+        ._build_replace_where(
+            min_dt_base=date(
+                2018,
+                1,
+                1,
+            ),
+            max_dt_base=date(
+                2018,
+                1,
+                3,
+            ),
+            latitude=-23.5505,
+            longitude=-46.6333,
+        )
     )
 
     assert replace_where == (
-        "date >= '2018-01-01' "
-        "AND date <= '2018-01-03' "
+        "dt_base >= DATE '2018-01-01' "
+        "AND dt_base <= DATE '2018-01-03' "
         "AND requested_latitude = -23.5505 "
         "AND requested_longitude = -46.6333"
     )
 
 
-@patch.object(BronzeWeatherWriter, "_build_existing_data_condition")
-@patch.object(BronzeWeatherWriter, "_build_replace_where")
-@patch.object(BronzeWeatherWriter, "_get_dataframe_metadata")
-def test_should_write_when_target_table_does_not_exist(
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_existing_data_condition",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_replace_where",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_get_dataframe_metadata",
+)
+def test_should_create_table_with_liquid_clustering(
     mock_get_metadata,
     mock_build_replace_where,
     mock_build_condition,
@@ -167,10 +206,18 @@ def test_should_write_when_target_table_does_not_exist(
     spark = Mock()
     dataframe = Mock()
 
-    mock_get_metadata.return_value = bronze_metadata
-    mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = "date >= '2018-01-01'"
-    spark.catalog.tableExists.return_value = False
+    mock_get_metadata.return_value = (
+        bronze_metadata
+    )
+    mock_build_condition.return_value = (
+        existing_data_condition
+    )
+    mock_build_replace_where.return_value = (
+        "dt_base >= DATE '2018-01-01'"
+    )
+    spark.catalog.tableExists.return_value = (
+        False
+    )
 
     writer = BronzeWeatherWriter(
         spark=spark,
@@ -182,56 +229,35 @@ def test_should_write_when_target_table_does_not_exist(
         overwrite=False,
     )
 
-    spark.catalog.tableExists.assert_called_once_with(
-        "prd.bronze.weather_daily"
-    )
-
-    mock_build_condition.assert_called_once_with(
-        min_date="2018-01-01",
-        max_date="2018-01-03",
-        latitude=-23.5505,
-        longitude=-46.6333,
-    )
-
-    mock_build_replace_where.assert_called_once_with(
-        min_date="2018-01-01",
-        max_date="2018-01-03",
-        latitude=-23.5505,
-        longitude=-46.6333,
-    )
-
-    dataframe.write.format.assert_called_once_with("delta")
-    dataframe.write.format.return_value.mode.assert_called_once_with(
-        "overwrite"
-    )
-    (
+    base_writer = (
         dataframe.write
         .format.return_value
         .mode.return_value
-        .option.assert_called_once_with(
-            "replaceWhere",
-            "date >= '2018-01-01'",
+        .option.return_value
+    )
+
+    base_writer.clusterBy.assert_called_once_with(
+        "dt_base"
+    )
+    (
+        base_writer
+        .clusterBy.return_value
+        .saveAsTable
+        .assert_called_once_with(
+            "prd.bronze.weather_daily"
         )
     )
-    (
-        dataframe.write
-        .format.return_value
-        .mode.return_value
-        .option.return_value
-        .partitionBy.assert_called_once_with("date")
-    )
-    (
-        dataframe.write
-        .format.return_value
-        .mode.return_value
-        .option.return_value
-        .partitionBy.return_value
-        .saveAsTable.assert_called_once_with("prd.bronze.weather_daily")
-    )
+    base_writer.partitionBy.assert_not_called()
 
 
-@patch.object(BronzeWeatherWriter, "_build_existing_data_condition")
-@patch.object(BronzeWeatherWriter, "_get_dataframe_metadata")
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_existing_data_condition",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_get_dataframe_metadata",
+)
 def test_should_raise_when_data_exists_and_overwrite_is_false(
     mock_get_metadata,
     mock_build_condition,
@@ -243,12 +269,24 @@ def test_should_raise_when_data_exists_and_overwrite_is_false(
     target_dataframe = Mock()
     filtered_dataframe = Mock()
 
-    mock_get_metadata.return_value = bronze_metadata
-    mock_build_condition.return_value = existing_data_condition
-    spark.catalog.tableExists.return_value = True
-    spark.table.return_value = target_dataframe
-    target_dataframe.where.return_value = filtered_dataframe
-    filtered_dataframe.isEmpty.return_value = False
+    mock_get_metadata.return_value = (
+        bronze_metadata
+    )
+    mock_build_condition.return_value = (
+        existing_data_condition
+    )
+    spark.catalog.tableExists.return_value = (
+        True
+    )
+    spark.table.return_value = (
+        target_dataframe
+    )
+    target_dataframe.where.return_value = (
+        filtered_dataframe
+    )
+    filtered_dataframe.isEmpty.return_value = (
+        False
+    )
 
     writer = BronzeWeatherWriter(
         spark=spark,
@@ -270,10 +308,19 @@ def test_should_raise_when_data_exists_and_overwrite_is_false(
     dataframe.write.format.assert_not_called()
 
 
-@patch.object(BronzeWeatherWriter, "_build_existing_data_condition")
-@patch.object(BronzeWeatherWriter, "_build_replace_where")
-@patch.object(BronzeWeatherWriter, "_get_dataframe_metadata")
-def test_should_replace_existing_data_when_overwrite_is_true(
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_existing_data_condition",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_replace_where",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_get_dataframe_metadata",
+)
+def test_should_replace_existing_data_without_redefining_clustering(
     mock_get_metadata,
     mock_build_replace_where,
     mock_build_condition,
@@ -285,18 +332,27 @@ def test_should_replace_existing_data_when_overwrite_is_true(
     target_dataframe = Mock()
     filtered_dataframe = Mock()
 
-    mock_get_metadata.return_value = bronze_metadata
-    mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = (
-        "date >= '2018-01-01' "
-        "AND date <= '2018-01-03' "
-        "AND requested_latitude = -23.5505 "
-        "AND requested_longitude = -46.6333"
+    mock_get_metadata.return_value = (
+        bronze_metadata
     )
-    spark.catalog.tableExists.return_value = True
-    spark.table.return_value = target_dataframe
-    target_dataframe.where.return_value = filtered_dataframe
-    filtered_dataframe.isEmpty.return_value = False
+    mock_build_condition.return_value = (
+        existing_data_condition
+    )
+    mock_build_replace_where.return_value = (
+        "dt_base >= DATE '2018-01-01'"
+    )
+    spark.catalog.tableExists.return_value = (
+        True
+    )
+    spark.table.return_value = (
+        target_dataframe
+    )
+    target_dataframe.where.return_value = (
+        filtered_dataframe
+    )
+    filtered_dataframe.isEmpty.return_value = (
+        False
+    )
 
     writer = BronzeWeatherWriter(
         spark=spark,
@@ -308,27 +364,32 @@ def test_should_replace_existing_data_when_overwrite_is_true(
         overwrite=True,
     )
 
-    target_dataframe.where.assert_called_once_with(
-        existing_data_condition
-    )
-    dataframe.write.format.assert_called_once_with("delta")
-    dataframe.write.format.return_value.mode.assert_called_once_with(
-        "overwrite"
-    )
-    (
+    base_writer = (
         dataframe.write
         .format.return_value
         .mode.return_value
-        .option.assert_called_once_with(
-            "replaceWhere",
-            mock_build_replace_where.return_value,
-        )
+        .option.return_value
+    )
+
+    base_writer.clusterBy.assert_not_called()
+    base_writer.partitionBy.assert_not_called()
+    base_writer.saveAsTable.assert_called_once_with(
+        "prd.bronze.weather_daily"
     )
 
 
-@patch.object(BronzeWeatherWriter, "_build_existing_data_condition")
-@patch.object(BronzeWeatherWriter, "_build_replace_where")
-@patch.object(BronzeWeatherWriter, "_get_dataframe_metadata")
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_existing_data_condition",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_replace_where",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_get_dataframe_metadata",
+)
 def test_should_write_when_table_exists_but_data_does_not(
     mock_get_metadata,
     mock_build_replace_where,
@@ -341,13 +402,27 @@ def test_should_write_when_table_exists_but_data_does_not(
     target_dataframe = Mock()
     filtered_dataframe = Mock()
 
-    mock_get_metadata.return_value = bronze_metadata
-    mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = "date >= '2018-01-01'"
-    spark.catalog.tableExists.return_value = True
-    spark.table.return_value = target_dataframe
-    target_dataframe.where.return_value = filtered_dataframe
-    filtered_dataframe.isEmpty.return_value = True
+    mock_get_metadata.return_value = (
+        bronze_metadata
+    )
+    mock_build_condition.return_value = (
+        existing_data_condition
+    )
+    mock_build_replace_where.return_value = (
+        "dt_base >= DATE '2018-01-01'"
+    )
+    spark.catalog.tableExists.return_value = (
+        True
+    )
+    spark.table.return_value = (
+        target_dataframe
+    )
+    target_dataframe.where.return_value = (
+        filtered_dataframe
+    )
+    filtered_dataframe.isEmpty.return_value = (
+        True
+    )
 
     writer = BronzeWeatherWriter(
         spark=spark,
@@ -359,61 +434,37 @@ def test_should_write_when_table_exists_but_data_does_not(
         overwrite=False,
     )
 
-    target_dataframe.where.assert_called_once_with(
-        existing_data_condition
-    )
-    dataframe.write.format.assert_called_once_with("delta")
-
-
-@patch.object(BronzeWeatherWriter, "_build_existing_data_condition")
-@patch.object(BronzeWeatherWriter, "_build_replace_where")
-@patch.object(BronzeWeatherWriter, "_get_dataframe_metadata")
-def test_should_not_raise_when_data_exists_and_overwrite_is_true(
-    mock_get_metadata,
-    mock_build_replace_where,
-    mock_build_condition,
-    bronze_metadata,
-    existing_data_condition,
-):
-    spark = Mock()
-    dataframe = Mock()
-    target_dataframe = Mock()
-    filtered_dataframe = Mock()
-
-    mock_get_metadata.return_value = bronze_metadata
-    mock_build_condition.return_value = existing_data_condition
-    mock_build_replace_where.return_value = "date >= '2018-01-01'"
-    spark.catalog.tableExists.return_value = True
-    spark.table.return_value = target_dataframe
-    target_dataframe.where.return_value = filtered_dataframe
-    filtered_dataframe.isEmpty.return_value = False
-
-    writer = BronzeWeatherWriter(
-        spark=spark,
-        target_table="prd.bronze.weather_daily",
+    (
+        dataframe.write
+        .format.return_value
+        .mode.return_value
+        .option.return_value
+        .saveAsTable
+        .assert_called_once_with(
+            "prd.bronze.weather_daily"
+        )
     )
 
-    writer._write_dataframe(
-        dataframe=dataframe,
-        overwrite=True,
-    )
 
-    dataframe.write.format.assert_called_once_with("delta")
-
-
-@patch.object(BronzeWeatherWriter, "_write_dataframe")
-@patch.object(BronzeWeatherWriter, "_build_dataframe")
+@patch.object(
+    BronzeWeatherWriter,
+    "_write_dataframe",
+)
+@patch.object(
+    BronzeWeatherWriter,
+    "_build_dataframe",
+)
 def test_should_forward_overwrite_to_write_dataframe(
     mock_build_dataframe,
     mock_write_dataframe,
 ):
-    spark = Mock()
     dataframe = Mock()
-
-    mock_build_dataframe.return_value = dataframe
+    mock_build_dataframe.return_value = (
+        dataframe
+    )
 
     writer = BronzeWeatherWriter(
-        spark=spark,
+        spark=Mock(),
         target_table="prd.bronze.weather_daily",
     )
 
@@ -429,6 +480,7 @@ def test_should_forward_overwrite_to_write_dataframe(
         dataframe=dataframe,
         overwrite=True,
     )
+
 
 @patch(
     "olist_data_platform.ingestion.writers."
@@ -454,19 +506,25 @@ def test_should_log_warning_when_data_already_exists(
     target_dataframe = Mock()
     filtered_dataframe = Mock()
 
-    mock_get_metadata.return_value = bronze_metadata
+    mock_get_metadata.return_value = (
+        bronze_metadata
+    )
     mock_build_condition.return_value = (
         existing_data_condition
     )
 
-    spark.catalog.tableExists.return_value = True
-    spark.table.return_value = target_dataframe
-
+    spark.catalog.tableExists.return_value = (
+        True
+    )
+    spark.table.return_value = (
+        target_dataframe
+    )
     target_dataframe.where.return_value = (
         filtered_dataframe
     )
-
-    filtered_dataframe.isEmpty.return_value = False
+    filtered_dataframe.isEmpty.return_value = (
+        False
+    )
 
     writer = BronzeWeatherWriter(
         spark=spark,
@@ -480,6 +538,7 @@ def test_should_log_warning_when_data_already_exists(
         )
 
     mock_logger.warning.assert_called_once()
+
 
 @patch(
     "olist_data_platform.ingestion.writers."

@@ -1,4 +1,6 @@
 from __future__ import annotations
+
+from datetime import date
 from typing import Any, ClassVar
 
 from pyspark.sql import DataFrame, Row, SparkSession
@@ -7,6 +9,7 @@ from pyspark.sql.functions import col as C
 from pyspark.sql.functions import current_timestamp
 from pyspark.sql.functions import lit as L
 from pyspark.sql.types import (
+    DateType,
     DoubleType,
     IntegerType,
     StringType,
@@ -15,11 +18,10 @@ from pyspark.sql.types import (
     TimestampType,
 )
 
-from olist_data_platform.common.logging import (
-    LoggerFactory,
-)
+from olist_data_platform.common.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
+
 
 class BronzeWeatherWriter:
     """
@@ -31,12 +33,17 @@ class BronzeWeatherWriter:
         - Build a Spark DataFrame using an explicit schema
         - Add technical ingestion metadata
         - Persist the DataFrame as a Delta table
+        - Create the table using liquid clustering
 
     Business transformations should not be performed in this layer.
     """
 
     INGESTION_TIMESTAMP_COLUMN: ClassVar[str] = (
         "ingestion_timestamp"
+    )
+
+    CLUSTERING_COLUMNS: ClassVar[tuple[str, ...]] = (
+        "dt_base",
     )
 
     SCHEMA: ClassVar[StructType] = StructType(
@@ -57,8 +64,8 @@ class BronzeWeatherWriter:
                 False,
             ),
             StructField(
-                "date",
-                StringType(),
+                "dt_base",
+                DateType(),
                 False,
             ),
             StructField(
@@ -218,14 +225,14 @@ class BronzeWeatherWriter:
 
     @staticmethod
     def _build_replace_where(
-        min_date: str,
-        max_date: str,
+        min_dt_base: date,
+        max_dt_base: date,
         latitude: float,
         longitude: float,
     ) -> str:
         return (
-            f"date >= '{min_date}' "
-            f"AND date <= '{max_date}' "
+            f"dt_base >= DATE '{min_dt_base.isoformat()}' "
+            f"AND dt_base <= DATE '{max_dt_base.isoformat()}' "
             f"AND requested_latitude = {latitude} "
             f"AND requested_longitude = {longitude}"
         )
@@ -237,8 +244,12 @@ class BronzeWeatherWriter:
         metadata = (
             dataframe
             .select(
-                F.min("date").alias("min_date"),
-                F.max("date").alias("max_date"),
+                F.min("dt_base").alias(
+                    "min_dt_base"
+                ),
+                F.max("dt_base").alias(
+                    "max_dt_base"
+                ),
                 F.first(
                     "requested_latitude"
                 ).alias("latitude"),
@@ -253,23 +264,31 @@ class BronzeWeatherWriter:
             return None
 
         return {
-            "min_date": metadata["min_date"],
-            "max_date": metadata["max_date"],
-            "latitude": metadata["latitude"],
-            "longitude": metadata["longitude"],
+            "min_dt_base": metadata[
+                "min_dt_base"
+            ],
+            "max_dt_base": metadata[
+                "max_dt_base"
+            ],
+            "latitude": metadata[
+                "latitude"
+            ],
+            "longitude": metadata[
+                "longitude"
+            ],
         }
 
     @staticmethod
     def _build_existing_data_condition(
-        min_date: str,
-        max_date: str,
+        min_dt_base: date,
+        max_dt_base: date,
         latitude: float,
         longitude: float,
     ):
         return (
-            C("date").between(
-                L(min_date),
-                L(max_date),
+            C("dt_base").between(
+                L(min_dt_base),
+                L(max_dt_base),
             )
             & (
                 C("requested_latitude")
@@ -299,8 +318,12 @@ class BronzeWeatherWriter:
             )
             return
 
-        min_date = metadata["min_date"]
-        max_date = metadata["max_date"]
+        min_dt_base = metadata[
+            "min_dt_base"
+        ]
+        max_dt_base = metadata[
+            "max_dt_base"
+        ]
         latitude = metadata["latitude"]
         longitude = metadata["longitude"]
 
@@ -309,27 +332,31 @@ class BronzeWeatherWriter:
             "target_table=%s | "
             "latitude=%s | "
             "longitude=%s | "
-            "start_date=%s | "
-            "end_date=%s | "
+            "min_dt_base=%s | "
+            "max_dt_base=%s | "
             "overwrite=%s",
             self.target_table,
             latitude,
             longitude,
-            min_date,
-            max_date,
+            min_dt_base,
+            max_dt_base,
             overwrite,
         )
 
         condition = self._build_existing_data_condition(
-            min_date=min_date,
-            max_date=max_date,
+            min_dt_base=min_dt_base,
+            max_dt_base=max_dt_base,
             latitude=latitude,
             longitude=longitude,
         )
 
-        if self.spark.catalog.tableExists(
-            self.target_table
-        ):
+        table_exists = (
+            self.spark.catalog.tableExists(
+                self.target_table
+            )
+        )
+
+        if table_exists:
             existing_data = (
                 self.spark
                 .table(self.target_table)
@@ -345,14 +372,14 @@ class BronzeWeatherWriter:
                     "target_table=%s | "
                     "latitude=%s | "
                     "longitude=%s | "
-                    "start_date=%s | "
-                    "end_date=%s | "
+                    "min_dt_base=%s | "
+                    "max_dt_base=%s | "
                     "overwrite=%s",
                     self.target_table,
                     latitude,
                     longitude,
-                    min_date,
-                    max_date,
+                    min_dt_base,
+                    max_dt_base,
                     overwrite,
                 )
 
@@ -360,13 +387,14 @@ class BronzeWeatherWriter:
                     "Bronze weather data already exists for "
                     f"latitude={latitude}, "
                     f"longitude={longitude}, "
-                    f"period={min_date} to {max_date}. "
+                    f"period={min_dt_base} to "
+                    f"{max_dt_base}. "
                     "Use overwrite=True to reprocess."
                 )
 
         replace_where = self._build_replace_where(
-            min_date=min_date,
-            max_date=max_date,
+            min_dt_base=min_dt_base,
+            max_dt_base=max_dt_base,
             latitude=latitude,
             longitude=longitude,
         )
@@ -379,7 +407,7 @@ class BronzeWeatherWriter:
             replace_where,
         )
 
-        (
+        writer = (
             dataframe.write
             .format("delta")
             .mode("overwrite")
@@ -387,8 +415,18 @@ class BronzeWeatherWriter:
                 "replaceWhere",
                 replace_where,
             )
-            .partitionBy("date")
-            .saveAsTable(self.target_table)
+        )
+
+        # Liquid clustering is a table-layout property.
+        # Define it only when the managed Delta table is created.
+        # Subsequent writes preserve the table's clustering config.
+        if not table_exists:
+            writer = writer.clusterBy(
+                *self.CLUSTERING_COLUMNS
+            )
+
+        writer.saveAsTable(
+            self.target_table
         )
 
         logger.info(
@@ -396,14 +434,14 @@ class BronzeWeatherWriter:
             "target_table=%s | "
             "latitude=%s | "
             "longitude=%s | "
-            "start_date=%s | "
-            "end_date=%s | "
+            "min_dt_base=%s | "
+            "max_dt_base=%s | "
             "overwrite=%s",
             self.target_table,
             latitude,
             longitude,
-            min_date,
-            max_date,
+            min_dt_base,
+            max_dt_base,
             overwrite,
         )
 
@@ -475,12 +513,18 @@ class BronzeWeatherWriter:
         latitude: float,
         longitude: float,
     ) -> None:
-        if not isinstance(latitude, (int, float)):
+        if not isinstance(
+            latitude,
+            (int, float),
+        ):
             raise TypeError(
                 "requested_latitude must be numeric."
             )
 
-        if not isinstance(longitude, (int, float)):
+        if not isinstance(
+            longitude,
+            (int, float),
+        ):
             raise TypeError(
                 "requested_longitude must be numeric."
             )

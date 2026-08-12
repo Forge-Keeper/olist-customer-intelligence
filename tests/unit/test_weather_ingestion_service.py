@@ -65,11 +65,19 @@ def weather_response() -> dict:
 def parsed_records() -> list[dict]:
     return [
         {
-            "date": "2018-01-01",
+            "dt_base": date(
+                2018,
+                1,
+                1,
+            ),
             "temperature_2m_mean": 22.5,
         },
         {
-            "date": "2018-01-02",
+            "dt_base": date(
+                2018,
+                1,
+                2,
+            ),
             "temperature_2m_mean": 22.2,
         },
     ]
@@ -189,8 +197,9 @@ def test_should_parse_api_response(
     client.get_historical_weather.return_value = (
         weather_response
     )
-
-    mock_parse.return_value = parsed_records
+    mock_parse.return_value = (
+        parsed_records
+    )
 
     service.ingest(
         latitude=-23.5505,
@@ -219,8 +228,9 @@ def test_should_write_parsed_records_to_bronze(
     client.get_historical_weather.return_value = (
         weather_response
     )
-
-    mock_parse.return_value = parsed_records
+    mock_parse.return_value = (
+        parsed_records
+    )
 
     service.ingest(
         latitude=-23.5505,
@@ -253,8 +263,9 @@ def test_should_forward_overwrite_to_bronze_writer(
     client.get_historical_weather.return_value = (
         weather_response
     )
-
-    mock_parse.return_value = parsed_records
+    mock_parse.return_value = (
+        parsed_records
+    )
 
     service.ingest(
         latitude=-23.5505,
@@ -293,17 +304,26 @@ def test_should_use_same_request_id_for_raw_and_bronze(
 
     raw_request_id = (
         raw_writer.write
-        .call_args.kwargs["request_id"]
+        .call_args.kwargs[
+            "request_id"
+        ]
     )
-
     bronze_request_id = (
         bronze_writer.write
-        .call_args.kwargs["request_id"]
+        .call_args.kwargs[
+            "request_id"
+        ]
     )
 
     assert raw_request_id == "request-123"
-    assert bronze_request_id == "request-123"
-    assert raw_request_id == bronze_request_id
+    assert (
+        bronze_request_id
+        == "request-123"
+    )
+    assert (
+        raw_request_id
+        == bronze_request_id
+    )
 
 
 def test_should_return_generated_request_id(
@@ -365,7 +385,6 @@ def test_should_not_write_bronze_when_parser_fails(
     client.get_historical_weather.return_value = (
         weather_response
     )
-
     mock_parse.side_effect = ValueError(
         "Invalid weather response"
     )
@@ -437,6 +456,8 @@ def test_should_generate_request_id_when_factory_is_not_provided(
         end_date=date(2018, 1, 2),
     )
 
-    assert isinstance(request_id, str)
+    assert isinstance(
+        request_id,
+        str,
+    )
     assert request_id
-
