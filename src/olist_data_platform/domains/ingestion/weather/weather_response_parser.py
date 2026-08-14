@@ -7,14 +7,6 @@ from typing import Any, ClassVar
 class WeatherResponseParser:
     """
     Parse and validate Open-Meteo historical weather responses.
-
-    Responsibilities:
-        - Validate the source response contract
-        - Validate daily array consistency
-        - Convert source daily arrays into row-oriented records
-        - Convert the source date string into a typed dt_base value
-
-    The parser does not perform business transformations.
     """
 
     REQUIRED_RESPONSE_FIELDS: ClassVar[tuple[str, ...]] = (
@@ -92,48 +84,23 @@ class WeatherResponseParser:
             )
 
         record_count = len(daily["time"])
-
         records: list[dict[str, Any]] = []
 
         for index in range(record_count):
             records.append(
                 {
-                    "dt_base": date.fromisoformat(
-                        daily["time"][index]
-                    ),
-                    "temperature_2m_mean": daily[
-                        "temperature_2m_mean"
-                    ][index],
-                    "temperature_2m_max": daily[
-                        "temperature_2m_max"
-                    ][index],
-                    "temperature_2m_min": daily[
-                        "temperature_2m_min"
-                    ][index],
-                    "rain_sum": daily[
-                        "rain_sum"
-                    ][index],
-                    "wind_speed_10m_max": daily[
-                        "wind_speed_10m_max"
-                    ][index],
-                    "weather_latitude": response[
-                        "latitude"
-                    ],
-                    "weather_longitude": response[
-                        "longitude"
-                    ],
-                    "elevation": response.get(
-                        "elevation"
-                    ),
-                    "timezone": response[
-                        "timezone"
-                    ],
-                    "timezone_abbreviation": response.get(
-                        "timezone_abbreviation"
-                    ),
-                    "utc_offset_seconds": response.get(
-                        "utc_offset_seconds"
-                    ),
+                    "dt_base": date.fromisoformat(daily["time"][index]),
+                    "temperature_2m_mean": daily["temperature_2m_mean"][index],
+                    "temperature_2m_max": daily["temperature_2m_max"][index],
+                    "temperature_2m_min": daily["temperature_2m_min"][index],
+                    "rain_sum": daily["rain_sum"][index],
+                    "wind_speed_10m_max": daily["wind_speed_10m_max"][index],
+                    "weather_latitude": response["latitude"],
+                    "weather_longitude": response["longitude"],
+                    "elevation": response.get("elevation"),
+                    "timezone": response["timezone"],
+                    "timezone_abbreviation": response.get("timezone_abbreviation"),
+                    "utc_offset_seconds": response.get("utc_offset_seconds"),
                 }
             )
 

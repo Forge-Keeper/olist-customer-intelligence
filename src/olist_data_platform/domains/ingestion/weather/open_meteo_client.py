@@ -4,10 +4,11 @@ from collections.abc import Sequence
 from datetime import date
 from typing import Any, ClassVar
 
-from olist_data_platform.common.logging import LoggerFactory
-from olist_data_platform.ingestion.api.api_client import APIClient
+from olist_data_platform.platform.logging import LoggerFactory
+from olist_data_platform.platform.http.api_client import APIClient
 
 logger = LoggerFactory.get_logger(__name__)
+
 
 class OpenMeteoClient(APIClient):
     """
@@ -53,52 +54,11 @@ class OpenMeteoClient(APIClient):
     ) -> dict[str, Any]:
         """
         Retrieve historical daily weather data from Open-Meteo.
-
-        Args:
-            latitude:
-                Latitude of the requested location.
-
-            longitude:
-                Longitude of the requested location.
-
-            start_date:
-                First date of the requested period.
-
-            end_date:
-                Last date of the requested period.
-
-            daily_variables:
-                Optional list of daily weather variables.
-                Uses DEFAULT_DAILY_VARIABLES when not provided.
-
-            timezone:
-                Timezone used by Open-Meteo.
-
-        Returns:
-            Open-Meteo historical weather response.
-
-        Raises:
-            TypeError:
-                If input argument types are invalid.
-
-            ValueError:
-                If coordinates, dates, variables, or timezone
-                contain invalid values.
         """
 
-        self._validate_coordinates(
-            latitude,
-            longitude,
-        )
-
-        self._validate_date_range(
-            start_date,
-            end_date,
-        )
-
-        self._validate_timezone(
-            timezone,
-        )
+        self._validate_coordinates(latitude, longitude)
+        self._validate_date_range(start_date, end_date)
+        self._validate_timezone(timezone)
 
         variables = (
             daily_variables
@@ -106,9 +66,7 @@ class OpenMeteoClient(APIClient):
             else list(self.DEFAULT_DAILY_VARIABLES)
         )
 
-        self._validate_daily_variables(
-            variables
-        )
+        self._validate_daily_variables(variables)
 
         logger.debug(
             "open_meteo_historical_weather_requested | "

@@ -4,37 +4,26 @@ from collections.abc import Callable
 from datetime import date
 from uuid import uuid4
 
-from olist_data_platform.common.logging import (
-    LoggerFactory,
-)
-from olist_data_platform.ingestion.api.open_meteo_client import (
+from olist_data_platform.platform.logging import LoggerFactory
+from olist_data_platform.domains.ingestion.weather.open_meteo_client import (
     OpenMeteoClient,
 )
-from olist_data_platform.ingestion.parsers.weather_response_parser import (
+from olist_data_platform.domains.ingestion.weather.weather_response_parser import (
     WeatherResponseParser,
 )
-from olist_data_platform.ingestion.writers.bronze_weather_writer import (
+from olist_data_platform.domains.bronze.weather.bronze_weather_writer import (
     BronzeWeatherWriter,
 )
-from olist_data_platform.ingestion.writers.raw_weather_writer import (
+from olist_data_platform.domains.raw.weather.raw_weather_writer import (
     RawWeatherWriter,
 )
 
-logger = LoggerFactory.get_logger(__name__)    
+logger = LoggerFactory.get_logger(__name__)
+
 
 class WeatherIngestionService:
     """
     Orchestrate historical weather ingestion.
-
-    Responsibilities:
-        - Generate a unique request identifier
-        - Request historical weather data
-        - Persist the original API response in RAW
-        - Parse the API response
-        - Persist structured weather records in Bronze
-
-    The service does not implement HTTP, parsing, or Spark persistence
-    logic itself. Those responsibilities are delegated to collaborators.
     """
 
     def __init__(
@@ -92,8 +81,7 @@ class WeatherIngestionService:
             )
 
             logger.info(
-                "weather_api_request_completed | "
-                "request_id=%s",
+                "weather_api_request_completed | request_id=%s",
                 request_id,
             )
 
@@ -107,14 +95,11 @@ class WeatherIngestionService:
             )
 
             logger.info(
-                "weather_raw_write_completed | "
-                "request_id=%s",
+                "weather_raw_write_completed | request_id=%s",
                 request_id,
             )
 
-            records = WeatherResponseParser.parse(
-                response
-            )
+            records = WeatherResponseParser.parse(response)
 
             logger.info(
                 "weather_response_parsed | "
@@ -168,6 +153,4 @@ class WeatherIngestionService:
                 end_date,
                 overwrite,
             )
-
             raise
-

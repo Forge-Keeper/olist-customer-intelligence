@@ -3,13 +3,9 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from olist_data_platform.ingestion.api.open_meteo_client import (
+from olist_data_platform.domains.ingestion.weather.open_meteo_client import (
     OpenMeteoClient,
 )
-
-# ---------------------------------------------------------------------------
-# Client initialization
-# ---------------------------------------------------------------------------
 
 
 def test_should_create_open_meteo_client_with_default_configuration():
@@ -41,11 +37,6 @@ def test_should_have_expected_default_daily_variables():
         "rain_sum",
         "wind_speed_10m_max",
     )
-
-
-# ---------------------------------------------------------------------------
-# Historical weather request
-# ---------------------------------------------------------------------------
 
 
 def test_should_request_historical_weather_with_default_parameters():
@@ -92,7 +83,6 @@ def test_should_request_historical_weather_with_default_parameters():
 
 def test_should_request_historical_weather_with_custom_variables():
     client = OpenMeteoClient()
-
     client.get = Mock(return_value={})
 
     variables = [
@@ -123,7 +113,6 @@ def test_should_request_historical_weather_with_custom_variables():
 
 def test_should_accept_tuple_as_custom_variables():
     client = OpenMeteoClient()
-
     client.get = Mock(return_value={})
 
     variables = (
@@ -136,22 +125,17 @@ def test_should_accept_tuple_as_custom_variables():
         longitude=-48.8487,
         start_date=date(2024, 1, 1),
         end_date=date(2024, 1, 31),
-        daily_variables=variables, # ty: ignore[invalid-argument-type]
+        daily_variables=variables,  # ty: ignore[invalid-argument-type]
     )
 
     client.get.assert_called_once()
-
     request = client.get.call_args.kwargs
 
-    assert (
-        request["params"]["daily"]
-        == "temperature_2m_mean,rain_sum"
-    )
+    assert request["params"]["daily"] == "temperature_2m_mean,rain_sum"
 
 
 def test_should_request_historical_weather_with_custom_timezone():
     client = OpenMeteoClient()
-
     client.get = Mock(return_value={})
 
     client.get_historical_weather(
@@ -163,15 +147,9 @@ def test_should_request_historical_weather_with_custom_timezone():
     )
 
     client.get.assert_called_once()
-
     request = client.get.call_args.kwargs
 
     assert request["params"]["timezone"] == "America/Sao_Paulo"
-
-
-# ---------------------------------------------------------------------------
-# Response validation
-# ---------------------------------------------------------------------------
 
 
 def test_should_return_dictionary_response():
@@ -197,7 +175,6 @@ def test_should_return_dictionary_response():
 
 def test_should_reject_unexpected_list_response():
     client = OpenMeteoClient()
-
     client.get = Mock(return_value=[])
 
     with pytest.raises(
@@ -212,19 +189,7 @@ def test_should_reject_unexpected_list_response():
         )
 
 
-# ---------------------------------------------------------------------------
-# Coordinate validation
-# ---------------------------------------------------------------------------
-
-
-@pytest.mark.parametrize(
-    "latitude",
-    [
-        -90.0,
-        0.0,
-        90.0,
-    ],
-)
+@pytest.mark.parametrize("latitude", [-90.0, 0.0, 90.0])
 def test_should_accept_valid_latitude(latitude):
     client = OpenMeteoClient()
     client.get = Mock(return_value={})
@@ -239,13 +204,7 @@ def test_should_accept_valid_latitude(latitude):
     client.get.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "latitude",
-    [
-        -90.1,
-        90.1,
-    ],
-)
+@pytest.mark.parametrize("latitude", [-90.1, 90.1])
 def test_should_reject_invalid_latitude(latitude):
     client = OpenMeteoClient()
 
@@ -258,14 +217,7 @@ def test_should_reject_invalid_latitude(latitude):
         )
 
 
-@pytest.mark.parametrize(
-    "longitude",
-    [
-        -180.0,
-        0.0,
-        180.0,
-    ],
-)
+@pytest.mark.parametrize("longitude", [-180.0, 0.0, 180.0])
 def test_should_accept_valid_longitude(longitude):
     client = OpenMeteoClient()
     client.get = Mock(return_value={})
@@ -280,13 +232,7 @@ def test_should_accept_valid_longitude(longitude):
     client.get.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "longitude",
-    [
-        -180.1,
-        180.1,
-    ],
-)
+@pytest.mark.parametrize("longitude", [-180.1, 180.1])
 def test_should_reject_invalid_longitude(longitude):
     client = OpenMeteoClient()
 
@@ -297,11 +243,6 @@ def test_should_reject_invalid_longitude(longitude):
             start_date=date(2024, 1, 1),
             end_date=date(2024, 1, 1),
         )
-
-
-# ---------------------------------------------------------------------------
-# Date validation
-# ---------------------------------------------------------------------------
 
 
 def test_should_accept_same_start_and_end_date():
@@ -333,11 +274,6 @@ def test_should_reject_start_date_after_end_date():
         )
 
 
-# ---------------------------------------------------------------------------
-# Timezone validation
-# ---------------------------------------------------------------------------
-
-
 def test_should_accept_valid_timezone():
     client = OpenMeteoClient()
     client.get = Mock(return_value={})
@@ -353,13 +289,7 @@ def test_should_accept_valid_timezone():
     client.get.assert_called_once()
 
 
-@pytest.mark.parametrize(
-    "timezone",
-    [
-        "",
-        " ",
-    ],
-)
+@pytest.mark.parametrize("timezone", ["", " "])
 def test_should_reject_empty_timezone(timezone):
     client = OpenMeteoClient()
 
@@ -384,11 +314,6 @@ def test_should_reject_invalid_timezone_type():
             end_date=date(2024, 1, 1),
             timezone=None,  # ty: ignore[invalid-argument-type]
         )
-
-
-# ---------------------------------------------------------------------------
-# Daily variables validation
-# ---------------------------------------------------------------------------
 
 
 def test_should_use_default_variables_when_none_is_provided():
@@ -457,18 +382,12 @@ def test_should_reject_non_string_daily_variable():
             daily_variables=invalid_variables,  # ty: ignore[invalid-argument-type]
         )
 
-# ---------------------------------------------------------------------------
-# Logging
-# ---------------------------------------------------------------------------
-
 
 @patch(
-    "olist_data_platform.ingestion.api."
+    "olist_data_platform.domains.ingestion.weather."
     "open_meteo_client.logger"
 )
-def test_should_log_debug_for_historical_weather_request(
-    mock_logger,
-):
+def test_should_log_debug_for_historical_weather_request(mock_logger):
     client = OpenMeteoClient()
 
     client.get = Mock(
@@ -488,4 +407,3 @@ def test_should_log_debug_for_historical_weather_request(
     )
 
     assert mock_logger.debug.call_count == 2
-

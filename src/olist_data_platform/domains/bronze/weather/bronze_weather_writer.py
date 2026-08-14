@@ -18,7 +18,7 @@ from pyspark.sql.types import (
     TimestampType,
 )
 
-from olist_data_platform.common.logging import LoggerFactory
+from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
 

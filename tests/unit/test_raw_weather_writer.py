@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from olist_data_platform.ingestion.writers.raw_weather_writer import (
+from olist_data_platform.domains.raw.weather.raw_weather_writer import (
     RawWeatherWriter,
 )
 
@@ -20,16 +20,8 @@ def test_should_create_raw_weather_writer():
     assert writer.target_table == "raw.open_meteo"
 
 
-@pytest.mark.parametrize(
-    "target_table",
-    [
-        "",
-        " ",
-    ],
-)
-def test_should_reject_empty_target_table(
-    target_table,
-):
+@pytest.mark.parametrize("target_table", ["", " "])
+def test_should_reject_empty_target_table(target_table):
     with pytest.raises(ValueError):
         RawWeatherWriter(
             spark=Mock(),
@@ -45,16 +37,8 @@ def test_should_reject_invalid_target_table_type():
         )
 
 
-@pytest.mark.parametrize(
-    "request_id",
-    [
-        "",
-        " ",
-    ],
-)
-def test_should_reject_empty_request_id(
-    request_id,
-):
+@pytest.mark.parametrize("request_id", ["", " "])
+def test_should_reject_empty_request_id(request_id):
     writer = RawWeatherWriter(
         spark=Mock(),
         target_table="raw.open_meteo",
@@ -72,12 +56,10 @@ def test_should_reject_empty_request_id(
 
 
 @patch(
-    "olist_data_platform.ingestion.writers."
+    "olist_data_platform.domains.raw.weather."
     "raw_weather_writer.current_timestamp"
 )
-def test_should_write_raw_response_as_delta(
-    mock_current_timestamp,
-):
+def test_should_write_raw_response_as_delta(mock_current_timestamp):
     spark = Mock()
     dataframe = Mock()
     timestamp_column = Mock()
@@ -107,7 +89,6 @@ def test_should_write_raw_response_as_delta(
     )
 
     spark.createDataFrame.assert_called_once()
-
     mock_current_timestamp.assert_called_once_with()
 
     dataframe.withColumn.assert_called_once_with(
@@ -115,31 +96,23 @@ def test_should_write_raw_response_as_delta(
         timestamp_column,
     )
 
-    dataframe.write.format.assert_called_once_with(
-        "delta"
-    )
-
-    dataframe.write.format.return_value.mode.assert_called_once_with(
-        "append"
-    )
+    dataframe.write.format.assert_called_once_with("delta")
+    dataframe.write.format.return_value.mode.assert_called_once_with("append")
 
     (
         dataframe.write
         .format.return_value
         .mode.return_value
         .saveAsTable
-        .assert_called_once_with(
-            "raw.open_meteo"
-        )
+        .assert_called_once_with("raw.open_meteo")
     )
 
+
 @patch(
-    "olist_data_platform.ingestion.writers."
+    "olist_data_platform.domains.raw.weather."
     "raw_weather_writer.logger"
 )
-def test_should_log_raw_write_started(
-    mock_logger,
-):
+def test_should_log_raw_write_started(mock_logger):
     spark = Mock()
     dataframe = Mock()
 
@@ -170,13 +143,12 @@ def test_should_log_raw_write_started(
 
     mock_logger.info.assert_called()
 
+
 @patch(
-    "olist_data_platform.ingestion.writers."
+    "olist_data_platform.domains.raw.weather."
     "raw_weather_writer.logger"
 )
-def test_should_log_raw_write_completed(
-    mock_logger,
-):
+def test_should_log_raw_write_completed(mock_logger):
     dataframe = Mock()
 
     writer = RawWeatherWriter(
@@ -191,12 +163,13 @@ def test_should_log_raw_write_completed(
 
     mock_logger.info.assert_called_once()
 
+
 @patch(
-    "olist_data_platform.ingestion.writers."
+    "olist_data_platform.domains.raw.weather."
     "raw_weather_writer.logger"
 )
 @patch(
-    "olist_data_platform.ingestion.writers."
+    "olist_data_platform.domains.raw.weather."
     "raw_weather_writer.current_timestamp"
 )
 def test_should_log_debug_when_response_is_serialized(
@@ -220,9 +193,7 @@ def test_should_log_debug_when_response_is_serialized(
         requested_longitude=-46.63,
         start_date=date(2018, 1, 1),
         end_date=date(2018, 1, 3),
-        response={
-            "temperature": 25.0,
-        },
+        response={"temperature": 25.0},
     )
 
     mock_logger.debug.assert_called_once()

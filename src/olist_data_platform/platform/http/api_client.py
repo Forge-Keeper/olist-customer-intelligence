@@ -3,11 +3,11 @@ from __future__ import annotations
 from typing import Any
 
 import requests
-from requests import Response, Session
+from requests import Session
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 
-from olist_data_platform.common.logging import LoggerFactory
+from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
 
