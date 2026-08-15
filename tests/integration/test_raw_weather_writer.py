@@ -2,7 +2,6 @@ import json
 from datetime import date, datetime
 
 import pytest
-from pyspark.sql import SparkSession
 from pyspark.sql.types import DoubleType, StringType, TimestampType
 
 from olist_data_platform.domains.raw.weather.raw_weather_writer import (

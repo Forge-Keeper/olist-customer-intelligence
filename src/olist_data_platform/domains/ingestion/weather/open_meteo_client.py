@@ -4,8 +4,8 @@ from collections.abc import Sequence
 from datetime import date
 from typing import Any, ClassVar
 
-from olist_data_platform.platform.logging import LoggerFactory
 from olist_data_platform.platform.http.api_client import APIClient
+from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
 

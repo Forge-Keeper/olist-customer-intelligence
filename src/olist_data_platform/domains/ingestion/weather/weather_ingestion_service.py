@@ -4,19 +4,19 @@ from collections.abc import Callable
 from datetime import date
 from uuid import uuid4
 
-from olist_data_platform.platform.logging import LoggerFactory
+from olist_data_platform.domains.bronze.weather.bronze_weather_writer import (
+    BronzeWeatherWriter,
+)
 from olist_data_platform.domains.ingestion.weather.open_meteo_client import (
     OpenMeteoClient,
 )
 from olist_data_platform.domains.ingestion.weather.weather_response_parser import (
     WeatherResponseParser,
 )
-from olist_data_platform.domains.bronze.weather.bronze_weather_writer import (
-    BronzeWeatherWriter,
-)
 from olist_data_platform.domains.raw.weather.raw_weather_writer import (
     RawWeatherWriter,
 )
+from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
 

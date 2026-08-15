@@ -1,7 +1,6 @@
 from datetime import date, datetime
 
 import pytest
-from pyspark.sql import SparkSession
 from pyspark.sql.types import (
     DateType,
     DoubleType,

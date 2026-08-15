@@ -5,7 +5,6 @@ import requests
 
 from olist_data_platform.platform.http.api_client import APIClient
 
-
 # ---------------------------------------------------------------------------
 # Initialization
 # ---------------------------------------------------------------------------
