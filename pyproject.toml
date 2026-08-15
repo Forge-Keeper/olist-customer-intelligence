@@ -17,6 +17,7 @@ dev = [
     "pyspark>=4.2.0",
     "pytest",
     "ruff",
+    "ty>=0.0.72",
 ]
 
 [tool.setuptools.packages.find]

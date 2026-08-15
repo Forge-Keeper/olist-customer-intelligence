@@ -202,9 +202,7 @@ def test_should_propagate_http_error():
         response=response,
     )
 
-    response.raise_for_status.side_effect = (
-        http_error
-    )
+    response.raise_for_status.side_effect = http_error
 
     client.session.get = Mock(
         return_value=response,
@@ -223,12 +221,10 @@ def test_should_propagate_json_decode_error():
 
     response = Mock()
     response.status_code = 200
-    response.json.side_effect = (
-        requests.JSONDecodeError(
-            "Invalid JSON",
-            "",
-            0,
-        )
+    response.json.side_effect = requests.JSONDecodeError(
+        "Invalid JSON",
+        "",
+        0,
     )
 
     client.session.get = Mock(
@@ -309,7 +305,7 @@ def test_should_reject_non_string_base_url():
         match="base_url must be a string",
     ):
         APIClient(
-            base_url=None,  # type: ignore[arg-type]
+            base_url=None,  # ty: ignore[invalid-argument-type] # pyright: ignore[reportArgumentType]
         )
 
 
@@ -472,7 +468,7 @@ def test_should_reject_non_dictionary_headers():
     ):
         APIClient(
             base_url="https://example.com",
-            headers=["Accept", "application/json"],  # type: ignore[arg-type]
+            headers=["Accept", "application/json"],  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
         )
 
 
@@ -485,7 +481,7 @@ def test_should_reject_non_string_header_key():
             base_url="https://example.com",
             headers={
                 123: "value",
-            },  # type: ignore[dict-item]
+            },  # type: ignore[dict-item]  # ty: ignore[invalid-argument-type]
         )
 
 
@@ -498,7 +494,7 @@ def test_should_reject_non_string_header_value():
             base_url="https://example.com",
             headers={
                 "X-Retry": 3,
-            },  # type: ignore[dict-item]
+            },  # type: ignore[dict-item]  # ty: ignore[invalid-argument-type]
         )
 
 
@@ -540,5 +536,5 @@ def test_should_reject_non_string_endpoint():
         match="endpoint must be a string",
     ):
         client.get(
-            endpoint=None,  # type: ignore[arg-type]
+            endpoint=None,  # type: ignore[arg-type]  # ty: ignore[invalid-argument-type]
         )

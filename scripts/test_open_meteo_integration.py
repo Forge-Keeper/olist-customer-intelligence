@@ -1,7 +1,7 @@
 from datetime import date
 from pprint import pprint
 
-from olist_data_platform.ingestion.api.open_meteo_client import (
+from olist_data_platform.domains.ingestion.weather.open_meteo_client import (
     OpenMeteoClient,
 )
 

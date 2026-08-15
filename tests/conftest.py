@@ -1,5 +1,6 @@
 import os
 import sys
+from collections.abc import Generator
 
 import pytest
 
@@ -10,10 +11,9 @@ from pyspark.sql import SparkSession
 
 
 @pytest.fixture(scope="session")
-def spark() -> SparkSession:
+def spark() -> Generator[SparkSession, None, None]:
     spark_session = (
-        SparkSession.builder
-        .master("local[2]")
+        SparkSession.builder.master("local[2]")
         .appName("olist-customer-intelligence-tests")
         .config(
             "spark.ui.enabled",
