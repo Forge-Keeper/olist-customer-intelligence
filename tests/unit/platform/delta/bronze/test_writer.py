@@ -24,18 +24,14 @@ def test_should_reject_empty_target_table(config):
         BronzeWriter(Mock(), " ", config)
 
 
-@patch("olist_data_platform.platform.delta.bronze.writer.F.current_timestamp")
-def test_should_create_clustered_table(mock_timestamp, config):
+@patch.object(BronzeWriter, "_prepare_dataframe")
+def test_should_create_clustered_table(mock_prepare, config):
     spark = Mock()
     dataframe = Mock()
     prepared = Mock()
     writer_chain = Mock()
 
-    dataframe.columns = ["id", "payload"]
-    dataframe.withColumn.return_value = prepared
-    prepared.columns = ["id", "payload", "ingestion_timestamp"]
-    prepared.where.return_value.limit.return_value.count.return_value = 0
-    prepared.groupBy.return_value.count.return_value.where.return_value.limit.return_value.count.return_value = 0
+    mock_prepare.return_value = prepared
     prepared.write.format.return_value.mode.return_value = writer_chain
     writer_chain.clusterBy.return_value = writer_chain
     spark.catalog.tableExists.return_value = False
