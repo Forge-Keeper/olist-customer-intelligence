@@ -128,7 +128,11 @@ class BronzeWriter:
                 else null_condition | condition
             )
 
-        if null_condition is not None and dataframe.where(null_condition).limit(1).count():
+        has_null_primary_key = (
+            null_condition is not None
+            and dataframe.where(null_condition).limit(1).count()
+        )
+        if has_null_primary_key:
             raise ValueError("Bronze primary key columns cannot contain null values.")
 
         duplicated = (
