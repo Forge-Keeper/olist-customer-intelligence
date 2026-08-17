@@ -5,6 +5,11 @@
 - **Decision owners:** Project maintainers
 - **Scope:** Python package organization for `olist_data_platform`
 
+> **Update 2026-08-17:** the dedicated RAW package described in the original
+> examples below is superseded for the Weather flow by
+> `ADR-003-bronze-landing-with-variant.md`. The `platform + domains` decision
+> remains accepted; only the RAW-specific placement guidance changed.
+
 ## Context
 
 The Olist Customer Intelligence project initially evolved around technical responsibilities such as:
@@ -55,11 +60,13 @@ Adopt a **hybrid package structure** that separates:
 3. **Jobs** — orchestration/composition entrypoints.
 4. **Resources** — Databricks deployment resources managed outside the Python application package.
 
-The target direction is:
+The current target direction is:
 
 ```text
 src/olist_data_platform/
 ├── platform/
+│   ├── delta/
+│   │   └── bronze/
 │   ├── http/
 │   ├── logging/
 │   ├── quality/
@@ -67,9 +74,6 @@ src/olist_data_platform/
 │
 ├── domains/
 │   ├── ingestion/
-│   │   ├── weather/
-│   │   └── olist/
-│   ├── raw/
 │   │   ├── weather/
 │   │   └── olist/
 │   ├── bronze/
@@ -102,52 +106,54 @@ Examples:
 ```text
 platform/http/api_client.py
 platform/logging/logger.py
+platform/delta/bronze/config.py
+platform/delta/bronze/writer.py
 ```
 
 `APIClient` belongs in `platform/http/` because the project is expected to integrate with multiple HTTP APIs, including Open-Meteo and IBGE.
 
-A component should not be moved into `platform/` solely because it looks generic. There must be a real or clearly planned cross-domain use.
+The generic Bronze dataset contract and writer belong in `platform/delta/bronze/` because primary-key validation, layout declaration, and persistence strategies are cross-dataset Delta capabilities and contain no Weather semantics.
+
+A component should not be moved into `platform/` solely because it looks generic. There must be real or clearly planned cross-domain use.
 
 ### `domains/ingestion/`
 
-Contains source-specific acquisition, parsing, and orchestration behavior.
+Contains source-specific acquisition, extraction, and orchestration behavior.
 
 Example:
 
 ```text
 domains/ingestion/weather/
 ├── open_meteo_client.py
-├── weather_response_parser.py
+├── weather_daily_extractor.py
 └── weather_ingestion_service.py
 ```
 
 `OpenMeteoClient` remains in the Weather ingestion domain because it knows the Open-Meteo contract, endpoints, parameters, and response semantics.
 
-### `domains/raw/`
+`WeatherDailyExtractor` also remains source-specific because it knows how the Open-Meteo multi-day response maps to the daily Bronze grain.
 
-Contains persistence of original source data before structured Bronze processing.
+### Dedicated RAW packages
 
-Example:
+A dedicated `domains/raw/` package is **not a mandatory architectural layer**.
 
-```text
-domains/raw/weather/
-└── raw_weather_writer.py
-```
+For Weather, the former RAW responsibility was removed when Bronze became the first persistent landing layer. This decision and its trade-offs are documented in ADR-003.
 
-RAW is treated as an explicit technical landing/preservation responsibility, distinct from Bronze.
+If a future source has a concrete requirement for an independent immutable/raw persistence stage, it must be justified by that source's needs rather than recreated by convention.
 
 ### `domains/bronze/`
 
-Contains Bronze-layer persistence and technical contracts.
+Contains source/dataset-specific Bronze behavior and contracts that remain domain-aware.
 
 Example:
 
 ```text
 domains/bronze/weather/
-└── bronze_weather_writer.py
+├── bronze_weather_writer.py
+└── weather_bronze_config.py
 ```
 
-Bronze remains responsible for structured ingestion data, explicit schema, technical metadata, idempotent persistence behavior, and table-layout configuration.
+Weather-specific code prepares the daily semi-structured payload and declares the Weather table contract, while generic Delta persistence remains in `platform/delta/bronze/`.
 
 ### `domains/customer_intelligence/`
 
@@ -175,11 +181,12 @@ The package structure must follow these rules:
 3. Do not create abstractions or folders before a concrete responsibility exists.
 4. Do not treat every dataset as a business domain automatically.
 5. Do not treat Medallion layers and business domains as the same concept.
-6. Domain-specific clients, parsers, rules, and services stay with their domain.
+6. Domain-specific clients, extractors, rules, and services stay with their domain.
 7. Shared code should move to `platform/` only when reuse is real or clearly justified.
 8. Tests should approximately mirror the source package structure.
 9. Deployment configuration must remain separate from application logic.
 10. Architectural evolution should optimize maintainability and explainability, not stack size.
+11. A RAW layer is optional and must solve a demonstrated requirement rather than exist by default.
 
 ## Alternatives Considered
 
@@ -245,26 +252,23 @@ domains/
 
 ### Positive
 
-- Related Weather components are easier to locate and understand.
-- Reusable HTTP and logging capabilities have explicit ownership.
-- RAW and Bronze responsibilities are visible in the package structure.
-- Future APIs such as IBGE can reuse `platform/http/APIClient`.
-- The project is better prepared for additional domains and data products.
+- Related Weather components remain easy to locate and understand.
+- Reusable HTTP, logging, and Delta Bronze capabilities have explicit ownership.
+- Source-specific extraction stays separate from generic persistence.
+- Future APIs such as IBGE can reuse platform capabilities without inheriting Weather behavior.
 - Tests can mirror application architecture more clearly.
 - Databricks Asset Bundle resources can remain independent from Python package organization.
 
 ### Negative
 
-- The migration changes Python namespaces.
+- Structural evolution changes Python namespaces and may remove packages that were previously documented.
 - Imports, mocks, patches, scripts, and tests must be updated when packages move.
-- Developers need to understand the distinction between `platform`, data lifecycle domains, and product domains.
+- Developers need to understand the distinction between `platform`, data lifecycle responsibilities, and product domains.
 - The structure is slightly more complex than the original one.
-
-The migration already demonstrated this cost: changing the package structure required updating production imports and the test suite before the repository returned to a fully passing state.
 
 ## Migration Guidance
 
-Current mappings include:
+Historical mappings included:
 
 ```text
 olist_data_platform.common.logging
@@ -276,18 +280,14 @@ olist_data_platform.ingestion.api.api_client
 olist_data_platform.ingestion.api.open_meteo_client
 → olist_data_platform.domains.ingestion.weather.open_meteo_client
 
-olist_data_platform.ingestion.parsers.weather_response_parser
-→ olist_data_platform.domains.ingestion.weather.weather_response_parser
-
 olist_data_platform.ingestion.services.weather_ingestion_service
 → olist_data_platform.domains.ingestion.weather.weather_ingestion_service
-
-olist_data_platform.ingestion.writers.raw_weather_writer
-→ olist_data_platform.domains.raw.weather.raw_weather_writer
 
 olist_data_platform.ingestion.writers.bronze_weather_writer
 → olist_data_platform.domains.bronze.weather.bronze_weather_writer
 ```
+
+The old Weather parser and RAW writer have since been removed under ADR-003 rather than migrated to another permanent namespace.
 
 Any future structural migration must update:
 
@@ -311,8 +311,6 @@ This decision is considered successfully applied when:
 - all integration tests pass;
 - Ruff/linting passes;
 - new components are placed according to the rules in this ADR.
-
-At the time this ADR was accepted, the migrated test suite was reported as fully passing.
 
 ## Follow-up
 
