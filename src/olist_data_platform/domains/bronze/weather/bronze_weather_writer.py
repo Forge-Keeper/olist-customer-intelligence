@@ -52,13 +52,14 @@ class BronzeWeatherWriter:
         requested_latitude: float,
         requested_longitude: float,
     ) -> None:
+        self._validate_common_inputs(
+            records,
+            request_id,
+            requested_latitude,
+            requested_longitude,
+        )
+
         if not records:
-            self._validate_common_inputs(
-                records,
-                request_id,
-                requested_latitude,
-                requested_longitude,
-            )
             logger.warning(
                 "bronze_weather_write_skipped | target_table=%s | "
                 "reason=no_records | request_id=%s",
@@ -84,26 +85,24 @@ class BronzeWeatherWriter:
         start_date: date,
         end_date: date,
     ) -> None:
-        if start_date > end_date:
-            raise ValueError("start_date cannot be later than end_date.")
-
+        self._validate_date_range(start_date, end_date)
         dataframe = self._build_dataframe(
             records=records,
             request_id=request_id,
             requested_latitude=requested_latitude,
             requested_longitude=requested_longitude,
         )
-
         predicate = self._build_reprocess_predicate(
             start_date=start_date,
             end_date=end_date,
-            latitude=requested_latitude,
-            longitude=requested_longitude,
+            requested_latitude=requested_latitude,
+            requested_longitude=requested_longitude,
         )
         self.writer.replace_where(dataframe, predicate)
 
     def _build_dataframe(
         self,
+        *,
         records: list[dict[str, Any]],
         request_id: str,
         requested_latitude: float,
@@ -116,7 +115,9 @@ class BronzeWeatherWriter:
             requested_longitude,
         )
         if not records:
-            raise ValueError("records cannot be empty when building a Bronze DataFrame.")
+            raise ValueError(
+                "records cannot be empty when building a Bronze DataFrame."
+            )
 
         rows = [
             Row(
@@ -134,35 +135,25 @@ class BronzeWeatherWriter:
         ]
 
         dataframe = self.spark.createDataFrame(rows, schema=self.INPUT_SCHEMA)
-        return dataframe.withColumn("payload", F.parse_json("payload_json")).drop(
-            "payload_json"
-        )
+        return dataframe.withColumn(
+            "payload",
+            F.parse_json("payload_json"),
+        ).drop("payload_json")
 
     @staticmethod
     def _build_reprocess_predicate(
+        *,
         start_date: date,
         end_date: date,
-        latitude: float,
-        longitude: float,
+        requested_latitude: float,
+        requested_longitude: float,
     ) -> str:
         return (
             f"dt_base >= DATE '{start_date.isoformat()}' "
             f"AND dt_base <= DATE '{end_date.isoformat()}' "
-            f"AND requested_latitude = {latitude!r} "
-            f"AND requested_longitude = {longitude!r}"
+            f"AND requested_latitude = {requested_latitude} "
+            f"AND requested_longitude = {requested_longitude}"
         )
-
-    @classmethod
-    def _validate_common_inputs(
-        cls,
-        records: list[dict[str, Any]],
-        request_id: str,
-        requested_latitude: float,
-        requested_longitude: float,
-    ) -> None:
-        cls._validate_records(records)
-        cls._validate_request_id(request_id)
-        cls._validate_coordinates(requested_latitude, requested_longitude)
 
     @staticmethod
     def _extract_dt_base(record: dict[str, Any]) -> date:
@@ -177,6 +168,18 @@ class BronzeWeatherWriter:
         if not isinstance(payload, dict):
             raise TypeError("record payload must be a dictionary.")
         return payload
+
+    @classmethod
+    def _validate_common_inputs(
+        cls,
+        records: list[dict[str, Any]],
+        request_id: str,
+        requested_latitude: float,
+        requested_longitude: float,
+    ) -> None:
+        cls._validate_records(records)
+        cls._validate_request_id(request_id)
+        cls._validate_coordinates(requested_latitude, requested_longitude)
 
     @staticmethod
     def _validate_records(records: list[dict[str, Any]]) -> None:
@@ -202,3 +205,8 @@ class BronzeWeatherWriter:
             raise ValueError("requested_latitude must be between -90 and 90.")
         if not -180 <= longitude <= 180:
             raise ValueError("requested_longitude must be between -180 and 180.")
+
+    @staticmethod
+    def _validate_date_range(start_date: date, end_date: date) -> None:
+        if start_date > end_date:
+            raise ValueError("start_date cannot be later than end_date.")
