@@ -118,6 +118,12 @@ class WeatherIngestionService:
                 operation,
             )
 
+            if reprocess and not records:
+                raise ValueError(
+                    "Weather reprocess returned no daily records; "
+                    "the existing Bronze scope was preserved."
+                )
+
             if reprocess:
                 self.bronze_writer.reprocess(
                     records=records,
