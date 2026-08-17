@@ -35,14 +35,7 @@ class BronzeWriter:
         self.config = config
 
     def write(self, dataframe: DataFrame) -> None:
-        self._validate_dataframe_contract(dataframe)
-
-        prepared = dataframe.withColumn(
-            self.INGESTION_TIMESTAMP_COLUMN,
-            F.current_timestamp(),
-        )
-
-        self._validate_primary_key_values(prepared)
+        prepared = self._prepare_dataframe(dataframe)
 
         logger.info(
             "bronze_write_started | target_table=%s | strategy=%s",
@@ -60,6 +53,49 @@ class BronzeWriter:
             self.target_table,
             self.config.write_strategy.value,
         )
+
+    def replace_where(self, dataframe: DataFrame, predicate: str) -> None:
+        """Replace an explicitly defined Bronze scope atomically."""
+        if not isinstance(predicate, str):
+            raise TypeError("predicate must be a string.")
+        if not predicate.strip():
+            raise ValueError("predicate cannot be empty.")
+
+        prepared = self._prepare_dataframe(dataframe)
+
+        logger.info(
+            "bronze_reprocess_started | target_table=%s | predicate=%s",
+            self.target_table,
+            predicate,
+        )
+
+        if not self.spark.catalog.tableExists(self.target_table):
+            self._create_table(prepared)
+        else:
+            (
+                prepared.write
+                .format("delta")
+                .mode("overwrite")
+                .option("replaceWhere", predicate)
+                .saveAsTable(self.target_table)
+            )
+
+        logger.info(
+            "bronze_reprocess_completed | target_table=%s | predicate=%s",
+            self.target_table,
+            predicate,
+        )
+
+    def _prepare_dataframe(self, dataframe: DataFrame) -> DataFrame:
+        self._validate_dataframe_contract(dataframe)
+
+        prepared = dataframe.withColumn(
+            self.INGESTION_TIMESTAMP_COLUMN,
+            F.current_timestamp(),
+        )
+
+        self._validate_primary_key_values(prepared)
+        return prepared
 
     def _validate_dataframe_contract(self, dataframe: DataFrame) -> None:
         columns = set(dataframe.columns)
@@ -122,7 +158,8 @@ class BronzeWriter:
 
         if self.config.write_strategy is WriteStrategy.REPLACE_WHERE:
             raise NotImplementedError(
-                "REPLACE_WHERE strategy is declared but not implemented yet."
+                "REPLACE_WHERE normal-write strategy requires an explicit scope "
+                "and is not implemented as an implicit write behavior."
             )
 
         raise ValueError(
