@@ -19,7 +19,7 @@ logger = LoggerFactory.get_logger(__name__)
 
 
 class WeatherIngestionService:
-    """Orchestrate idempotent historical weather ingestion into Bronze."""
+    """Orchestrate historical Weather ingestion and explicit reprocessing."""
 
     def __init__(
         self,
@@ -44,11 +44,54 @@ class WeatherIngestionService:
         daily_variables: list[str] | None = None,
         timezone: str = "auto",
     ) -> str:
+        return self._process(
+            latitude=latitude,
+            longitude=longitude,
+            start_date=start_date,
+            end_date=end_date,
+            daily_variables=daily_variables,
+            timezone=timezone,
+            reprocess=False,
+        )
+
+    def reprocess(
+        self,
+        latitude: float,
+        longitude: float,
+        start_date: date,
+        end_date: date,
+        daily_variables: list[str] | None = None,
+        timezone: str = "auto",
+    ) -> str:
+        """Rebuild an explicitly supplied Weather scope."""
+        return self._process(
+            latitude=latitude,
+            longitude=longitude,
+            start_date=start_date,
+            end_date=end_date,
+            daily_variables=daily_variables,
+            timezone=timezone,
+            reprocess=True,
+        )
+
+    def _process(
+        self,
+        *,
+        latitude: float,
+        longitude: float,
+        start_date: date,
+        end_date: date,
+        daily_variables: list[str] | None,
+        timezone: str,
+        reprocess: bool,
+    ) -> str:
         request_id = self.request_id_factory()
+        operation = "reprocess" if reprocess else "ingestion"
 
         logger.info(
-            "weather_ingestion_started | request_id=%s | latitude=%s | "
-            "longitude=%s | start_date=%s | end_date=%s",
+            "weather_%s_started | request_id=%s | latitude=%s | longitude=%s | "
+            "start_date=%s | end_date=%s",
+            operation,
             request_id,
             latitude,
             longitude,
@@ -65,40 +108,46 @@ class WeatherIngestionService:
                 daily_variables=daily_variables,
                 timezone=timezone,
             )
-
-            logger.info(
-                "weather_api_request_completed | request_id=%s",
-                request_id,
-            )
-
             records = WeatherDailyExtractor.extract(response)
 
             logger.info(
                 "weather_daily_records_extracted | request_id=%s | "
-                "record_count=%s",
+                "record_count=%s | operation=%s",
                 request_id,
                 len(records),
+                operation,
             )
 
-            self.bronze_writer.write(
-                records=records,
-                request_id=request_id,
-                requested_latitude=latitude,
-                requested_longitude=longitude,
-            )
+            if reprocess:
+                self.bronze_writer.reprocess(
+                    records=records,
+                    request_id=request_id,
+                    requested_latitude=latitude,
+                    requested_longitude=longitude,
+                    start_date=start_date,
+                    end_date=end_date,
+                )
+            else:
+                self.bronze_writer.write(
+                    records=records,
+                    request_id=request_id,
+                    requested_latitude=latitude,
+                    requested_longitude=longitude,
+                )
 
             logger.info(
-                "weather_ingestion_completed | request_id=%s | record_count=%s",
+                "weather_%s_completed | request_id=%s | record_count=%s",
+                operation,
                 request_id,
                 len(records),
             )
-
             return request_id
 
         except Exception:
             logger.exception(
-                "weather_ingestion_failed | request_id=%s | latitude=%s | "
-                "longitude=%s | start_date=%s | end_date=%s",
+                "weather_%s_failed | request_id=%s | latitude=%s | longitude=%s | "
+                "start_date=%s | end_date=%s",
+                operation,
                 request_id,
                 latitude,
                 longitude,
