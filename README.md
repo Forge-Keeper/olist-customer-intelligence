@@ -10,12 +10,12 @@ The Python package follows a hybrid **Platform + Domains** structure.
 src/
 └── olist_data_platform/
     ├── platform/
+    │   ├── delta/
+    │   │   └── bronze/
     │   ├── http/
     │   └── logging/
     ├── domains/
     │   ├── ingestion/
-    │   │   └── weather/
-    │   ├── raw/
     │   │   └── weather/
     │   ├── bronze/
     │   │   └── weather/
@@ -25,7 +25,7 @@ src/
 
 `platform/` contains reusable technical capabilities. `domains/` contains cohesive Data Engineering responsibilities and source/product-specific behavior.
 
-The current Weather vertical slice is:
+The Weather vertical slice is evolving to:
 
 ```text
 Open-Meteo API
@@ -34,16 +34,65 @@ OpenMeteoClient
       ↓
 WeatherIngestionService
       ↓
-RawWeatherWriter
-      ↓
-WeatherResponseParser
+WeatherDailyExtractor
       ↓
 BronzeWeatherWriter
+      ↓
+BronzeWriter
+      ↓
+Delta Bronze
 ```
 
-RAW preserves the original API response and request metadata. Bronze converts the response into a structured, explicitly typed dataset with technical metadata and controlled persistence behavior.
+Bronze is the first persistent landing layer for this flow. Each Weather row represents one observation day and stores:
 
-See `docs/adr/ADR-002-hybrid-domain-platform-package-structure.md` for the architectural decision.
+- `dt_base` as `DATE`;
+- source data for that day in a `VARIANT` payload;
+- request metadata;
+- ingestion metadata.
+
+There is no separate RAW persistence layer in the new design. Semantic typing, normalization, Data Quality, and business interpretation are deferred to downstream processing.
+
+See:
+
+- `docs/adr/ADR-001-liquid-clustering-bronze-weather.md`;
+- `docs/adr/ADR-002-hybrid-domain-platform-package-structure.md`;
+- `docs/adr/ADR-003-bronze-landing-with-variant.md`.
+
+## Bronze Persistence Contract
+
+Reusable Bronze persistence is configured per dataset.
+
+Each dataset declares:
+
+- primary-key columns;
+- required columns;
+- clustering columns;
+- partition columns;
+- normal write strategy.
+
+For Weather:
+
+```text
+PRIMARY KEY
+(dt_base, requested_latitude, requested_longitude)
+
+NORMAL WRITE
+MERGE
+
+CLUSTER BY
+(dt_base)
+
+PARTITION BY
+none
+```
+
+Primary keys represent both logical row identity and the idempotency key used by the Bronze writer.
+
+Normal ingestion uses `MERGE`, so repeated ingestion of the same logical observations does not create duplicate rows.
+
+Reprocessing is an explicit operation with an explicit geographic/date scope. It uses selective replacement rather than overloading normal ingestion with an `overwrite` boolean.
+
+If a reprocessing request produces zero daily observations, it fails before replacement and preserves the existing Bronze scope.
 
 ## Data Sources
 
@@ -53,7 +102,7 @@ The public Olist Brazilian e-commerce dataset is the primary analytical source a
 
 ### Open-Meteo
 
-Open-Meteo is the first external API integrated into the platform. The integration demonstrates reusable HTTP communication, source-specific ingestion, RAW payload preservation, structured Bronze ingestion, request metadata, reprocessing controls, Delta persistence, and Liquid Clustering.
+Open-Meteo is the first external API integrated into the platform. The integration demonstrates reusable HTTP communication, source-specific extraction, semi-structured Bronze landing, request metadata, idempotent Delta persistence, explicit reprocessing, and Liquid Clustering.
 
 Additional sources should only be introduced when they solve a concrete data or product requirement.
 
@@ -66,6 +115,8 @@ Additional sources should only be introduced when they solve a concrete data or 
 - `uv`
 
 Java 17 or newer is required for local PySpark integration tests.
+
+Databricks validation of the Bronze Weather table requires a runtime compatible with the features used by the table. `VARIANT` support in Delta requires Databricks Runtime 15.4 LTS or newer.
 
 ```powershell
 python --version
@@ -91,23 +142,19 @@ Project commands should normally be executed through `uv run`; manually activati
 
 ### Unit tests
 
-Fast tests that do not require a real Spark session:
-
 ```powershell
 uv run pytest tests/unit -q
 ```
 
-Current validated baseline: **143 unit tests passing**.
-
 ### Integration tests
-
-Tests using real local PySpark DataFrames:
 
 ```powershell
 uv run pytest tests/integration -q
 ```
 
-They require Java 17+ and are intentionally separated because starting Spark is heavier than running the unit suite.
+Local integration tests require Java 17+ and are intentionally separated because starting Spark is heavier than running the unit suite.
+
+Some Databricks-specific behaviors, including Delta `VARIANT` support and the managed-table clustering configuration, require validation on Databricks rather than only local OSS Spark.
 
 ### Full suite
 
@@ -115,61 +162,16 @@ They require Java 17+ and are intentionally separated because starting Spark is 
 uv run pytest -q
 ```
 
-Current validated baseline: **158 tests passing**.
-
-## Linting with Ruff
-
-Run:
+## Linting and Type Checking
 
 ```powershell
 uv run ruff check .
+uv run ty check
 ```
 
-Current rule families:
+Current Ruff rule families include `E`, `F`, `I`, `UP`, and `B`.
 
-```toml
-[tool.ruff.lint]
-select = [
-    "E",   # pycodestyle errors: style and structural errors
-    "F",   # Pyflakes: invalid/unused imports, undefined variables, etc.
-    "I",   # isort: import organization and ordering
-    "UP",  # pyupgrade: modern Python syntax
-    "B",   # flake8-bugbear: bug-prone patterns and common bad practices
-]
-```
-
-Safe automatic fixes can be applied with:
-
-```powershell
-uv run ruff check . --fix
-```
-
-Review changes before committing them. Additional rule families should only be enabled when they provide clear engineering value.
-
-## Recommended Development Workflow
-
-Normal development:
-
-```powershell
-uv sync
-uv run ruff check .
-uv run pytest tests/unit -q
-```
-
-When changing Spark-dependent code:
-
-```powershell
-uv run pytest tests/integration -q
-```
-
-Before committing a completed change:
-
-```powershell
-uv run ruff check .
-uv run pytest -q
-```
-
-> Run the cheapest useful validation first.
+Before committing a completed change, run the cheapest useful validations first and finish with the full relevant suite.
 
 ## Engineering Principles
 
@@ -177,7 +179,7 @@ uv run pytest -q
 2. Reusable abstractions should emerge from concrete reuse.
 3. Source-specific behavior stays close to its domain.
 4. Shared technical capabilities belong in `platform/`.
-5. RAW, Bronze, Silver, and Gold have distinct responsibilities.
+5. Bronze, Silver, and Gold have distinct responsibilities; a separate RAW layer is not mandatory when Bronze already fulfills the required landing/preservation role.
 6. Schemas and persistence behavior should be explicit.
 7. Tests are part of the architecture.
 8. Data Quality and observability should become first-class capabilities.
@@ -186,29 +188,13 @@ uv run pytest -q
 
 ## Near-term Roadmap
 
-- Table Contracts
-- reusable Delta table lifecycle management
-- explicit table layout strategy (`partition_by` or `cluster_by`)
-- Data Quality framework
-- Silver architecture
-- Gold/data-product architecture
-- backfill and replay
-- observability
-- governance and Unity Catalog
+- finish Bronze landing validation on Databricks;
+- Table Contracts;
+- Data Quality framework;
+- Silver architecture;
+- Gold/data-product architecture;
+- richer backfill/replay policies;
+- observability;
+- governance and Unity Catalog.
 
 Databricks remains the project's primary specialization, but the portfolio is intentionally not limited to the Databricks ecosystem.
-
-## Current Status
-
-- Olist dataset as the primary analytical source
-- Open-Meteo external API ingestion
-- RAW and Bronze Weather flow
-- reusable HTTP and logging platform capabilities
-- hybrid Platform + Domains package structure
-- Liquid Clustering for Weather Bronze
-- local PySpark integration tests
-- `uv` dependency/environment management
-- Ruff linting
-- **158-test validated baseline**
-
-The next architectural evolution is focused on **Table Contracts and reusable Delta table lifecycle management**.
