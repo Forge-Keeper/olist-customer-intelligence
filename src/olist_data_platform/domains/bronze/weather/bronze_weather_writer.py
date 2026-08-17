@@ -4,7 +4,7 @@ import json
 from datetime import date
 from typing import Any
 
-from pyspark.sql import Row, SparkSession
+from pyspark.sql import DataFrame, Row, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import (
     DateType,
@@ -52,11 +52,13 @@ class BronzeWeatherWriter:
         requested_latitude: float,
         requested_longitude: float,
     ) -> None:
-        self._validate_records(records)
-        self._validate_request_id(request_id)
-        self._validate_coordinates(requested_latitude, requested_longitude)
-
         if not records:
+            self._validate_common_inputs(
+                records,
+                request_id,
+                requested_latitude,
+                requested_longitude,
+            )
             logger.warning(
                 "bronze_weather_write_skipped | target_table=%s | "
                 "reason=no_records | request_id=%s",
@@ -64,6 +66,57 @@ class BronzeWeatherWriter:
                 request_id,
             )
             return
+
+        dataframe = self._build_dataframe(
+            records=records,
+            request_id=request_id,
+            requested_latitude=requested_latitude,
+            requested_longitude=requested_longitude,
+        )
+        self.writer.write(dataframe)
+
+    def reprocess(
+        self,
+        records: list[dict[str, Any]],
+        request_id: str,
+        requested_latitude: float,
+        requested_longitude: float,
+        start_date: date,
+        end_date: date,
+    ) -> None:
+        if start_date > end_date:
+            raise ValueError("start_date cannot be later than end_date.")
+
+        dataframe = self._build_dataframe(
+            records=records,
+            request_id=request_id,
+            requested_latitude=requested_latitude,
+            requested_longitude=requested_longitude,
+        )
+
+        predicate = self._build_reprocess_predicate(
+            start_date=start_date,
+            end_date=end_date,
+            latitude=requested_latitude,
+            longitude=requested_longitude,
+        )
+        self.writer.replace_where(dataframe, predicate)
+
+    def _build_dataframe(
+        self,
+        records: list[dict[str, Any]],
+        request_id: str,
+        requested_latitude: float,
+        requested_longitude: float,
+    ) -> DataFrame:
+        self._validate_common_inputs(
+            records,
+            request_id,
+            requested_latitude,
+            requested_longitude,
+        )
+        if not records:
+            raise ValueError("records cannot be empty when building a Bronze DataFrame.")
 
         rows = [
             Row(
@@ -81,12 +134,35 @@ class BronzeWeatherWriter:
         ]
 
         dataframe = self.spark.createDataFrame(rows, schema=self.INPUT_SCHEMA)
-        dataframe = (
-            dataframe.withColumn("payload", F.parse_json("payload_json"))
-            .drop("payload_json")
+        return dataframe.withColumn("payload", F.parse_json("payload_json")).drop(
+            "payload_json"
         )
 
-        self.writer.write(dataframe)
+    @staticmethod
+    def _build_reprocess_predicate(
+        start_date: date,
+        end_date: date,
+        latitude: float,
+        longitude: float,
+    ) -> str:
+        return (
+            f"dt_base >= DATE '{start_date.isoformat()}' "
+            f"AND dt_base <= DATE '{end_date.isoformat()}' "
+            f"AND requested_latitude = {latitude!r} "
+            f"AND requested_longitude = {longitude!r}"
+        )
+
+    @classmethod
+    def _validate_common_inputs(
+        cls,
+        records: list[dict[str, Any]],
+        request_id: str,
+        requested_latitude: float,
+        requested_longitude: float,
+    ) -> None:
+        cls._validate_records(records)
+        cls._validate_request_id(request_id)
+        cls._validate_coordinates(requested_latitude, requested_longitude)
 
     @staticmethod
     def _extract_dt_base(record: dict[str, Any]) -> date:
