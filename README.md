@@ -21,11 +21,12 @@ src/
     │   │   └── weather/
     │   └── customer_intelligence/
     └── jobs/
+        └── weather_ingestion.py
 ```
 
-`platform/` contains reusable technical capabilities. `domains/` contains cohesive Data Engineering responsibilities and source/product-specific behavior.
+`platform/` contains reusable technical capabilities. `domains/` contains cohesive Data Engineering responsibilities and source/product-specific behavior. `jobs/` contains executable application composition entrypoints; deployment and orchestration remain separate concerns.
 
-The Weather vertical slice is evolving to:
+The Weather vertical slice is:
 
 ```text
 Open-Meteo API
@@ -93,6 +94,44 @@ Normal ingestion uses `MERGE`, so repeated ingestion of the same logical observa
 Reprocessing is an explicit operation with an explicit geographic/date scope. It uses selective replacement rather than overloading normal ingestion with an `overwrite` boolean.
 
 If a reprocessing request produces zero daily observations, it fails before replacement and preserves the existing Bronze scope.
+
+## Weather Job Entrypoint
+
+The executable application entrypoint is:
+
+```text
+olist_data_platform.jobs.weather_ingestion
+```
+
+It composes Spark, the Open-Meteo client, the Weather Bronze writer, and the ingestion service. Deployment and scheduling are intentionally out of scope here and remain in the Databricks Asset Bundles backlog.
+
+Example normal ingestion:
+
+```powershell
+uv run python -m olist_data_platform.jobs.weather_ingestion `
+  --operation ingest `
+  --target-table prd.bronze.weather_daily `
+  --latitude -23.5505 `
+  --longitude -46.6333 `
+  --start-date 2018-01-01 `
+  --end-date 2018-01-31 `
+  --timezone America/Sao_Paulo
+```
+
+Example explicit reprocessing:
+
+```powershell
+uv run python -m olist_data_platform.jobs.weather_ingestion `
+  --operation reprocess `
+  --target-table prd.bronze.weather_daily `
+  --latitude -23.5505 `
+  --longitude -46.6333 `
+  --start-date 2018-01-01 `
+  --end-date 2018-01-31 `
+  --timezone America/Sao_Paulo
+```
+
+Optional daily variables can be supplied as a comma-separated list with `--daily-variables`.
 
 ## Data Sources
 
@@ -189,6 +228,7 @@ Before committing a completed change, run the cheapest useful validations first 
 ## Near-term Roadmap
 
 - finish Bronze landing validation on Databricks;
+- Databricks Asset Bundles deployment/orchestration;
 - Table Contracts;
 - Data Quality framework;
 - Silver architecture;
