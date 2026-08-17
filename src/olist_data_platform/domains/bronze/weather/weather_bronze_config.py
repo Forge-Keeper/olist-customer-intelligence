@@ -1,7 +1,4 @@
-from olist_data_platform.platform.delta.bronze.config import (
-    BronzeDatasetConfig,
-    WriteStrategy,
-)
+from olist_data_platform.platform.delta.bronze.config import BronzeDatasetConfig, WriteStrategy
 
 
 WEATHER_BRONZE_CONFIG = BronzeDatasetConfig(
