@@ -1,4 +1,4 @@
-from argparse import Namespace
+from argparse import ArgumentTypeError, Namespace
 from datetime import date
 from unittest.mock import Mock, patch
 
@@ -16,7 +16,7 @@ def test_should_parse_iso_date():
 
 
 def test_should_reject_invalid_date():
-    with pytest.raises(Exception, match="Invalid ISO date"):
+    with pytest.raises(ArgumentTypeError, match="Invalid ISO date"):
         _parse_date("2018-99-99")
 
 
