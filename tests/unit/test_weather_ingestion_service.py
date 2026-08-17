@@ -134,6 +134,32 @@ def test_should_reprocess_explicit_weather_scope(
     bronze_writer.write.assert_not_called()
 
 
+@patch(
+    "olist_data_platform.domains.ingestion.weather."
+    "weather_ingestion_service.WeatherDailyExtractor.extract"
+)
+def test_should_fail_reprocess_when_source_returns_no_records(
+    mock_extract,
+    service,
+    client,
+    bronze_writer,
+    weather_response,
+):
+    client.get_historical_weather.return_value = weather_response
+    mock_extract.return_value = []
+
+    with pytest.raises(ValueError, match="returned no daily records"):
+        service.reprocess(
+            latitude=-23.5505,
+            longitude=-46.6333,
+            start_date=date(2018, 1, 1),
+            end_date=date(2018, 1, 2),
+        )
+
+    bronze_writer.reprocess.assert_not_called()
+    bronze_writer.write.assert_not_called()
+
+
 def test_should_return_generated_request_id(service, client, weather_response):
     client.get_historical_weather.return_value = weather_response
 
