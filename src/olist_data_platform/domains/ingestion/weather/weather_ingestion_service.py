@@ -10,11 +10,8 @@ from olist_data_platform.domains.bronze.weather.bronze_weather_writer import (
 from olist_data_platform.domains.ingestion.weather.open_meteo_client import (
     OpenMeteoClient,
 )
-from olist_data_platform.domains.ingestion.weather.weather_response_parser import (
-    WeatherResponseParser,
-)
-from olist_data_platform.domains.raw.weather.raw_weather_writer import (
-    RawWeatherWriter,
+from olist_data_platform.domains.ingestion.weather.weather_daily_extractor import (
+    WeatherDailyExtractor,
 )
 from olist_data_platform.platform.logging import LoggerFactory
 
@@ -22,19 +19,15 @@ logger = LoggerFactory.get_logger(__name__)
 
 
 class WeatherIngestionService:
-    """
-    Orchestrate historical weather ingestion.
-    """
+    """Orchestrate idempotent historical weather ingestion into Bronze."""
 
     def __init__(
         self,
         client: OpenMeteoClient,
-        raw_writer: RawWeatherWriter,
         bronze_writer: BronzeWeatherWriter,
         request_id_factory: Callable[[], str] | None = None,
     ) -> None:
         self.client = client
-        self.raw_writer = raw_writer
         self.bronze_writer = bronze_writer
         self.request_id_factory = (
             request_id_factory
@@ -50,24 +43,17 @@ class WeatherIngestionService:
         end_date: date,
         daily_variables: list[str] | None = None,
         timezone: str = "auto",
-        overwrite: bool = False,
     ) -> str:
         request_id = self.request_id_factory()
 
         logger.info(
-            "weather_ingestion_started | "
-            "request_id=%s | "
-            "latitude=%s | "
-            "longitude=%s | "
-            "start_date=%s | "
-            "end_date=%s | "
-            "overwrite=%s",
+            "weather_ingestion_started | request_id=%s | latitude=%s | "
+            "longitude=%s | start_date=%s | end_date=%s",
             request_id,
             latitude,
             longitude,
             start_date,
             end_date,
-            overwrite,
         )
 
         try:
@@ -85,25 +71,10 @@ class WeatherIngestionService:
                 request_id,
             )
 
-            self.raw_writer.write(
-                request_id=request_id,
-                requested_latitude=latitude,
-                requested_longitude=longitude,
-                start_date=start_date,
-                end_date=end_date,
-                response=response,
-            )
+            records = WeatherDailyExtractor.extract(response)
 
             logger.info(
-                "weather_raw_write_completed | request_id=%s",
-                request_id,
-            )
-
-            records = WeatherResponseParser.parse(response)
-
-            logger.info(
-                "weather_response_parsed | "
-                "request_id=%s | "
+                "weather_daily_records_extracted | request_id=%s | "
                 "record_count=%s",
                 request_id,
                 len(records),
@@ -114,23 +85,10 @@ class WeatherIngestionService:
                 request_id=request_id,
                 requested_latitude=latitude,
                 requested_longitude=longitude,
-                overwrite=overwrite,
             )
 
             logger.info(
-                "weather_bronze_write_completed | "
-                "request_id=%s | "
-                "record_count=%s | "
-                "overwrite=%s",
-                request_id,
-                len(records),
-                overwrite,
-            )
-
-            logger.info(
-                "weather_ingestion_completed | "
-                "request_id=%s | "
-                "record_count=%s",
+                "weather_ingestion_completed | request_id=%s | record_count=%s",
                 request_id,
                 len(records),
             )
@@ -139,18 +97,12 @@ class WeatherIngestionService:
 
         except Exception:
             logger.exception(
-                "weather_ingestion_failed | "
-                "request_id=%s | "
-                "latitude=%s | "
-                "longitude=%s | "
-                "start_date=%s | "
-                "end_date=%s | "
-                "overwrite=%s",
+                "weather_ingestion_failed | request_id=%s | latitude=%s | "
+                "longitude=%s | start_date=%s | end_date=%s",
                 request_id,
                 latitude,
                 longitude,
                 start_date,
                 end_date,
-                overwrite,
             )
             raise
