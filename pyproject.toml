@@ -15,6 +15,9 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "ipykernel",
+    "matplotlib",
+    "pandas",
     "pyspark>=4.2.0",
     "pytest",
     "ruff",
