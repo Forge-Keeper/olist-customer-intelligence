@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import os
 from dataclasses import dataclass
 
@@ -15,7 +13,7 @@ class PostgresConfig:
     connect_timeout: int = 10
 
     @classmethod
-    def from_env(cls) -> "PostgresConfig":
+    def from_env(cls) -> PostgresConfig:
         return cls(
             host=os.getenv("POSTGRES_HOST", "localhost"),
             port=int(os.getenv("POSTGRES_PORT", "5432")),
@@ -34,13 +32,13 @@ class PostgresConfig:
         return value
 
     @property
-    def connection_kwargs(self) -> dict[str, str | int]:
-        return {
-            "host": self.host,
-            "port": self.port,
-            "dbname": self.database,
-            "user": self.user,
-            "password": self.password,
-            "sslmode": self.sslmode,
-            "connect_timeout": self.connect_timeout,
-        }
+    def conninfo(self) -> str:
+        return (
+            f"host={self.host} "
+            f"port={self.port} "
+            f"dbname={self.database} "
+            f"user={self.user} "
+            f"password={self.password} "
+            f"sslmode={self.sslmode} "
+            f"connect_timeout={self.connect_timeout}"
+        )
