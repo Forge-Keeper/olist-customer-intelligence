@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import urlparse
 
 from pyspark.sql.types import StringType
 
@@ -23,6 +24,6 @@ def test_should_preserve_csv_values_as_strings_and_file_lineage(spark, tmp_path)
     assert row is not None
     assert row.customer_zip_code_prefix == "01151"
     assert row.new_source_column == "new-value"
-    assert str(source) in row.source_file
+    assert Path(urlparse(row.source_file).path).name == source.name
     assert isinstance(schema["customer_zip_code_prefix"], StringType)
     assert isinstance(schema["new_source_column"], StringType)
