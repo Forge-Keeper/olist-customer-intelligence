@@ -83,3 +83,46 @@ def test_should_merge_existing_table(mock_prepare, config):
     assert "target.`id` = source.`id`" in sql
     assert "WHEN MATCHED THEN UPDATE SET *" in sql
     assert "WHEN NOT MATCHED THEN INSERT *" in sql
+
+
+@patch.object(BronzeWriter, "_prepare_dataframe")
+def test_should_full_replace_existing_table(mock_prepare):
+    spark = Mock()
+    dataframe = Mock()
+    prepared = Mock()
+    mock_prepare.return_value = prepared
+    prepared.limit.return_value.count.return_value = 1
+    spark.catalog.tableExists.return_value = True
+    full_replace_config = BronzeDatasetConfig(
+        primary_key_columns=("id",),
+        required_columns=("id",),
+        write_strategy=WriteStrategy.FULL_REPLACE,
+    )
+
+    writer = BronzeWriter(spark, "bronze.example", full_replace_config)
+    writer.write(dataframe)
+
+    chain = prepared.write.format.return_value.mode.return_value
+    chain.option.assert_called_once_with("overwriteSchema", "true")
+    chain.option.return_value.saveAsTable.assert_called_once_with("bronze.example")
+
+
+@patch.object(BronzeWriter, "_prepare_dataframe")
+def test_should_reject_empty_full_replace_snapshot(mock_prepare):
+    spark = Mock()
+    dataframe = Mock()
+    prepared = Mock()
+    mock_prepare.return_value = prepared
+    prepared.limit.return_value.count.return_value = 0
+    full_replace_config = BronzeDatasetConfig(
+        primary_key_columns=("id",),
+        required_columns=("id",),
+        write_strategy=WriteStrategy.FULL_REPLACE,
+    )
+
+    writer = BronzeWriter(spark, "bronze.example", full_replace_config)
+
+    with pytest.raises(ValueError, match="FULL_REPLACE snapshot cannot be empty"):
+        writer.write(dataframe)
+
+    spark.catalog.tableExists.assert_not_called()
