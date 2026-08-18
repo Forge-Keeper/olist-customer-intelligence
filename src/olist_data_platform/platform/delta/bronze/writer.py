@@ -43,6 +43,9 @@ class BronzeWriter:
             self.config.write_strategy.value,
         )
 
+        if self.config.write_strategy is WriteStrategy.FULL_REPLACE:
+            self._validate_non_empty_snapshot(prepared)
+
         if not self.spark.catalog.tableExists(self.target_table):
             self._create_table(prepared)
         else:
@@ -145,6 +148,14 @@ class BronzeWriter:
         if duplicated:
             raise ValueError("Bronze batch contains duplicate primary keys.")
 
+    @staticmethod
+    def _validate_non_empty_snapshot(dataframe: DataFrame) -> None:
+        if dataframe.limit(1).count() == 0:
+            raise ValueError(
+                "Bronze FULL_REPLACE snapshot cannot be empty; "
+                "the existing target was preserved."
+            )
+
     def _create_table(self, dataframe: DataFrame) -> None:
         writer = dataframe.write.format("delta").mode("overwrite")
 
@@ -160,6 +171,10 @@ class BronzeWriter:
             self._merge(dataframe)
             return
 
+        if self.config.write_strategy is WriteStrategy.FULL_REPLACE:
+            self._full_replace(dataframe)
+            return
+
         if self.config.write_strategy is WriteStrategy.REPLACE_WHERE:
             raise NotImplementedError(
                 "REPLACE_WHERE normal-write strategy requires an explicit scope "
@@ -168,6 +183,15 @@ class BronzeWriter:
 
         raise ValueError(
             f"Unsupported Bronze write strategy: {self.config.write_strategy!r}"
+        )
+
+    def _full_replace(self, dataframe: DataFrame) -> None:
+        (
+            dataframe.write
+            .format("delta")
+            .mode("overwrite")
+            .option("overwriteSchema", "true")
+            .saveAsTable(self.target_table)
         )
 
     def _merge(self, dataframe: DataFrame) -> None:
