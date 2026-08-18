@@ -60,7 +60,8 @@ def validate_table(spark: SparkSession, target_table: str) -> None:
     )
     if not leading_zero_zip_codes:
         raise AssertionError(
-            "Expected at least one ZIP prefix with a leading zero to prove STRING preservation."
+            "Expected at least one ZIP prefix with a leading zero "
+            "to prove STRING preservation."
         )
 
     detail = spark.sql(f"DESCRIBE DETAIL {target_table}").first()
