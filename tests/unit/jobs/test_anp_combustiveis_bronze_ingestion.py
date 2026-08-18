@@ -1,3 +1,4 @@
+import argparse
 from datetime import date
 
 import pytest
@@ -13,7 +14,7 @@ def test_parse_date_accepts_iso_date() -> None:
 
 
 def test_parse_date_rejects_invalid_value() -> None:
-    with pytest.raises(Exception, match="Expected YYYY-MM-DD"):
+    with pytest.raises(argparse.ArgumentTypeError, match="Expected YYYY-MM-DD"):
         _parse_date("04/01/2016")
 
 
