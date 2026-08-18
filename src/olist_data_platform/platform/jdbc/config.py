@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 
 
@@ -28,6 +29,25 @@ class JdbcConfig:
             raise ValueError("driver cannot be empty")
         if not self.sslmode.strip():
             raise ValueError("sslmode cannot be empty")
+
+    @classmethod
+    def from_env(cls) -> JdbcConfig:
+        return cls(
+            host=cls._required_env("JDBC_HOST"),
+            port=int(os.getenv("JDBC_PORT", "5432")),
+            database=cls._required_env("JDBC_DATABASE"),
+            user=cls._required_env("JDBC_USER"),
+            password=cls._required_env("JDBC_PASSWORD"),
+            driver=os.getenv("JDBC_DRIVER", "org.postgresql.Driver"),
+            sslmode=os.getenv("JDBC_SSLMODE", "require"),
+        )
+
+    @staticmethod
+    def _required_env(name: str) -> str:
+        value = os.getenv(name)
+        if not value:
+            raise ValueError(f"Required environment variable is not set: {name}")
+        return value
 
     @property
     def url(self) -> str:
