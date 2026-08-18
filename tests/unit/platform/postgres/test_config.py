@@ -1,7 +1,7 @@
 import pytest
+from psycopg.conninfo import conninfo_to_dict
 
 from olist_data_platform.platform.postgres.config import PostgresConfig
-
 
 REQUIRED_ENV = {
     "POSTGRES_DB": "olist",
@@ -53,7 +53,7 @@ def test_from_env_requires_credentials(monkeypatch: pytest.MonkeyPatch) -> None:
         PostgresConfig.from_env()
 
 
-def test_connection_kwargs_matches_psycopg_contract() -> None:
+def test_conninfo_matches_psycopg_contract() -> None:
     config = PostgresConfig(
         host="localhost",
         port=5432,
@@ -62,12 +62,12 @@ def test_connection_kwargs_matches_psycopg_contract() -> None:
         password="secret",
     )
 
-    assert config.connection_kwargs == {
+    assert conninfo_to_dict(config.conninfo) == {
         "host": "localhost",
-        "port": 5432,
+        "port": "5432",
         "dbname": "olist",
         "user": "olist",
         "password": "secret",
         "sslmode": "prefer",
-        "connect_timeout": 10,
+        "connect_timeout": "10",
     }
