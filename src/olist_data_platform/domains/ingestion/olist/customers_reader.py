@@ -7,13 +7,13 @@ from pyspark.sql import functions as F
 class OlistCustomersReader:
     """Read and validate the Olist customers CSV snapshot."""
 
-    EXPECTED_TYPES = {
-        "customer_id": "string",
-        "customer_unique_id": "string",
-        "customer_zip_code_prefix": "int",
-        "customer_city": "string",
-        "customer_state": "string",
-    }
+    REQUIRED_COLUMNS = (
+        "customer_id",
+        "customer_unique_id",
+        "customer_zip_code_prefix",
+        "customer_city",
+        "customer_state",
+    )
 
     def __init__(self, spark: SparkSession, source_path: str) -> None:
         if not isinstance(source_path, str):
@@ -28,7 +28,7 @@ class OlistCustomersReader:
         dataframe = (
             self.spark.read
             .option("header", True)
-            .option("inferSchema", True)
+            .option("inferSchema", False)
             .csv(self.source_path)
             .select(
                 "*",
@@ -40,29 +40,9 @@ class OlistCustomersReader:
         return dataframe
 
     def _validate_minimum_schema(self, dataframe: DataFrame) -> None:
-        actual_types = {
-            field.name: field.dataType.simpleString()
-            for field in dataframe.schema.fields
-        }
-
-        missing_columns = set(self.EXPECTED_TYPES) - set(actual_types)
+        missing_columns = set(self.REQUIRED_COLUMNS) - set(dataframe.columns)
         if missing_columns:
             raise ValueError(
                 "Olist customers source is missing required columns: "
                 f"{sorted(missing_columns)}"
-            )
-
-        incompatible_types = {
-            column: (actual_types[column], expected_type)
-            for column, expected_type in self.EXPECTED_TYPES.items()
-            if actual_types[column] != expected_type
-        }
-        if incompatible_types:
-            details = ", ".join(
-                f"{column}: actual={actual}, expected={expected}"
-                for column, (actual, expected) in incompatible_types.items()
-            )
-            raise ValueError(
-                "Olist customers source has incompatible required-column types: "
-                f"{details}"
             )
