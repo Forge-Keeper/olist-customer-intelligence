@@ -274,3 +274,23 @@ Before committing a completed change, run the cheapest useful validations first 
 2. Reusable abstractions should emerge from concrete reuse.
 3. Source-specific behavior stays close to its domain.
 4. Shared technical capabilities belong in `platform/`.
+5. Bronze, Silver, and Gold have distinct responsibilities; a separate RAW layer is not mandatory when Bronze already fulfills the required landing/preservation role.
+6. Schemas and persistence behavior should be explicit.
+7. Tests are part of the architecture.
+8. Data Quality and observability should become first-class capabilities.
+9. Durable architectural decisions with meaningful alternatives should be documented as ADRs.
+10. Professional architectures may inspire principles, but third-party code, rules, datasets, or intellectual property must not be copied into the portfolio.
+
+## Near-term Roadmap
+
+- finish Bronze landing validation on Databricks;
+- Databricks Asset Bundles deployment/orchestration;
+- Table Contracts;
+- Data Quality framework;
+- Silver architecture;
+- Gold/data-product architecture;
+- richer backfill/replay policies;
+- observability;
+- governance and Unity Catalog.
+
+Databricks remains the project's primary specialization, but the portfolio is intentionally not limited to the Databricks ecosystem.
