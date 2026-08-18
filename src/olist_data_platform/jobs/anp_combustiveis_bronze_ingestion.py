@@ -42,14 +42,18 @@ def _build_replace_where_predicate(start_date: date, end_date: date) -> str:
     )
 
 
-def run(args: argparse.Namespace, spark: SparkSession) -> int:
+def run(
+    args: argparse.Namespace,
+    spark: SparkSession,
+    jdbc_config: JdbcConfig | None = None,
+) -> int:
     request = AnpCombustiveisReadRequest(
         start_date=args.start_date,
         end_date=args.end_date,
     )
     jdbc_reader = JdbcReader(
         spark=spark,
-        config=JdbcConfig.from_env(),
+        config=jdbc_config or JdbcConfig.from_env(),
     )
     reader = AnpCombustiveisPostgresReader(jdbc_reader)
     dataframe = reader.read(request).cache()
