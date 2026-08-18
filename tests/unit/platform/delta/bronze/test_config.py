@@ -21,6 +21,16 @@ def test_should_create_valid_bronze_dataset_config():
     assert config.write_strategy is WriteStrategy.MERGE
 
 
+def test_should_support_full_replace_strategy():
+    config = BronzeDatasetConfig(
+        primary_key_columns=("id",),
+        required_columns=("id",),
+        write_strategy=WriteStrategy.FULL_REPLACE,
+    )
+
+    assert config.write_strategy is WriteStrategy.FULL_REPLACE
+
+
 def test_should_default_to_merge_strategy():
     config = BronzeDatasetConfig(
         primary_key_columns=("id",),
