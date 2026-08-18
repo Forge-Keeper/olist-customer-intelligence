@@ -1,7 +1,7 @@
 from datetime import date
 
 import pytest
-from pyspark.sql import SparkSession
+from pyspark.sql import DataFrame, SparkSession
 
 from olist_data_platform.domains.ingestion.anp.combustiveis_postgres_reader import (
     AnpCombustiveisPostgresReader,
@@ -14,8 +14,8 @@ class StubJdbcReader:
         self._spark = spark
         self.dbtable: str | None = None
 
-    def read(self, *, dbtable: str):
-        self.dbtable = dbtable
+    def read_table(self, table: str) -> DataFrame:
+        self.dbtable = table
         return self._spark.createDataFrame(
             [(1, date(2016, 1, 4))],
             ["id", "data_coleta"],
@@ -45,7 +45,7 @@ def test_build_dbtable_pushes_date_filter_to_postgres() -> None:
 
 def test_read_adds_bronze_metadata_columns(spark: SparkSession) -> None:
     jdbc_reader = StubJdbcReader(spark)
-    reader = AnpCombustiveisPostgresReader(jdbc_reader)  # type: ignore[arg-type]
+    reader = AnpCombustiveisPostgresReader(jdbc_reader)
     request = AnpCombustiveisReadRequest(
         start_date=date(2016, 1, 4),
         end_date=date(2016, 6, 30),
