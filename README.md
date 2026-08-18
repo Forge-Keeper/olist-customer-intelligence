@@ -24,6 +24,7 @@ src/
     │   └── customer_intelligence/
     └── jobs/
         ├── olist_customers_ingestion.py
+        ├── olist_closed_deals_ingestion.py
         └── weather_ingestion.py
 ```
 
@@ -56,21 +57,23 @@ Bronze is the first persistent landing layer for this flow. Each Weather row rep
 
 There is no separate RAW persistence layer in the new design. Semantic typing, normalization, Data Quality, and business interpretation are deferred to downstream processing.
 
-The Olist Customers vertical slice is:
+Olist file-based authoritative snapshots now share this vertical slice:
 
 ```text
-Olist customers CSV in Unity Catalog Volume
+Olist CSV in Unity Catalog Volume
       ↓
-OlistCustomersReader
+OlistCsvSnapshotReader
       ↓
-OlistCustomersIngestionService
+OlistSnapshotIngestionService
       ↓
 BronzeWriter
       ↓
 Delta Bronze
 ```
 
-Customers is treated as an authoritative full snapshot. Business columns are read as `STRING` to preserve the CSV representation exactly, including identifiers such as ZIP-code prefixes with leading zeros. The Bronze table also stores `source_file` and `ingestion_timestamp`. New source columns are preserved automatically.
+`OlistCsvSnapshotReader` preserves business values as `STRING`, keeps additional source columns, validates each dataset's minimum required columns, and adds `source_file` from file metadata. `OlistSnapshotIngestionService` provides the common read/count/log/write workflow while each job keeps its own source contract and Bronze configuration.
+
+Olist Customers and Olist Closed Deals are both treated as authoritative full snapshots. Business typing is intentionally deferred to Silver. Technical metadata includes `source_file` and `ingestion_timestamp`.
 
 See:
 
@@ -122,11 +125,27 @@ PARTITION BY
 none
 ```
 
+For Olist Closed Deals:
+
+```text
+PRIMARY KEY
+(mql_id)
+
+NORMAL WRITE
+FULL_REPLACE
+
+CLUSTER BY
+none
+
+PARTITION BY
+none
+```
+
 Primary keys represent both logical row identity and the idempotency key used by the Bronze writer.
 
 Weather normal ingestion uses `MERGE`, so repeated ingestion of the same logical observations does not create duplicate rows.
 
-Olist Customers uses `FULL_REPLACE` because each source file represents the complete authoritative snapshot. A validated non-empty snapshot atomically replaces the existing Bronze table and may evolve the schema through new source columns. An empty snapshot fails before replacement and preserves the existing table.
+Olist file-based snapshots use `FULL_REPLACE` because each source file represents the complete authoritative snapshot. A validated non-empty snapshot replaces the existing Bronze table and may evolve the schema through new source columns. An empty snapshot fails before replacement and preserves the existing table.
 
 Weather reprocessing is an explicit operation with an explicit geographic/date scope. It uses selective replacement rather than overloading normal ingestion with an `overwrite` boolean.
 
@@ -188,6 +207,23 @@ uv run python -m olist_data_platform.jobs.olist_customers_ingestion `
 ```
 
 The source defaults to the Olist Customers CSV in the configured Unity Catalog Volume and can be overridden with `--source-path`.
+
+### Olist Closed Deals
+
+The Olist Closed Deals entrypoint is:
+
+```text
+olist_data_platform.jobs.olist_closed_deals_ingestion
+```
+
+Example:
+
+```powershell
+uv run python -m olist_data_platform.jobs.olist_closed_deals_ingestion `
+  --target-table prd.bronze.olist_closed_deals
+```
+
+The source defaults to the Closed Deals CSV in the Olist funnel Unity Catalog Volume and can be overridden with `--source-path`.
 
 ## Data Sources
 

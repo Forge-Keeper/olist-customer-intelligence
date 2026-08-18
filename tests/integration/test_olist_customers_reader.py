@@ -3,9 +3,10 @@ from urllib.parse import urlparse
 
 from pyspark.sql.types import StringType
 
-from olist_data_platform.domains.ingestion.olist.customers_reader import (
-    OlistCustomersReader,
+from olist_data_platform.domains.ingestion.olist.csv_snapshot_reader import (
+    OlistCsvSnapshotReader,
 )
+from olist_data_platform.jobs.olist_customers_ingestion import CUSTOMERS_SOURCE_COLUMNS
 
 
 def test_should_preserve_csv_values_as_strings_and_file_lineage(spark, tmp_path):
@@ -17,7 +18,12 @@ def test_should_preserve_csv_values_as_strings_and_file_lineage(spark, tmp_path)
         encoding="utf-8",
     )
 
-    dataframe = OlistCustomersReader(spark, str(source)).read()
+    dataframe = OlistCsvSnapshotReader(
+        spark=spark,
+        source_path=str(source),
+        required_columns=CUSTOMERS_SOURCE_COLUMNS,
+        dataset_name="olist_customers",
+    ).read()
     row = dataframe.first()
     schema = {field.name: field.dataType for field in dataframe.schema.fields}
 

@@ -2,6 +2,7 @@ from argparse import Namespace
 from unittest.mock import Mock, patch
 
 from olist_data_platform.jobs.olist_customers_ingestion import (
+    CUSTOMERS_SOURCE_COLUMNS,
     DEFAULT_SOURCE_PATH,
     build_parser,
     run,
@@ -17,33 +18,32 @@ def test_should_default_source_path():
     assert args.target_table == "prd.bronze.olist_customers"
 
 
+@patch("olist_data_platform.jobs.olist_customers_ingestion.OlistSnapshotIngestionService")
 @patch("olist_data_platform.jobs.olist_customers_ingestion.BronzeWriter")
-@patch("olist_data_platform.jobs.olist_customers_ingestion.OlistCustomersReader")
-@patch(
-    "olist_data_platform.jobs.olist_customers_ingestion."
-    "OlistCustomersIngestionService"
-)
+@patch("olist_data_platform.jobs.olist_customers_ingestion.OlistCsvSnapshotReader")
 def test_should_compose_and_run_ingestion(
-    mock_service_class,
-    mock_reader_class,
-    mock_writer_class,
+    mock_reader_class: Mock,
+    mock_writer_class: Mock,
+    mock_service_class: Mock,
 ):
     spark = Mock()
     args = Namespace(
         source_path="/Volumes/source.csv",
         target_table="prd.bronze.olist_customers",
     )
-    service = mock_service_class.return_value
-    service.ingest.return_value = 99441
+    mock_service_class.return_value.ingest.return_value = 99441
 
     result = run(args=args, spark=spark)
 
     mock_reader_class.assert_called_once_with(
         spark=spark,
         source_path="/Volumes/source.csv",
+        required_columns=CUSTOMERS_SOURCE_COLUMNS,
+        dataset_name="olist_customers",
     )
     mock_writer_class.assert_called_once()
     mock_service_class.assert_called_once_with(
+        dataset_name="olist_customers",
         reader=mock_reader_class.return_value,
         bronze_writer=mock_writer_class.return_value,
     )
