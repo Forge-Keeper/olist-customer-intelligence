@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from psycopg.sql import SQL
-
 from .client import PostgresClient
 
 
@@ -23,7 +21,7 @@ def run_sql_bootstrap(client: PostgresClient, sql_dir: str | Path) -> list[str]:
     with client.connection() as connection:
         with connection.cursor() as cursor:
             for script in scripts:
-                cursor.execute(SQL(script.read_text(encoding="utf-8")))
+                cursor.execute(script.read_text(encoding="utf-8"))
                 applied.append(script.name)
 
     return applied
