@@ -1,5 +1,7 @@
-from olist_data_platform.platform.delta.bronze import BronzeDatasetConfig, WriteStrategy
-
+from olist_data_platform.platform.delta.bronze import (
+    BronzeDatasetConfig,
+    WriteStrategy,
+)
 
 OLIST_CUSTOMERS_BRONZE_CONFIG = BronzeDatasetConfig(
     primary_key_columns=("customer_id",),
