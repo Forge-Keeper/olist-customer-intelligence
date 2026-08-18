@@ -9,6 +9,7 @@ class WriteStrategy(StrEnum):
 
     MERGE = "merge"
     REPLACE_WHERE = "replace_where"
+    FULL_REPLACE = "full_replace"
 
 
 @dataclass(frozen=True)
