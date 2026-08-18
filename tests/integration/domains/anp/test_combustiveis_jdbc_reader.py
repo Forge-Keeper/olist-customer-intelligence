@@ -2,6 +2,7 @@ import os
 import sys
 from collections.abc import Generator
 from datetime import date
+from pathlib import Path
 
 import pytest
 from pyspark.sql import SparkSession
@@ -13,23 +14,55 @@ from olist_data_platform.domains.ingestion.anp import (
 )
 from olist_data_platform.platform.jdbc import JdbcConfig, JdbcReader
 
-POSTGRES_JDBC_PACKAGE = "org.postgresql:postgresql:42.7.13"
+POSTGRES_JDBC_VERSION = "42.7.13"
+POSTGRES_JDBC_JAR_NAME = (
+    f"org.postgresql_postgresql-{POSTGRES_JDBC_VERSION}.jar"
+)
+
+
+def _postgres_jdbc_jar() -> Path:
+    configured = os.getenv("POSTGRES_JDBC_JAR")
+    if configured:
+        jar = Path(configured)
+    else:
+        jar = Path.home() / ".ivy2.5.2" / "jars" / POSTGRES_JDBC_JAR_NAME
+
+    if not jar.is_file():
+        pytest.skip(
+            "PostgreSQL JDBC driver jar not found. "
+            "Set POSTGRES_JDBC_JAR to a local pgJDBC jar path."
+        )
+    return jar.resolve()
 
 
 @pytest.fixture(scope="module")
 def jdbc_spark() -> Generator[SparkSession, None, None]:
+    jdbc_jar = _postgres_jdbc_jar()
+    previous_submit_args = os.environ.get("PYSPARK_SUBMIT_ARGS")
+    os.environ["PYSPARK_SUBMIT_ARGS"] = (
+        f'--driver-class-path "{jdbc_jar}" '
+        f'--conf spark.executor.extraClassPath="{jdbc_jar}" '
+        "pyspark-shell"
+    )
+
     session = (
         SparkSession.builder.master("local[2]")
         .appName("olist-anp-jdbc-integration")
         .config("spark.ui.enabled", "false")
         .config("spark.pyspark.python", sys.executable)
         .config("spark.pyspark.driver.python", sys.executable)
-        .config("spark.jars.packages", POSTGRES_JDBC_PACKAGE)
         .getOrCreate()
     )
     session.sparkContext.setLogLevel("ERROR")
-    yield session
-    session.stop()
+
+    try:
+        yield session
+    finally:
+        session.stop()
+        if previous_submit_args is None:
+            os.environ.pop("PYSPARK_SUBMIT_ARGS", None)
+        else:
+            os.environ["PYSPARK_SUBMIT_ARGS"] = previous_submit_args
 
 
 def _local_jdbc_config() -> JdbcConfig:
