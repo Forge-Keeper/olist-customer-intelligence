@@ -33,19 +33,19 @@ def jdbc_spark() -> Generator[SparkSession, None, None]:
 
 
 def _local_jdbc_config() -> JdbcConfig:
-    required = ("POSTGRES_DB", "POSTGRES_USER", "POSTGRES_PASSWORD")
+    required = ("JDBC_TEST_USER", "JDBC_TEST_PASSWORD")
     missing = [name for name in required if not os.getenv(name)]
     if missing:
         pytest.skip(
-            "Missing PostgreSQL environment variables: " + ", ".join(missing)
+            "Missing local JDBC test environment variables: " + ", ".join(missing)
         )
 
     return JdbcConfig(
-        host=os.getenv("POSTGRES_HOST", "localhost"),
-        port=int(os.getenv("POSTGRES_PORT", "5432")),
-        database=os.environ["POSTGRES_DB"],
-        user=os.environ["POSTGRES_USER"],
-        password=os.environ["POSTGRES_PASSWORD"],
+        host=os.getenv("JDBC_TEST_HOST", "localhost"),
+        port=int(os.getenv("JDBC_TEST_PORT", "5432")),
+        database=os.getenv("JDBC_TEST_DATABASE", "olist"),
+        user=os.environ["JDBC_TEST_USER"],
+        password=os.environ["JDBC_TEST_PASSWORD"],
         sslmode="disable",
     )
 
