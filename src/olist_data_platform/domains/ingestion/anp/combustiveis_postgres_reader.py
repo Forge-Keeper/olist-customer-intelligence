@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import date
+from typing import Protocol
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
 
-from olist_data_platform.platform.jdbc import JdbcReader
+
+class JdbcTableReader(Protocol):
+    def read_table(self, table: str) -> DataFrame: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -23,12 +26,12 @@ class AnpCombustiveisPostgresReader:
     SOURCE_TABLE = "anp.combustiveis_precos"
     SOURCE_SYSTEM = "azure_postgresql"
 
-    def __init__(self, jdbc_reader: JdbcReader) -> None:
+    def __init__(self, jdbc_reader: JdbcTableReader) -> None:
         self._jdbc_reader = jdbc_reader
 
     def read(self, request: AnpCombustiveisReadRequest) -> DataFrame:
-        dataframe = self._jdbc_reader.read(
-            dbtable=self._build_dbtable(request),
+        dataframe = self._jdbc_reader.read_table(
+            self._build_dbtable(request),
         )
         return (
             dataframe.withColumn("dt_base", F.col("data_coleta"))
