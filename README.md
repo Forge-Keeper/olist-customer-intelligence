@@ -16,11 +16,14 @@ src/
     │   └── logging/
     ├── domains/
     │   ├── ingestion/
+    │   │   ├── olist/
     │   │   └── weather/
     │   ├── bronze/
+    │   │   ├── olist/
     │   │   └── weather/
     │   └── customer_intelligence/
     └── jobs/
+        ├── olist_customers_ingestion.py
         └── weather_ingestion.py
 ```
 
@@ -52,6 +55,22 @@ Bronze is the first persistent landing layer for this flow. Each Weather row rep
 - ingestion metadata.
 
 There is no separate RAW persistence layer in the new design. Semantic typing, normalization, Data Quality, and business interpretation are deferred to downstream processing.
+
+The Olist Customers vertical slice is:
+
+```text
+Olist customers CSV in Unity Catalog Volume
+      ↓
+OlistCustomersReader
+      ↓
+OlistCustomersIngestionService
+      ↓
+BronzeWriter
+      ↓
+Delta Bronze
+```
+
+Customers is treated as an authoritative full snapshot. Business columns are read as `STRING` to preserve the CSV representation exactly, including identifiers such as ZIP-code prefixes with leading zeros. The Bronze table also stores `source_file` and `ingestion_timestamp`. New source columns are preserved automatically.
 
 See:
 
@@ -87,17 +106,37 @@ PARTITION BY
 none
 ```
 
+For Olist Customers:
+
+```text
+PRIMARY KEY
+(customer_id)
+
+NORMAL WRITE
+FULL_REPLACE
+
+CLUSTER BY
+none
+
+PARTITION BY
+none
+```
+
 Primary keys represent both logical row identity and the idempotency key used by the Bronze writer.
 
-Normal ingestion uses `MERGE`, so repeated ingestion of the same logical observations does not create duplicate rows.
+Weather normal ingestion uses `MERGE`, so repeated ingestion of the same logical observations does not create duplicate rows.
 
-Reprocessing is an explicit operation with an explicit geographic/date scope. It uses selective replacement rather than overloading normal ingestion with an `overwrite` boolean.
+Olist Customers uses `FULL_REPLACE` because each source file represents the complete authoritative snapshot. A validated non-empty snapshot atomically replaces the existing Bronze table and may evolve the schema through new source columns. An empty snapshot fails before replacement and preserves the existing table.
 
-If a reprocessing request produces zero daily observations, it fails before replacement and preserves the existing Bronze scope.
+Weather reprocessing is an explicit operation with an explicit geographic/date scope. It uses selective replacement rather than overloading normal ingestion with an `overwrite` boolean.
 
-## Weather Job Entrypoint
+If a Weather reprocessing request produces zero daily observations, it fails before replacement and preserves the existing Bronze scope.
 
-The executable application entrypoint is:
+## Job Entrypoints
+
+### Weather
+
+The Weather entrypoint is:
 
 ```text
 olist_data_platform.jobs.weather_ingestion
@@ -133,11 +172,28 @@ uv run python -m olist_data_platform.jobs.weather_ingestion `
 
 Optional daily variables can be supplied as a comma-separated list with `--daily-variables`.
 
+### Olist Customers
+
+The Olist Customers entrypoint is:
+
+```text
+olist_data_platform.jobs.olist_customers_ingestion
+```
+
+Example:
+
+```powershell
+uv run python -m olist_data_platform.jobs.olist_customers_ingestion `
+  --target-table prd.bronze.olist_customers
+```
+
+The source defaults to the Olist Customers CSV in the configured Unity Catalog Volume and can be overridden with `--source-path`.
+
 ## Data Sources
 
 ### Olist
 
-The public Olist Brazilian e-commerce dataset is the primary analytical source and foundation for the Customer Intelligence data product.
+The public Olist Brazilian e-commerce dataset is the primary analytical source and foundation for the Customer Intelligence data product. Olist file-based Bronze tables preserve source values as strings unless a source-specific contract requires otherwise; semantic typing belongs downstream.
 
 ### Open-Meteo
 
@@ -218,23 +274,3 @@ Before committing a completed change, run the cheapest useful validations first 
 2. Reusable abstractions should emerge from concrete reuse.
 3. Source-specific behavior stays close to its domain.
 4. Shared technical capabilities belong in `platform/`.
-5. Bronze, Silver, and Gold have distinct responsibilities; a separate RAW layer is not mandatory when Bronze already fulfills the required landing/preservation role.
-6. Schemas and persistence behavior should be explicit.
-7. Tests are part of the architecture.
-8. Data Quality and observability should become first-class capabilities.
-9. Durable architectural decisions with meaningful alternatives should be documented as ADRs.
-10. Professional architectures may inspire principles, but third-party code, rules, datasets, or intellectual property must not be copied into the portfolio.
-
-## Near-term Roadmap
-
-- finish Bronze landing validation on Databricks;
-- Databricks Asset Bundles deployment/orchestration;
-- Table Contracts;
-- Data Quality framework;
-- Silver architecture;
-- Gold/data-product architecture;
-- richer backfill/replay policies;
-- observability;
-- governance and Unity Catalog.
-
-Databricks remains the project's primary specialization, but the portfolio is intentionally not limited to the Databricks ecosystem.
