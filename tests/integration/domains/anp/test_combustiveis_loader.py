@@ -2,6 +2,7 @@ import os
 from decimal import Decimal
 
 import pytest
+from psycopg import DataError
 from psycopg.sql import SQL
 
 from olist_data_platform.domains.anp.ingestion.combustiveis_loader import (
@@ -9,11 +10,20 @@ from olist_data_platform.domains.anp.ingestion.combustiveis_loader import (
 )
 from olist_data_platform.platform.postgres import PostgresClient, PostgresConfig
 
-
-CSV_CONTENT = """Regiao - Sigla;Estado - Sigla;Municipio;Revenda;CNPJ da Revenda;Nome da Rua;Numero Rua;Complemento;Bairro;Cep;Produto;Data da Coleta;Valor de Venda;Valor de Compra;Unidade de Medida;Bandeira
-SE;SP;SAO PAULO;POSTO A; 00.000.000/0001-00;RUA A;10;;CENTRO;01000-000;GASOLINA;04/01/2016;3,499;;R$ / litro;BRANCA
-SE;RJ;RIO DE JANEIRO;POSTO B; 11.111.111/0001-11;RUA B;20;LOJA 1;CENTRO;20000-000;ETANOL;05/01/2016;2,799;2,100;R$ / litro;BANDEIRA B
-"""
+CSV_HEADER = (
+    "Regiao - Sigla;Estado - Sigla;Municipio;Revenda;CNPJ da Revenda;"
+    "Nome da Rua;Numero Rua;Complemento;Bairro;Cep;Produto;Data da Coleta;"
+    "Valor de Venda;Valor de Compra;Unidade de Medida;Bandeira"
+)
+CSV_ROW_1 = (
+    "SE;SP;SAO PAULO;POSTO A; 00.000.000/0001-00;RUA A;10;;CENTRO;01000-000;"
+    "GASOLINA;04/01/2016;3,499;;R$ / litro;BRANCA"
+)
+CSV_ROW_2 = (
+    "SE;RJ;RIO DE JANEIRO;POSTO B; 11.111.111/0001-11;RUA B;20;LOJA 1;CENTRO;"
+    "20000-000;ETANOL;05/01/2016;2,799;2,100;R$ / litro;BANDEIRA B"
+)
+CSV_CONTENT = "\n".join((CSV_HEADER, CSV_ROW_1, CSV_ROW_2, ""))
 
 
 def _postgres_client() -> PostgresClient:
@@ -28,9 +38,7 @@ def _cleanup(client: PostgresClient, source_file: str) -> None:
     with client.connection() as connection:
         with connection.cursor() as cursor:
             cursor.execute(
-                SQL(
-                    "DELETE FROM platform.ingestion_control WHERE source_file = %s"
-                ),
+                SQL("DELETE FROM platform.ingestion_control WHERE source_file = %s"),
                 (source_file,),
             )
             cursor.execute(
@@ -142,7 +150,7 @@ def test_loader_rolls_back_when_conversion_fails(tmp_path) -> None:
 
     _cleanup(client, csv_path.name)
     try:
-        with pytest.raises(Exception):
+        with pytest.raises(DataError):
             loader.load(csv_path)
 
         with client.connection() as connection:
