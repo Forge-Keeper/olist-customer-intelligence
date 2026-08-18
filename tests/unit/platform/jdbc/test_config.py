@@ -23,6 +23,32 @@ def test_url_and_options() -> None:
     }
 
 
+def test_from_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("JDBC_HOST", "pg.example.com")
+    monkeypatch.setenv("JDBC_DATABASE", "olist")
+    monkeypatch.setenv("JDBC_USER", "reader")
+    monkeypatch.setenv("JDBC_PASSWORD", "secret")
+
+    config = JdbcConfig.from_env()
+
+    assert config.host == "pg.example.com"
+    assert config.port == 5432
+    assert config.database == "olist"
+    assert config.user == "reader"
+    assert config.password == "secret"
+    assert config.sslmode == "require"
+
+
+def test_from_env_requires_credentials(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("JDBC_HOST", raising=False)
+    monkeypatch.setenv("JDBC_DATABASE", "olist")
+    monkeypatch.setenv("JDBC_USER", "reader")
+    monkeypatch.setenv("JDBC_PASSWORD", "secret")
+
+    with pytest.raises(ValueError, match="JDBC_HOST"):
+        JdbcConfig.from_env()
+
+
 @pytest.mark.parametrize(
     ("field_name", "kwargs"),
     [
