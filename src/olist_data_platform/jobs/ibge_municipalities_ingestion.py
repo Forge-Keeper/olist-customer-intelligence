@@ -7,14 +7,18 @@ from pyspark.sql import SparkSession
 from olist_data_platform.domains.bronze.ibge.bronze_municipalities_writer import (
     BronzeMunicipalitiesWriter,
 )
-from olist_data_platform.domains.ingestion.ibge.localities_client import LocalitiesClient
+from olist_data_platform.domains.ingestion.ibge.localities_client import (
+    LocalitiesClient,
+)
 from olist_data_platform.domains.ingestion.ibge.municipalities_ingestion_service import (
     MunicipalitiesIngestionService,
 )
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Ingest IBGE municipalities into Bronze.")
+    parser = argparse.ArgumentParser(
+        description="Ingest IBGE municipalities into Bronze."
+    )
     parser.add_argument("--target-table", required=True)
     return parser
 
