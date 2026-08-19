@@ -8,6 +8,12 @@ REQUIRED_ENV = {
     "POSTGRES_USER": "olist",
     "POSTGRES_PASSWORD": "secret",
 }
+OPTIONAL_ENV = (
+    "POSTGRES_HOST",
+    "POSTGRES_PORT",
+    "POSTGRES_SSLMODE",
+    "POSTGRES_CONNECT_TIMEOUT",
+)
 
 
 def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -15,8 +21,14 @@ def _set_required_env(monkeypatch: pytest.MonkeyPatch) -> None:
         monkeypatch.setenv(name, value)
 
 
+def _clear_optional_env(monkeypatch: pytest.MonkeyPatch) -> None:
+    for name in OPTIONAL_ENV:
+        monkeypatch.delenv(name, raising=False)
+
+
 def test_from_env_uses_defaults(monkeypatch: pytest.MonkeyPatch) -> None:
     _set_required_env(monkeypatch)
+    _clear_optional_env(monkeypatch)
 
     config = PostgresConfig.from_env()
 
