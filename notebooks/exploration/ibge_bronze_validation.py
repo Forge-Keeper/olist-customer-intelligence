@@ -12,6 +12,29 @@
 # MAGIC - idempotent MERGE behavior on re-execution
 
 # COMMAND ----------
+import sys
+from pathlib import Path
+
+
+def _bootstrap_src_path() -> Path:
+    candidates = (Path.cwd(), *Path.cwd().parents)
+    for candidate in candidates:
+        src_path = candidate / "src"
+        package_path = src_path / "olist_data_platform"
+        if package_path.is_dir():
+            src_value = str(src_path)
+            if src_value not in sys.path:
+                sys.path.insert(0, src_value)
+            return src_path
+    raise RuntimeError(
+        "Could not locate src/olist_data_platform from the Databricks Repo."
+    )
+
+
+SRC_PATH = _bootstrap_src_path()
+print("Using project src path:", SRC_PATH)
+
+# COMMAND ----------
 from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 
