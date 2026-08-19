@@ -36,10 +36,10 @@ class MunicipalitiesExtractor:
     def _normalize(municipality: dict[str, Any], dt_base: date) -> dict[str, Any]:
         immediate = municipality.get("regiao-imediata") or {}
         intermediate = immediate.get("regiao-intermediaria") or {}
-        state = intermediate.get("UF") or {}
-        region = state.get("regiao") or {}
         micro = municipality.get("microrregiao") or {}
         meso = micro.get("mesorregiao") or {}
+        state = intermediate.get("UF") or meso.get("UF") or {}
+        region = state.get("regiao") or {}
 
         return {
             "municipality_code": str(municipality["id"]),
