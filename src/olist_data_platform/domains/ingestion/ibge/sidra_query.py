@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-
 SelectorInput = str | tuple[str, ...] | list[str]
 
 
@@ -68,9 +67,7 @@ class SidraQuery:
         normalized: list[str] = []
         for item in items:
             if not isinstance(item, str):
-                raise TypeError(
-                    f"{field_name} must contain only strings."
-                )
+                raise TypeError(f"{field_name} must contain only strings.")
             candidate = item.strip()
             if not candidate:
                 raise ValueError(
