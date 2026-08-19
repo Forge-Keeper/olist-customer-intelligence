@@ -1,34 +1,43 @@
 from __future__ import annotations
 
 from collections.abc import Callable
+from typing import Any, Protocol
 from uuid import uuid4
 
-from olist_data_platform.domains.bronze.ibge.bronze_municipality_population_writer import (
-    BronzeMunicipalityPopulationWriter,
-)
 from olist_data_platform.domains.ingestion.ibge.datasets import MUNICIPALITY_POPULATION
 from olist_data_platform.domains.ingestion.ibge.municipality_population_extractor import (
     MunicipalityPopulationExtractor,
 )
-from olist_data_platform.domains.ingestion.ibge.sidra_client import SidraClient
 from olist_data_platform.domains.ingestion.ibge.sidra_parser import SidraParser
+from olist_data_platform.domains.ingestion.ibge.sidra_query import SidraQuery
 from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
 
 
+class SidraValuesClient(Protocol):
+    def get_values(self, query: SidraQuery) -> list[Any]: ...
+
+
+class MunicipalityPopulationWriter(Protocol):
+    def write(self, records: list[dict[str, Any]], request_id: str) -> None: ...
+
+
 class MunicipalityPopulationIngestionService:
     def __init__(
         self,
-        client: SidraClient,
-        bronze_writer: BronzeMunicipalityPopulationWriter,
+        client: SidraValuesClient,
+        bronze_writer: MunicipalityPopulationWriter,
         request_id_factory: Callable[[], str] | None = None,
     ) -> None:
         self.client = client
         self.bronze_writer = bronze_writer
         self.request_id_factory = request_id_factory or (lambda: str(uuid4()))
 
-    def ingest(self, periods: tuple[str, ...] = ("2016", "2017", "2018")) -> str:
+    def ingest(
+        self,
+        periods: tuple[str, ...] = ("2016", "2017", "2018"),
+    ) -> str:
         request_id = self.request_id_factory()
         logger.info(
             "ibge_population_ingestion_started | request_id=%s | periods=%s",
@@ -47,7 +56,8 @@ class MunicipalityPopulationIngestionService:
                 raise ValueError("IBGE population ingestion returned no records.")
             self.bronze_writer.write(records, request_id)
             logger.info(
-                "ibge_population_ingestion_completed | request_id=%s | record_count=%s",
+                "ibge_population_ingestion_completed | "
+                "request_id=%s | record_count=%s",
                 request_id,
                 len(records),
             )
