@@ -56,30 +56,27 @@ def run(
         config=jdbc_config or JdbcConfig.from_env(),
     )
     reader = AnpCombustiveisPostgresReader(jdbc_reader)
-    dataframe = reader.read(request).cache()
+    dataframe = reader.read(request)
 
-    try:
-        row_count = dataframe.count()
-        if row_count == 0:
-            raise ValueError(
-                "ANP PostgreSQL source returned no rows for the requested interval."
-            )
+    row_count = dataframe.count()
+    if row_count == 0:
+        raise ValueError(
+            "ANP PostgreSQL source returned no rows for the requested interval."
+        )
 
-        writer = BronzeWriter(
-            spark=spark,
-            target_table=args.target_table,
-            config=ANP_COMBUSTIVEIS_BRONZE_CONFIG,
-        )
-        writer.replace_where(
-            dataframe=dataframe,
-            predicate=_build_replace_where_predicate(
-                start_date=request.start_date,
-                end_date=request.end_date,
-            ),
-        )
-        return row_count
-    finally:
-        dataframe.unpersist()
+    writer = BronzeWriter(
+        spark=spark,
+        target_table=args.target_table,
+        config=ANP_COMBUSTIVEIS_BRONZE_CONFIG,
+    )
+    writer.replace_where(
+        dataframe=dataframe,
+        predicate=_build_replace_where_predicate(
+            start_date=request.start_date,
+            end_date=request.end_date,
+        ),
+    )
+    return row_count
 
 
 def main() -> None:
