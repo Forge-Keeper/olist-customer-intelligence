@@ -135,7 +135,8 @@ class AnpCombustiveisLoader:
                             valor_venda,
                             valor_compra,
                             unidade_medida,
-                            bandeira
+                            bandeira,
+                            source_file
                         )
                         SELECT
                             regiao_sigla,
@@ -153,10 +154,12 @@ class AnpCombustiveisLoader:
                             REPLACE(valor_venda, ',', '.')::NUMERIC,
                             NULLIF(REPLACE(valor_compra, ',', '.'), '')::NUMERIC,
                             unidade_medida,
-                            bandeira
+                            bandeira,
+                            %s
                         FROM anp_combustiveis_raw
                         """
-                    )
+                    ),
+                    (file_path.name,),
                 )
 
                 cursor.execute(
