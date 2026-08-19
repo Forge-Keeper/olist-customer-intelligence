@@ -12,10 +12,11 @@ from pyspark.sql.types import (
     StructType,
 )
 
-from olist_data_platform.domains.bronze.ibge import (
-    municipality_population_bronze_config,
-)
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
+
+from .municipality_population_bronze_config import (
+    IBGE_MUNICIPALITY_POPULATION_BRONZE_CONFIG,
+)
 
 
 class BronzeMunicipalityPopulationWriter:
@@ -41,10 +42,7 @@ class BronzeMunicipalityPopulationWriter:
         self.writer = BronzeWriter(
             spark=spark,
             target_table=target_table,
-            config=(
-                municipality_population_bronze_config.
-                IBGE_MUNICIPALITY_POPULATION_BRONZE_CONFIG
-            ),
+            config=IBGE_MUNICIPALITY_POPULATION_BRONZE_CONFIG,
         )
 
     def write(self, records: list[dict[str, Any]], request_id: str) -> None:
