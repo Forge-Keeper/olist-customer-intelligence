@@ -11,6 +11,7 @@ ANP_COMBUSTIVEIS_BRONZE_CONFIG = BronzeDatasetConfig(
         "produto",
         "data_coleta",
         "valor_venda",
+        "source_file",
         "dt_base",
         "source_system",
     ),
