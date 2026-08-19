@@ -2,12 +2,13 @@ from __future__ import annotations
 
 from typing import Any
 
-from olist_data_platform.domains.ingestion.ibge.municipalities_ingestion_service import (
-    MunicipalitiesIngestionService,
+from olist_data_platform.domains.ingestion.ibge import (
+    municipalities_ingestion_service as municipalities_service,
 )
-from olist_data_platform.domains.ingestion.ibge.municipality_population_ingestion_service import (
-    MunicipalityPopulationIngestionService,
+from olist_data_platform.domains.ingestion.ibge import (
+    municipality_population_ingestion_service as population_service,
 )
+from olist_data_platform.domains.ingestion.ibge.sidra_query import SidraQuery
 
 
 class _LocalitiesClient:
@@ -19,7 +20,10 @@ class _LocalitiesClient:
                 "microrregiao": {
                     "id": 35061,
                     "nome": "São Paulo",
-                    "mesorregiao": {"id": 3515, "nome": "Metropolitana de São Paulo"},
+                    "mesorregiao": {
+                        "id": 3515,
+                        "nome": "Metropolitana de São Paulo",
+                    },
                 },
                 "regiao-imediata": {
                     "id": 350001,
@@ -31,7 +35,11 @@ class _LocalitiesClient:
                             "id": 35,
                             "sigla": "SP",
                             "nome": "São Paulo",
-                            "regiao": {"id": 3, "sigla": "SE", "nome": "Sudeste"},
+                            "regiao": {
+                                "id": 3,
+                                "sigla": "SE",
+                                "nome": "Sudeste",
+                            },
                         },
                     },
                 },
@@ -40,7 +48,7 @@ class _LocalitiesClient:
 
 
 class _SidraClient:
-    def get_values(self, query: Any) -> list[Any]:
+    def get_values(self, query: SidraQuery) -> list[Any]:
         assert query.periods == ("2016", "2017", "2018")
         return [
             {
@@ -84,9 +92,9 @@ class _Writer:
 
 def test_municipalities_service_writes_three_reference_snapshots() -> None:
     writer = _Writer()
-    service = MunicipalitiesIngestionService(
-        client=_LocalitiesClient(),  # type: ignore[arg-type]
-        bronze_writer=writer,  # type: ignore[arg-type]
+    service = municipalities_service.MunicipalitiesIngestionService(
+        client=_LocalitiesClient(),
+        bronze_writer=writer,
         request_id_factory=lambda: "req-municipalities",
     )
     request_id = service.ingest()
@@ -97,9 +105,9 @@ def test_municipalities_service_writes_three_reference_snapshots() -> None:
 
 def test_population_service_builds_period_query_and_writes_records() -> None:
     writer = _Writer()
-    service = MunicipalityPopulationIngestionService(
-        client=_SidraClient(),  # type: ignore[arg-type]
-        bronze_writer=writer,  # type: ignore[arg-type]
+    service = population_service.MunicipalityPopulationIngestionService(
+        client=_SidraClient(),
+        bronze_writer=writer,
         request_id_factory=lambda: "req-population",
     )
     request_id = service.ingest()
