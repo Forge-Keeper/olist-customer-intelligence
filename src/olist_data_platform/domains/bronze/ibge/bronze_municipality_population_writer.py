@@ -13,6 +13,7 @@ from pyspark.sql.types import (
 )
 
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
+
 from .municipality_population_bronze_config import (
     IBGE_MUNICIPALITY_POPULATION_BRONZE_CONFIG,
 )
