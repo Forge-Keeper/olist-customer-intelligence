@@ -1,6 +1,5 @@
 from olist_data_platform.domains.ingestion.ibge.sidra_dataset import SidraDataset
 
-
 MUNICIPALITY_POPULATION = SidraDataset(
     name="municipality_population",
     table_id=6579,
