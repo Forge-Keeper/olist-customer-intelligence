@@ -4,11 +4,11 @@ import argparse
 
 from pyspark.sql import SparkSession
 
-from olist_data_platform.domains.bronze.ibge.bronze_municipality_population_writer import (
-    BronzeMunicipalityPopulationWriter,
+from olist_data_platform.domains.bronze.ibge import (
+    bronze_municipality_population_writer,
 )
-from olist_data_platform.domains.ingestion.ibge.municipality_population_ingestion_service import (
-    MunicipalityPopulationIngestionService,
+from olist_data_platform.domains.ingestion.ibge import (
+    municipality_population_ingestion_service,
 )
 from olist_data_platform.domains.ingestion.ibge.sidra_client import SidraClient
 
@@ -30,12 +30,18 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def run(args: argparse.Namespace, spark: SparkSession) -> str:
-    service = MunicipalityPopulationIngestionService(
-        client=SidraClient(),
-        bronze_writer=BronzeMunicipalityPopulationWriter(
-            spark=spark,
-            target_table=args.target_table,
-        ),
+    service = (
+        municipality_population_ingestion_service.
+        MunicipalityPopulationIngestionService(
+            client=SidraClient(),
+            bronze_writer=(
+                bronze_municipality_population_writer.
+                BronzeMunicipalityPopulationWriter(
+                    spark=spark,
+                    target_table=args.target_table,
+                )
+            ),
+        )
     )
     return service.ingest(periods=_parse_periods(args.periods))
 
