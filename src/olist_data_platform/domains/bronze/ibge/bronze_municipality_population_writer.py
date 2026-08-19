@@ -3,7 +3,14 @@ from __future__ import annotations
 from typing import Any
 
 from pyspark.sql import Row, SparkSession
-from pyspark.sql.types import DateType, LongType, StringType, StructField, StructType, IntegerType
+from pyspark.sql.types import (
+    DateType,
+    IntegerType,
+    LongType,
+    StringType,
+    StructField,
+    StructType,
+)
 
 from olist_data_platform.domains.bronze.ibge.municipality_population_bronze_config import (
     IBGE_MUNICIPALITY_POPULATION_BRONZE_CONFIG,
