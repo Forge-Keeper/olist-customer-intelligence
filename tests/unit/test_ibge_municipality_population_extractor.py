@@ -2,8 +2,8 @@ from datetime import date
 
 import pytest
 
-from olist_data_platform.domains.ingestion.ibge.municipality_population_extractor import (
-    MunicipalityPopulationExtractor,
+from olist_data_platform.domains.ingestion.ibge import (
+    municipality_population_extractor as population_extractor,
 )
 
 
@@ -23,7 +23,7 @@ def _row(value: str = "11904961") -> dict:
 
 
 def test_extract_types_population_contract() -> None:
-    [record] = MunicipalityPopulationExtractor.extract([_row()])
+    [record] = population_extractor.MunicipalityPopulationExtractor.extract([_row()])
     assert record["municipality_code"] == "3550308"
     assert record["reference_year"] == 2018
     assert record["value"] == 11904961
@@ -32,4 +32,4 @@ def test_extract_types_population_contract() -> None:
 
 def test_extract_rejects_special_population_value() -> None:
     with pytest.raises(ValueError, match="numeric string"):
-        MunicipalityPopulationExtractor.extract([_row("...")])
+        population_extractor.MunicipalityPopulationExtractor.extract([_row("...")])
