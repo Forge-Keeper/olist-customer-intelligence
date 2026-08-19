@@ -2,7 +2,6 @@ import pytest
 
 from olist_data_platform.domains.ingestion.ibge.sidra_parser import SidraParser
 
-
 PAYLOAD = [
     {
         "D1C": "Município (Código)",
