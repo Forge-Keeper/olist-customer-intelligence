@@ -4,13 +4,12 @@ from collections.abc import Callable
 from typing import Any, Protocol
 from uuid import uuid4
 
-from olist_data_platform.domains.ingestion.ibge.datasets import MUNICIPALITY_POPULATION
-from olist_data_platform.domains.ingestion.ibge.municipality_population_extractor import (
-    MunicipalityPopulationExtractor,
-)
-from olist_data_platform.domains.ingestion.ibge.sidra_parser import SidraParser
-from olist_data_platform.domains.ingestion.ibge.sidra_query import SidraQuery
 from olist_data_platform.platform.logging import LoggerFactory
+
+from .datasets import MUNICIPALITY_POPULATION
+from .municipality_population_extractor import MunicipalityPopulationExtractor
+from .sidra_parser import SidraParser
+from .sidra_query import SidraQuery
 
 logger = LoggerFactory.get_logger(__name__)
 
