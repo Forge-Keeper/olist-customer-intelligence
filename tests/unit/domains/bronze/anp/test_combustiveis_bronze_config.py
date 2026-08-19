@@ -15,6 +15,7 @@ def test_anp_bronze_config_requires_expected_columns() -> None:
         "produto",
         "data_coleta",
         "valor_venda",
+        "source_file",
         "dt_base",
         "source_system",
     } <= required_columns
