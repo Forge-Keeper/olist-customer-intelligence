@@ -78,7 +78,8 @@ def test_loader_copies_converts_and_skips_same_file(tmp_path) -> None:
                             data_coleta,
                             valor_venda,
                             valor_compra,
-                            complemento
+                            complemento,
+                            source_file
                         FROM anp.combustiveis_precos
                         WHERE cnpj_revenda IN (
                             ' 00.000.000/0001-00',
@@ -107,10 +108,12 @@ def test_loader_copies_converts_and_skips_same_file(tmp_path) -> None:
         assert rows[0][2] == Decimal("3.499")
         assert rows[0][3] is None
         assert rows[0][4] is None
+        assert rows[0][5] == csv_path.name
         assert rows[1][1].isoformat() == "2016-01-05"
         assert rows[1][2] == Decimal("2.799")
         assert rows[1][3] == Decimal("2.100")
         assert rows[1][4] == "LOJA 1"
+        assert rows[1][5] == csv_path.name
         assert control == (2, "SUCCESS")
 
         skipped = loader.load(csv_path)
