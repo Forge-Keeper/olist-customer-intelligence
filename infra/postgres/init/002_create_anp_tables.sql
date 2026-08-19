@@ -15,5 +15,6 @@ CREATE TABLE IF NOT EXISTS anp.combustiveis_precos (
     valor_venda NUMERIC NOT NULL,
     valor_compra NUMERIC,
     unidade_medida TEXT,
-    bandeira TEXT
+    bandeira TEXT,
+    source_file TEXT NOT NULL
 );
