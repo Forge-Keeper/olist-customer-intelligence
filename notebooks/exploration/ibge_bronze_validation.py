@@ -59,7 +59,7 @@ spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
 MUNICIPALITIES_TABLE = "prd.bronze.ibge_municipalities"
 POPULATION_TABLE = "prd.bronze.ibge_municipality_population"
 EXPECTED_YEARS = (2016, 2017, 2018)
-EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR = 5570
+EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR = 5571
 
 # Contract migration is intentionally explicit. Set this to True only for the
 # one-time development reset after changing the IBGE Bronze schema.
