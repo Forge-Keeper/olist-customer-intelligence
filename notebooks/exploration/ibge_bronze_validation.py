@@ -195,10 +195,14 @@ assert municipality_payload_check["source_name"] is not None
 # COMMAND ----------
 # This is intentionally not a historical join by dt_base. Localidades is a
 # current source snapshot; historical reconstruction belongs in Silver.
-missing_current_municipality_code = population.select("municipality_code").distinct().join(
-    municipalities_snapshot.select("municipality_code").distinct(),
-    on="municipality_code",
-    how="left_anti",
+missing_current_municipality_code = (
+    population.select("municipality_code")
+    .distinct()
+    .join(
+        municipalities_snapshot.select("municipality_code").distinct(),
+        on="municipality_code",
+        how="left_anti",
+    )
 )
 missing_count = missing_current_municipality_code.count()
 if missing_count:
