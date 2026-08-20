@@ -3,8 +3,8 @@ from __future__ import annotations
 from typing import Any
 
 from olist_data_platform.domains.ingestion.ibge.datasets import MUNICIPALITY_GDP
-from olist_data_platform.domains.ingestion.ibge.municipality_gdp_ingestion_service import (
-    MunicipalityGdpIngestionService,
+from olist_data_platform.domains.ingestion.ibge import (
+    municipality_gdp_ingestion_service as gdp_service,
 )
 from olist_data_platform.domains.ingestion.ibge.sidra_query import SidraQuery
 
@@ -61,7 +61,7 @@ class _Writer:
 def test_gdp_service_partitions_requests_by_period_and_variable() -> None:
     writer = _Writer()
     client = _SidraClient()
-    service = MunicipalityGdpIngestionService(
+    service = gdp_service.MunicipalityGdpIngestionService(
         client=client,
         bronze_writer=writer,
         request_id_factory=lambda: "req-gdp",
