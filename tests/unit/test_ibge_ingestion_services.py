@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Any
 
 from olist_data_platform.domains.ingestion.ibge import (
@@ -90,16 +91,22 @@ class _Writer:
         self.request_id = request_id
 
 
-def test_municipalities_service_writes_three_reference_snapshots() -> None:
+def test_municipalities_service_writes_single_source_snapshot() -> None:
     writer = _Writer()
+    snapshot_date = date(2026, 8, 19)
     service = municipalities_service.MunicipalitiesIngestionService(
         client=_LocalitiesClient(),
         bronze_writer=writer,
         request_id_factory=lambda: "req-municipalities",
+        snapshot_date_factory=lambda: snapshot_date,
     )
+
     request_id = service.ingest()
+
     assert request_id == "req-municipalities"
-    assert len(writer.records) == 3
+    assert len(writer.records) == 1
+    assert writer.records[0]["dt_base"] == snapshot_date
+    assert writer.records[0]["payload"]["nome"] == "São Paulo"
     assert writer.request_id == request_id
 
 
@@ -110,8 +117,11 @@ def test_population_service_builds_period_query_and_writes_records() -> None:
         bronze_writer=writer,
         request_id_factory=lambda: "req-population",
     )
+
     request_id = service.ingest()
+
     assert request_id == "req-population"
     assert len(writer.records) == 1
-    assert writer.records[0]["reference_year"] == 2018
+    assert writer.records[0]["reference_year"] == "2018"
+    assert writer.records[0]["payload"]["Valor"] == "12176866"
     assert writer.request_id == request_id
