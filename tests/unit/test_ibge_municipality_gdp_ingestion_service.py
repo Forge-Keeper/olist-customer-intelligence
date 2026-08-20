@@ -2,10 +2,10 @@ from __future__ import annotations
 
 from typing import Any
 
-from olist_data_platform.domains.ingestion.ibge.datasets import MUNICIPALITY_GDP
 from olist_data_platform.domains.ingestion.ibge import (
     municipality_gdp_ingestion_service as gdp_service,
 )
+from olist_data_platform.domains.ingestion.ibge.datasets import MUNICIPALITY_GDP
 from olist_data_platform.domains.ingestion.ibge.sidra_query import SidraQuery
 
 
