@@ -49,8 +49,12 @@ class _LocalitiesClient:
 
 
 class _SidraClient:
+    def __init__(self) -> None:
+        self.periods: list[tuple[str, ...]] = []
+
     def get_values(self, query: SidraQuery) -> list[Any]:
-        assert query.periods == ("2016", "2017", "2018")
+        self.periods.append(query.periods)
+        [period] = query.periods
         return [
             {
                 "D1C": "Município (Código)",
@@ -70,8 +74,8 @@ class _SidraClient:
                 "D1N": "São Paulo (SP)",
                 "D2C": "9324",
                 "D2N": "População residente estimada",
-                "D3C": "2018",
-                "D3N": "2018",
+                "D3C": period,
+                "D3N": period,
                 "MC": "45",
                 "MN": "Pessoas",
                 "NC": "6",
@@ -110,10 +114,11 @@ def test_municipalities_service_writes_single_source_snapshot() -> None:
     assert writer.request_id == request_id
 
 
-def test_population_service_builds_period_query_and_writes_records() -> None:
+def test_population_service_batches_period_queries_and_writes_records() -> None:
     writer = _Writer()
+    client = _SidraClient()
     service = population_service.MunicipalityPopulationIngestionService(
-        client=_SidraClient(),
+        client=client,
         bronze_writer=writer,
         request_id_factory=lambda: "req-population",
     )
@@ -121,7 +126,12 @@ def test_population_service_builds_period_query_and_writes_records() -> None:
     request_id = service.ingest()
 
     assert request_id == "req-population"
-    assert len(writer.records) == 1
-    assert writer.records[0]["reference_year"] == "2018"
-    assert writer.records[0]["payload"]["Valor"] == "12176866"
+    assert client.periods == [("2016",), ("2017",), ("2018",)]
+    assert len(writer.records) == 3
+    assert [record["reference_year"] for record in writer.records] == [
+        "2016",
+        "2017",
+        "2018",
+    ]
+    assert all(record["payload"]["Valor"] == "12176866" for record in writer.records)
     assert writer.request_id == request_id
