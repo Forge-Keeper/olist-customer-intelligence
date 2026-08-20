@@ -3,13 +3,14 @@
 # MAGIC # IBGE Bronze validation
 # MAGIC
 # MAGIC Validation notebook for the IBGE API ingestion feature.
-# MAGIC It executes the two approved Bronze datasets and verifies:
-# MAGIC - 2016-2018 analytical coverage
-# MAGIC - expected territorial cardinality
+# MAGIC It executes the approved Bronze datasets and verifies:
+# MAGIC - current Localidades snapshot landing
+# MAGIC - 2016-2018 population coverage
 # MAGIC - natural-key uniqueness
-# MAGIC - referential integrity between population and municipalities
+# MAGIC - source payload preservation in VARIANT
+# MAGIC - municipality-code compatibility between sources
 # MAGIC - Delta clustering metadata
-# MAGIC - idempotent MERGE behavior on re-execution
+# MAGIC - idempotent MERGE behavior on same-scope re-execution
 
 # COMMAND ----------
 import sys
@@ -58,7 +59,7 @@ spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
 MUNICIPALITIES_TABLE = "prd.bronze.ibge_municipalities"
 POPULATION_TABLE = "prd.bronze.ibge_municipality_population"
 EXPECTED_YEARS = (2016, 2017, 2018)
-EXPECTED_MUNICIPALITIES_PER_YEAR = 5570
+EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR = 5570
 
 # COMMAND ----------
 municipalities_service = (
@@ -97,26 +98,26 @@ print("municipalities_count=", municipalities.count())
 print("population_count=", population.count())
 
 # COMMAND ----------
-municipalities_by_year = (
-    municipalities.groupBy(F.year("dt_base").alias("year"))
-    .agg(
-        F.count("*").alias("rows"),
-        F.countDistinct("municipality_code").alias("municipalities"),
-    )
-    .orderBy("year")
+latest_municipality_snapshot = municipalities.agg(F.max("dt_base")).first()[0]
+assert latest_municipality_snapshot is not None
+
+municipalities_snapshot = municipalities.filter(
+    F.col("dt_base") == F.lit(latest_municipality_snapshot)
 )
-municipalities_by_year.show(truncate=False)
+municipalities_snapshot_count = municipalities_snapshot.count()
+municipalities_snapshot_unique = municipalities_snapshot.select(
+    "municipality_code"
+).distinct().count()
 
-municipality_year_stats = {
-    row["year"]: (row["rows"], row["municipalities"])
-    for row in municipalities_by_year.collect()
-}
+assert municipalities_snapshot_count > 0
+assert municipalities_snapshot_unique == municipalities_snapshot_count
 
-assert tuple(sorted(municipality_year_stats)) == EXPECTED_YEARS
-for year in EXPECTED_YEARS:
-    rows, unique_municipalities = municipality_year_stats[year]
-    assert rows == EXPECTED_MUNICIPALITIES_PER_YEAR
-    assert unique_municipalities == EXPECTED_MUNICIPALITIES_PER_YEAR
+print(
+    "latest_municipality_snapshot=",
+    latest_municipality_snapshot,
+    "rows=",
+    municipalities_snapshot_count,
+)
 
 # COMMAND ----------
 municipality_duplicates = (
@@ -138,34 +139,61 @@ population_duplicates = (
 assert population_duplicates.count() == 0
 
 # COMMAND ----------
-population_years = tuple(
-    row["reference_year"]
-    for row in population.select("reference_year")
-    .distinct()
+population_year_stats = (
+    population.groupBy("reference_year")
+    .agg(
+        F.count("*").alias("rows"),
+        F.countDistinct("municipality_code").alias("municipalities"),
+    )
     .orderBy("reference_year")
-    .collect()
 )
-assert population_years == EXPECTED_YEARS
+population_year_stats.show(truncate=False)
+
+population_stats = {
+    int(row["reference_year"]): (row["rows"], row["municipalities"])
+    for row in population_year_stats.collect()
+}
+
+assert tuple(sorted(population_stats)) == EXPECTED_YEARS
+for year in EXPECTED_YEARS:
+    rows, unique_municipalities = population_stats[year]
+    assert rows == EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR
+    assert unique_municipalities == EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR
 
 invalid_population_dt_base = population.filter(
     F.col("dt_base")
-    != F.make_date(F.col("reference_year"), F.lit(1), F.lit(1))
+    != F.make_date(F.col("reference_year").cast("int"), F.lit(1), F.lit(1))
 )
 assert invalid_population_dt_base.count() == 0
 
 # COMMAND ----------
-missing_municipality_reference = population.alias("p").join(
-    municipalities.alias("m"),
-    on=(
-        (F.col("p.municipality_code") == F.col("m.municipality_code"))
-        & (F.col("p.dt_base") == F.col("m.dt_base"))
-    ),
+# Bronze preserves source values in the VARIANT payload. Business typing and
+# semantic normalization belong downstream.
+population_payload_check = population.selectExpr(
+    "variant_get(payload, '$.Valor', 'string') AS source_value",
+    "variant_get(payload, '$.Ano', 'string') AS source_year",
+).limit(1).first()
+assert population_payload_check is not None
+assert population_payload_check["source_value"] is not None
+assert population_payload_check["source_year"] is not None
+
+municipality_payload_check = municipalities_snapshot.selectExpr(
+    "variant_get(payload, '$.nome', 'string') AS source_name"
+).limit(1).first()
+assert municipality_payload_check is not None
+assert municipality_payload_check["source_name"] is not None
+
+# COMMAND ----------
+# This is intentionally not a historical join by dt_base. Localidades is a
+# current source snapshot; historical reconstruction belongs in Silver.
+missing_current_municipality_code = population.select("municipality_code").distinct().join(
+    municipalities_snapshot.select("municipality_code").distinct(),
+    on="municipality_code",
     how="left_anti",
 )
-
-missing_count = missing_municipality_reference.count()
+missing_count = missing_current_municipality_code.count()
 if missing_count:
-    missing_municipality_reference.show(truncate=False)
+    missing_current_municipality_code.show(truncate=False)
 assert missing_count == 0
 
 # COMMAND ----------
@@ -185,10 +213,12 @@ population_clustering = population_detail["clusteringColumns"]
 print("municipalities_clustering=", municipalities_clustering)
 print("population_clustering=", population_clustering)
 
-assert set(municipalities_clustering) == {"dt_base", "state_code"}
+assert set(municipalities_clustering) == {"dt_base"}
 assert set(population_clustering) == {"dt_base"}
 
 # COMMAND ----------
+# Re-execution in the same run uses the same calendar date for Localidades and
+# the same logical SIDRA keys, so MERGE must not increase row counts.
 municipalities_before = municipalities.count()
 population_before = population.count()
 
