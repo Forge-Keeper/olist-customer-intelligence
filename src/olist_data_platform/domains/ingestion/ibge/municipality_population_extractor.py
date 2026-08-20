@@ -5,7 +5,7 @@ from typing import Any
 
 
 class MunicipalityPopulationExtractor:
-    """Normalize decoded SIDRA municipality population rows for Bronze."""
+    """Prepare decoded SIDRA population rows for AS-IS Bronze landing."""
 
     @classmethod
     def extract(cls, rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -14,27 +14,25 @@ class MunicipalityPopulationExtractor:
         if not all(isinstance(row, dict) for row in rows):
             raise TypeError("SIDRA rows must contain only dictionaries.")
 
-        return [cls._normalize(row) for row in rows]
+        return [cls._prepare(row) for row in rows]
 
     @staticmethod
-    def _normalize(row: dict[str, Any]) -> dict[str, Any]:
-        reference_year = int(row["Ano"])
-        value = row["Valor"]
-        if not isinstance(value, str) or not value.isdigit():
-            raise ValueError(
-                "Population value must be a numeric string for this dataset."
-            )
+    def _prepare(row: dict[str, Any]) -> dict[str, Any]:
+        municipality_code = str(row["Município (Código)"])
+        reference_year = str(row["Ano"])
+        variable_code = str(row["Variável (Código)"])
+
+        if not municipality_code.strip():
+            raise ValueError("Municipality code cannot be empty.")
+        if not reference_year.isdigit():
+            raise ValueError("Reference year must be a numeric string.")
+        if not variable_code.strip():
+            raise ValueError("Variable code cannot be empty.")
 
         return {
-            "municipality_code": str(row["Município (Código)"]),
-            "municipality_name": str(row["Município"]),
-            "variable_code": str(row["Variável (Código)"]),
-            "variable_name": str(row["Variável"]),
+            "municipality_code": municipality_code,
             "reference_year": reference_year,
-            "unit_code": str(row["Unidade de Medida (Código)"]),
-            "unit_name": str(row["Unidade de Medida"]),
-            "territorial_level_code": str(row["Nível Territorial (Código)"]),
-            "territorial_level_name": str(row["Nível Territorial"]),
-            "value": int(value),
-            "dt_base": date(reference_year, 1, 1),
+            "variable_code": variable_code,
+            "dt_base": date(int(reference_year), 1, 1),
+            "payload": dict(row),
         }
