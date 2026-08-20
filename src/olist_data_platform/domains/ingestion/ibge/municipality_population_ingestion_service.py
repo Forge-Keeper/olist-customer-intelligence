@@ -44,15 +44,37 @@ class MunicipalityPopulationIngestionService:
             periods,
         )
         try:
-            query = MUNICIPALITY_POPULATION.build_query(
-                territories="all",
-                periods=periods,
-            )
-            payload = self.client.get_values(query)
-            decoded = SidraParser.decode(payload)
-            records = MunicipalityPopulationExtractor.extract(decoded)
+            records: list[dict[str, Any]] = []
+            for period in periods:
+                logger.info(
+                    "ibge_population_period_started | request_id=%s | period=%s",
+                    request_id,
+                    period,
+                )
+                query = MUNICIPALITY_POPULATION.build_query(
+                    territories="all",
+                    periods=(period,),
+                )
+                payload = self.client.get_values(query)
+                decoded = SidraParser.decode(payload)
+                period_records = MunicipalityPopulationExtractor.extract(decoded)
+                if not period_records:
+                    raise ValueError(
+                        "IBGE population ingestion returned no records "
+                        f"for period {period}."
+                    )
+                records.extend(period_records)
+                logger.info(
+                    "ibge_population_period_completed | "
+                    "request_id=%s | period=%s | record_count=%s",
+                    request_id,
+                    period,
+                    len(period_records),
+                )
+
             if not records:
                 raise ValueError("IBGE population ingestion returned no records.")
+
             self.bronze_writer.write(records, request_id)
             logger.info(
                 "ibge_population_ingestion_completed | "
