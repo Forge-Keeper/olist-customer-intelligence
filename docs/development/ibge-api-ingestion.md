@@ -30,6 +30,9 @@ IBGE SIDRA API
 SidraClient + SidraQuery + SidraDataset
         |
         v
+period-scoped requests
+        |
+        v
 SidraParser
         |
         v
@@ -57,7 +60,7 @@ Business typing, flattened geographic attributes, historical reconstruction, and
 
 Source: SIDRA table `6579`, territorial level `6`, variable `9324`.
 
-Default analytical periods for the initial feature are 2016, 2017, and 2018.
+Default analytical periods for the initial feature are 2016, 2017, and 2018. Population ingestion executes one SIDRA request per period, then combines the decoded records under the same ingestion `request_id` before one Bronze write. This keeps each external request bounded and reduces retry blast radius without changing the Bronze grain or idempotency key.
 
 Bronze columns:
 
