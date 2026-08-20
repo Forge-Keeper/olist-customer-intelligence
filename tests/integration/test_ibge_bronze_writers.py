@@ -7,6 +7,9 @@ from olist_data_platform.domains.bronze.ibge import (
     bronze_municipalities_writer as municipalities_writer,
 )
 from olist_data_platform.domains.bronze.ibge import (
+    bronze_municipality_gdp_writer as gdp_writer,
+)
+from olist_data_platform.domains.bronze.ibge import (
     bronze_municipality_population_writer as population_writer,
 )
 
@@ -93,5 +96,58 @@ def test_population_writer_preserves_sidra_payload_as_variant(spark):
 
     payload_json = dataframe.selectExpr("to_json(payload) AS payload_json").first()
     assert payload_json is not None
-    assert '"Valor":"12176866"' in payload_json.payload_json
+    assert '\"Valor\":\"12176866\"' in payload_json.payload_json
     assert "Campo novo" in payload_json.payload_json
+
+
+def test_gdp_writer_preserves_numeric_and_special_sidra_values_as_variant(spark):
+    writer = gdp_writer.BronzeMunicipalityGdpWriter(
+        spark,
+        "bronze.ibge_municipality_gdp",
+    )
+    captured = Mock()
+    writer.writer = captured
+
+    writer.write(
+        records=[
+            {
+                "municipality_code": "3550308",
+                "reference_year": "2018",
+                "variable_code": "37",
+                "dt_base": date(2018, 1, 1),
+                "payload": {
+                    "Município (Código)": "3550308",
+                    "Ano": "2018",
+                    "Variável (Código)": "37",
+                    "Valor": "714683362",
+                },
+            },
+            {
+                "municipality_code": "3550308",
+                "reference_year": "2018",
+                "variable_code": "6575",
+                "dt_base": date(2018, 1, 1),
+                "payload": {
+                    "Município (Código)": "3550308",
+                    "Ano": "2018",
+                    "Variável (Código)": "6575",
+                    "Valor": "...",
+                },
+            },
+        ],
+        request_id="request-gdp",
+    )
+
+    dataframe = captured.write.call_args.args[0]
+    schema = {field.name: field.dataType for field in dataframe.schema.fields}
+
+    assert dataframe.count() == 2
+    assert isinstance(schema["reference_year"], StringType)
+    assert isinstance(schema["payload"], VariantType)
+
+    payloads = [
+        row.payload_json
+        for row in dataframe.selectExpr("to_json(payload) AS payload_json").collect()
+    ]
+    assert any('\"Valor\":\"714683362\"' in payload for payload in payloads)
+    assert any('\"Valor\":\"...\"' in payload for payload in payloads)
