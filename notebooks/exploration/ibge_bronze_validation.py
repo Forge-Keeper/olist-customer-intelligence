@@ -61,6 +61,15 @@ POPULATION_TABLE = "prd.bronze.ibge_municipality_population"
 EXPECTED_YEARS = (2016, 2017, 2018)
 EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR = 5570
 
+# Contract migration is intentionally explicit. Set this to True only for the
+# one-time development reset after changing the IBGE Bronze schema.
+RESET_BRONZE_TABLES = False
+
+if RESET_BRONZE_TABLES:
+    spark.sql(f"DROP TABLE IF EXISTS {MUNICIPALITIES_TABLE}")
+    spark.sql(f"DROP TABLE IF EXISTS {POPULATION_TABLE}")
+    print("IBGE Bronze development tables reset for contract migration.")
+
 # COMMAND ----------
 municipalities_service = (
     municipalities_ingestion_service.MunicipalitiesIngestionService(
