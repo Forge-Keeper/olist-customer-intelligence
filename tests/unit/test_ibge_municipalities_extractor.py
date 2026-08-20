@@ -28,19 +28,30 @@ def _municipality(code: int = 3550308) -> dict:
                 },
             },
         },
+        "campo-novo": {"preserve": True},
     }
 
 
-def test_extract_materializes_three_reference_years() -> None:
-    records = MunicipalitiesExtractor.extract([_municipality()])
-    assert [record["dt_base"] for record in records] == [
-        date(2016, 1, 1),
-        date(2017, 1, 1),
-        date(2018, 1, 1),
-    ]
-    assert {record["municipality_code"] for record in records} == {"3550308"}
+def test_extract_preserves_single_source_snapshot() -> None:
+    snapshot_date = date(2026, 8, 19)
+    source = _municipality()
+
+    records = MunicipalitiesExtractor.extract([source], snapshot_date=snapshot_date)
+
+    assert len(records) == 1
+    assert records[0]["municipality_code"] == "3550308"
+    assert records[0]["dt_base"] == snapshot_date
+    assert records[0]["payload"] == source
+    assert records[0]["payload"]["campo-novo"] == {"preserve": True}
 
 
-def test_extract_excludes_boa_esperanca_do_norte_from_olist_period() -> None:
-    records = MunicipalitiesExtractor.extract([_municipality(5101837)])
-    assert records == []
+def test_extract_does_not_apply_historical_exclusions() -> None:
+    snapshot_date = date(2026, 8, 19)
+
+    records = MunicipalitiesExtractor.extract(
+        [_municipality(5101837)],
+        snapshot_date=snapshot_date,
+    )
+
+    assert len(records) == 1
+    assert records[0]["municipality_code"] == "5101837"
