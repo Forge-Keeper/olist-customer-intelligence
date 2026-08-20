@@ -3,40 +3,75 @@
 - **Status:** Accepted
 - **Date:** 2026-08-17
 - **Decision owners:** Olist Customer Intelligence
-- **Scope:** Bronze ingestion architecture and the Weather vertical slice
+- **Scope:** Bronze ingestion architecture for semi-structured API sources
 
 ## Context
 
 The Weather ingestion flow previously persisted the original Open-Meteo response in a dedicated RAW table and then parsed the same in-memory response into a rigid, typed Bronze table.
 
-That design preserved source payloads, but it duplicated persistence responsibilities and coupled the first Bronze write to a closed schema containing known weather metrics.
+That design preserved source payloads, but it duplicated persistence responsibilities and coupled the first Bronze write to a closed schema containing known source metrics.
+
+The same concern applies to IBGE APIs. SIDRA and Localidades expose source-owned structures whose business attributes should not be normalized or strongly typed before the first persistent landing layer.
 
 The project needs a Bronze contract that:
 
-- remains close to source data;
+- remains as close as practical to source data;
 - preserves semi-structured fields without requiring a table schema change for every new source attribute;
 - keeps one row per natural ingestion grain;
-- supports idempotent writes and explicit reprocessing;
-- can be reused by future datasets without embedding Weather-specific keys or layout rules in platform code.
+- supports idempotent writes and explicit reprocessing where justified;
+- extracts only the technical fields required for row identity, time semantics, layout, and operations;
+- can be reused by future datasets without embedding source-specific field semantics in platform code.
 
 ## Decision
 
-The project will not maintain a separate RAW layer for this ingestion path.
+The project will not maintain a separate RAW persistence layer for these ingestion paths.
 
 Bronze becomes the first persistent landing layer.
 
-For daily Weather data, each Bronze row represents one source observation day and contains:
+Each semi-structured API Bronze row contains:
 
-- `dt_base` as `DATE`;
+- a source payload stored as `VARIANT`;
+- `dt_base` with an explicit dataset-specific technical meaning;
+- the minimum source-derived columns required for logical identity;
+- request/ingestion metadata.
+
+The payload remains as close as practical to the source representation. Semantic typing, normalization, Data Quality rules, historical reconstruction, and business interpretation are deferred to downstream processing.
+
+### Weather
+
+For daily Weather data, each row represents one source observation day and contains:
+
+- `dt_base` as the observation date;
 - `payload` as `VARIANT`;
 - `request_id`;
-- `requested_latitude`;
-- `requested_longitude`;
+- requested coordinates;
 - `ingestion_timestamp`.
 
-The daily payload remains as close as practical to the source representation. The only structural transformation required before the first persistence is splitting the multi-day API response into one payload per day and extracting `dt_base`.
+The only structural transformation required before persistence is splitting the multi-day response into the established daily grain and extracting the observation date.
 
-Semantic typing, normalization, Data Quality rules, and business interpretation are deferred to downstream processing.
+### IBGE municipality population
+
+For SIDRA municipality population, each row represents one municipality, reference year, and SIDRA variable. Bronze contains:
+
+- `municipality_code` as source identity;
+- `reference_year` preserved as a source string;
+- `variable_code` as source identity;
+- `dt_base` as January 1 of the reference year, used only as the annual technical competence date;
+- the decoded SIDRA row preserved in `payload` as `VARIANT`;
+- `request_id` and `ingestion_timestamp`.
+
+Source values such as `Valor`, variable names, units, and territorial labels remain inside the payload in their source representation. Numeric typing and semantic interpretation belong downstream.
+
+### IBGE Localidades
+
+The Localidades endpoint is treated as a current source snapshot. Each row contains:
+
+- `municipality_code` as source identity;
+- `dt_base` as the snapshot capture date;
+- the municipality object preserved in `payload` as `VARIANT`;
+- `request_id` and `ingestion_timestamp`.
+
+Bronze must not fabricate historical copies of the current Localidades response. Historical municipality modeling for analytical years belongs downstream.
 
 ## Dataset Contract
 
@@ -68,42 +103,57 @@ NORMAL WRITE STRATEGY
 MERGE
 ```
 
+For IBGE municipality population:
+
+```text
+PRIMARY KEY
+(municipality_code, reference_year, variable_code)
+
+CLUSTER BY
+(dt_base)
+
+PARTITION BY
+none
+
+NORMAL WRITE STRATEGY
+MERGE
+```
+
+For IBGE Localidades:
+
+```text
+PRIMARY KEY
+(municipality_code, dt_base)
+
+CLUSTER BY
+(dt_base)
+
+PARTITION BY
+none
+
+NORMAL WRITE STRATEGY
+MERGE
+```
+
 The application validates non-null and non-duplicated primary keys inside the incoming batch. Catalog primary-key constraints, if introduced later, are not relied upon for enforcement.
 
 ## Normal Ingestion
 
-Normal ingestion is idempotent.
+Normal ingestion is idempotent within the declared logical key.
 
 Existing rows are matched by the declared primary key and updated; new keys are inserted.
 
-```text
-source API
-    |
-    v
-WeatherDailyExtractor
-    |
-    v
-Bronze payload + metadata
-    |
-    v
-MERGE by declared primary key
-```
-
-The previous `overwrite` boolean is removed from normal ingestion because reprocessing is a separate operational intent.
+For current-snapshot datasets such as Localidades, a later `dt_base` intentionally creates a new snapshot. Re-execution for the same snapshot date updates the same logical rows.
 
 ## Explicit Reprocessing
 
 Reprocessing requires the caller to explicitly provide the scope to rebuild.
 
-For Weather, the scope contains requested coordinates and a date interval.
+For Weather, the scope contains requested coordinates and a date interval and uses selective replacement with `replaceWhere`.
 
-Scoped reprocessing uses selective replacement with `replaceWhere`.
+IBGE population and Localidades currently rely on idempotent `MERGE`; no separate reprocessing API is introduced until a concrete replay requirement justifies one.
 
-The Bronze table is not used as the source of truth for deciding the historical universe to rebuild. A future canonical coverage configuration may enable a parameterless full-reprocess operation, but that is outside this decision.
-
-If a reprocessing request returns zero daily records, the operation fails before replacement and preserves the existing Bronze scope.
-
-A future policy may allow an authoritative empty response to clear a scope, but the initial behavior intentionally favors data preservation.
+The Bronze table is not used as the source of truth for deciding a historical universe to reconstruct.
 
 ## VARIANT
 
@@ -121,11 +171,9 @@ Enabling `VARIANT` on a Delta table upgrades the Delta table writer protocol, so
 
 Reusable persistence behavior belongs to `platform/delta/bronze`.
 
-Source-specific extraction and metadata enrichment remain in their domain.
+Source-specific extraction of technical identity and time metadata remains in the source domain. Business normalization remains downstream.
 
-The platform layer must not know Weather field names or Open-Meteo semantics.
-
-The initial implementation supports a configurable write-strategy contract while implementing only strategies justified by current use cases.
+The platform layer must not know Weather, SIDRA, or Localidades field semantics.
 
 ## Alternatives Considered
 
@@ -133,9 +181,17 @@ The initial implementation supports a configurable write-strategy contract while
 
 Rejected for the current architecture because it maintains two first-stage persistence responsibilities and requires the initial Bronze contract to evolve whenever source fields change.
 
-### Store the entire API response as one Bronze row
+### Fully normalize API responses in Bronze
 
-Rejected because the established Weather grain and `dt_base` semantics are daily. One API response can contain many observation days.
+Rejected because it moves semantic typing and source interpretation into the landing layer, increases schema coupling, and loses fidelity to source-owned structures.
+
+### Materialize historical Localidades rows from the current endpoint
+
+Rejected because the endpoint is a current snapshot. Repeating that snapshot for historical analytical years creates derived data that does not belong in Bronze.
+
+### Store entire API responses as one Bronze row
+
+Rejected when the established natural grain is smaller than the response envelope. Weather is daily; SIDRA population is municipality/year/variable; Localidades is municipality/snapshot date.
 
 ### Use JSON STRING as the Bronze payload
 
@@ -145,58 +201,53 @@ Viable and simpler, but not selected because the project specializes in Databric
 
 Rejected for the first landing layer because those representations introduce a stronger schema contract than required at this stage.
 
-### Continue using `overwrite=True` for reprocessing
-
-Rejected because a boolean mixes normal idempotent ingestion with the separate intent of rebuilding an explicit scope.
-
 ## Consequences
 
 ### Positive
 
-- removes the duplicate RAW persistence layer;
+- removes duplicate RAW persistence responsibility;
 - preserves new source attributes inside `payload`;
 - keeps the first persistent schema small and stable;
 - separates source extraction from generic Delta persistence;
 - makes logical identity and idempotency explicit;
-- makes reprocessing intent explicit instead of overloading normal ingestion;
-- creates reusable Bronze infrastructure for future datasets.
+- prevents historical or business modeling from leaking into Bronze;
+- creates reusable Bronze infrastructure for future SIDRA datasets such as municipal GDP.
 
 ### Negative / Trade-offs
 
-- stronger dependency on Databricks because `VARIANT` is a platform-specific capability;
+- stronger dependency on Databricks because `VARIANT` is platform-specific;
 - local Spark tests cannot fully validate Databricks Delta `VARIANT` behavior;
-- a daily payload is structurally reconstructed from the original multi-day API response rather than persisted byte-for-byte;
-- full historical rebuild still requires the caller to supply the intended universe;
-- `MERGE` and scoped replacement semantics require careful primary-key and scope definitions.
+- some technical fields are still extracted from source payloads to support identity and layout;
+- consumers must perform explicit downstream parsing and typing;
+- current Localidades snapshots alone do not provide authoritative historical municipality state.
 
 ## Testing
 
 Local tests should validate:
 
-- daily extraction and preservation of unexpected source fields;
-- `dt_base` parsing and required-grain behavior;
+- preservation of unexpected source fields;
+- dataset-specific `dt_base` semantics;
 - Bronze configuration validation;
 - non-null and non-duplicated primary-key validation;
 - generic MERGE condition generation;
-- explicit scoped-reprocess predicate generation;
-- empty reprocess responses fail before a replacement is attempted;
-- Weather code delegates persistence to the generic Bronze infrastructure.
+- source-specific writers delegate persistence to generic Bronze infrastructure;
+- source values intended to remain AS-IS are not prematurely typed.
 
 Databricks validation should confirm:
 
 - `payload` is physically stored as `VARIANT`;
-- the Delta table supports VARIANT;
 - `dt_base` is `DATE`;
-- the table has no Hive partition columns;
-- Liquid Clustering is configured on `dt_base`;
-- repeated normal ingestion is idempotent through MERGE;
-- scoped reprocessing replaces only the explicitly supplied scope.
+- the tables have no Hive partition columns;
+- Liquid Clustering matches each dataset contract;
+- repeated ingestion of the same logical scope is idempotent through `MERGE`;
+- IBGE population retains the requested historical coverage;
+- Localidades is persisted as real current snapshots rather than fabricated historical rows.
 
 ## Migration
 
-No migration of the existing development Bronze schema is required.
+Development Bronze tables affected by a contract change may be dropped/recreated and source data re-ingested before the feature is declared complete.
 
-Any existing Bronze table for the affected dataset will be dropped/recreated and source data will be ingested again using the new contract.
+No production migration guarantee is implied while the portfolio project remains in active development.
 
 ## Revisit Criteria
 
@@ -206,4 +257,5 @@ Review this decision if:
 - an authoritative-empty reprocessing policy is required;
 - a second Bronze representation becomes justified before Silver;
 - external Delta clients require a compatibility profile that conflicts with the VARIANT table feature;
-- another source demonstrates that the current Bronze dataset contract is insufficient.
+- a source demonstrates that its natural grain cannot be represented with a small stable technical envelope plus `VARIANT` payload;
+- authoritative historical Localidades data becomes available and changes the downstream modeling strategy.
