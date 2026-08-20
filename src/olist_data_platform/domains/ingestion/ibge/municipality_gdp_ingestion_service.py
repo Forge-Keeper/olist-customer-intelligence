@@ -49,7 +49,8 @@ class MunicipalityGdpIngestionService:
             for period in periods:
                 for variable_code in MUNICIPALITY_GDP.variables:
                     logger.info(
-                        "ibge_gdp_slice_started | request_id=%s | period=%s | variable=%s",
+                        "ibge_gdp_slice_started | request_id=%s | "
+                        "period=%s | variable=%s",
                         request_id,
                         period,
                         variable_code,
