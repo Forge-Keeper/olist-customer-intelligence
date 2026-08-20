@@ -3,16 +3,19 @@ from unittest.mock import Mock
 
 from pyspark.sql.types import DateType, StringType, VariantType
 
-from olist_data_platform.domains.bronze.ibge.bronze_municipalities_writer import (
-    BronzeMunicipalitiesWriter,
+from olist_data_platform.domains.bronze.ibge import (
+    bronze_municipalities_writer as municipalities_writer,
 )
-from olist_data_platform.domains.bronze.ibge.bronze_municipality_population_writer import (
-    BronzeMunicipalityPopulationWriter,
+from olist_data_platform.domains.bronze.ibge import (
+    bronze_municipality_population_writer as population_writer,
 )
 
 
 def test_municipalities_writer_preserves_source_payload_as_variant(spark):
-    writer = BronzeMunicipalitiesWriter(spark, "bronze.ibge_municipalities")
+    writer = municipalities_writer.BronzeMunicipalitiesWriter(
+        spark,
+        "bronze.ibge_municipalities",
+    )
     captured = Mock()
     writer.writer = captured
 
@@ -49,7 +52,7 @@ def test_municipalities_writer_preserves_source_payload_as_variant(spark):
 
 
 def test_population_writer_preserves_sidra_payload_as_variant(spark):
-    writer = BronzeMunicipalityPopulationWriter(
+    writer = population_writer.BronzeMunicipalityPopulationWriter(
         spark,
         "bronze.ibge_municipality_population",
     )
