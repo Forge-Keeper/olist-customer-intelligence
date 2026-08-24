@@ -12,9 +12,9 @@ MUNICIPALITY_GDP = SidraDataset(
     name="municipality_gdp",
     table_id=5938,
     territorial_level=6,
-    variables=("all",),
+    variables=("37", "498", "513", "517", "525", "6575"),
     description=(
-        "IBGE municipal GDP dataset. Variables remain intentionally broad "
-        "until the GDP Bronze feature selects its production contract."
+        "IBGE municipal GDP and gross value added indicators selected for the "
+        "2016-2018 Olist enrichment scope."
     ),
 )

@@ -69,8 +69,15 @@ def test_sidra_dataset_allows_explicit_periods() -> None:
     assert query.periods == ("2019", "2020", "2025")
 
 
-def test_initial_dataset_catalog_matches_discovery() -> None:
+def test_dataset_catalog_matches_approved_contracts() -> None:
     assert MUNICIPALITY_POPULATION.table_id == 6579
     assert MUNICIPALITY_POPULATION.variables == ("9324",)
     assert MUNICIPALITY_GDP.table_id == 5938
-    assert MUNICIPALITY_GDP.variables == ("all",)
+    assert MUNICIPALITY_GDP.variables == (
+        "37",
+        "498",
+        "513",
+        "517",
+        "525",
+        "6575",
+    )
