@@ -2,13 +2,13 @@
 
 ## Status
 
-Requirements drafted from the approved Discovery and user decisions. Technical Design and Impact Analysis are the next gates. No implementation is authorized by this document alone.
+Requirements approved from Discovery and user decisions. Technical Design and Impact Analysis refine the implementation boundary. No implementation is authorized by this document alone.
 
 ## Objective
 
 Deliver the first professional Databricks Asset Bundle vertical slice for Olist Customer Intelligence while introducing an executable dataset contract and an explicit Delta table lifecycle boundary.
 
-The first pilot is `ibge_municipality_gdp_ingestion`.
+The first DAB pilot is `ibge_municipality_gdp_ingestion`. All current Bronze dataset declarations will migrate to the executable contract model in this feature so the platform does not retain competing contract abstractions.
 
 ## Environment and deployment requirements
 
@@ -29,7 +29,7 @@ Deployment must follow a professional CI/CD promotion flow aligned with Databric
 - development execution and iteration occur in `dev`;
 - validated deliverables are promoted through `stg` before `prd`;
 - production deployment must use production-safe bundle behavior rather than treating `prd` as another development target;
-- the exact branch-to-target mapping, deployment identity and automated/manual approval gates are Technical Design decisions and must not be invented at Requirements.
+- the exact branch-to-target mapping, deployment identity and automated/manual approval gates are Technical Design decisions.
 
 ### R3 — Explicit DAB resources
 
@@ -53,7 +53,7 @@ The same Python code must run against `dev`, `stg` and `prd` without source chan
 
 ### R6 — Single schema source of truth
 
-The pilot dataset must have one declarative source of truth for stable column contract information.
+Managed datasets must have one declarative source of truth for stable persisted column contract information.
 
 Each declared column must contain at least:
 
@@ -86,19 +86,40 @@ The dataset contract must continue to declare the persistence semantics already 
 
 The first design should remain small. New wrapper classes are introduced only where they clarify real responsibility boundaries.
 
-### R9 — Dataset metadata
+### R9 — Dataset metadata and governance
 
 The contract must support at least:
 
 - table description;
 - column comments;
-- a small durable set of tags based on platform/source truth.
+- table-level tags;
+- column-level tags;
+- a small durable tag vocabulary based on platform/source/governance truth.
 
-The first pilot may declare durable facts such as `layer=bronze`, `domain=ibge` and source-system information. PII/classification tags must not be invented without evidence.
+Tags are executable governance metadata, not documentation-only fields. The lifecycle must be able to reconcile intended tag assignments with Unity Catalog state when the required feature and permissions are available.
+
+The first pilot may declare durable table facts such as `layer=bronze`, `domain=ibge` and source-system information. PII/classification/sensitivity tags must not be invented without evidence.
+
+Where account-level governed tags are available, the platform design must be compatible with them so tag assignments can participate in centralized Unity Catalog governance/ABAC policies.
+
+### R10 — Future Gold fine-grained governance compatibility
+
+The contract/lifecycle architecture must preserve an explicit extension path for Gold datasets that require fine-grained governance.
+
+Required future capabilities include:
+
+- column-level governed tag assignments;
+- column mask policy references;
+- row filter policy references;
+- compatibility with Unity Catalog ABAC policy-driven governance.
+
+The platform must **not** invent literal per-row metadata tags. Rows are governed through row-filter policies evaluating row values and object attributes. If a business dataset needs a classification attribute stored per row, that is a data-model column and not a Unity Catalog tag.
+
+A generalized ABAC policy engine is outside this first slice, but the executable contract must not require redesign to add these policy references later.
 
 ## Delta lifecycle requirements
 
-### R10 — Lifecycle separation
+### R11 — Lifecycle separation
 
 Physical table lifecycle must be separated from Bronze write semantics.
 
@@ -106,12 +127,13 @@ A reusable Delta lifecycle boundary must be responsible for capabilities such as
 
 - ensure/create table;
 - apply or validate table layout;
-- materialize description/comments/tags;
+- materialize description/comments;
+- materialize/reconcile table and column tags;
 - inspect current table state;
 - validate contract compatibility;
 - coordinate explicitly allowed schema evolution.
 
-### R11 — BronzeWriter responsibility
+### R12 — BronzeWriter responsibility
 
 `BronzeWriter` must remain focused on batch/dataframe preparation and persistence semantics, including the currently supported behaviors:
 
@@ -123,31 +145,41 @@ It must not become the owner of all table governance/lifecycle concerns.
 
 ## Schema evolution requirements
 
-### R12 — Fail-fast default
+### R13 — Fail-fast default
 
 Incompatible schema drift must fail explicitly by default.
 
 A dataset for which schema evolution has not been explicitly enabled must never silently mutate the table definition to accommodate an incompatible schema.
 
-### R13 — Explicit evolution opt-in
+### R14 — Explicit evolution opt-in
 
 The dataset contract must provide an explicit way to declare that supported schema evolution is allowed for that dataset.
 
 This opt-in is a policy switch, not unrestricted `mergeSchema` behavior. Technical Design must define the supported evolution matrix before implementation.
 
-### R14 — Controlled evolution behavior
+### R15 — Controlled evolution behavior
 
 When evolution is enabled, the lifecycle component must distinguish supported changes from breaking changes.
 
-The first supported matrix should be conservative. Candidate evolution classes to evaluate in Technical Design include additive nullable columns and metadata/comment changes. Type changes, column removals, key changes, nullability tightening and incompatible layout changes must not be assumed safe.
+The first supported matrix is conservative: additive nullable columns may be eligible for automatic evolution; type changes, column removals, key changes, nullability changes and incompatible layout changes remain explicit migrations.
 
-### R15 — Observable evolution
+### R16 — Observable evolution
 
 Any automatic schema evolution that is allowed and applied must be visible in logs and must be testable. Silent mutation is not acceptable.
 
+## Contract migration requirements
+
+### R17 — Single contract model after this feature
+
+All current `BronzeDatasetConfig` dataset declarations must be migrated to the executable `DatasetContract` model in this feature.
+
+Only GDP is migrated to DAB deployment. Migrating the other Bronze contracts does not imply migrating their jobs to DAB.
+
+A long-lived compatibility layer between old and new dataset contract models is not accepted as the target architecture.
+
 ## Job definition requirements
 
-### R16 — Minimal declarative job definition
+### R18 — Minimal declarative job definition
 
 The platform should introduce a small job-definition capability able to represent at least:
 
@@ -156,7 +188,7 @@ The platform should introduce a small job-definition capability able to represen
 - parameters;
 - optional explicit dependencies.
 
-### R17 — Dependency scope
+### R19 — Dependency scope
 
 Dependencies must be representable but remain shallow in this slice.
 
@@ -169,19 +201,13 @@ Out of scope:
 
 ## Packaging and compute requirements
 
-### R18 — Deployable Python artifact
+### R20 — Deployable Python artifact
 
-The pilot must use a repeatable deployment mechanism for the existing Python package. Wheel packaging remains the preferred candidate and must be validated in Technical Design.
+The pilot must use a repeatable deployment mechanism for the existing Python package. Wheel packaging is the selected direction and must be validated during implementation.
 
-### R19 — Compute decision
+### R21 — Compute decision
 
-The first job compute model must be explicitly designed based on the actual workspace constraints and the pilot needs:
-
-- Spark + Delta / Unity Catalog access;
-- outbound HTTP access to IBGE;
-- compatibility with the selected package deployment mechanism.
-
-No compute SKU/runtime/policy is fixed at Requirements.
+The pilot design targets serverless jobs compute, subject to actual workspace availability, Unity Catalog permissions and required outbound access to IBGE. If those prerequisites are unavailable, an explicit classic-compute redesign is required rather than a silent substitution.
 
 ## Validation and acceptance criteria
 
@@ -192,16 +218,21 @@ The first vertical slice is accepted only when all of the following are demonstr
 3. `dev` resolves to `dev.bronze...`, `stg` to `stg.bronze...`, and `prd` to `prd.bronze...`.
 4. Non-production execution cannot write to the `prd` catalog through a hardcoded runtime path in the GDP pilot.
 5. GDP can be deployed and run through the approved promotion path.
-6. The dataset contract is the authoritative declaration of stable schema information for the pilot.
-7. The lifecycle can create/ensure the table and materialize approved metadata.
-8. The lifecycle can detect schema drift.
-9. Drift fails by default when evolution is disabled.
-10. A dataset explicitly marked as evolution-enabled can apply only supported evolution changes.
-11. Unsupported/breaking changes still fail even when evolution is enabled.
-12. Any applied evolution is logged.
-13. Existing GDP MERGE/idempotency behavior remains valid.
-14. Existing unit/integration/lint gates remain green.
-15. Documentation is updated and architectural decisions are captured in ADRs when durable trade-offs are introduced.
+6. All current Bronze dataset declarations use the executable contract model.
+7. The dataset contract is the authoritative declaration of stable persisted schema information.
+8. The lifecycle can create/ensure the table and materialize approved metadata.
+9. Table-level tags can be declared and reconciled.
+10. Column-level tags can be declared and reconciled.
+11. No sensitivity/PII governance fact is invented by platform defaults.
+12. The lifecycle can detect schema drift.
+13. Drift fails by default when evolution is disabled.
+14. A dataset explicitly marked as evolution-enabled can apply only supported evolution changes.
+15. Unsupported/breaking changes still fail even when evolution is enabled.
+16. Any applied evolution is logged.
+17. Existing GDP MERGE/idempotency behavior remains valid.
+18. Existing unit/integration/lint gates remain green.
+19. Documentation is updated and durable architectural decisions are captured in ADRs.
+20. The contract model has a documented future extension point for row-filter and column-mask policy references without introducing fictional row tags.
 
 ## Documentation requirements
 
@@ -214,59 +245,60 @@ The feature documentation must describe:
 - pilot job;
 - contract model;
 - lifecycle behavior;
+- table/column governance tags;
 - schema evolution policy;
 - validation/deployment commands once finalized.
 
 ### DR2 — ADR: executable contracts and lifecycle
 
-Create an ADR for the durable architectural decision to:
+Maintain an ADR for the durable architectural decision to:
 
 - use executable dataset contracts;
 - separate Delta table lifecycle from write semantics;
+- treat table/column governance metadata as executable contract state;
+- preserve the future ABAC row-filter/column-mask extension path;
 - fail on schema drift by default;
 - allow explicit, controlled schema evolution;
 - keep environment resolution outside the dataset contract.
 
-Candidate: `ADR-004-executable-dataset-contracts-and-delta-lifecycle.md`.
+`ADR-004-executable-dataset-contracts-and-delta-lifecycle.md`.
 
 ### DR3 — ADR: deployment/environment boundary
 
-Technical Design must determine whether DAB environment/promotion policy deserves its own ADR. Given the durable `dev -> stg -> prd` boundary and production deployment behavior, the current recommendation is to create a separate ADR rather than bury the decision in implementation documentation.
+Maintain a separate ADR for the durable `dev -> stg -> prd` DAB environment/promotion boundary.
 
-Candidate: `ADR-005-dab-environment-and-promotion-boundary.md`.
+`ADR-005-dab-environment-and-promotion-boundary.md`.
 
 ## Explicit non-goals
 
 The first slice does not include:
 
-- migration of all existing jobs;
+- DAB migration of all existing jobs;
 - automatic YAML generation;
 - automatic job/task discovery;
 - dependency inference or DAG compiler;
 - generalized table migration engine;
 - unrestricted schema evolution;
+- generalized ABAC policy authoring/management;
+- row-filter or column-mask implementation for Bronze GDP;
 - full Silver/Gold orchestration;
 - Terraform;
 - MLOps framework parity with SAFRA.
 
-## Open Technical Design decisions
+## Open implementation/design details
 
-The following items are intentionally unresolved and must be closed at the next gate:
+The following implementation details remain to be finalized in the implementation plan or validated against the actual Databricks workspace:
 
-1. exact DAB `mode`/presets for `dev`, `stg` and `prd`;
-2. Git branch/ref promotion policy per target;
-3. service-principal/run identity strategy for `prd` and possibly `stg`;
-4. CI/CD approval/manual promotion boundaries;
-5. wheel build/install mechanism inside the bundle;
-6. compute configuration for the pilot;
-7. exact `DatasetContract`, `ColumnContract`, layout/metadata types and package placement;
-8. contract-to-`StructType` mapping rules;
-9. exact schema drift comparison semantics;
-10. exact allowed schema-evolution matrix and how approved changes are applied;
-11. treatment of the platform-added `ingestion_timestamp` within the authoritative table contract;
-12. lifecycle API and BronzeWriter integration seam;
-13. minimum `JobDefinition` API without duplicating DAB YAML unnecessarily.
+1. exact service-principal identities/permissions;
+2. GitHub protected-environment/approval configuration;
+3. exact wheel build/install command;
+4. serverless workflow availability and egress permissions;
+5. exact `DatasetContract`/`ColumnContract` Python field shapes;
+6. exact SQL/API mechanism used to reconcile table and column tags;
+7. whether governed-tag taxonomy already exists or must be treated as an external prerequisite;
+8. lifecycle API details and BronzeWriter injection seam;
+9. whether a minimal Python `JobDefinition` has a real first-slice consumer or should be deferred.
 
 ## Gate
 
-Requirements are ready for review. After approval, proceed to Technical Design and Impact Analysis before implementation.
+Requirements are approved. Technical Design and Impact Analysis incorporate the selected full Bronze contract migration and governance direction. Proceed to Implementation Plan only after those design amendments are accepted.
