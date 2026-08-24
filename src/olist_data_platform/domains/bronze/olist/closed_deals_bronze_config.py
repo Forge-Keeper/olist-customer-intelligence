@@ -35,7 +35,9 @@ OLIST_CLOSED_DEALS_BRONZE_CONFIG = DatasetContract(
             name="sr_id",
             data_type="string",
             nullable=True,
-            description="Sales representative identifier preserved from the source CSV.",
+            description=(
+                "Sales representative identifier preserved from the source CSV."
+            ),
         ),
         ColumnContract(
             name="won_date",
