@@ -22,8 +22,19 @@ def build_parser() -> argparse.ArgumentParser:
         description="Validate Delta contract lifecycle behavior in a Databricks dev workspace."
     )
     parser.add_argument("--gdp-table", required=True)
-    parser.add_argument("--scratch-table", required=True)
+    parser.add_argument("--scratch-prefix", required=True)
     return parser
+
+
+def _scratch_contract() -> DatasetContract:
+    """Return the disposable base contract used by lifecycle smoke fixtures."""
+    return replace(
+        IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG,
+        metadata=replace(
+            IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG.metadata,
+            description="Disposable dev table for Delta contract lifecycle smoke validation.",
+        ),
+    )
 
 
 def _evolution_contract(base: DatasetContract) -> DatasetContract:
@@ -42,10 +53,10 @@ def _evolution_contract(base: DatasetContract) -> DatasetContract:
 
 
 def run(args: argparse.Namespace, spark: SparkSession) -> None:
-    """Run idempotency, drift and additive-evolution checks against dev tables.
+    """Run lifecycle idempotency, drift and additive-evolution checks in dev.
 
-    The GDP table is only ensured/validated. Destructive drift and evolution
-    checks are isolated to the explicitly supplied scratch table.
+    The GDP table is only ensured/validated. Drift and evolution are isolated to
+    separate disposable tables derived from the supplied scratch prefix.
     """
     gdp_lifecycle = DeltaTableLifecycle(
         spark=spark,
@@ -55,47 +66,46 @@ def run(args: argparse.Namespace, spark: SparkSession) -> None:
     gdp_lifecycle.ensure()
     gdp_lifecycle.ensure()
 
-    scratch_contract = replace(
-        IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG,
-        metadata=replace(
-            IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG.metadata,
-            description="Disposable dev table for Delta contract lifecycle smoke validation.",
-        ),
-    )
-    scratch_lifecycle = DeltaTableLifecycle(
+    scratch_contract = _scratch_contract()
+    drift_table = f"{args.scratch_prefix}_drift"
+    evolution_table = f"{args.scratch_prefix}_evolution"
+
+    drift_lifecycle = DeltaTableLifecycle(
         spark=spark,
-        target_table=args.scratch_table,
+        target_table=drift_table,
         contract=scratch_contract,
     )
-    scratch_lifecycle.ensure()
-    scratch_lifecycle.ensure()
-
-    spark.sql(
-        f"ALTER TABLE {args.scratch_table} ADD COLUMNS (`unsupported_drift` STRING)"
-    )
+    drift_lifecycle.ensure()
+    drift_lifecycle.ensure()
+    spark.sql(f"ALTER TABLE {drift_table} ADD COLUMNS (`unsupported_drift` STRING)")
     try:
-        scratch_lifecycle.ensure()
+        drift_lifecycle.ensure()
     except ValueError:
         pass
     else:
         raise AssertionError("Expected unsupported schema drift to fail fast.")
 
-    spark.sql(f"ALTER TABLE {args.scratch_table} DROP COLUMN `unsupported_drift`")
-
+    evolution_base_lifecycle = DeltaTableLifecycle(
+        spark=spark,
+        target_table=evolution_table,
+        contract=scratch_contract,
+    )
+    evolution_base_lifecycle.ensure()
     evolution_lifecycle = DeltaTableLifecycle(
         spark=spark,
-        target_table=args.scratch_table,
+        target_table=evolution_table,
         contract=_evolution_contract(scratch_contract),
     )
     evolution_lifecycle.ensure()
 
-    evolved_columns = {field.name for field in spark.table(args.scratch_table).schema.fields}
+    evolved_columns = {field.name for field in spark.table(evolution_table).schema.fields}
     if "smoke_nullable_note" not in evolved_columns:
         raise AssertionError("Expected opt-in nullable additive evolution to materialize.")
 
     print(
         "platform_contract_smoke_completed "
-        f"gdp_table={args.gdp_table} scratch_table={args.scratch_table}"
+        f"gdp_table={args.gdp_table} drift_table={drift_table} "
+        f"evolution_table={evolution_table}"
     )
 
 
