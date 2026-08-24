@@ -7,6 +7,7 @@ from pyspark.sql import functions as F
 
 from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 from olist_data_platform.platform.delta.contract import DatasetContract
+from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
@@ -17,9 +18,8 @@ class BronzeWriter:
 
     The writer owns batch preparation, platform-managed ingestion timestamp
     injection, logical-key validation and MERGE/FULL_REPLACE/replaceWhere write
-    behavior. Table lifecycle, schema evolution and governance reconciliation are
-    being moved to the dedicated Delta lifecycle boundary and must not accumulate
-    here as new responsibilities.
+    behavior. Delta table creation, schema evolution, physical layout validation
+    and Unity Catalog metadata reconciliation belong to ``DeltaTableLifecycle``.
     """
 
     INGESTION_TIMESTAMP_COLUMN = "ingestion_timestamp"
@@ -38,13 +38,15 @@ class BronzeWriter:
         self.spark = spark
         self.target_table = target_table
         self.config = config
+        self.lifecycle = DeltaTableLifecycle(spark, target_table, config)
 
     def write(self, dataframe: DataFrame) -> None:
         """Persist one validated Bronze batch using the configured write strategy.
 
         The method adds the platform ingestion timestamp, validates logical key
-        values/duplicates and then applies MERGE or FULL_REPLACE semantics. An
-        empty FULL_REPLACE snapshot fails before replacing existing data.
+        values/duplicates, ensures the target table contract through the lifecycle
+        boundary and then applies MERGE or FULL_REPLACE semantics. An empty
+        FULL_REPLACE snapshot fails before any target lifecycle or write operation.
         """
         prepared = self._prepare_dataframe(dataframe)
 
@@ -57,10 +59,8 @@ class BronzeWriter:
         if self.config.write_strategy is WriteStrategy.FULL_REPLACE:
             self._validate_non_empty_snapshot(prepared)
 
-        if not self.spark.catalog.tableExists(self.target_table):
-            self._create_table(prepared)
-        else:
-            self._write_existing_table(prepared)
+        self.lifecycle.ensure()
+        self._write_existing_table(prepared)
 
         logger.info(
             "bronze_write_completed | target_table=%s | strategy=%s",
@@ -73,7 +73,8 @@ class BronzeWriter:
 
         ``predicate`` is passed to Delta ``replaceWhere`` and must therefore be
         supplied deliberately by the caller; this method never infers the scope.
-        Invalid/empty predicates fail before any persistence operation.
+        Invalid/empty predicates fail before any persistence operation. The target
+        table contract is ensured before the bounded overwrite executes.
         """
         if not isinstance(predicate, str):
             raise TypeError("predicate must be a string.")
@@ -88,16 +89,14 @@ class BronzeWriter:
             predicate,
         )
 
-        if not self.spark.catalog.tableExists(self.target_table):
-            self._create_table(prepared)
-        else:
-            (
-                prepared.write
-                .format("delta")
-                .mode("overwrite")
-                .option("replaceWhere", predicate)
-                .saveAsTable(self.target_table)
-            )
+        self.lifecycle.ensure()
+        (
+            prepared.write
+            .format("delta")
+            .mode("overwrite")
+            .option("replaceWhere", predicate)
+            .saveAsTable(self.target_table)
+        )
 
         logger.info(
             "bronze_reprocess_completed | target_table=%s | predicate=%s",
@@ -142,9 +141,7 @@ class BronzeWriter:
         for column_name in self.config.key_columns:
             condition = F.col(column_name).isNull()
             null_condition = (
-                condition
-                if null_condition is None
-                else null_condition | condition
+                condition if null_condition is None else null_condition | condition
             )
 
         has_null_primary_key = (
@@ -172,16 +169,6 @@ class BronzeWriter:
                 "the existing target was preserved."
             )
 
-    def _create_table(self, dataframe: DataFrame) -> None:
-        writer = dataframe.write.format("delta").mode("overwrite")
-
-        if self.config.layout.clustering_columns:
-            writer = writer.clusterBy(*self.config.layout.clustering_columns)
-        elif self.config.layout.partition_columns:
-            writer = writer.partitionBy(*self.config.layout.partition_columns)
-
-        writer.saveAsTable(self.target_table)
-
     def _write_existing_table(self, dataframe: DataFrame) -> None:
         if self.config.write_strategy is WriteStrategy.MERGE:
             self._merge(dataframe)
@@ -206,7 +193,6 @@ class BronzeWriter:
             dataframe.write
             .format("delta")
             .mode("overwrite")
-            .option("overwriteSchema", "true")
             .saveAsTable(self.target_table)
         )
 
