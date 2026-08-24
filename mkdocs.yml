@@ -51,6 +51,7 @@ nav:
       - Technical Design: development/dab-platform-technical-design.md
       - Impact Analysis: development/dab-platform-impact-analysis.md
       - Implementation Plan: development/dab-platform-implementation-plan.md
+      - Deployment Runbook: development/dab-deployment-runbook.md
   - Architecture Decisions:
       - ADR-001 Liquid Clustering: adr/ADR-001-liquid-clustering-bronze-weather.md
       - ADR-002 Package Structure: adr/ADR-002-hybrid-domain-platform-package-structure.md
