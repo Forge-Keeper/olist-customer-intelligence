@@ -1,0 +1,63 @@
+site_name: Olist Customer Intelligence
+site_description: Engineering, architecture, data platform and API documentation for Olist Customer Intelligence.
+repo_name: Forge-Keeper/olist-customer-intelligence
+repo_url: https://github.com/Forge-Keeper/olist-customer-intelligence
+
+site_dir: site
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths:
+            - src
+          options:
+            show_source: true
+            show_signature_annotations: true
+            separate_signature: true
+            members_order: source
+            docstring_style: google
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+nav:
+  - Home: index.md
+  - Engineering:
+      - Standards & Naming: development/engineering-standards.md
+      - Definition of Done: development/definition-of-done.md
+      - Feature Specification Template: templates/feature-specification-template.md
+      - ADR Template: templates/adr-template.md
+  - DAB + Platform Contracts:
+      - Discovery: development/dab-platform-discovery.md
+      - Requirements: development/dab-platform-requirements.md
+      - Technical Design: development/dab-platform-technical-design.md
+      - Impact Analysis: development/dab-platform-impact-analysis.md
+      - Implementation Plan: development/dab-platform-implementation-plan.md
+  - Architecture Decisions:
+      - ADR-001 Liquid Clustering: adr/ADR-001-liquid-clustering-bronze-weather.md
+      - ADR-002 Package Structure: adr/ADR-002-hybrid-domain-platform-package-structure.md
+      - ADR-003 Bronze VARIANT Landing: adr/ADR-003-bronze-landing-with-variant.md
+      - ADR-004 Executable Contracts: adr/ADR-004-executable-dataset-contracts-and-delta-lifecycle.md
+      - ADR-005 DAB Environments: adr/ADR-005-dab-environment-and-promotion-boundary.md
+      - ADR-006 Unity Catalog ABAC: adr/ADR-006-unity-catalog-abac-governance.md
+  - API Reference:
+      - Delta Contracts: api/delta-contracts.md
+      - Bronze Writer: api/bronze-writer.md
