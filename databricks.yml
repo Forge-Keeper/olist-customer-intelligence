@@ -32,7 +32,7 @@ targets:
 
   stg:
     workspace:
-      root_path: /Workspace/Staging/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     run_as:
       service_principal_name: ${var.stg_run_as_service_principal}
     variables:
@@ -43,7 +43,7 @@ targets:
     git:
       branch: main
     workspace:
-      root_path: /Workspace/Production/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
     run_as:
       service_principal_name: ${var.prd_run_as_service_principal}
     variables:
