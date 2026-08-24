@@ -13,6 +13,13 @@ from .municipality_gdp_bronze_config import IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG
 
 
 class BronzeMunicipalityGdpWriter:
+    """Adapt IBGE SIDRA municipality GDP records to the Bronze table contract.
+
+    This domain adapter owns construction of the source-specific Spark DataFrame,
+    including the transient JSON-to-VARIANT conversion. Generic Delta persistence,
+    key validation and write strategy remain the responsibility of ``BronzeWriter``.
+    """
+
     INPUT_SCHEMA = StructType(
         [
             StructField("municipality_code", StringType(), False),
@@ -33,6 +40,11 @@ class BronzeMunicipalityGdpWriter:
         )
 
     def write(self, records: list[dict[str, Any]], request_id: str) -> None:
+        """Persist one GDP ingestion batch using the configured Bronze contract.
+
+        Empty record batches are treated as no-ops. Source payloads are serialized
+        only as an intermediate representation and are persisted as Delta VARIANT.
+        """
         if not records:
             return
         dataframe = self._build_dataframe(records=records, request_id=request_id)
