@@ -8,18 +8,21 @@ This document enumerates the expected code, deployment, test and documentation i
 
 ## Impact summary
 
-The feature is a focused platform refactor plus one deployment vertical slice. It intentionally does not migrate every job.
+The feature is a focused platform refactor plus one deployment vertical slice. It intentionally does not migrate every job to DAB.
+
+The contract migration strategy is **Option A: migrate all current Bronze dataset declarations to the new executable `DatasetContract` in this feature**. A compatibility layer between `BronzeDatasetConfig` and `DatasetContract` is not the target design.
 
 Primary impacted areas:
 
 1. root bundle/deployment configuration;
 2. Python packaging/entry point;
 3. generic Delta contract/lifecycle abstractions;
-4. existing BronzeWriter integration;
-5. IBGE municipality GDP contract/writer;
-6. tests for contracts/lifecycle/writer/GDP;
-7. CI/CD workflow configuration;
-8. development docs and ADRs.
+4. all current Bronze dataset contracts plus BronzeWriter integration;
+5. IBGE municipality GDP DAB pilot;
+6. table/column governance metadata support;
+7. tests for contracts/lifecycle/writer/datasets/GDP;
+8. CI/CD workflow configuration;
+9. development docs and ADRs.
 
 ## 1. New files/directories
 
@@ -51,15 +54,30 @@ src/olist_data_platform/platform/delta/
 - `SchemaEvolutionPolicy`;
 - structured schema-diff types/helpers where cohesive.
 
+`ColumnContract` must support column-level governance tags in addition to name/type/nullability/description. `TableMetadata` must support table-level governance tags.
+
 `lifecycle.py` owns:
 
 - `DeltaTableLifecycle`;
 - table inspection;
 - compatibility checks;
 - explicit supported schema evolution;
-- metadata reconciliation.
+- table description/comment reconciliation;
+- table tag reconciliation;
+- column tag reconciliation.
 
 Avoid creating a deep package hierarchy until more lifecycle implementations exist.
+
+### Future fine-grained governance extension
+
+Do not create a generalized policy engine in this slice, but reserve a coherent extension point for future Gold governance such as:
+
+```text
+row filter policy references
+column mask policy references
+```
+
+Unity Catalog does not attach metadata tags to individual rows. Row-level governance is implemented through row filters/ABAC policies. Therefore no fake `row_tags` abstraction should be introduced.
 
 ### Job metadata
 
@@ -117,13 +135,12 @@ Risk: changing distribution/entry-point naming incorrectly can break `python_whe
 
 Current owner: `BronzeDatasetConfig` and `WriteStrategy`.
 
-Impact options:
+Approved impact:
 
-**Preferred:** retain `WriteStrategy`, migrate dataset declarations toward the new generic `DatasetContract`, and remove/retire `BronzeDatasetConfig` once all current Bronze configs can be adapted without a compatibility burden.
-
-**Safer incremental alternative:** make `BronzeDatasetConfig` a compatibility/narrow persistence object temporarily consumed by `DatasetContract`.
-
-The implementation plan must choose one path and avoid maintaining two permanent competing contract models.
+- retain `WriteStrategy` in the most cohesive platform location;
+- replace/retire `BronzeDatasetConfig` as the dataset declaration model;
+- migrate **all current Bronze dataset declarations** to the generic executable `DatasetContract` in this feature;
+- do not keep two permanent competing contract models.
 
 Tests directly impacted:
 
@@ -150,14 +167,42 @@ Tests directly impacted:
 
 Regression risk: table-not-exists path currently performs creation plus initial write in one operation. New lifecycle design creates the empty table and then lets normal write semantics execute; tests must prove equivalent final data behavior.
 
+### All current Bronze dataset configs/writers
+
+Because Option A is approved, the contract migration affects the current Bronze declarations across IBGE, Weather and Olist, including at least:
+
+```text
+src/olist_data_platform/domains/bronze/ibge/municipalities_bronze_config.py
+src/olist_data_platform/domains/bronze/ibge/municipality_population_bronze_config.py
+src/olist_data_platform/domains/bronze/ibge/municipality_gdp_bronze_config.py
+src/olist_data_platform/domains/bronze/ibge/bronze_municipalities_writer.py
+src/olist_data_platform/domains/bronze/ibge/bronze_municipality_population_writer.py
+src/olist_data_platform/domains/bronze/ibge/bronze_municipality_gdp_writer.py
+src/olist_data_platform/domains/bronze/weather/*
+src/olist_data_platform/domains/bronze/olist/*
+```
+
+The migration is intended to be mechanical where possible:
+
+- convert required columns into explicit `ColumnContract` definitions;
+- preserve key columns;
+- preserve write strategy;
+- preserve clustering/partitioning;
+- add table/column descriptions based only on known semantics;
+- add only justified governance tags;
+- keep schema evolution disabled unless explicitly justified.
+
+This is **contract migration**, not DAB migration. Other jobs remain undeployed by DAB in this slice.
+
 ### `src/olist_data_platform/domains/bronze/ibge/municipality_gdp_bronze_config.py`
 
-Impact:
+Additional pilot impact:
 
 - becomes the authoritative GDP `DatasetContract` declaration;
 - declare persisted GDP columns with types/nullability/descriptions;
 - declare logical key and `dt_base` clustering;
 - declare table metadata/tags;
+- support column tags structurally, without inventing classifications that the dataset does not justify;
 - schema evolution remains disabled by default.
 
 Potential rename to a `*_contract.py` filename is architecturally cleaner but causes extra imports/test churn. Rename only if it materially improves clarity; otherwise keep the existing module name in this slice and change the object semantics.
@@ -173,8 +218,6 @@ Impact:
 - keep only transient construction schema fields genuinely required for JSON-to-VARIANT conversion;
 - continue delegating persistence to generic `BronzeWriter`.
 
-Risk: attempting to force the persisted VARIANT contract into the transient Python-row construction step can unnecessarily complicate the adapter. Technical Design explicitly allows a transient staging schema.
-
 ### `src/olist_data_platform/jobs/ibge_municipality_gdp_ingestion.py`
 
 Impact expected to be small:
@@ -183,32 +226,6 @@ Impact expected to be small:
 - preserve `--target-table` and `--periods` CLI behavior;
 - expose `main` via wheel entry point;
 - no target-name/environment conditionals.
-
-Existing tests around service orchestration should remain valid.
-
-### Other Bronze dataset configs/writers
-
-Even though only GDP is the DAB pilot, changing the `BronzeWriter` constructor/contract model may compile-time/runtime impact:
-
-```text
-src/olist_data_platform/domains/bronze/ibge/municipalities_bronze_config.py
-src/olist_data_platform/domains/bronze/ibge/municipality_population_bronze_config.py
-src/olist_data_platform/domains/bronze/ibge/bronze_municipalities_writer.py
-src/olist_data_platform/domains/bronze/ibge/bronze_municipality_population_writer.py
-src/olist_data_platform/domains/bronze/weather/*
-src/olist_data_platform/domains/bronze/olist/*
-```
-
-This is the largest refactor risk.
-
-Implementation should choose between:
-
-- migrating all existing `BronzeDatasetConfig` declarations mechanically to the new contract so `BronzeWriter` has one clean API; or
-- temporarily supporting the old config through a compatibility adapter while only GDP uses full metadata/schema capabilities.
-
-Recommendation: migrate existing config declarations if the change is mechanical and tests are already strong; avoid a long-lived compatibility layer.
-
-This is **contract migration**, not DAB migration. Other jobs remain undeployed by DAB in this slice.
 
 ### Exploration notebooks
 
@@ -219,8 +236,6 @@ notebooks/exploration/ibge_bronze_validation.py
 notebooks/exploration/ibge_gdp_bronze_validation.py
 ```
 
-They currently hardcode `prd.bronze.*`.
-
 Impact:
 
 - remove or parameterize production catalog hardcodes if these notebooks remain active validation utilities;
@@ -229,7 +244,7 @@ Impact:
 
 ## 3. Existing tests likely affected
 
-Known direct test owners from current repository structure include:
+Known direct test owners include:
 
 ```text
 tests/unit/platform/delta/bronze/test_config.py
@@ -238,18 +253,20 @@ tests/unit/test_bronze_weather_writer.py
 tests/unit/test_olist_closed_deals_bronze_config.py
 ```
 
-Additionally, equivalent dataset-config/writer tests returned by the current unit suite must be updated if the generic contract constructor changes.
+Equivalent dataset-config/writer tests must be updated because all Bronze contracts are migrated in one feature.
 
-GDP-specific behavior to preserve includes tests around:
+New governance tests must cover at least:
 
-```text
-tests/unit/test_ibge_municipality_gdp_extractor.py
-tests/unit/test_ibge_municipality_gdp_ingestion_service.py
-```
+- valid/invalid table tag declarations;
+- valid/invalid column tag declarations;
+- lifecycle reconciliation of table tags;
+- lifecycle reconciliation of column tags;
+- metadata drift does not incorrectly become schema drift;
+- no PII/sensitivity classification is synthesized by platform defaults.
 
-These should ideally need little or no modification because source extraction/service semantics are not changing.
+GDP-specific source/service behavior should ideally need little or no modification.
 
-## 4. Unity Catalog impact
+## 4. Unity Catalog and governance impact
 
 New target namespaces:
 
@@ -261,20 +278,25 @@ prd.bronze.ibge_municipality_gdp
 
 Required permissions must exist for the appropriate developer/service-principal identities.
 
-The lifecycle will begin materializing metadata on created/managed tables:
+The lifecycle will materialize/reconcile metadata on managed tables:
 
 - table comment/description;
 - column comments;
-- approved tags;
+- table tags;
+- column tags;
 - clustering metadata on creation.
+
+Governance direction:
+
+- durable table and column tags are first-class contract state;
+- governed tags should be used when the required account-level governed-tag definitions and permissions exist;
+- the contract stores tag intent/assignments, but account-level governed-tag taxonomy creation is outside this feature unless required to unblock the pilot;
+- future Gold fine-grained governance must be able to add ABAC row-filter and column-mask policy references without replacing `DatasetContract`;
+- literal per-row tags are not modeled because rows are not Unity Catalog securable objects.
 
 No automatic migration or deletion of existing `prd` validation tables is included.
 
-Potential operational risk: a pre-existing table may not match the newly authoritative contract. The default outcome is fail-fast; migration is not silently performed unless the exact change is in the approved evolution matrix and the dataset explicitly enables it.
-
 ## 5. Schema evolution impact
-
-Introducing schema evolution changes the platform's failure semantics but not the default safety posture.
 
 Default:
 
@@ -302,11 +324,10 @@ New external configuration is required outside committed code:
 - staging service-principal identity/permissions;
 - production service-principal identity/permissions;
 - workspace host/profile information as appropriate;
-- GitHub protected environment or equivalent approval control for production.
+- GitHub protected environment or equivalent approval control for production;
+- Unity Catalog privileges necessary to apply/manage metadata and tags.
 
 Production promotion should require staging success plus manual/protected approval.
-
-This is a repository/process change and should be documented in ADR-005 and developer docs.
 
 ## 7. Build/dependency impact
 
@@ -324,7 +345,7 @@ Do not introduce multiple competing build mechanisms.
 
 ## 8. Runtime behavior that must not change
 
-The following are regression guardrails:
+Regression guardrails:
 
 - IBGE API/SIDRA extraction semantics;
 - GDP `periods` behavior;
@@ -356,21 +377,24 @@ After implementation, add operational developer documentation for:
 - dev deploy/run;
 - promotion behavior;
 - contract declaration/evolution policy;
+- table and column governance tag declaration;
 - handling a failed schema compatibility check.
+
+A later Gold/governance feature must document row-filter/column-mask policy authoring and ABAC policy ownership separately from the dataset contract itself.
 
 ## 10. ADR impact
 
 ### ADR-004
 
-Necessary because the feature changes a durable architectural responsibility boundary:
+Necessary because the feature changes a durable architectural responsibility boundary and now also establishes governance metadata as executable contract state:
 
 ```text
-DatasetContract -> definition
-DeltaTableLifecycle -> table state/lifecycle
+DatasetContract -> schema + metadata/governance definition
+DeltaTableLifecycle -> table state/lifecycle + metadata reconciliation
 BronzeWriter -> write semantics
 ```
 
-It also establishes fail-fast schema compatibility and controlled evolution policy.
+It establishes fail-fast schema compatibility, controlled evolution, table/column tags, and the future boundary for row/column access policies.
 
 ### ADR-005
 
@@ -380,8 +404,11 @@ Necessary because `dev -> stg -> prd`, service-principal identities, production-
 
 | Risk | Severity | Mitigation |
 | --- | --- | --- |
-| Generic BronzeWriter change regresses existing datasets | High | migrate mechanically or use short-lived adapter; run full unit/integration suite |
+| Generic BronzeWriter change regresses existing datasets | High | migrate all contracts mechanically; run full unit/integration suite |
 | Contract and actual Spark VARIANT schema differ | High | dedicated GDP schema tests + workspace smoke validation |
+| Incorrect tag taxonomy encodes false governance facts | High | only declare evidenced tags; no inferred PII/sensitivity |
+| Governed-tag privileges/config unavailable | Medium | capability remains in contract; treat taxonomy/permissions as deployment prerequisite where used |
+| Future row governance confused with row metadata tags | Medium | document row filters/ABAC as the correct extension point |
 | Serverless unavailable in workspace | Medium | implementation prerequisite; explicit classic-compute redesign if blocked |
 | Service principals/permissions unavailable | High for stg/prd | treat as deployment prerequisite; do not weaken production design silently |
 | Schema evolution mutates tables unexpectedly | High | disabled by default; whitelist additive nullable only; logs/tests |
@@ -397,7 +424,8 @@ This feature must not expand into:
 - full job migration;
 - generic data-platform framework generation;
 - all environment infrastructure provisioning;
-- all catalog permission automation;
+- account-wide governed-tag taxonomy management unless needed to unblock validated pilot metadata;
+- generalized ABAC/row-filter/column-mask policy engine;
 - schema migration engine;
 - Silver/Gold dependency orchestration.
 
@@ -408,7 +436,8 @@ New needs discovered in these areas become separate backlog/features unless they
 The Impact gate is complete when:
 
 1. impacted current files/classes/tests are accepted;
-2. contract-migration strategy for non-GDP Bronze configs is selected;
-3. deployment prerequisites are acknowledged;
-4. no silent scope expansion remains;
-5. Technical Design and ADRs can be reviewed as one coherent implementation boundary.
+2. Option A full current-Bronze contract migration is accepted;
+3. table/column governance tag capability and future Gold row-filter/column-mask extension are accepted;
+4. deployment prerequisites are acknowledged;
+5. no silent scope expansion remains;
+6. Technical Design and ADRs form one coherent implementation boundary.
