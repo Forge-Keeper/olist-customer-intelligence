@@ -25,6 +25,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install uv
         uses: astral-sh/setup-uv@v6
@@ -51,7 +53,19 @@ jobs:
         run: uv build --wheel
 
       - name: Verify wheel artifact
-        run: test -n "$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+        run: |
+          wheel_path="$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+          test -n "$wheel_path"
+          echo "wheel_path=$wheel_path"
+          echo "git_sha=$(git rev-parse HEAD)"
+          echo "git_short_sha=$(git rev-parse --short HEAD)"
+          case "$(basename "$wheel_path")" in
+            *+g*.whl) ;;
+            *)
+              echo "Wheel does not contain Git-derived local version metadata."
+              exit 1
+              ;;
+          esac
 
       - name: Install wheel in isolated environment
         run: |
