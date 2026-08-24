@@ -5,10 +5,8 @@ from uuid import uuid4
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
-from olist_data_platform.platform.delta.bronze.config import (
-    BronzeDatasetConfig,
-    WriteStrategy,
-)
+from olist_data_platform.platform.delta.bronze.config import WriteStrategy
+from olist_data_platform.platform.delta.contract import DatasetContract
 from olist_data_platform.platform.logging import LoggerFactory
 
 logger = LoggerFactory.get_logger(__name__)
@@ -30,7 +28,7 @@ class BronzeWriter:
         self,
         spark: SparkSession,
         target_table: str,
-        config: BronzeDatasetConfig,
+        config: DatasetContract,
     ) -> None:
         if not isinstance(target_table, str):
             raise TypeError("target_table must be a string.")
@@ -120,7 +118,7 @@ class BronzeWriter:
 
     def _validate_dataframe_contract(self, dataframe: DataFrame) -> None:
         columns = set(dataframe.columns)
-        required = set(self.config.required_columns)
+        required = {column.name for column in self.config.columns}
         missing = required - columns
         if missing:
             raise ValueError(
@@ -129,8 +127,8 @@ class BronzeWriter:
             )
 
         layout_columns = (
-            set(self.config.clustering_columns)
-            | set(self.config.partition_columns)
+            set(self.config.layout.clustering_columns)
+            | set(self.config.layout.partition_columns)
         )
         missing_layout = layout_columns - columns
         if missing_layout:
@@ -141,7 +139,7 @@ class BronzeWriter:
 
     def _validate_primary_key_values(self, dataframe: DataFrame) -> None:
         null_condition = None
-        for column_name in self.config.primary_key_columns:
+        for column_name in self.config.key_columns:
             condition = F.col(column_name).isNull()
             null_condition = (
                 condition
@@ -157,7 +155,7 @@ class BronzeWriter:
             raise ValueError("Bronze primary key columns cannot contain null values.")
 
         duplicated = (
-            dataframe.groupBy(*self.config.primary_key_columns)
+            dataframe.groupBy(*self.config.key_columns)
             .count()
             .where(F.col("count") > 1)
             .limit(1)
@@ -177,10 +175,10 @@ class BronzeWriter:
     def _create_table(self, dataframe: DataFrame) -> None:
         writer = dataframe.write.format("delta").mode("overwrite")
 
-        if self.config.clustering_columns:
-            writer = writer.clusterBy(*self.config.clustering_columns)
-        elif self.config.partition_columns:
-            writer = writer.partitionBy(*self.config.partition_columns)
+        if self.config.layout.clustering_columns:
+            writer = writer.clusterBy(*self.config.layout.clustering_columns)
+        elif self.config.layout.partition_columns:
+            writer = writer.partitionBy(*self.config.layout.partition_columns)
 
         writer.saveAsTable(self.target_table)
 
@@ -218,7 +216,7 @@ class BronzeWriter:
 
         merge_condition = " AND ".join(
             f"target.`{column}` = source.`{column}`"
-            for column in self.config.primary_key_columns
+            for column in self.config.key_columns
         )
 
         try:
