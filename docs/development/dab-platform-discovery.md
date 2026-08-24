@@ -2,22 +2,23 @@
 
 ## Status
 
-Discovery complete. Inventory and boundaries are captured below. No implementation decisions beyond these Discovery findings are approved yet.
+Discovery complete and approved. Requirements are tracked separately in `docs/development/dab-platform-requirements.md`.
 
 ## Objective
 
 Introduce Databricks Asset Bundles as the deployment/environment boundary for the Olist Customer Intelligence project while evolving the platform toward explicit table lifecycle and job definitions.
 
-This feature is motivated by a real architectural gap: development/validation workflows have materialized tables under the `prd` catalog, while the runtime jobs themselves are already capable of receiving target tables externally. The next step is to formalize `dev` and `prod` targets and stop coupling development execution to production namespaces.
+This feature is motivated by a real architectural gap: development/validation workflows have materialized tables under the `prd` catalog, while the runtime jobs themselves are already capable of receiving target tables externally. The next step is to formalize `dev`, `stg` and `prd` targets and stop coupling non-production execution to production namespaces.
 
 ## Current direction
 
 ### Environment boundary
 
-Target model:
+Approved target model:
 
-- `dev` target writes to the development catalog/namespace.
-- `prod` target writes to the production catalog/namespace.
+- `dev` target writes to the `dev` catalog/namespace.
+- `stg` target writes to the `stg` catalog/namespace.
+- `prd` target writes to the `prd` catalog/namespace.
 - Runtime jobs must receive catalog/table information from deployment configuration rather than hardcoding environment names.
 - Existing `prd` validation tables are not automatically dropped or moved as part of Discovery; migration/cleanup is a separate decision after the new boundary exists.
 
@@ -27,20 +28,16 @@ Initial Bundle scope:
 
 - `databricks.yml`;
 - resource YAML files under `resources/`;
-- targets `dev` and `prod`;
+- targets `dev`, `stg` and `prd`;
 - environment-specific variables such as catalog/schema;
 - first pilot job: IBGE municipality GDP ingestion;
 - package/deployment approach to be evaluated, with wheel packaging as the current preferred candidate because the repository already contains a real Python package.
 
-The first vertical slice should demonstrate:
-
-`local validation -> bundle validate -> bundle deploy(dev) -> run job -> verify data in dev namespace`
-
-Full CI/CD promotion is not part of the first slice unless explicitly approved later.
+The first vertical slice should prove the professional promotion path defined at Requirements/Design rather than treating direct production execution as the first validation step.
 
 ## Platform abstraction direction
 
-Do not turn `BronzeWriter` or `BronzeDatasetConfig` into a god object.
+Do not turn `BronzeWriter` or the dataset contract into a god object.
 
 Keep responsibilities separated:
 
@@ -48,17 +45,17 @@ Keep responsibilities separated:
 
 A dataset/table definition should be able to describe, progressively:
 
-- required columns;
-- logical primary key;
+- column name/type/nullability/description;
+- logical key;
 - write strategy;
 - clustering / partitioning;
 - table description;
-- column comments;
 - tags;
-- declarative constraints;
+- declarative constraints where justified;
+- schema-evolution policy;
 - other table metadata/lifecycle information where justified.
 
-The existing `BronzeDatasetConfig` remains a valid narrow contract and should evolve through smaller reusable metadata objects rather than absorbing every concern directly.
+The current `BronzeDatasetConfig` remains a valid starting point and should evolve through small reusable objects rather than absorbing every concern directly.
 
 ### Table lifecycle
 
@@ -69,7 +66,9 @@ Introduce a reusable Delta table lifecycle boundary when the design is validated
 - apply description/comments;
 - apply constraints;
 - apply tags;
-- inspect/validate table state.
+- inspect/validate table state;
+- fail on incompatible schema drift by default;
+- support an explicit opt-in evolution policy for datasets where schema evolution is intentionally allowed.
 
 `BronzeWriter` should remain focused on batch preparation/validation and write semantics such as MERGE, FULL_REPLACE and explicit reprocessing.
 
@@ -91,15 +90,16 @@ Do not build an automatic YAML generator in the first slice.
 
 Keep `databricks.yml` and `resources/*.yml` explicit and versioned. If meaningful duplication later appears between Python definitions and Bundle YAML, evaluate generation only then.
 
-## Metadata/governance scope to investigate
+## Metadata/governance scope
 
-The feature should evaluate support for:
+The feature should support or prepare for:
 
 - table descriptions;
 - column comments;
 - a small durable tag vocabulary (for example layer, domain, source system, data classification, PII where applicable);
 - logical/Unity Catalog constraints where they represent real contracts;
-- table inspection/validation after creation.
+- table inspection/validation after creation;
+- explicit schema-evolution policy per dataset.
 
 Do not add metadata or constraints merely for demonstration. They must represent source, platform or governance truth.
 
@@ -111,8 +111,8 @@ Do not add metadata or constraints merely for demonstration. They must represent
 - automatic generation of all Bundle YAML;
 - complex schedules;
 - Terraform;
-- full CI/CD promotion pipeline;
-- migration of all existing jobs at once.
+- migration of all existing jobs at once;
+- automatic schema mutation for every dataset.
 
 ## Discovery inventory
 
@@ -129,17 +129,15 @@ The repository currently exposes six production-style Python entrypoints under `
 | `olist_closed_deals_ingestion.py` | `--target-table` | `--source-path=/Volumes/prd/bronze/raw_storage/raw/olist/funnel/olist_closed_deals_dataset.csv` | default source path hardcodes `prd` |
 | `weather_ingestion.py` | `--target-table`, `--latitude`, `--longitude`, `--start-date`, `--end-date` | `--operation=ingest`, `--timezone=auto`, optional `--daily-variables` | target is externally supplied |
 
-### Pilot job decision candidate
+### Pilot job
 
-`ibge_municipality_gdp_ingestion.py` remains the minimum viable DAB pilot identified in the original Discovery direction because:
+`ibge_municipality_gdp_ingestion.py` is the approved minimum viable DAB pilot because:
 
 - it is already a clean Python entrypoint;
 - the target table is already supplied externally;
 - it has only one environment-sensitive resource to inject (`target-table`);
 - the only business/runtime parameter in the first slice is `periods`;
 - it exercises the current generic `BronzeWriter` through a domain adapter without requiring source-volume configuration.
-
-This is still a Design decision to confirm at the next gate, not an implementation approval.
 
 ### Hardcoded catalog/schema/environment references
 
@@ -166,7 +164,7 @@ Discovery indicates the following split:
 
 **DAB target/deployment configuration candidates**
 
-- catalog name;
+- catalog name (`dev`, `stg`, `prd`);
 - Bronze schema name;
 - fully qualified pilot target table derived from target variables;
 - source volume/root for jobs whose raw source lives in Unity Catalog Volumes;
@@ -179,7 +177,7 @@ Discovery indicates the following split:
 - weather operation, coordinates, dates, timezone and requested daily variables;
 - explicit source path override when a caller intentionally wants a non-default dataset location.
 
-The environment must not be inferred inside domain code from `dev`/`prod` string checks.
+The environment must not be inferred inside domain code from target-name string checks.
 
 ### Existing Bronze / Delta abstractions
 
@@ -191,7 +189,7 @@ The environment must not be inferred inside domain code from `dev`/`prod` string
 - `partition_columns`;
 - `write_strategy` (`MERGE`, `REPLACE_WHERE`, `FULL_REPLACE`).
 
-It validates column lists, primary-key membership in required columns and clustering/partition conflicts. It has no metadata, table-description, column-comment, tag, constraint or environment responsibilities today.
+It validates column lists, primary-key membership in required columns and clustering/partition conflicts. It has no metadata, table-description, column-comment, tag, constraint, schema-evolution or environment responsibilities today.
 
 `BronzeWriter` currently owns both write semantics and physical table creation:
 
@@ -207,7 +205,7 @@ The relevant architectural seam is therefore concrete: `_create_table()` current
 
 IBGE-specific Bronze writers are thin adapters around `BronzeWriter`: they translate source records into a typed Spark DataFrame / VARIANT payload and delegate persistence. This boundary should remain intact.
 
-### Metadata and constraint findings
+### Metadata, constraints and schema evolution findings
 
 The current codebase provides enough truth to declare only a conservative first metadata slice:
 
@@ -215,7 +213,9 @@ The current codebase provides enough truth to declare only a conservative first 
 - column comments: safe for stable technical/source semantics already represented by code contracts;
 - tags: start only with durable platform facts such as `layer=bronze`, `domain=ibge`, `source_system=ibge`; classification/PII tags require dataset-specific evidence;
 - primary keys in `BronzeDatasetConfig` are currently logical validation/merge keys, not evidence of an enforced relational primary-key constraint in Unity Catalog;
-- non-null and duplicate checks are runtime write-contract validation today and must not automatically be converted into table constraints without a separate contract decision.
+- non-null and duplicate checks are runtime write-contract validation today and must not automatically be converted into table constraints without a separate contract decision;
+- incompatible schema drift must fail by default;
+- datasets may explicitly opt into supported schema evolution, with the exact safe evolution matrix to be defined in Technical Design rather than enabling unrestricted evolution.
 
 ### Job dependency representation
 
@@ -235,24 +235,26 @@ No repository evidence currently mandates a specific compute model. The first Bu
 
 ## Discovery answers
 
-1. **Which jobs exist / pilot?** Six runnable entrypoints exist. IBGE municipality GDP is the preferred pilot candidate; mass migration is out of scope.
+1. **Which jobs exist / pilot?** Six runnable entrypoints exist. IBGE municipality GDP is the approved pilot; mass migration is out of scope.
 2. **Parameters?** Inventoried above. All jobs accept externally supplied target tables; Olist snapshot jobs additionally contain `prd`-coupled default source paths.
 3. **Hardcodes?** Confirmed in two IBGE validation notebooks and two Olist source-path defaults.
 4. **Target variables vs runtime params?** Catalog/schema/source-root/compute/package belong to deployment configuration; periods/dates/coordinates/operation remain runtime/business inputs.
-5. **Compute model?** Pending Technical Design; no repository evidence supports choosing one yet.
-6. **Source vs wheel?** Wheel is preferred candidate; validate feasibility in Design.
-7. **Metadata safely declarable now?** Dataset/table descriptions, stable column comments and a small set of durable platform/source tags.
-8. **Constraints vs runtime validation?** Current PK/non-null/duplicate semantics are application/write contracts; do not promote them automatically to UC constraints.
-9. **Lifecycle separation?** Extract table ensure/create/layout/metadata/inspection behind a Delta lifecycle collaborator; keep `BronzeWriter` responsible for preparation and write semantics.
-10. **Minimum dependency model?** Explicit optional dependency names/keys, empty by default; no inference or DAG compiler.
+5. **Targets?** `dev`, `stg`, `prd`, backed by distinct catalogs of the same names.
+6. **Compute model?** Pending Technical Design; no repository evidence supports choosing one yet.
+7. **Source vs wheel?** Wheel is preferred candidate; validate feasibility in Design.
+8. **Metadata safely declarable now?** Dataset/table descriptions, stable column comments and a small set of durable platform/source tags.
+9. **Constraints vs runtime validation?** Current PK/non-null/duplicate semantics are application/write contracts; do not promote them automatically to UC constraints.
+10. **Lifecycle separation?** Extract table ensure/create/layout/metadata/inspection behind a Delta lifecycle collaborator; keep `BronzeWriter` responsible for preparation and write semantics.
+11. **Schema drift?** Fail-fast by default, with explicit dataset-level opt-in for supported evolution.
+12. **Minimum dependency model?** Explicit optional dependency names/keys, empty by default; no inference or DAG compiler.
 
 ## Discovery exit criteria
 
-Discovery is considered complete when this checkpoint is reviewed and approved. The next mandatory gates are:
+Discovery is complete and approved. The next mandatory gates are:
 
-1. Requirements — convert these findings into explicit functional/non-functional requirements and acceptance criteria.
-2. Technical Design — define DAB structure, variable resolution, pilot resource, packaging/compute choice, lifecycle contract and minimum job definition model.
+1. Requirements — formalized in `docs/development/dab-platform-requirements.md`.
+2. Technical Design — define DAB structure, target modes/promotion flow, variable resolution, pilot resource, packaging/compute choice, lifecycle contract, schema-evolution semantics and minimum job definition model.
 3. Impact — enumerate affected files/classes/tests and migration boundaries.
 4. Implementation Plan — ordered changes only after the prior gates are approved.
 
-No DAB implementation should begin before approval to proceed beyond Discovery.
+No DAB implementation should begin before approval of Technical Design and Impact Analysis.
