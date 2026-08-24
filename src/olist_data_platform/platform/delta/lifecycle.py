@@ -31,7 +31,11 @@ class SchemaDiff:
     @property
     def is_compatible(self) -> bool:
         """Return whether no breaking schema drift is present."""
-        return not (self.missing_columns or self.unexpected_columns or self.type_mismatches)
+        return not (
+            self.missing_columns
+            or self.unexpected_columns
+            or self.type_mismatches
+        )
 
 
 @dataclass(frozen=True)
@@ -60,7 +64,12 @@ class DeltaTableLifecycle:
     remain responsibilities of writers and domain services.
     """
 
-    def __init__(self, spark: SparkSession, target_table: str, contract: DatasetContract) -> None:
+    def __init__(
+        self,
+        spark: SparkSession,
+        target_table: str,
+        contract: DatasetContract,
+    ) -> None:
         if not isinstance(target_table, str):
             raise TypeError("target_table must be a string.")
         if not target_table.strip():
@@ -113,26 +122,38 @@ class DeltaTableLifecycle:
 
     def diff_schema(self, actual_schema: StructType) -> SchemaDiff:
         """Return structural schema drift without mutating the table."""
-        expected = {column.name: column for column in self.contract.resolved_columns}
+        expected = {
+            column.name: column for column in self.contract.resolved_columns
+        }
         actual = {field.name: field for field in actual_schema.fields}
         missing = tuple(sorted(set(expected) - set(actual)))
         unexpected = tuple(sorted(set(actual) - set(expected)))
         mismatches: list[TypeMismatch] = []
         for name in sorted(set(expected) & set(actual)):
             expected_type = self._canonical_type(expected[name].data_type)
-            actual_type = self._canonical_type(actual[name].dataType.simpleString())
+            actual_type = self._canonical_type(
+                actual[name].dataType.simpleString()
+            )
             if expected_type != actual_type:
                 mismatches.append(TypeMismatch(name, expected_type, actual_type))
         return SchemaDiff(missing, unexpected, tuple(mismatches))
 
     def inspect_layout(self) -> LayoutDiff:
         """Inspect persisted partitioning and liquid-clustering metadata."""
-        detail_rows = self.spark.sql(f"DESCRIBE DETAIL {self.target_table}").collect()
+        detail_rows = self.spark.sql(
+            f"DESCRIBE DETAIL {self.target_table}"
+        ).collect()
         if not detail_rows:
-            raise ValueError(f"Unable to inspect Delta table layout: {self.target_table}")
+            raise ValueError(
+                f"Unable to inspect Delta table layout: {self.target_table}"
+            )
         detail = detail_rows[0]
-        partition_columns = tuple(self._row_value(detail, "partitionColumns") or ())
-        clustering_columns = tuple(self._row_value(detail, "clusteringColumns") or ())
+        partition_columns = tuple(
+            self._row_value(detail, "partitionColumns") or ()
+        )
+        clustering_columns = tuple(
+            self._row_value(detail, "clusteringColumns") or ()
+        )
         return LayoutDiff(
             expected_clustering_columns=self.contract.layout.clustering_columns,
             actual_clustering_columns=clustering_columns,
@@ -142,29 +163,39 @@ class DeltaTableLifecycle:
 
     def reconcile_metadata(self) -> None:
         """Apply declared table/column comments and tag assignments."""
+        description = self._sql_literal(self.contract.metadata.description)
         self.spark.sql(
-            f"COMMENT ON TABLE {self.target_table} IS {self._sql_literal(self.contract.metadata.description)}"
+            f"COMMENT ON TABLE {self.target_table} IS {description}"
         )
         for column in self.contract.resolved_columns:
+            column_name = self._quoted_identifier(column.name)
+            column_description = self._sql_literal(column.description)
             self.spark.sql(
-                f"ALTER TABLE {self.target_table} ALTER COLUMN {self._quoted_identifier(column.name)} "
-                f"COMMENT {self._sql_literal(column.description)}"
+                f"ALTER TABLE {self.target_table} ALTER COLUMN {column_name} "
+                f"COMMENT {column_description}"
             )
         if self.contract.metadata.tags:
+            formatted_tags = self._format_tags(self.contract.metadata.tags)
             self.spark.sql(
-                f"ALTER TABLE {self.target_table} SET TAGS ({self._format_tags(self.contract.metadata.tags)})"
+                f"ALTER TABLE {self.target_table} SET TAGS ({formatted_tags})"
             )
         for column in self.contract.resolved_columns:
             if column.tags:
+                column_name = self._quoted_identifier(column.name)
+                formatted_tags = self._format_tags(column.tags)
                 self.spark.sql(
-                    f"ALTER TABLE {self.target_table} ALTER COLUMN {self._quoted_identifier(column.name)} "
-                    f"SET TAGS ({self._format_tags(column.tags)})"
+                    f"ALTER TABLE {self.target_table} ALTER COLUMN {column_name} "
+                    f"SET TAGS ({formatted_tags})"
                 )
 
     def _can_apply_additive_evolution(self, diff: SchemaDiff) -> bool:
         if not self.contract.schema_evolution.can_add_nullable_columns:
             return False
-        if diff.unexpected_columns or diff.type_mismatches or not diff.missing_columns:
+        if (
+            diff.unexpected_columns
+            or diff.type_mismatches
+            or not diff.missing_columns
+        ):
             return False
         columns = self._columns_by_name()
         return all(columns[name].nullable for name in diff.missing_columns)
@@ -185,7 +216,9 @@ class DeltaTableLifecycle:
             )
 
     def _columns_by_name(self) -> dict[str, ColumnContract]:
-        return {column.name: column for column in self.contract.resolved_columns}
+        return {
+            column.name: column for column in self.contract.resolved_columns
+        }
 
     @staticmethod
     def _row_value(row, key: str):
@@ -197,7 +230,12 @@ class DeltaTableLifecycle:
     @staticmethod
     def _canonical_type(data_type: str) -> str:
         normalized = data_type.strip().lower()
-        return {"integer": "int", "long": "bigint", "bool": "boolean"}.get(normalized, normalized)
+        aliases = {
+            "integer": "int",
+            "long": "bigint",
+            "bool": "boolean",
+        }
+        return aliases.get(normalized, normalized)
 
     @staticmethod
     def _quoted_identifier(identifier: str) -> str:
@@ -216,7 +254,10 @@ class DeltaTableLifecycle:
 
     @staticmethod
     def _format_schema_drift(diff: SchemaDiff) -> str:
-        mismatch_text = [f"{item.column}:{item.actual}->{item.expected}" for item in diff.type_mismatches]
+        mismatch_text = [
+            f"{item.column}:{item.actual}->{item.expected}"
+            for item in diff.type_mismatches
+        ]
         return (
             "Delta table schema is incompatible with DatasetContract: "
             f"missing_columns={list(diff.missing_columns)}, "
