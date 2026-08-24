@@ -5,8 +5,7 @@ from olist_data_platform.platform.delta import (
     TableLayout,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.bronze.config import WriteStrategy
-
+from olist_data_platform.platform.delta.bronze import WriteStrategy
 
 WEATHER_BRONZE_CONFIG = DatasetContract(
     columns=(
@@ -20,7 +19,9 @@ WEATHER_BRONZE_CONFIG = DatasetContract(
             name="payload",
             data_type="variant",
             nullable=False,
-            description="Open-Meteo daily response payload preserved as semi-structured data.",
+            description=(
+                "Open-Meteo daily response payload preserved as semi-structured data."
+            ),
         ),
         ColumnContract(
             name="request_id",
