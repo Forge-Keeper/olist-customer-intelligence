@@ -12,6 +12,9 @@ dependencies = [
     "requests",
 ]
 
+[project.scripts]
+olist-ibge-gdp = "olist_data_platform.jobs.ibge_municipality_gdp_ingestion:main"
+
 [dependency-groups]
 dev = [
     "pyspark>=4.2.0",
