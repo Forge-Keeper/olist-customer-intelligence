@@ -21,6 +21,12 @@ jobs:
     name: quality
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    environment: ci
+    env:
+      DATABRICKS_AUTH_TYPE: oauth-m2m
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
 
     steps:
       - name: Checkout repository
@@ -74,3 +80,15 @@ jobs:
 
       - name: Verify packaged GDP entry point
         run: .venv-wheel-test/bin/olist-ibge-gdp --help
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Verify Databricks service principal authentication
+        run: databricks current-user me
+
+      - name: Validate Databricks bundle targets
+        run: |
+          databricks bundle validate -t dev
+          databricks bundle validate -t stg
+          databricks bundle validate -t prd
