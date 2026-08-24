@@ -14,9 +14,9 @@ resources:
               - ${var.catalog}.bronze.ibge_municipality_gdp
               - --periods
               - ${var.gdp_periods}
-          libraries:
-            - whl: ../dist/*.whl
       environments:
         - environment_key: default
           spec:
-            environment_version: "2"
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
