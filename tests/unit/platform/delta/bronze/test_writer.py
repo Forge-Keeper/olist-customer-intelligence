@@ -2,7 +2,11 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from olist_data_platform.platform.delta import ColumnContract, DatasetContract, TableLayout
+from olist_data_platform.platform.delta import (
+    ColumnContract,
+    DatasetContract,
+    TableLayout,
+)
 from olist_data_platform.platform.delta.bronze import WriteStrategy
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
 
