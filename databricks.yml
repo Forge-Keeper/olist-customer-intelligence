@@ -10,6 +10,12 @@ variables:
   gdp_periods:
     description: Comma-separated IBGE GDP reference years for the pilot job.
     default: "2016,2017,2018"
+  stg_run_as_service_principal:
+    description: Service principal application ID used to run staging workflows.
+    default: aec41466-5e61-44a8-b2f8-10a260686ac2
+  prd_run_as_service_principal:
+    description: Service principal application ID used to run production workflows.
+    default: aec41466-5e61-44a8-b2f8-10a260686ac2
 
 artifacts:
   default:
@@ -25,15 +31,20 @@ targets:
       catalog: dev
 
   stg:
-    mode: production
     workspace:
-      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Staging/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      service_principal_name: ${var.stg_run_as_service_principal}
     variables:
       catalog: stg
 
   prd:
     mode: production
+    git:
+      branch: main
     workspace:
-      root_path: /Workspace/Users/${workspace.current_user.userName}/.bundle/${bundle.name}/${bundle.target}
+      root_path: /Workspace/Production/.bundle/${bundle.name}/${bundle.target}
+    run_as:
+      service_principal_name: ${var.prd_run_as_service_principal}
     variables:
       catalog: prd
