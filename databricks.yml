@@ -21,7 +21,7 @@ artifacts:
   default:
     type: whl
     path: .
-    build: uv build --wheel
+    build: python scripts/build_bundle_artifact.py
 
 targets:
   dev:
