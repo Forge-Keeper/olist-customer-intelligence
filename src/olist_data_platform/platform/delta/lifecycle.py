@@ -105,7 +105,7 @@ class DeltaTableLifecycle:
         """Create an empty Delta table from the authoritative dataset contract."""
         logger.info("delta_table_create_started | target_table=%s", self.target_table)
         dataframe = self.spark.createDataFrame([], self.contract.to_struct_type())
-        writer = dataframe.write.format("delta").mode("errorifexists")
+        writer = dataframe.write.format("delta").mode("error")
 
         if self.contract.layout.clustering_columns:
             writer = writer.clusterBy(*self.contract.layout.clustering_columns)
@@ -131,9 +131,7 @@ class DeltaTableLifecycle:
         mismatches: list[TypeMismatch] = []
         for name in sorted(set(expected) & set(actual)):
             expected_type = self._canonical_type(expected[name].data_type)
-            actual_type = self._canonical_type(
-                actual[name].dataType.simpleString()
-            )
+            actual_type = self._canonical_type(actual[name].dataType.simpleString())
             if expected_type != actual_type:
                 mismatches.append(TypeMismatch(name, expected_type, actual_type))
         return SchemaDiff(missing, unexpected, tuple(mismatches))
