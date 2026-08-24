@@ -19,7 +19,9 @@ from olist_data_platform.platform.delta import (
 def build_parser() -> argparse.ArgumentParser:
     """Build CLI parser for the Databricks dev contract smoke job."""
     parser = argparse.ArgumentParser(
-        description="Validate Delta contract lifecycle behavior in a Databricks dev workspace."
+        description=(
+            "Validate Delta contract lifecycle behavior in a Databricks dev workspace."
+        )
     )
     parser.add_argument("--gdp-table", required=True)
     parser.add_argument("--scratch-prefix", required=True)
@@ -32,7 +34,9 @@ def _scratch_contract() -> DatasetContract:
         IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG,
         metadata=replace(
             IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG.metadata,
-            description="Disposable dev table for Delta contract lifecycle smoke validation.",
+            description=(
+                "Disposable dev table for Delta contract lifecycle smoke validation."
+            ),
         ),
     )
 
@@ -98,9 +102,13 @@ def run(args: argparse.Namespace, spark: SparkSession) -> None:
     )
     evolution_lifecycle.ensure()
 
-    evolved_columns = {field.name for field in spark.table(evolution_table).schema.fields}
+    evolved_columns = {
+        field.name for field in spark.table(evolution_table).schema.fields
+    }
     if "smoke_nullable_note" not in evolved_columns:
-        raise AssertionError("Expected opt-in nullable additive evolution to materialize.")
+        raise AssertionError(
+            "Expected opt-in nullable additive evolution to materialize."
+        )
 
     print(
         "platform_contract_smoke_completed "
