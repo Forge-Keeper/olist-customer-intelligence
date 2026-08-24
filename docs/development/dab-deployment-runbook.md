@@ -207,8 +207,35 @@ The intended production model is **build once, promote the same approved commit/
 
 The first vertical slice has proven `dev`. Shared `stg` and protected `prd` promotion remain gated by CI/CD authentication and deployment identities defined in the Technical Design.
 
+## CI/CD authentication
+
+The preferred production architecture is GitHub OIDC / Workload Identity Federation with Databricks service principals, avoiding static long-lived credentials.
+
+Databricks Free Edition does not expose the account-level federation policy administration required for that setup. For this portfolio workspace, CI therefore uses a documented laboratory fallback: OAuth machine-to-machine authentication with the dedicated `olist-ci` service principal.
+
+GitHub Environment `ci` stores:
+
+```text
+Environment variables:
+  DATABRICKS_HOST
+  DATABRICKS_CLIENT_ID
+
+Environment secret:
+  DATABRICKS_CLIENT_SECRET
+```
+
+The workflow sets:
+
+```text
+DATABRICKS_AUTH_TYPE=oauth-m2m
+```
+
+The client secret must never be committed to the repository or written into bundle configuration.
+
+This fallback is a workspace limitation, not the target enterprise architecture. In a full Databricks account, replace it with OIDC federation and short-lived GitHub-issued credentials.
+
 ## CI/CD boundary
 
-Repository CI already proves code quality, tests, wheel build, wheel installation and the packaged GDP entry point.
+Repository CI proves code quality, tests, wheel build, wheel installation, the packaged GDP entry point, Databricks service-principal authentication and authenticated Bundle validation for `dev`, `stg` and `prd`.
 
-The next CI/CD increment is authenticated Bundle validation for `dev`, `stg` and `prd` on pull requests. Credentials must not be committed. The Technical Design requires GitHub secrets or an OIDC-compatible setup; a dedicated service-principal/OIDC approach is preferred before making workspace-backed validation a required PR gate.
+The validation workflow is intentionally non-deploying: pull-request CI may inspect workspace-backed bundle configuration but must not create or modify Databricks resources. Deployment remains a separate promotion operation.
