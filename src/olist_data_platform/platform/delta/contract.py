@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
+from typing import cast
 
 from pyspark.sql.types import StructField, StructType
 
@@ -24,6 +25,13 @@ def _freeze_tags(tags: Mapping[str, str]) -> Mapping[str, str]:
         normalized[key] = value
 
     return MappingProxyType(normalized)
+
+
+def _parse_single_field(name: str, data_type: str) -> StructField:
+    parsed = cast(StructType, StructType.fromDDL(f"{name} {data_type}"))
+    if len(parsed.fields) != 1:
+        raise ValueError(f"Unable to parse data type for column {name!r}.")
+    return parsed.fields[0]
 
 
 @dataclass(frozen=True)
@@ -53,23 +61,20 @@ class ColumnContract:
             raise ValueError("column description cannot be empty.")
 
         try:
-            parsed = StructType.fromDDL(f"{self.name} {self.data_type}")
+            _parse_single_field(self.name, self.data_type)
         except Exception as exc:  # noqa: BLE001 - normalize Spark parser failures
             raise ValueError(
                 f"Invalid Spark DDL type for column {self.name!r}: {self.data_type!r}."
             ) from exc
 
-        if len(parsed.fields) != 1:
-            raise ValueError(f"Unable to parse data type for column {self.name!r}.")
-
         object.__setattr__(self, "tags", _freeze_tags(self.tags))
 
     def to_struct_field(self) -> StructField:
         """Convert the contract into a Spark StructField."""
-        parsed = StructType.fromDDL(f"{self.name} {self.data_type}")
+        parsed_field = _parse_single_field(self.name, self.data_type)
         return StructField(
             self.name,
-            parsed.fields[0].dataType,
+            parsed_field.dataType,
             self.nullable,
             {"comment": self.description},
         )
