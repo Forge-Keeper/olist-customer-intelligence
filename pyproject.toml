@@ -1,10 +1,13 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = [
+    "setuptools>=68",
+    "setuptools-scm>=8",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "olist-customer-intelligence"
-version = "0.1.0"
+dynamic = ["version"]
 description = "End-to-end Data Engineering platform using Databricks and the Olist dataset"
 requires-python = ">=3.11"
 
@@ -25,6 +28,12 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools_scm]
+fallback_version = "0.1.0"
+version_file = "src/olist_data_platform/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
 
 [tool.pytest.ini_options]
 pythonpath = [
