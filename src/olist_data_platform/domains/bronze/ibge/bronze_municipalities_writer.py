@@ -14,6 +14,13 @@ from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
 
 
 class BronzeMunicipalitiesWriter:
+    """Adapt IBGE municipality-locality records to the Bronze table contract.
+
+    This adapter owns source-specific row construction and the transient
+    JSON-to-VARIANT conversion. Generic persistence and write semantics remain in
+    ``BronzeWriter``.
+    """
+
     INPUT_SCHEMA = StructType(
         [
             StructField("municipality_code", StringType(), False),
@@ -32,6 +39,11 @@ class BronzeMunicipalitiesWriter:
         )
 
     def write(self, records: list[dict[str, Any]], request_id: str) -> None:
+        """Persist one municipality-locality ingestion batch to Bronze.
+
+        Empty input is a no-op. Raw source payload content is preserved as a
+        Delta VARIANT after transient JSON serialization.
+        """
         if not records:
             return
         dataframe = self._build_dataframe(records=records, request_id=request_id)
