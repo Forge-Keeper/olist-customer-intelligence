@@ -15,6 +15,13 @@ from .municipality_population_bronze_config import (
 
 
 class BronzeMunicipalityPopulationWriter:
+    """Adapt IBGE SIDRA municipality population records to the Bronze contract.
+
+    This adapter owns source-specific row construction and the transient
+    JSON-to-VARIANT conversion. Generic persistence, key validation and write
+    strategy remain the responsibility of ``BronzeWriter``.
+    """
+
     INPUT_SCHEMA = StructType(
         [
             StructField("municipality_code", StringType(), False),
@@ -35,6 +42,11 @@ class BronzeMunicipalityPopulationWriter:
         )
 
     def write(self, records: list[dict[str, Any]], request_id: str) -> None:
+        """Persist one municipality-population ingestion batch to Bronze.
+
+        Empty input is a no-op. Raw source payload content is preserved as a
+        Delta VARIANT after transient JSON serialization.
+        """
         if not records:
             return
         dataframe = self._build_dataframe(records=records, request_id=request_id)
