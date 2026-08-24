@@ -1,0 +1,35 @@
+bundle:
+  name: olist-customer-intelligence
+
+include:
+  - resources/*.yml
+
+variables:
+  catalog:
+    description: Unity Catalog catalog used by this deployment target.
+  gdp_periods:
+    description: Comma-separated IBGE GDP reference years for the pilot job.
+    default: "2016,2017,2018"
+
+artifacts:
+  default:
+    type: whl
+    path: .
+    build: uv build --wheel
+
+targets:
+  dev:
+    mode: development
+    default: true
+    variables:
+      catalog: dev
+
+  stg:
+    mode: production
+    variables:
+      catalog: stg
+
+  prd:
+    mode: production
+    variables:
+      catalog: prd
