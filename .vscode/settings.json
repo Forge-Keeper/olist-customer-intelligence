@@ -1,0 +1,53 @@
+{
+  "python.defaultInterpreterPath": "${workspaceFolder}\\.venv\\Scripts\\python.exe",
+
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.testing.pytestArgs": [
+    "tests"
+  ],
+
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
+    }
+  },
+
+  "ruff.configuration": "${workspaceFolder}/pyproject.toml",
+
+  "ty.importStrategy": "fromEnvironment",
+  "ty.interpreter": [
+    "${workspaceFolder}\\.venv\\Scripts\\python.exe"
+  ],
+
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  },
+
+  "files.watcherExclude": {
+    "**/.venv/**": true,
+    "**/__pycache__/**": true,
+    "**/.pytest_cache/**": true,
+    "**/.ruff_cache/**": true
+  },
+
+  "search.exclude": {
+    "**/.venv": true,
+    "**/__pycache__": true,
+    "**/.pytest_cache": true,
+    "**/.ruff_cache": true
+  },
+
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
+
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  }
+}

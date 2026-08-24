@@ -1,0 +1,57 @@
+[build-system]
+requires = [
+    "setuptools>=68",
+    "setuptools-scm>=8",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "olist-customer-intelligence"
+dynamic = ["version"]
+description = "End-to-end Data Engineering platform using Databricks and the Olist dataset"
+requires-python = ">=3.11"
+
+dependencies = [
+    "requests",
+]
+
+[project.scripts]
+olist-ibge-gdp = "olist_data_platform.jobs.ibge_municipality_gdp_ingestion:main"
+
+[dependency-groups]
+dev = [
+    "pyspark>=4.2.0",
+    "pytest",
+    "ruff",
+    "ty>=0.0.72",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools_scm]
+fallback_version = "0.1.0"
+version_file = "src/olist_data_platform/_version.py"
+version_scheme = "guess-next-dev"
+local_scheme = "node-and-date"
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+]
+testpaths = [
+    "tests",
+]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors: erros de estilo e estrutura do código
+    "F",   # Pyflakes: imports inválidos/não usados, variáveis indefinidas etc.
+    "I",   # isort: organização e ordenação dos imports
+    "UP",  # pyupgrade: moderniza sintaxe para versões atuais do Python
+    "B",   # flake8-bugbear: padrões propensos a bugs e más práticas
+]

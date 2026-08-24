@@ -1,0 +1,73 @@
+name: Deploy STG
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-stg
+  cancel-in-progress: false
+
+jobs:
+  deploy-stg:
+    name: deploy-stg
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: olist-stg
+    env:
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+    steps:
+      - name: Checkout main commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Verify Databricks service principal authentication
+        run: databricks current-user me
+
+      - name: Validate staging bundle
+        run: databricks bundle validate -t stg
+
+      - name: Deploy staging bundle
+        run: databricks bundle deploy -t stg
+
+      - name: Run staging GDP smoke
+        run: databricks bundle run -t stg ibge_municipality_gdp
+
+      - name: Capture promoted wheel manifest
+        run: |
+          wheel_path="$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+          test -n "$wheel_path"
+          sha256sum "$wheel_path" | tee dist/SHA256SUMS
+          printf 'git_sha=%s\nwheel=%s\n' "$(git rev-parse HEAD)" "$(basename "$wheel_path")" | tee dist/promotion-manifest.txt
+
+      - name: Retain staging promotion artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stg-promotion-${{ github.sha }}
+          path: |
+            dist/*.whl
+            dist/SHA256SUMS
+            dist/promotion-manifest.txt
+          if-no-files-found: error
+          retention-days: 30

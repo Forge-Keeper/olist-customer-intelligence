@@ -1,0 +1,83 @@
+name: Documentation
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+    paths:
+      - 'docs/**'
+      - 'src/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/docs.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'src/**'
+      - 'mkdocs.yml'
+      - '.github/workflows/docs.yml'
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: docs-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: docs-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: |
+            uv.lock
+            docs/requirements.txt
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Sync project dependencies
+        run: uv sync --frozen --group dev
+
+      - name: Install documentation dependencies
+        run: uv pip install --python .venv/bin/python -r docs/requirements.txt
+
+      - name: Build documentation
+        run: uv run mkdocs build --strict
+
+      - name: Configure GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    name: docs-deploy
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

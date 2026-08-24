@@ -1,0 +1,94 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    name: quality
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: ci
+    env:
+      DATABRICKS_AUTH_TYPE: oauth-m2m
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          cache-dependency-glob: uv.lock
+
+      - name: Set up Python
+        run: uv python install 3.11
+
+      - name: Sync dependencies
+        run: uv sync --frozen --group dev
+
+      - name: Ruff
+        run: uv run ruff check .
+
+      - name: Type check
+        run: uv run ty check
+
+      - name: Tests
+        run: uv run pytest -q
+
+      - name: Build wheel
+        run: uv build --wheel
+
+      - name: Verify wheel artifact
+        run: |
+          wheel_path="$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+          test -n "$wheel_path"
+          echo "wheel_path=$wheel_path"
+          echo "git_sha=$(git rev-parse HEAD)"
+          echo "git_short_sha=$(git rev-parse --short HEAD)"
+          case "$(basename "$wheel_path")" in
+            *+g*.whl) ;;
+            *)
+              echo "Wheel does not contain Git-derived local version metadata."
+              exit 1
+              ;;
+          esac
+
+      - name: Install wheel in isolated environment
+        run: |
+          uv venv .venv-wheel-test --python 3.11
+          uv pip install --python .venv-wheel-test/bin/python "pyspark>=4.2.0" dist/*.whl
+
+      - name: Verify packaged GDP entry point
+        run: .venv-wheel-test/bin/olist-ibge-gdp --help
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Verify Databricks service principal authentication
+        run: databricks current-user me
+
+      - name: Validate Databricks bundle targets
+        run: |
+          databricks bundle validate -t dev
+          databricks bundle validate -t stg
+          databricks bundle validate -t prd
