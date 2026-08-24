@@ -4,8 +4,7 @@ from olist_data_platform.platform.delta import (
     DatasetContract,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.bronze.config import WriteStrategy
-
+from olist_data_platform.platform.delta.bronze import WriteStrategy
 
 OLIST_CUSTOMERS_BRONZE_CONFIG = DatasetContract(
     columns=(
@@ -19,7 +18,9 @@ OLIST_CUSTOMERS_BRONZE_CONFIG = DatasetContract(
             name="customer_unique_id",
             data_type="string",
             nullable=True,
-            description="Stable customer identifier provided by the Olist source snapshot.",
+            description=(
+                "Stable customer identifier provided by the Olist source snapshot."
+            ),
         ),
         ColumnContract(
             name="customer_zip_code_prefix",
