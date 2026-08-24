@@ -18,9 +18,13 @@ This plan implements the approved Requirements and the selected Technical Design
 - `DeltaTableLifecycle` owns table lifecycle/state; `BronzeWriter` owns write semantics.
 - Schema drift fails by default; only explicitly enabled, supported evolution is automatic.
 - Initial automatic evolution: additive nullable columns only.
-- Table and column governance tags are first-class contract metadata.
-- Future Gold fine-grained governance uses Unity Catalog/ABAC row filters and column masks; literal per-row metadata tags are not introduced.
-- No YAML generator, dependency inference, generalized ABAC engine or full SAFRA parity.
+- Table and column governed-tag assignments are first-class contract metadata.
+- **Unity Catalog ABAC is the selected fine-grained governance direction.**
+- ABAC v1 includes governed tags, centralized row-filter policies and centralized column-mask policies.
+- ABAC policy definitions are separate from dataset contracts and have their own governance lifecycle.
+- Synthetic/disposable `dev` objects prove ABAC behavior; GDP does not receive fabricated sensitivity metadata.
+- ABAC GRANT policies remain out of scope because they are Beta.
+- No YAML generator, dependency inference or full SAFRA parity.
 
 ## Execution strategy
 
@@ -54,14 +58,14 @@ name
 data_type
 nullable
 description
-tags
+tags / governed-tag assignments
 ```
 
 `TableMetadata` must represent:
 
 ```text
 description
-tags
+tags / governed-tag assignments
 ```
 
 Add the reusable platform-managed Bronze declaration for `ingestion_timestamp` and contract resolution (`columns + managed_columns`).
@@ -119,7 +123,7 @@ Preserve exactly the existing:
 
 Add explicit type/nullability/description metadata using existing source/code truth only.
 
-Add table tags only when justified. Minimum durable platform taxonomy may include:
+Add tags only when justified. Minimum durable platform taxonomy may include:
 
 ```text
 layer
@@ -129,7 +133,7 @@ source_system
 
 Do not infer PII/sensitivity/classification.
 
-Column tag capability must be present, but individual datasets only receive column tags when there is a real governance fact to represent.
+Governed column-tag capability must be present, but individual datasets only receive governed tags when there is a real governance fact to represent.
 
 Retire `BronzeDatasetConfig` as a dataset declaration model once all callers are migrated. Retain/move `WriteStrategy` to the most cohesive platform module.
 
@@ -166,7 +170,7 @@ Implement a small `DeltaTableLifecycle` with explicit responsibilities:
 - table description reconciliation;
 - column comment reconciliation;
 - table tag reconciliation;
-- column tag reconciliation;
+- column governed-tag assignment reconciliation;
 - structured lifecycle logging.
 
 ### Schema diff
@@ -194,13 +198,11 @@ AND schema_evolution.enabled == true
 
 Everything else remains explicit failure/migration.
 
-### Governance implementation
+### Governance assignment implementation
 
-Implement table/column tag materialization using the Databricks/Unity Catalog mechanism available in the workspace/runtime.
+Implement table/column tag materialization using the supported Unity Catalog SQL/API mechanism.
 
-The contract represents tag assignments. Account-level governed-tag taxonomy creation and ownership are external governance prerequisites unless required to unblock a demonstrated pilot tag.
-
-Do not implement row filters or column masks in this phase; preserve the documented extension boundary for Gold.
+The dataset contract represents tag assignments. Account-level governed-tag taxonomy creation and ownership remain explicit prerequisites unless the deployment identity has the required administrative authority.
 
 ### Tests
 
@@ -222,18 +224,96 @@ Cover:
 - unsupported evolution failures;
 - table metadata reconciliation;
 - table tags;
-- column tags;
+- column governed tags;
 - structured logs/observable evolution.
 
 ### Checkpoint 3
 
 - lifecycle unit/integration tests green;
 - no writes silently mutate unsupported schema;
-- governance metadata reconciliation is independently testable.
+- governance assignments are independently testable.
 
 ---
 
-## Phase 4 — BronzeWriter integration
+## Phase 4 — ABAC governance model and lifecycle
+
+### Goal
+
+Implement the first reusable platform abstraction for centralized Unity Catalog ABAC without putting policy logic inside every dataset contract.
+
+### New modules
+
+Recommended shallow package:
+
+```text
+src/olist_data_platform/platform/governance/
+├── __init__.py
+├── policy.py
+└── lifecycle.py
+```
+
+### Policy model
+
+Implement a small immutable `GovernancePolicyDefinition` (exact name may change) able to represent:
+
+```text
+key / name
+policy_type = ROW_FILTER | COLUMN_MASK
+scope = catalog | schema | table
+tag condition / matching expression
+UDF or inline policy expression reference
+description
+```
+
+Do not model the full Databricks API. Only fields required by v1 ABAC policies belong here.
+
+### Governance lifecycle
+
+Implement a `GovernancePolicyLifecycle` responsible for:
+
+- inspect current policy state;
+- create/ensure a declared policy;
+- validate policy scope/type/matching logic reference;
+- reconcile supported policy definition changes;
+- fail explicitly on unsupported/ambiguous drift;
+- structured logs for policy create/update/validate/failure.
+
+Use the supported Unity Catalog SQL or REST API based on what provides the clearest testable implementation in the actual workspace. Do not support both mechanisms without a concrete need.
+
+### UDF boundary
+
+Row filters and column masks may require Unity Catalog UDFs or supported inline SQL expressions. Policy definitions should reference those functions/expressions rather than embedding arbitrary Python execution.
+
+UDFs used by policies must be version-controlled as SQL/application resources and have explicit ownership/EXECUTE prerequisites.
+
+### Tests
+
+Create:
+
+```text
+tests/unit/platform/governance/test_policy.py
+tests/unit/platform/governance/test_lifecycle.py
+```
+
+Cover:
+
+- valid/invalid policy definitions;
+- ROW_FILTER and COLUMN_MASK types;
+- valid catalog/schema/table scope;
+- policy inspection/diff/reconcile;
+- logging;
+- unsupported drift failure;
+- no coupling to BronzeWriter or domain code.
+
+### Checkpoint 4
+
+- governance abstractions are green independently of real workspace ABAC;
+- policy definitions remain separate from DatasetContract;
+- no generalized policy compiler or ABAC GRANT implementation appears.
+
+---
+
+## Phase 5 — BronzeWriter integration
 
 ### Changes
 
@@ -247,10 +327,13 @@ Target responsibility split:
 
 ```text
 DatasetContract
-    schema + metadata + governance intent
+    schema + metadata + governed object attributes
 
 DeltaTableLifecycle
-    create / inspect / validate / evolve / reconcile
+    create / inspect / validate / evolve / reconcile object metadata
+
+GovernancePolicyLifecycle
+    centralized ABAC policy state (not called by BronzeWriter)
 
 BronzeWriter
     prepare / managed values / batch validation / write semantics
@@ -263,7 +346,7 @@ Flow:
 1. validate incoming dataset fields;
 2. add `ingestion_timestamp`;
 3. validate logical key values/duplicates;
-4. call lifecycle `ensure/validate` using prepared schema;
+4. call Delta lifecycle `ensure/validate` using prepared schema;
 5. perform MERGE/FULL_REPLACE/replaceWhere.
 
 Preserve all current safeguards and semantics.
@@ -278,7 +361,7 @@ tests/unit/platform/delta/bronze/test_writer.py
 
 and every domain writer affected by constructor/contract changes.
 
-### Checkpoint 4
+### Checkpoint 5
 
 Run the **entire unit and integration suite**, not only new tests.
 
@@ -292,7 +375,7 @@ Must prove:
 
 ---
 
-## Phase 5 — GDP contract validation and workspace lifecycle smoke
+## Phase 6 — GDP contract validation and workspace lifecycle smoke
 
 ### Changes
 
@@ -303,11 +386,12 @@ Finalize GDP contract as the reference example for:
 - key columns;
 - clustering;
 - table description;
-- table tags;
-- supported column-tag declaration capability;
+- truthful table tags;
 - schema evolution disabled by default.
 
 Keep transient `payload_json` staging behavior only where required before VARIANT conversion.
+
+Do **not** add false sensitivity/PII governed tags to GDP merely to exercise ABAC.
 
 ### Workspace smoke before DAB
 
@@ -320,13 +404,71 @@ Against `dev` only:
 - intentionally demonstrate contract drift failure in a disposable test object or controlled test path;
 - demonstrate opt-in additive nullable evolution without making production GDP permissive.
 
-### Checkpoint 5
+### Checkpoint 6
 
 Platform contract/lifecycle behavior is proven in the actual Databricks environment before adding deployment automation.
 
 ---
 
-## Phase 6 — Wheel packaging
+## Phase 7 — ABAC workspace validation in `dev`
+
+### Goal
+
+Prove the real Databricks governance behavior without contaminating business datasets with synthetic classifications.
+
+### Prerequisites
+
+Confirm current Databricks requirements before execution:
+
+- Unity Catalog enabled;
+- serverless or another supported runtime configuration;
+- governed-tag CREATE/ASSIGN/APPLY TAG permissions as required;
+- MANAGE/ownership on selected catalog/schema scope;
+- EXECUTE on policy UDFs;
+- test identities/groups sufficient to demonstrate differential access where possible.
+
+If taxonomy creation permission is unavailable, stop and request/provision the required governed tags rather than falling back to ungoverned tags for the ABAC proof.
+
+### Synthetic validation objects
+
+Create disposable governance fixtures under a dedicated development schema, conceptually:
+
+```text
+dev.governance_validation.abac_people_demo
+```
+
+Synthetic rows may include only fake values such as region, access_segment, synthetic_identifier and synthetic_secret.
+
+### Column-mask proof
+
+1. assign a governed sensitivity tag to a synthetic column;
+2. create/ensure a centralized COLUMN_MASK ABAC policy that matches that tag;
+3. query as appropriate test caller contexts;
+4. verify masked versus allowed behavior;
+5. inspect/validate policy state through the governance lifecycle.
+
+### Row-filter proof
+
+1. use controlled synthetic row attributes such as `region` or `access_segment`;
+2. create/ensure a ROW_FILTER ABAC policy at schema/catalog scope when safe;
+3. verify different visible rows for controlled caller/group contexts;
+4. inspect/validate policy state.
+
+### Cleanup
+
+Synthetic tables/policies/UDFs must be clearly named and either automatically removed after validation or documented as disposable test fixtures. Governed taxonomy objects may remain only if they are part of the approved durable taxonomy.
+
+### Checkpoint 7
+
+- real governed tag assignment proven;
+- column masking proven;
+- row filtering proven;
+- policy inspection/validation proven;
+- no false governance metadata added to GDP.
+
+---
+
+## Phase 8 — Wheel packaging
 
 ### Changes
 
@@ -343,13 +485,13 @@ install/import entry point
 execute parser/help path
 ```
 
-### Checkpoint 6
+### Checkpoint 8
 
 A reproducible wheel exists and GDP entry point resolves correctly.
 
 ---
 
-## Phase 7 — DAB dev target and GDP pilot
+## Phase 9 — DAB dev target and GDP pilot
 
 ### Changes
 
@@ -384,13 +526,13 @@ databricks bundle run -t dev <gdp_job_key>
 
 Then verify contract/table/data in `dev`.
 
-### Checkpoint 7
+### Checkpoint 9
 
 End-to-end local/developer path is proven without any `prd` hardcode.
 
 ---
 
-## Phase 8 — STG/PRD target validation and promotion configuration
+## Phase 10 — STG/PRD target validation and governance prerequisites
 
 ### Changes
 
@@ -420,16 +562,20 @@ Confirm before deployment:
 - IBGE outbound access;
 - service principals;
 - UC write/metadata/tag permissions;
-- governed-tag taxonomy/assignments if governed tags are exercised;
+- approved governed-tag taxonomy and assignment permissions;
+- ABAC policy MANAGE permissions at intended catalog/schema scopes;
+- EXECUTE permission for governance UDFs where required;
 - GitHub environment/secrets capability.
 
-### Checkpoint 8
+ABAC business policies are promoted only when backed by real governance requirements. The synthetic `dev` validation policy is not automatically promoted to `stg/prd`.
 
-Targets validate and operational prerequisites are known; no production deploy occurs merely because configuration validates.
+### Checkpoint 10
+
+Targets validate and operational/governance prerequisites are known; no production deploy occurs merely because configuration validates.
 
 ---
 
-## Phase 9 — CI/CD
+## Phase 11 — CI/CD
 
 Implement professional promotion gates.
 
@@ -440,29 +586,32 @@ Implement professional promotion gates.
 - type gate;
 - full pytest;
 - wheel build;
-- bundle validate targets.
+- bundle validate targets;
+- governance policy-definition unit validation.
 
 ### Main -> STG
 
 - build/identify immutable artifact for commit;
 - deploy `stg` using staging identity;
 - run GDP smoke;
-- verify table contract/data/governance metadata.
+- verify table contract/data/governance assignments;
+- validate any real declared ABAC policies intended for staging.
 
 ### STG -> PRD
 
 - require protected/manual approval;
 - use same approved commit/artifact;
 - deploy `prd` with production identity;
-- post-deploy contract verification.
+- post-deploy contract verification;
+- validate any real production ABAC policy state without deploying synthetic validation policies.
 
-### Checkpoint 9
+### Checkpoint 11
 
-A failed test, contract validation, staging smoke or approval prevents production promotion.
+A failed test, contract validation, governance validation, staging smoke or approval prevents production promotion.
 
 ---
 
-## Phase 10 — Documentation closeout
+## Phase 12 — Documentation closeout
 
 Before Done, update/accept:
 
@@ -470,12 +619,17 @@ Before Done, update/accept:
 docs/development/dab-platform-*.md
 docs/adr/ADR-004-*.md
 docs/adr/ADR-005-*.md
+docs/adr/ADR-006-unity-catalog-abac-governance.md
 ```
 
 Add operator/developer instructions for:
 
 - declaring a `DatasetContract`;
-- table and column tag assignments;
+- declaring table/column governed tag assignments;
+- governed-tag taxonomy prerequisites and permissions;
+- declaring ROW_FILTER and COLUMN_MASK ABAC policies;
+- governance UDF ownership/EXECUTE requirements;
+- ABAC policy inspection and drift handling;
 - contract drift failures;
 - controlled schema evolution;
 - local wheel build;
@@ -483,7 +637,7 @@ Add operator/developer instructions for:
 - dev -> stg -> prd promotion;
 - rollback/recovery expectations supported by the implemented pipeline.
 
-Document explicitly that future Gold row-level governance uses row filters/ABAC and future column protection uses governed tags/column masks.
+Document explicitly that ABAC GRANT policies are deferred and require a separate maturity decision.
 
 ## Commit/checkpoint strategy
 
@@ -491,12 +645,14 @@ Prefer small coherent commits after green checkpoints, conceptually:
 
 1. `feat: add executable delta dataset contracts`
 2. `refactor: migrate bronze dataset contracts`
-3. `feat: add delta table lifecycle and governance metadata`
-4. `refactor: delegate bronze lifecycle from writer`
-5. `build: package GDP ingestion as wheel entry point`
-6. `feat: add GDP Databricks bundle pilot`
-7. `ci: add staging and production promotion flow`
-8. `docs: finalize DAB platform architecture and operations`
+3. `feat: add delta table lifecycle and governed tags`
+4. `feat: add Unity Catalog ABAC policy lifecycle`
+5. `refactor: delegate bronze lifecycle from writer`
+6. `test: validate ABAC policies in dev`
+7. `build: package GDP ingestion as wheel entry point`
+8. `feat: add GDP Databricks bundle pilot`
+9. `ci: add staging and production promotion flow`
+10. `docs: finalize DAB platform and ABAC governance architecture`
 
 Exact commits may be combined when changes are inseparable, but no commit should knowingly leave the branch with a broken test suite unless it is an explicitly temporary local step that is not pushed.
 
@@ -505,9 +661,11 @@ Exact commits may be combined when changes are inseparable, but no commit should
 Stop and surface a decision instead of improvising if any of these occur:
 
 - serverless jobs unavailable or incompatible;
-- required Unity Catalog metadata/tag operation is unsupported by chosen runtime/API;
+- ABAC unsupported by available compute/runtime;
+- required governed-tag taxonomy cannot be created/assigned;
+- ABAC policy permissions or UDF execution privileges are unavailable;
+- required Unity Catalog metadata/tag operation is unsupported by chosen SQL/API path;
 - existing table state requires a breaking schema migration;
-- governed-tag taxonomy/permissions conflict with the proposed contract capability;
 - service-principal creation/permissions unavailable;
 - DAB wheel deployment requires a materially different packaging model;
 - migration of a Bronze config exposes semantics not representable by the accepted `DatasetContract`.
@@ -519,12 +677,15 @@ The feature is Done only when:
 - all current Bronze contracts are migrated;
 - all tests/lint/type gates are green;
 - `BronzeWriter` no longer owns table creation;
-- lifecycle validates/reconciles schema, layout, comments, table tags and column tags;
+- lifecycle validates/reconciles schema, layout, comments, table tags and column governed tags;
 - schema evolution is fail-fast by default and conservative when enabled;
+- ABAC policy definitions/lifecycle support ROW_FILTER and COLUMN_MASK;
+- synthetic `dev` validation proves governed tags, row filtering and column masking;
+- GDP remains free of fabricated sensitivity metadata;
 - GDP runs from the wheel through DAB;
 - `dev`, `stg`, `prd` resolve isolated catalogs;
 - staging promotion is successful;
 - production promotion is protected and uses the same approved artifact;
 - documentation/ADRs match implemented behavior;
 - no production secret or identity is embedded in source;
-- future Gold row-filter/column-mask governance can extend the model without redesigning the contract foundation.
+- future Gold datasets can activate governed-tag-driven ABAC without redesigning the contract foundation.
