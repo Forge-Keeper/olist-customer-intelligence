@@ -2,7 +2,11 @@
 
 ## Status
 
-Implementation and validation are complete on `feature/ibge-municipality-gdp`; PR/merge is pending.
+**DONE.** Implementation, validation, PR review and merge are complete.
+
+Merged into `dev` via PR #6 on 2026-08-24.
+
+Merge commit: `cff34e52179ff532e1c9bd2567ee85325b334e1b`.
 
 Development gates:
 
@@ -13,7 +17,7 @@ Development gates:
 - Approved Plan — complete (`/autopilot`)
 - Implementation — complete
 - Validation — complete
-- Done — pending PR/merge
+- Done — complete
 
 ## Objective
 
@@ -101,7 +105,7 @@ New runtime components:
 
 Changed reusable configuration:
 
-- `MUNICIPALITY_GDP` in `datasets.py` now carries the approved six-variable production contract instead of `variables=("all",)`.
+- `MUNICIPALITY_GDP` in `datasets.py` carries the approved six-variable production contract instead of `variables=("all",)`.
 
 Validation assets:
 
@@ -110,7 +114,7 @@ Validation assets:
 - Spark Bronze writer integration coverage
 - Databricks `ibge_gdp_bronze_validation.py`
 
-No changes are required to the generic SIDRA transport/parser or shared Bronze writer.
+No changes were required to the generic SIDRA transport/parser or shared Bronze writer.
 
 ## Validation evidence
 
@@ -176,3 +180,7 @@ The `5570` cardinality is observed validation evidence for this SIDRA table/scop
 - GDP per capita
 - Gold KPI/data-product design
 - periods outside 2016-2018
+
+## Follow-up boundary
+
+Any extension into Silver, additional SIDRA variables, periods outside 2016–2018, inflation-adjusted measures or Gold metrics is a **new feature** and must restart the project development gates.
