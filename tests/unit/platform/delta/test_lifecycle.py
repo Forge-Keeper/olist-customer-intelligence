@@ -13,7 +13,13 @@ from olist_data_platform.platform.delta import (
 from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 
 
-def _column(name: str, data_type: str = "string", *, nullable: bool = False, tags=None):
+def _column(
+    name: str,
+    data_type: str = "string",
+    *,
+    nullable: bool = False,
+    tags=None,
+):
     return ColumnContract(
         name=name,
         data_type=data_type,
@@ -23,11 +29,20 @@ def _column(name: str, data_type: str = "string", *, nullable: bool = False, tag
     )
 
 
-def _contract(*, evolution: bool = False, clustering=(), partitioning=()) -> DatasetContract:
+def _contract(
+    *,
+    evolution: bool = False,
+    clustering=(),
+    partitioning=(),
+) -> DatasetContract:
     return DatasetContract(
         columns=(
             _column("id"),
-            _column("new_value", nullable=True, tags={"classification": "public"}),
+            _column(
+                "new_value",
+                nullable=True,
+                tags={"classification": "public"},
+            ),
         ),
         key_columns=("id",),
         layout=TableLayout(
@@ -51,7 +66,12 @@ def _compatible_schema():
     )
 
 
-def _configure_existing_table(spark, *, clustering=(), partitioning=()):
+def _configure_existing_table(
+    spark,
+    *,
+    clustering=(),
+    partitioning=(),
+):
     spark.catalog.tableExists.return_value = True
     spark.table.return_value.schema = _compatible_schema()
     detail = {
@@ -80,21 +100,31 @@ def test_should_classify_schema_drift():
 def test_should_fail_fast_when_evolution_is_disabled():
     spark = Mock()
     spark.catalog.tableExists.return_value = True
-    spark.table.return_value.schema = StructType([StructField("id", StringType(), False)])
+    spark.table.return_value.schema = StructType(
+        [StructField("id", StringType(), False)]
+    )
     lifecycle = DeltaTableLifecycle(spark, "dev.bronze.example", _contract())
     with pytest.raises(ValueError, match="missing_columns=\\['new_value'\\]"):
         lifecycle.ensure()
-    assert not any("ADD COLUMNS" in str(call) for call in spark.sql.call_args_list)
+    assert not any(
+        "ADD COLUMNS" in str(call) for call in spark.sql.call_args_list
+    )
 
 
 def test_should_add_missing_nullable_column_when_evolution_is_enabled():
     spark = Mock()
     spark.catalog.tableExists.return_value = True
-    spark.table.return_value.schema = StructType([StructField("id", StringType(), False)])
+    spark.table.return_value.schema = StructType(
+        [StructField("id", StringType(), False)]
+    )
     spark.sql.return_value.collect.return_value = [
         {"partitionColumns": [], "clusteringColumns": []}
     ]
-    lifecycle = DeltaTableLifecycle(spark, "dev.bronze.example", _contract(evolution=True))
+    lifecycle = DeltaTableLifecycle(
+        spark,
+        "dev.bronze.example",
+        _contract(evolution=True),
+    )
     lifecycle.inspect_schema = Mock(
         side_effect=[
             lifecycle.diff_schema(spark.table.return_value.schema),
@@ -106,7 +136,9 @@ def test_should_add_missing_nullable_column_when_evolution_is_enabled():
     assert any("ADD COLUMNS (`new_value` string" in sql for sql in sql_calls)
     assert any("COMMENT ON TABLE dev.bronze.example" in sql for sql in sql_calls)
     assert any("SET TAGS ('layer' = 'bronze')" in sql for sql in sql_calls)
-    assert any("SET TAGS ('classification' = 'public')" in sql for sql in sql_calls)
+    assert any(
+        "SET TAGS ('classification' = 'public')" in sql for sql in sql_calls
+    )
 
 
 def test_should_create_empty_cluster_or_partition_independent_table():
@@ -162,8 +194,12 @@ def test_should_accept_matching_cluster_layout():
     )
     lifecycle.ensure()
     sql_calls = [call.args[0] for call in spark.sql.call_args_list]
-    assert any("DESCRIBE DETAIL dev.bronze.example" in sql for sql in sql_calls)
-    assert any("COMMENT ON TABLE dev.bronze.example" in sql for sql in sql_calls)
+    assert any(
+        "DESCRIBE DETAIL dev.bronze.example" in sql for sql in sql_calls
+    )
+    assert any(
+        "COMMENT ON TABLE dev.bronze.example" in sql for sql in sql_calls
+    )
 
 
 def test_should_reconcile_table_and_column_metadata():
