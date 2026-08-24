@@ -15,6 +15,7 @@ def test_should_define_olist_customers_bronze_contract():
         "customer_city",
         "customer_state",
         "source_file",
+        "ingestion_timestamp",
     )
     assert config.clustering_columns == ()
     assert config.partition_columns == ()
