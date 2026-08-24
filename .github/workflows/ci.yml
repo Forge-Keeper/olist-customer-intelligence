@@ -52,3 +52,11 @@ jobs:
 
       - name: Verify wheel artifact
         run: test -n "$(find dist -maxdepth 1 -name '*.whl' -print -quit)"
+
+      - name: Install wheel in isolated environment
+        run: |
+          uv venv .venv-wheel-test --python 3.11
+          uv pip install --python .venv-wheel-test/bin/python "pyspark>=4.2.0" dist/*.whl
+
+      - name: Verify packaged GDP entry point
+        run: .venv-wheel-test/bin/olist-ibge-gdp --help
