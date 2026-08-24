@@ -3,9 +3,19 @@ from __future__ import annotations
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
-from typing import cast
 
-from pyspark.sql.types import StructField, StructType
+from pyspark.sql.types import (
+    BooleanType,
+    DateType,
+    DoubleType,
+    IntegerType,
+    LongType,
+    StringType,
+    StructField,
+    StructType,
+    TimestampType,
+    VariantType,
+)
 
 from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 
@@ -27,11 +37,27 @@ def _freeze_tags(tags: Mapping[str, str]) -> Mapping[str, str]:
     return MappingProxyType(normalized)
 
 
-def _parse_single_field(name: str, data_type: str) -> StructField:
-    parsed = cast(StructType, StructType.fromDDL(f"{name} {data_type}"))
-    if len(parsed.fields) != 1:
-        raise ValueError(f"Unable to parse data type for column {name!r}.")
-    return parsed.fields[0]
+def _parse_data_type(data_type: str):
+    """Parse supported contract types without requiring an active Spark session."""
+    normalized = data_type.strip().lower()
+    primitive_types = {
+        "string": StringType,
+        "boolean": BooleanType,
+        "bool": BooleanType,
+        "int": IntegerType,
+        "integer": IntegerType,
+        "bigint": LongType,
+        "long": LongType,
+        "double": DoubleType,
+        "date": DateType,
+        "timestamp": TimestampType,
+        "variant": VariantType,
+    }
+
+    type_factory = primitive_types.get(normalized)
+    if type_factory is None:
+        raise ValueError(f"Unsupported Spark DDL type: {data_type!r}.")
+    return type_factory()
 
 
 @dataclass(frozen=True)
@@ -61,8 +87,8 @@ class ColumnContract:
             raise ValueError("column description cannot be empty.")
 
         try:
-            _parse_single_field(self.name, self.data_type)
-        except Exception as exc:  # noqa: BLE001 - normalize Spark parser failures
+            _parse_data_type(self.data_type)
+        except ValueError as exc:
             raise ValueError(
                 f"Invalid Spark DDL type for column {self.name!r}: {self.data_type!r}."
             ) from exc
@@ -71,10 +97,9 @@ class ColumnContract:
 
     def to_struct_field(self) -> StructField:
         """Convert the contract into a Spark StructField."""
-        parsed_field = _parse_single_field(self.name, self.data_type)
         return StructField(
             self.name,
-            parsed_field.dataType,
+            _parse_data_type(self.data_type),
             self.nullable,
             {"comment": self.description},
         )
