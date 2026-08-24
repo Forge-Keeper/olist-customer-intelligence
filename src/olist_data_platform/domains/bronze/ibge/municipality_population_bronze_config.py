@@ -51,7 +51,9 @@ IBGE_MUNICIPALITY_POPULATION_BRONZE_CONFIG = DatasetContract(
     write_strategy=WriteStrategy.MERGE,
     layout=TableLayout(clustering_columns=("dt_base",)),
     metadata=TableMetadata(
-        description="Bronze municipal population observations retrieved from IBGE SIDRA.",
+        description=(
+            "Bronze municipal population observations retrieved from IBGE SIDRA."
+        ),
         tags={
             "layer": "bronze",
             "domain": "ibge",
