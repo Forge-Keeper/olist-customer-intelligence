@@ -58,10 +58,39 @@ def _policy_definitions(
     return row_filter, column_mask
 
 
+def _row_value(row, *keys: str):
+    for key in keys:
+        try:
+            value = row[key]
+        except (KeyError, TypeError, ValueError):
+            continue
+        if value is not None:
+            return value
+    return None
+
+
+def _existing_policy_names(spark: SparkSession, scope_name: str) -> set[str]:
+    """Return policy names currently attached directly to the schema."""
+    rows = spark.sql(f"SHOW POLICIES ON SCHEMA {scope_name}").collect()
+    names: set[str] = set()
+    for row in rows:
+        name = _row_value(row, "Policy Name", "policy_name")
+        if isinstance(name, str):
+            names.add(name)
+    return names
+
+
 def _cleanup(spark: SparkSession, *, catalog: str, schema: str) -> None:
+    """Remove disposable ABAC fixtures using supported Databricks SQL syntax."""
     scope_name = f"{catalog}.{schema}"
-    spark.sql(f"DROP POLICY IF EXISTS olist_abac_demo_row_filter ON SCHEMA {scope_name}")
-    spark.sql(f"DROP POLICY IF EXISTS olist_abac_demo_column_mask ON SCHEMA {scope_name}")
+    existing_policies = _existing_policy_names(spark, scope_name)
+    for policy_name in (
+        "olist_abac_demo_row_filter",
+        "olist_abac_demo_column_mask",
+    ):
+        if policy_name in existing_policies:
+            spark.sql(f"DROP POLICY {policy_name} ON SCHEMA {scope_name}")
+
     spark.sql(f"DROP TABLE IF EXISTS {_qualified(catalog, schema, 'abac_people_demo')}")
     spark.sql(f"DROP FUNCTION IF EXISTS {_qualified(catalog, schema, 'olist_abac_allow_region')}")
     spark.sql(f"DROP FUNCTION IF EXISTS {_qualified(catalog, schema, 'olist_abac_mask_secret')}")
