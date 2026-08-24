@@ -60,4 +60,5 @@ nav:
       - ADR-006 Unity Catalog ABAC: adr/ADR-006-unity-catalog-abac-governance.md
   - API Reference:
       - Delta Contracts: api/delta-contracts.md
+      - Delta Lifecycle: api/delta-lifecycle.md
       - Bronze Writer: api/bronze-writer.md
