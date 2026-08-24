@@ -2,19 +2,33 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from olist_data_platform.platform.delta.bronze.config import (
-    BronzeDatasetConfig,
-    WriteStrategy,
+from olist_data_platform.platform.delta import (
+    ColumnContract,
+    DatasetContract,
+    TableLayout,
 )
+from olist_data_platform.platform.delta.bronze import WriteStrategy
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
 
 
+def _column(name: str) -> ColumnContract:
+    return ColumnContract(
+        name=name,
+        data_type="string",
+        nullable=False,
+        description=f"Test column {name}.",
+    )
+
+
 @pytest.fixture
-def config() -> BronzeDatasetConfig:
-    return BronzeDatasetConfig(
-        primary_key_columns=("id",),
-        required_columns=("id", "payload"),
-        clustering_columns=("id",),
+def config() -> DatasetContract:
+    return DatasetContract(
+        columns=(
+            _column("id"),
+            _column("payload"),
+        ),
+        key_columns=("id",),
+        layout=TableLayout(clustering_columns=("id",)),
         write_strategy=WriteStrategy.MERGE,
     )
 
@@ -93,9 +107,9 @@ def test_should_full_replace_existing_table(mock_prepare):
     mock_prepare.return_value = prepared
     prepared.limit.return_value.count.return_value = 1
     spark.catalog.tableExists.return_value = True
-    full_replace_config = BronzeDatasetConfig(
-        primary_key_columns=("id",),
-        required_columns=("id",),
+    full_replace_config = DatasetContract(
+        columns=(_column("id"),),
+        key_columns=("id",),
         write_strategy=WriteStrategy.FULL_REPLACE,
     )
 
@@ -114,9 +128,9 @@ def test_should_reject_empty_full_replace_snapshot(mock_prepare):
     prepared = Mock()
     mock_prepare.return_value = prepared
     prepared.limit.return_value.count.return_value = 0
-    full_replace_config = BronzeDatasetConfig(
-        primary_key_columns=("id",),
-        required_columns=("id",),
+    full_replace_config = DatasetContract(
+        columns=(_column("id"),),
+        key_columns=("id",),
         write_strategy=WriteStrategy.FULL_REPLACE,
     )
 
