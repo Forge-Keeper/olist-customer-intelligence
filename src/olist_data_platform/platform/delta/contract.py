@@ -1,8 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
-from typing import Mapping
 
 from pyspark.sql.types import StructField, StructType
 
@@ -226,7 +226,8 @@ class DatasetContract:
 
     def to_struct_type(self) -> StructType:
         """Return the authoritative Spark schema for the persisted table."""
-        return StructType([column.to_struct_field() for column in self.resolved_columns])
+        fields = [column.to_struct_field() for column in self.resolved_columns]
+        return StructType(fields)
 
     @staticmethod
     def _validate_column_contracts(
