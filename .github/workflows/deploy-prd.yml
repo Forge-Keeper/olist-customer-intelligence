@@ -1,0 +1,107 @@
+name: Deploy PRD
+
+on:
+  workflow_dispatch:
+    inputs:
+      stg_run_id:
+        description: GitHub Actions run ID of the approved successful Deploy STG run.
+        required: true
+        type: string
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: deploy-prd
+  cancel-in-progress: false
+
+jobs:
+  deploy-prd:
+    name: deploy-prd
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: olist-prd
+    env:
+      DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
+      DATABRICKS_CLIENT_ID: ${{ vars.DATABRICKS_CLIENT_ID }}
+      DATABRICKS_CLIENT_SECRET: ${{ secrets.DATABRICKS_CLIENT_SECRET }}
+
+    steps:
+      - name: Require main branch dispatch
+        run: test "${GITHUB_REF}" = "refs/heads/main"
+
+      - name: Checkout current main commit
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Download approved staging promotion artifact
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          run-id: ${{ inputs.stg_run_id }}
+          pattern: stg-promotion-*
+          path: promotion
+          merge-multiple: true
+
+      - name: Verify staging artifact identity and digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f promotion/promotion-manifest.txt
+          test -f promotion/SHA256SUMS
+
+          promoted_sha="$(awk -F= '$1 == "git_sha" {print $2}' promotion/promotion-manifest.txt)"
+          wheel_name="$(awk -F= '$1 == "wheel" {print $2}' promotion/promotion-manifest.txt)"
+          current_sha="$(git rev-parse HEAD)"
+
+          test -n "$promoted_sha"
+          test -n "$wheel_name"
+          test "$promoted_sha" = "$current_sha"
+          test -f "promotion/$wheel_name"
+
+          expected_sha256="$(awk 'NR == 1 {print $1}' promotion/SHA256SUMS)"
+          actual_sha256="$(sha256sum "promotion/$wheel_name" | awk '{print $1}')"
+          test "$expected_sha256" = "$actual_sha256"
+
+          rm -rf dist
+          mkdir -p dist
+          cp "promotion/$wheel_name" "dist/$wheel_name"
+          cp promotion/SHA256SUMS dist/SHA256SUMS
+          cp promotion/promotion-manifest.txt dist/promotion-manifest.txt
+
+          printf 'stg_run_id=%s\nprd_git_sha=%s\nwheel=%s\nsha256=%s\n' \
+            "${{ inputs.stg_run_id }}" "$current_sha" "$wheel_name" "$actual_sha256" \
+            | tee dist/production-promotion-manifest.txt
+
+      - name: Install Databricks CLI
+        uses: databricks/setup-cli@main
+
+      - name: Verify Databricks service principal authentication
+        run: databricks current-user me
+
+      - name: Validate production bundle
+        run: databricks bundle validate -t prd
+
+      - name: Deploy approved staging wheel to production
+        env:
+          DATABRICKS_BUNDLE_USE_PREBUILT_WHEEL: "1"
+        run: databricks bundle deploy -t prd
+
+      - name: Run production GDP smoke
+        run: databricks bundle run -t prd ibge_municipality_gdp
+
+      - name: Retain production deployment evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: prd-deployment-${{ github.sha }}
+          path: |
+            dist/*.whl
+            dist/SHA256SUMS
+            dist/promotion-manifest.txt
+            dist/production-promotion-manifest.txt
+          if-no-files-found: error
+          retention-days: 90
