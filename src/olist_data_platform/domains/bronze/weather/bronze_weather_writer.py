@@ -24,7 +24,12 @@ logger = LoggerFactory.get_logger(__name__)
 
 
 class BronzeWeatherWriter:
-    """Persist daily Open-Meteo landing records into Bronze."""
+    """Adapt daily Open-Meteo records and persist them through Bronze semantics.
+
+    The adapter owns weather-specific validation, coordinate/date handling and
+    transient JSON-to-VARIANT conversion. Generic Delta persistence remains in
+    ``BronzeWriter``.
+    """
 
     INPUT_SCHEMA = StructType(
         [
@@ -52,6 +57,11 @@ class BronzeWeatherWriter:
         requested_latitude: float,
         requested_longitude: float,
     ) -> None:
+        """Persist one weather ingestion batch for the requested coordinates.
+
+        Empty batches are explicitly skipped and logged. Invalid request IDs,
+        coordinates or record shapes fail before any write is attempted.
+        """
         self._validate_common_inputs(
             records,
             request_id,
@@ -85,6 +95,11 @@ class BronzeWeatherWriter:
         start_date: date,
         end_date: date,
     ) -> None:
+        """Atomically replace one explicit date/coordinate scope in Bronze.
+
+        The replacement predicate is bounded by the supplied date range and exact
+        coordinates. An invalid date range fails before persistence.
+        """
         self._validate_date_range(start_date, end_date)
         dataframe = self._build_dataframe(
             records=records,
