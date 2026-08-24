@@ -2,7 +2,7 @@
 
 ## Status
 
-Implementation complete on `feature/ibge-municipality-gdp`; local and Databricks validation pending execution.
+Implementation and validation are complete on `feature/ibge-municipality-gdp`; PR/merge is pending.
 
 Development gates:
 
@@ -12,7 +12,7 @@ Development gates:
 - Impact Analysis — complete
 - Approved Plan — complete (`/autopilot`)
 - Implementation — complete
-- Validation — pending
+- Validation — complete
 - Done — pending PR/merge
 
 ## Objective
@@ -112,24 +112,60 @@ Validation assets:
 
 No changes are required to the generic SIDRA transport/parser or shared Bronze writer.
 
-## Validation plan
+## Validation evidence
 
-Local gate:
+### Local
 
-```bash
-uv run pytest tests/unit/test_ibge_municipality_gdp_extractor.py -q
-uv run pytest tests/unit/test_ibge_municipality_gdp_ingestion_service.py -q
-uv run pytest tests/unit -q
-uv run pytest tests/integration -q
-uv run ruff check .
-uv run ty check
-```
+Final local gate:
 
-Databricks gate:
+- unit tests: `166 passed`
+- integration tests: `6 passed`
+- Ruff: passed
+- `ty`: passed
 
-Run `notebooks/exploration/ibge_gdp_bronze_validation.py` with `RESET_GDP_TABLE = False` for a normal run. Use the reset flag only for an explicit development contract migration.
+### Databricks / real SIDRA + Delta
 
-The notebook intentionally does not hard-code GDP municipality cardinality before observing the real 2016-2018 source output. It validates selected years/variables, key uniqueness, `dt_base`, payload preservation, municipality-code compatibility, clustering and same-scope idempotency, while printing year/variable row counts for inspection.
+`notebooks/exploration/ibge_gdp_bronze_validation.py` completed successfully against the real SIDRA source and Delta Bronze table.
+
+Observed total row count:
+
+- `100260` rows
+
+Observed matrix for every approved `reference_year × variable_code` pair:
+
+| Year | Variable | Rows | Unique municipalities |
+| --- | --- | ---: | ---: |
+| 2016 | 37 | 5570 | 5570 |
+| 2016 | 498 | 5570 | 5570 |
+| 2016 | 513 | 5570 | 5570 |
+| 2016 | 517 | 5570 | 5570 |
+| 2016 | 525 | 5570 | 5570 |
+| 2016 | 6575 | 5570 | 5570 |
+| 2017 | 37 | 5570 | 5570 |
+| 2017 | 498 | 5570 | 5570 |
+| 2017 | 513 | 5570 | 5570 |
+| 2017 | 517 | 5570 | 5570 |
+| 2017 | 525 | 5570 | 5570 |
+| 2017 | 6575 | 5570 | 5570 |
+| 2018 | 37 | 5570 | 5570 |
+| 2018 | 498 | 5570 | 5570 |
+| 2018 | 513 | 5570 | 5570 |
+| 2018 | 517 | 5570 | 5570 |
+| 2018 | 525 | 5570 | 5570 |
+| 2018 | 6575 | 5570 | 5570 |
+
+Additional observed evidence:
+
+- `special_value_rows = 0` for the approved 2016-2018 / six-variable scope;
+- `clusteringColumns = ['dt_base']`;
+- selected years/variables validation passed;
+- natural-key uniqueness validation passed;
+- `dt_base` annual-competence validation passed;
+- payload preservation validation passed;
+- municipality-code compatibility validation passed;
+- same-scope re-execution/idempotency validation passed.
+
+The `5570` cardinality is observed validation evidence for this SIDRA table/scope, not a permanent external-source contract. It intentionally differs from the `5571` municipality cardinality observed in the population dataset.
 
 ## Out of scope
 
