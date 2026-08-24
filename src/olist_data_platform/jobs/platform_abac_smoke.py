@@ -91,9 +91,12 @@ def _cleanup(spark: SparkSession, *, catalog: str, schema: str) -> None:
         if policy_name in existing_policies:
             spark.sql(f"DROP POLICY {policy_name} ON SCHEMA {scope_name}")
 
-    spark.sql(f"DROP TABLE IF EXISTS {_qualified(catalog, schema, 'abac_people_demo')}")
-    spark.sql(f"DROP FUNCTION IF EXISTS {_qualified(catalog, schema, 'olist_abac_allow_region')}")
-    spark.sql(f"DROP FUNCTION IF EXISTS {_qualified(catalog, schema, 'olist_abac_mask_secret')}")
+    table_name = _qualified(catalog, schema, "abac_people_demo")
+    allow_region_fn = _qualified(catalog, schema, "olist_abac_allow_region")
+    mask_secret_fn = _qualified(catalog, schema, "olist_abac_mask_secret")
+    spark.sql(f"DROP TABLE IF EXISTS {table_name}")
+    spark.sql(f"DROP FUNCTION IF EXISTS {allow_region_fn}")
+    spark.sql(f"DROP FUNCTION IF EXISTS {mask_secret_fn}")
 
 
 def run(args: argparse.Namespace, spark: SparkSession) -> None:
@@ -103,6 +106,8 @@ def run(args: argparse.Namespace, spark: SparkSession) -> None:
     tag_key = args.tag_key
     scope_name = f"{catalog}.{schema}"
     table_name = _qualified(catalog, schema, "abac_people_demo")
+    allow_region_fn = _qualified(catalog, schema, "olist_abac_allow_region")
+    mask_secret_fn = _qualified(catalog, schema, "olist_abac_mask_secret")
 
     spark.sql(f"CREATE SCHEMA IF NOT EXISTS {scope_name}")
     _cleanup(spark, catalog=catalog, schema=schema)
@@ -136,7 +141,7 @@ def run(args: argparse.Namespace, spark: SparkSession) -> None:
 
     spark.sql(
         f"""
-        CREATE OR REPLACE FUNCTION {_qualified(catalog, schema, 'olist_abac_allow_region')}
+        CREATE OR REPLACE FUNCTION {allow_region_fn}
         (region STRING)
         RETURNS BOOLEAN
         RETURN region <> 'restricted'
@@ -144,7 +149,7 @@ def run(args: argparse.Namespace, spark: SparkSession) -> None:
     )
     spark.sql(
         f"""
-        CREATE OR REPLACE FUNCTION {_qualified(catalog, schema, 'olist_abac_mask_secret')}
+        CREATE OR REPLACE FUNCTION {mask_secret_fn}
         (secret STRING)
         RETURNS STRING
         RETURN '***MASKED***'
