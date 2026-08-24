@@ -15,7 +15,14 @@ logger = LoggerFactory.get_logger(__name__)
 
 
 class BronzeWriter:
-    """Persist Bronze DataFrames according to a declarative dataset contract."""
+    """Persist Bronze batches according to declarative write semantics.
+
+    The writer owns batch preparation, platform-managed ingestion timestamp
+    injection, logical-key validation and MERGE/FULL_REPLACE/replaceWhere write
+    behavior. Table lifecycle, schema evolution and governance reconciliation are
+    being moved to the dedicated Delta lifecycle boundary and must not accumulate
+    here as new responsibilities.
+    """
 
     INGESTION_TIMESTAMP_COLUMN = "ingestion_timestamp"
 
@@ -35,6 +42,12 @@ class BronzeWriter:
         self.config = config
 
     def write(self, dataframe: DataFrame) -> None:
+        """Persist one validated Bronze batch using the configured write strategy.
+
+        The method adds the platform ingestion timestamp, validates logical key
+        values/duplicates and then applies MERGE or FULL_REPLACE semantics. An
+        empty FULL_REPLACE snapshot fails before replacing existing data.
+        """
         prepared = self._prepare_dataframe(dataframe)
 
         logger.info(
@@ -58,7 +71,12 @@ class BronzeWriter:
         )
 
     def replace_where(self, dataframe: DataFrame, predicate: str) -> None:
-        """Replace an explicitly defined Bronze scope atomically."""
+        """Atomically replace one explicitly bounded Bronze scope.
+
+        ``predicate`` is passed to Delta ``replaceWhere`` and must therefore be
+        supplied deliberately by the caller; this method never infers the scope.
+        Invalid/empty predicates fail before any persistence operation.
+        """
         if not isinstance(predicate, str):
             raise TypeError("predicate must be a string.")
         if not predicate.strip():
