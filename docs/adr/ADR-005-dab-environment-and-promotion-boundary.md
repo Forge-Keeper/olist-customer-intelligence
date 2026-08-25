@@ -1,23 +1,21 @@
 # ADR-005 — DAB Environment and Promotion Boundary
 
-- **Status:** Proposed
+- **Status:** Accepted
 - **Date:** 2026-08-24
 - **Decision owners:** Project maintainers
 - **Scope:** Databricks Declarative Automation Bundle targets, environment isolation and promotion governance
 
 ## Context
 
-Development and exploratory validation have materialized tables under the `prd` catalog even though production job entrypoints already accept fully qualified target tables externally. The project therefore lacks an explicit deployment/environment boundary.
+Development and exploratory validation had materialized tables under the `prd` catalog even though production job entrypoints already accepted fully qualified target tables externally. The project therefore needed an explicit deployment/environment boundary.
 
-The first DAB vertical slice must provide professional promotion semantics rather than only a local deployment convenience.
-
-Current Databricks guidance distinguishes development deployments from production-safe deployments, supports dedicated run identities for staging/production, and recommends service-principal execution for production workflows.
+The first DAB vertical slice was required to provide professional promotion semantics rather than only a local deployment convenience.
 
 ## Decision
 
 ### 1. Use three Unity Catalog-backed environments
 
-The project standard becomes:
+The project standard is:
 
 ```text
 dev -> catalog dev
@@ -27,7 +25,7 @@ prd -> catalog prd
 
 The Bronze schema remains `bronze` in each environment unless a future architectural decision changes the namespace convention.
 
-Application/domain code does not infer or hardcode environment names. DAB target configuration resolves environment-specific values and passes fully qualified resources to jobs.
+Application/domain code does not infer or hardcode environment names. DAB target configuration or explicit runtime parameters resolve environment-specific values and pass fully qualified resources to jobs.
 
 ### 2. DAB target behavior
 
@@ -43,8 +41,7 @@ Application/domain code does not infer or hardcode environment names. DAB target
 - shared pre-production target;
 - fixed bundle root path;
 - dedicated staging service-principal run identity;
-- does not use development-mode presets;
-- validates the artifact before production promotion.
+- validates the exact artifact before production promotion.
 
 `prd`:
 
@@ -54,25 +51,26 @@ Application/domain code does not infer or hardcode environment names. DAB target
 - production Git branch validation enabled against `main`;
 - protected promotion only after staging success.
 
-### 3. Promotion flow
+### 3. Git and environment promotion flow
 
-The standard promotion path is:
+The mandatory integration and promotion path is:
 
 ```text
-feature branch -> PR validation -> optional dev deployment
--> merge main -> stg deploy/run/verify
+topic branch -> PR into dev -> validation -> merge dev
+-> PR dev into main -> validation -> merge main
+-> automatic stg deploy/run/verify
 -> protected manual approval -> prd deploy/verify
 ```
 
+`dev` is both the Git integration branch and the name of the developer DAB target; these are distinct concepts even though they share the name.
+
 Staging and production promote the same approved Git commit and corresponding wheel artifact.
 
-### 4. Main is the shared promotion source
+### 4. Main is the shared deployment source
 
-Feature branches are not normal production deployment sources.
+Topic branches do not deploy directly to staging or production. `main` is the shared promotion source after changes have passed through `dev`.
 
 The production target declares `git.branch: main`. Normal process does not use `--force` to bypass branch validation.
-
-A tag/release-branch strategy may be introduced later if release governance requires it, but is out of scope for the first vertical slice.
 
 ### 5. Service-principal identities are environment-scoped
 
@@ -80,20 +78,16 @@ Staging and production execution must not depend on an individual developer acco
 
 - staging service principal receives staging permissions only;
 - production service principal receives production permissions only;
-- production credentials/IDs/secrets are not committed;
+- credentials are stored outside source code;
 - developer iteration does not run under the production identity.
 
 ### 6. Explicit resource YAML remains source controlled
 
-The bundle owns explicit `databricks.yml` and `resources/**/*.yml` definitions.
-
-No Python-driven DAB resource generator is introduced in this feature.
+The bundle owns explicit `databricks.yml` and `resources/**/*.yml` definitions. No Python-driven DAB resource generator is introduced in this slice.
 
 ### 7. Use wheel packaging and serverless jobs for the pilot
 
-The GDP pilot is deployed as a Python wheel task.
-
-Serverless jobs compute is the selected default because Databricks recommends it for Python wheel jobs. Workspace capability and permissions are implementation prerequisites; if serverless is unavailable, a classic-jobs-compute fallback requires an explicit design adjustment rather than silent substitution.
+The GDP pilot is deployed as a Python wheel task. The wheel built and validated for staging is retained with integrity metadata and reused for production promotion.
 
 ## Alternatives considered
 
@@ -103,11 +97,11 @@ Rejected because a shared staging boundary is valuable for validating the exact 
 
 ### Treat `stg` as development mode
 
-Rejected because personal naming/presets and development-oriented deployment behavior do not represent a shared pre-production environment.
+Rejected because development-oriented presets do not represent a shared pre-production environment.
 
-### Deploy production directly from feature branches
+### Deploy production directly from topic branches
 
-Rejected because it weakens promotion traceability and bypasses the normal reviewed integration branch.
+Rejected because it weakens promotion traceability and bypasses the integration branch and reviewed `main` boundary.
 
 ### Use developer identity in production
 
@@ -123,28 +117,27 @@ Rejected for the first slice. Explicit YAML is easier to inspect and avoids prem
 
 - strong namespace isolation;
 - lower risk of development writes to production;
-- traceable `dev -> stg -> prd` promotion;
+- traceable `topic -> dev -> main -> stg -> prd` promotion;
 - production execution independent from developer identity;
-- staging tests the same artifact that is promoted to production;
-- uses Databricks-native deployment protections.
+- staging tests the same artifact promoted to production;
+- environment selection is explicit rather than hidden in application code.
 
-### Negative / prerequisites
+### Costs / prerequisites
 
 - three catalogs and appropriate grants must exist;
 - staging/production service principals and credentials must be provisioned;
-- CI/CD secrets/authentication must be configured outside source code;
-- protected production approval needs repository/environment governance;
-- serverless workflows availability must be confirmed.
+- GitHub Environments own deployment credentials and protection;
+- production approval remains an explicit human gate.
 
-## Validation
+## Validation evidence
 
-The decision is correctly implemented when:
+The decision has been implemented and validated:
 
-1. the same GDP application artifact targets all three environments without source changes;
-2. `dev`, `stg` and `prd` resolve to their own catalogs;
-3. shared staging deployment succeeds from the approved `main` commit;
-4. production deployment is protected and uses production mode;
-5. production cannot normally deploy from a feature branch;
+1. the same GDP application artifact targets `dev`, `stg` and `prd` without source changes;
+2. each target resolves to its own Unity Catalog namespace;
+3. staging deployment and GDP smoke tests succeed from approved `main` commits;
+4. production deployment is manual/protected and uses the retained staging artifact;
+5. runtime hardcodes for environment-specific tables, Volumes and identities are guarded by tests;
 6. staging and production use service-principal run identities;
-7. production promotion occurs only after staging validation;
+7. GitHub CI enforces PRs to `main` coming from `dev`;
 8. secrets and credentials remain outside the repository.

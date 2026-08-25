@@ -2,42 +2,47 @@
 
 This site is the living engineering reference for the Olist Customer Intelligence data platform.
 
-Its purpose is to make architecture, delivery standards, platform contracts, governance decisions and public Python APIs discoverable from one place while keeping GitHub as the source of truth.
+Its purpose is to make architecture, delivery standards, platform contracts, governance decisions, operational runbooks and public Python APIs discoverable from one place while keeping GitHub as the source of truth.
 
-## What this documentation demonstrates
+## Platform status
 
-The project treats documentation as part of platform engineering rather than as a closeout artifact. Architectural decisions are recorded in ADRs, feature work follows explicit delivery gates, public APIs carry executable documentation through docstrings, and CI validates that the documentation site can still be built.
+The first platform foundation is now implemented and validated end to end:
+
+- isolated Unity Catalog environments for `dev`, `stg` and `prd`;
+- executable Delta dataset contracts and lifecycle management;
+- controlled schema evolution and metadata reconciliation;
+- Unity Catalog governance foundations, including ABAC smoke validation;
+- Databricks Asset Bundles for repeatable deployment;
+- immutable wheel promotion from staging to production;
+- protected production deployment with retained evidence;
+- environment-specific runtime hardcodes removed from application code;
+- mandatory Git promotion path `topic branch -> dev -> main -> stg -> prd`;
+- CI and documentation build gates.
+
+The GDP ingestion pilot has been deployed and smoke-tested through staging and production, proving the delivery path with a real workload.
 
 ## Documentation model
 
 ```text
 Code + docstrings
-      │
-      ├── mkdocstrings -> API Reference
-      │
+      |
+      +-- mkdocstrings -> API Reference
+      |
 Markdown docs
-      ├── architecture decisions
-      ├── engineering standards
-      ├── feature specifications
-      └── operational guidance
-      │
-      ▼
+      +-- architecture decisions
+      +-- engineering and branch standards
+      +-- feature specifications and delivery records
+      +-- deployment and operational runbooks
+      |
+      v
 Material for MkDocs
-      │
-      ▼
+      |
+      v
 GitHub Pages
 ```
 
-## Current platform direction
+## Start here
 
-The active DAB + Platform Contracts feature is establishing:
+For development workflow and promotion rules, read **Engineering -> Branch Governance**. For deployment and environment operations, use **Platform & Delivery -> Deployment Runbook**. For the implemented architectural decisions, use the **Architecture Decisions** section. The **Data Features** section records the delivered IBGE ingestion slices.
 
-- isolated `dev`, `stg` and `prd` environments;
-- executable dataset contracts;
-- Delta table lifecycle management separated from write semantics;
-- controlled schema evolution;
-- governed table/column tags;
-- Unity Catalog ABAC foundations for row filters and column masks;
-- automated CI/CD and documentation validation.
-
-Use the navigation to inspect the accepted requirements, design documents, ADRs and generated API reference.
+Documentation is treated as part of the engineering product: changes are versioned with the code, validated with `mkdocs build --strict`, and published from `main`.
