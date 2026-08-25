@@ -33,7 +33,7 @@ def test_qualified_table_name_rejects_unsafe_identifiers(
     argument: str,
     value: str,
 ) -> None:
-    kwargs = {
+    kwargs: dict[str, str] = {
         "catalog": "dev",
         "schema": "bronze",
         "table": "ibge_municipality_gdp",
@@ -44,20 +44,35 @@ def test_qualified_table_name_rejects_unsafe_identifiers(
         qualified_table_name(**kwargs)
 
 
-def test_runtime_python_does_not_hardcode_environment_qualified_objects() -> None:
-    """Prevent reintroducing dev/stg/prd table literals into runtime Python."""
+def test_runtime_python_does_not_hardcode_environment_resources() -> None:
+    """Prevent reintroducing environment-specific tables or Volume paths."""
     repository_root = Path(__file__).resolve().parents[3]
     runtime_roots = (repository_root / "src", repository_root / "notebooks")
-    environment_literal = re.compile(r"[\"'](?:dev|stg|prd)\.[A-Za-z_]")
+    forbidden_patterns = (
+        re.compile(r"[\"'](?:dev|stg|prd)\.[A-Za-z_]"),
+        re.compile(r"[\"']/Volumes/(?:dev|stg|prd)/"),
+    )
 
     offenders: list[str] = []
     for runtime_root in runtime_roots:
         for path in runtime_root.rglob("*.py"):
             text = path.read_text(encoding="utf-8")
-            if environment_literal.search(text):
+            if any(pattern.search(text) for pattern in forbidden_patterns):
                 offenders.append(str(path.relative_to(repository_root)))
 
     assert offenders == [], (
-        "Environment-qualified object names must be injected by runtime/deployment "
-        f"configuration, not hardcoded: {offenders}"
+        "Environment-specific runtime resources must be injected by deployment or "
+        f"runtime configuration, not hardcoded: {offenders}"
     )
+
+
+def test_bundle_does_not_hardcode_service_principal_application_id() -> None:
+    repository_root = Path(__file__).resolve().parents[3]
+    bundle_config = (repository_root / "databricks.yml").read_text(encoding="utf-8")
+    hardcoded_service_principal = re.compile(
+        r"service_principal_name:\s*[0-9a-fA-F]{8}-"
+        r"[0-9a-fA-F-]{27,36}\s*$",
+        re.MULTILINE,
+    )
+
+    assert hardcoded_service_principal.search(bundle_config) is None
