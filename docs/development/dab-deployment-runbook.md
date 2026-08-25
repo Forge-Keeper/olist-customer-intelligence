@@ -21,6 +21,20 @@ Python source
 
 Application/domain code does not infer the environment. Bundle targets resolve environment-specific catalog names and inject fully qualified resources through job parameters.
 
+## Environment parameterization rule
+
+Environment-specific runtime values must be supplied at a deployment or execution boundary rather than embedded in application code.
+
+Current examples:
+
+- DAB resolves `${var.catalog}` from `dev`, `stg` or `prd` target configuration;
+- staging/production `run_as` uses the required `run_as_service_principal` bundle variable;
+- GitHub Actions maps its environment-scoped `DATABRICKS_CLIENT_ID` to `BUNDLE_VAR_run_as_service_principal`;
+- manual IBGE validation notebooks require an explicit `catalog` widget;
+- Olist CSV ingestion jobs require explicit `--source-path` and `--target-table` arguments.
+
+The source-of-truth audit and guardrails are documented in `environment-hardcode-audit.md`.
+
 ## Prerequisites
 
 - Databricks CLI installed.
@@ -28,6 +42,7 @@ Application/domain code does not infer the environment. Bundle targets resolve e
 - Serverless Jobs enabled for the workspace used by the pilot.
 - Unity Catalog catalogs/schemas and permissions required by the target job.
 - `uv` installed for wheel builds.
+- A service-principal application ID available when validating/deploying `stg` or `prd` configuration.
 
 Check available Databricks profiles:
 
@@ -46,6 +61,14 @@ Do not type placeholder notation such as `<profile>` literally in PowerShell; `<
 ## 1. Validate bundle targets
 
 Validation resolves the local bundle configuration and consults the Databricks workspace. It therefore requires working authentication.
+
+The staging/production run identity is intentionally not committed to `databricks.yml`. For a local shell, inject it before bundle commands:
+
+```powershell
+$env:BUNDLE_VAR_run_as_service_principal = "<service-principal-application-id>"
+```
+
+Then validate:
 
 ```powershell
 databricks bundle validate -t dev --profile olist-ci-main
@@ -109,6 +132,30 @@ The CLI prints the Databricks run URL and waits for completion by default.
 
 A successful run proves the complete path from Git-managed configuration through wheel installation and Databricks serverless execution.
 
+## Manual validation notebooks
+
+The exploratory validation notebooks no longer point at production implicitly. Before running either notebook, set its `catalog` widget to the catalog you intend to validate.
+
+Affected notebooks:
+
+```text
+notebooks/exploration/ibge_bronze_validation.py
+notebooks/exploration/ibge_gdp_bronze_validation.py
+```
+
+The widget is required and has no environment default. The notebook composes fully qualified Bronze tables from the explicit catalog plus stable schema/table names.
+
+## Olist CSV job arguments
+
+Olist snapshot jobs no longer default to a production Volume path. Callers must provide source and target explicitly:
+
+```text
+--source-path <resolved source file path>
+--target-table <catalog.schema.table>
+```
+
+This keeps source-location ownership at the deployment/execution boundary and avoids silently reading production when a job is invoked from another environment.
+
 ## Serverless wheel dependency rule
 
 For serverless Jobs, do not configure a task-level `libraries:` section. The task points to an `environment_key`, and wheel dependencies belong to the corresponding serverless environment.
@@ -170,6 +217,12 @@ Action:
 2. select a profile marked valid for the intended host;
 3. confirm with `databricks current-user me --profile <name>`;
 4. rerun bundle validation with that profile.
+
+### Missing bundle run identity
+
+Symptom: bundle validation reports that `run_as_service_principal` has no value.
+
+Action: supply `BUNDLE_VAR_run_as_service_principal` in the shell or pass the variable explicitly with `--var`. CI/CD injects this value from the GitHub Environment rather than committing an application ID.
 
 ### Production target root path error
 
@@ -264,6 +317,14 @@ Environment variables:
 Environment secret:
   DATABRICKS_CLIENT_SECRET
 ```
+
+The workflows also expose the environment-scoped client ID to DAB as:
+
+```text
+BUNDLE_VAR_run_as_service_principal = DATABRICKS_CLIENT_ID
+```
+
+This keeps the concrete application ID outside repository configuration while preserving the Free Edition single-service-principal fallback.
 
 The client secret must never be committed to the repository or written into bundle configuration.
 
