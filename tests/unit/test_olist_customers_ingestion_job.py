@@ -11,11 +11,11 @@ from olist_data_platform.jobs.olist_customers_ingestion import (
 
 def test_should_default_source_path():
     args = build_parser().parse_args(
-        ["--target-table", "prd.bronze.olist_customers"]
+        ["--target-table", "test_catalog.bronze.olist_customers"]
     )
 
     assert args.source_path == DEFAULT_SOURCE_PATH
-    assert args.target_table == "prd.bronze.olist_customers"
+    assert args.target_table == "test_catalog.bronze.olist_customers"
 
 
 @patch("olist_data_platform.jobs.olist_customers_ingestion.OlistSnapshotIngestionService")
@@ -29,7 +29,7 @@ def test_should_compose_and_run_ingestion(
     spark = Mock()
     args = Namespace(
         source_path="/Volumes/source.csv",
-        target_table="prd.bronze.olist_customers",
+        target_table="test_catalog.bronze.olist_customers",
     )
     mock_service_class.return_value.ingest.return_value = 99441
 
