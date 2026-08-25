@@ -59,7 +59,7 @@ Expected result:
 Validation OK!
 ```
 
-Production-mode targets must declare a deterministic `workspace.root_path`. The current bundle uses the authenticated workspace user in the path so each target has a stable deployment location.
+Production-mode targets must declare a deterministic `workspace.root_path`. In the Free Edition laboratory, `stg` and `prd` use the authenticated deployment identity's workspace user root because shared workspace-folder ACL administration is limited. In a full account, prefer protected shared deployment roots with explicit ACLs and separate deployment identities.
 
 ## 2. Deploy to dev
 
@@ -80,7 +80,7 @@ Updating deployment state...
 Deployment complete!
 ```
 
-The wheel version is derived from Git through `setuptools-scm`, so a development artifact is traceable to source history rather than every commit producing the same `0.1.0` filename.
+The wheel version is derived from Git through `setuptools-scm`, so a development artifact is traceable to source history rather than every commit producing the same filename.
 
 ## 3. Inspect deployed resources
 
@@ -181,6 +181,12 @@ target with 'mode: production' must set 'workspace.root_path'
 
 Action: declare a stable production-mode root path in the target configuration.
 
+### Shared bundle root permission failure
+
+Symptom: deployment authentication and validation succeed, but deployment fails while acquiring the bundle lock below a shared workspace path.
+
+Action in Free Edition: use the authenticated deployment identity's workspace user root for bundle state. In a full account, provision the intended shared root and grant only the required deployment ACLs.
+
 ### Serverless libraries field error
 
 Symptom:
@@ -191,29 +197,64 @@ Libraries field is not supported for serverless task
 
 Action: remove task-level `libraries:` and put the wheel in `environments[].spec.dependencies`.
 
+### Unity Catalog permission failure
+
+Symptom:
+
+```text
+[INSUFFICIENT_PERMISSIONS] ... does not have USE CATALOG
+```
+
+Grant the workload service principal only the required privileges. For the GDP Bronze pilot the intended shape is:
+
+```text
+catalog <env>: USE CATALOG
+schema <env>.bronze: USE SCHEMA, CREATE TABLE, MODIFY, SELECT
+```
+
+Avoid `ALL PRIVILEGES` when narrower grants are sufficient.
+
 ### Source file imports work locally but fail in Databricks
 
 Do not solve production packaging by adding repository-specific `sys.path` bootstrap code to jobs. Build/install the wheel so `olist_data_platform` is a real installed package.
 
 ## Promotion rule
 
-The target promotion path is:
+The proven promotion path is:
 
 ```text
-dev -> stg -> prd
+feature / PR
+    -> CI quality + authenticated bundle validation
+    -> merge to main
+    -> automatic Deploy STG
+    -> staging GDP smoke
+    -> retained staging wheel + manifest + SHA-256
+    -> manual Deploy PRD request
+    -> protected GitHub Environment approval
+    -> verify staging commit + wheel digest
+    -> deploy the exact approved staging wheel
+    -> production GDP smoke
+    -> retained production evidence
 ```
 
-The intended production model is **build once, promote the same approved commit/artifact**. Do not change source code between staging acceptance and production deployment.
+The invariant is **build once, promote the same approved artifact**. Production must not silently rebuild a different wheel after staging acceptance.
 
-The first vertical slice has proven `dev`. Shared `stg` and protected `prd` promotion remain gated by CI/CD authentication and deployment identities defined in the Technical Design.
+A production dispatch takes the successful `Deploy STG` GitHub Actions run ID. The workflow downloads the retained staging artifact from that exact run and fails closed if:
+
+- the artifact is missing;
+- its manifest commit differs from current `main`;
+- its wheel is missing;
+- its SHA-256 does not match the staging manifest.
+
+This also means that any new commit merged to `main` requires a new successful staging promotion before production can be deployed.
 
 ## CI/CD authentication
 
 The preferred production architecture is GitHub OIDC / Workload Identity Federation with Databricks service principals, avoiding static long-lived credentials.
 
-Databricks Free Edition does not expose the account-level federation policy administration required for that setup. For this portfolio workspace, CI therefore uses a documented laboratory fallback: OAuth machine-to-machine authentication with the dedicated `olist-ci` service principal.
+Databricks Free Edition does not expose the account-level federation policy administration required for that setup. For this portfolio workspace, CI/CD therefore uses a documented laboratory fallback: OAuth machine-to-machine authentication with the dedicated `olist-ci` service principal.
 
-GitHub Environment `ci` stores:
+GitHub Environments `ci`, `olist-stg` and `olist-prd` provide environment-scoped configuration. They store:
 
 ```text
 Environment variables:
@@ -224,18 +265,32 @@ Environment secret:
   DATABRICKS_CLIENT_SECRET
 ```
 
-The workflow sets:
-
-```text
-DATABRICKS_AUTH_TYPE=oauth-m2m
-```
-
 The client secret must never be committed to the repository or written into bundle configuration.
 
-This fallback is a workspace limitation, not the target enterprise architecture. In a full Databricks account, replace it with OIDC federation and short-lived GitHub-issued credentials.
+`olist-prd` is the protected human approval boundary for production. In a full Databricks account, replace the Free Edition authentication fallback with OIDC federation and use separate least-privilege service principals for staging and production.
 
 ## CI/CD boundary
 
 Repository CI proves code quality, tests, wheel build, wheel installation, the packaged GDP entry point, Databricks service-principal authentication and authenticated Bundle validation for `dev`, `stg` and `prd`.
 
-The validation workflow is intentionally non-deploying: pull-request CI may inspect workspace-backed bundle configuration but must not create or modify Databricks resources. Deployment remains a separate promotion operation.
+Pull-request CI is intentionally non-deploying. Deployment is separate:
+
+- `main -> stg` is automatic and must pass its workload smoke before producing a promotion artifact;
+- `stg -> prd` is manually dispatched and protected by the `olist-prd` GitHub Environment;
+- production consumes the retained staging wheel rather than rebuilding it.
+
+## First end-to-end proof
+
+The first complete promotion cycle was proven on 2026-08-24 for the IBGE municipality GDP pilot.
+
+Evidence:
+
+```text
+main commit:        ad0f76729d8f61472df743ba0a16a71e128104ec
+Deploy STG run:     32790895866
+Deploy STG result:  success
+Deploy PRD run:     32791428715 (successful retry)
+Deploy PRD result:  success
+```
+
+The successful production run proved, in one controlled chain, staging artifact validation, OAuth M2M service-principal authentication, `bundle validate -t prd`, deployment of the approved staging wheel, the production GDP smoke and retention of deployment evidence.
