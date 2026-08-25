@@ -58,8 +58,11 @@ spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
 # Environment selection is explicit. DAB jobs inject `${var.catalog}` directly into
 # task parameters; this manual validation notebook mirrors that contract with a
 # required widget rather than embedding a production catalog.
-dbutils.widgets.text("catalog", "", "Target catalog")
-CATALOG = dbutils.widgets.get("catalog").strip()
+_dbutils = globals().get("dbutils")
+if _dbutils is None:
+    raise RuntimeError("This validation notebook must run in Databricks.")
+_dbutils.widgets.text("catalog", "", "Target catalog")
+CATALOG = _dbutils.widgets.get("catalog").strip()
 if not CATALOG:
     raise ValueError(
         "Set the 'catalog' widget before running validation (for example dev/stg/prd)."
