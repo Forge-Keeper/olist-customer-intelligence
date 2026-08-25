@@ -10,10 +10,12 @@ from olist_data_platform.jobs.olist_closed_deals_ingestion import (
 
 
 def test_parser_should_use_default_source_path():
-    args = build_parser().parse_args(["--target-table", "prd.bronze.closed_deals"])
+    args = build_parser().parse_args(
+        ["--target-table", "test_catalog.bronze.closed_deals"]
+    )
 
     assert args.source_path == DEFAULT_SOURCE_PATH
-    assert args.target_table == "prd.bronze.closed_deals"
+    assert args.target_table == "test_catalog.bronze.closed_deals"
 
 
 @patch("olist_data_platform.jobs.olist_closed_deals_ingestion.OlistSnapshotIngestionService")
@@ -27,7 +29,7 @@ def test_run_should_compose_closed_deals_ingestion(
     spark = Mock()
     args = Namespace(
         source_path="/Volumes/closed_deals.csv",
-        target_table="prd.bronze.closed_deals",
+        target_table="test_catalog.bronze.closed_deals",
     )
     service_class.return_value.ingest.return_value = 842
 
