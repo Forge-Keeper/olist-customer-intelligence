@@ -11,6 +11,9 @@
 # MAGIC - municipality-code compatibility between sources
 # MAGIC - Delta clustering metadata
 # MAGIC - idempotent MERGE behavior on same-scope re-execution
+# MAGIC
+# MAGIC Set the `catalog` widget explicitly before running. The notebook never
+# MAGIC infers an environment or embeds a production catalog.
 
 # COMMAND ----------
 import sys
@@ -53,13 +56,39 @@ from olist_data_platform.domains.ingestion.ibge import (
     municipality_population_ingestion_service,
 )
 from olist_data_platform.domains.ingestion.ibge import sidra_client
+from olist_data_platform.platform.naming import qualified_table_name
 
 spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
 
-MUNICIPALITIES_TABLE = "prd.bronze.ibge_municipalities"
-POPULATION_TABLE = "prd.bronze.ibge_municipality_population"
+# COMMAND ----------
+# DAB resources inject `${var.catalog}` explicitly. This manual validation notebook
+# mirrors that contract with a required widget rather than environment inference.
+_dbutils = globals().get("dbutils")
+if _dbutils is None:
+    raise RuntimeError("This validation notebook must run in Databricks.")
+_dbutils.widgets.text("catalog", "", "Target catalog")
+CATALOG = _dbutils.widgets.get("catalog").strip()
+if not CATALOG:
+    raise ValueError(
+        "Set the 'catalog' widget before running validation (for example dev/stg/prd)."
+    )
+
+MUNICIPALITIES_TABLE = qualified_table_name(
+    catalog=CATALOG,
+    schema="bronze",
+    table="ibge_municipalities",
+)
+POPULATION_TABLE = qualified_table_name(
+    catalog=CATALOG,
+    schema="bronze",
+    table="ibge_municipality_population",
+)
 EXPECTED_YEARS = (2016, 2017, 2018)
 EXPECTED_POPULATION_MUNICIPALITIES_PER_YEAR = 5571
+
+print("validation_catalog=", CATALOG)
+print("municipalities_table=", MUNICIPALITIES_TABLE)
+print("population_table=", POPULATION_TABLE)
 
 # Contract migration is intentionally explicit. Set this to True only for the
 # one-time development reset after changing the IBGE Bronze schema.
@@ -248,6 +277,6 @@ assert population_after == population_before
 
 print(
     "Validation passed | "
-    f"municipalities_rows={municipalities_after} | "
+    f"catalog={CATALOG} | municipalities_rows={municipalities_after} | "
     f"population_rows={population_after}"
 )

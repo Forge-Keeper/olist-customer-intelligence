@@ -10,6 +10,10 @@
 # MAGIC - municipality-code compatibility with Localidades
 # MAGIC - Delta clustering metadata
 # MAGIC - idempotent MERGE behavior on same-scope re-execution
+# MAGIC
+# MAGIC Set the `catalog` widget explicitly (`dev`, `stg`, `prd`, or another
+# MAGIC deployment-provided catalog) before running. The notebook does not infer an
+# MAGIC environment.
 
 # COMMAND ----------
 import sys
@@ -46,13 +50,40 @@ from olist_data_platform.domains.ingestion.ibge import (
     municipality_gdp_ingestion_service,
 )
 from olist_data_platform.domains.ingestion.ibge.sidra_client import SidraClient
+from olist_data_platform.platform.naming import qualified_table_name
 
 spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
 
-GDP_TABLE = "prd.bronze.ibge_municipality_gdp"
-MUNICIPALITIES_TABLE = "prd.bronze.ibge_municipalities"
+# COMMAND ----------
+# Environment selection is explicit. DAB jobs inject `${var.catalog}` directly into
+# task parameters; this manual validation notebook mirrors that contract with a
+# required widget rather than embedding a production catalog.
+_dbutils = globals().get("dbutils")
+if _dbutils is None:
+    raise RuntimeError("This validation notebook must run in Databricks.")
+_dbutils.widgets.text("catalog", "", "Target catalog")
+CATALOG = _dbutils.widgets.get("catalog").strip()
+if not CATALOG:
+    raise ValueError(
+        "Set the 'catalog' widget before running validation (for example dev/stg/prd)."
+    )
+
+GDP_TABLE = qualified_table_name(
+    catalog=CATALOG,
+    schema="bronze",
+    table="ibge_municipality_gdp",
+)
+MUNICIPALITIES_TABLE = qualified_table_name(
+    catalog=CATALOG,
+    schema="bronze",
+    table="ibge_municipalities",
+)
 EXPECTED_YEARS = (2016, 2017, 2018)
 EXPECTED_VARIABLES = tuple(MUNICIPALITY_GDP.variables)
+
+print("validation_catalog=", CATALOG)
+print("gdp_table=", GDP_TABLE)
+print("municipalities_table=", MUNICIPALITIES_TABLE)
 
 RESET_GDP_TABLE = False
 
@@ -166,5 +197,6 @@ assert rows_after == rows_before
 
 print(
     "GDP validation passed | "
-    f"rows={rows_after} | years={EXPECTED_YEARS} | variables={EXPECTED_VARIABLES}"
+    f"catalog={CATALOG} | rows={rows_after} | years={EXPECTED_YEARS} | "
+    f"variables={EXPECTED_VARIABLES}"
 )

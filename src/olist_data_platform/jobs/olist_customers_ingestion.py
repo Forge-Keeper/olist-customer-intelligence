@@ -15,10 +15,6 @@ from olist_data_platform.domains.ingestion.olist.snapshot_ingestion_service impo
 )
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
 
-DEFAULT_SOURCE_PATH = (
-    "/Volumes/prd/bronze/raw_storage/raw/olist/"
-    "e_commerce/olist_customers_dataset.csv"
-)
 CUSTOMERS_SOURCE_COLUMNS = (
     "customer_id",
     "customer_unique_id",
@@ -32,7 +28,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Load the Olist customers CSV snapshot into Bronze."
     )
-    parser.add_argument("--source-path", default=DEFAULT_SOURCE_PATH)
+    parser.add_argument("--source-path", required=True)
     parser.add_argument("--target-table", required=True)
     return parser
 

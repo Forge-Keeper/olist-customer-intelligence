@@ -30,7 +30,7 @@ def test_should_parse_daily_variables():
 def _args(operation: str) -> Namespace:
     return Namespace(
         operation=operation,
-        target_table="prd.bronze.weather_daily",
+        target_table="test_catalog.bronze.weather_daily",
         latitude=-23.5505,
         longitude=-46.6333,
         start_date=date(2018, 1, 1),
@@ -58,7 +58,7 @@ def test_should_execute_ingestion(
     mock_client_class.assert_called_once_with()
     mock_writer_class.assert_called_once_with(
         spark=spark,
-        target_table="prd.bronze.weather_daily",
+        target_table="test_catalog.bronze.weather_daily",
     )
     service.ingest.assert_called_once_with(
         latitude=-23.5505,

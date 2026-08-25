@@ -1,19 +1,34 @@
 from argparse import Namespace
 from unittest.mock import Mock, patch
 
+import pytest
+
 from olist_data_platform.jobs.olist_closed_deals_ingestion import (
     CLOSED_DEALS_SOURCE_COLUMNS,
-    DEFAULT_SOURCE_PATH,
     build_parser,
     run,
 )
 
 
-def test_parser_should_use_default_source_path():
-    args = build_parser().parse_args(["--target-table", "prd.bronze.closed_deals"])
+def test_parser_should_require_source_path():
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(
+            ["--target-table", "test_catalog.bronze.closed_deals"]
+        )
 
-    assert args.source_path == DEFAULT_SOURCE_PATH
-    assert args.target_table == "prd.bronze.closed_deals"
+
+def test_parser_should_accept_explicit_source_and_target():
+    args = build_parser().parse_args(
+        [
+            "--source-path",
+            "/test/olist_closed_deals_dataset.csv",
+            "--target-table",
+            "test_catalog.bronze.closed_deals",
+        ]
+    )
+
+    assert args.source_path == "/test/olist_closed_deals_dataset.csv"
+    assert args.target_table == "test_catalog.bronze.closed_deals"
 
 
 @patch("olist_data_platform.jobs.olist_closed_deals_ingestion.OlistSnapshotIngestionService")
@@ -26,8 +41,8 @@ def test_run_should_compose_closed_deals_ingestion(
 ):
     spark = Mock()
     args = Namespace(
-        source_path="/Volumes/closed_deals.csv",
-        target_table="prd.bronze.closed_deals",
+        source_path="/test/closed_deals.csv",
+        target_table="test_catalog.bronze.closed_deals",
     )
     service_class.return_value.ingest.return_value = 842
 
