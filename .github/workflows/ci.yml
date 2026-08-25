@@ -4,9 +4,14 @@ on:
   push:
     branches:
       - main
+      - dev
       - 'feature/**'
+      - 'fix/**'
+      - 'chore/**'
+      - 'docs/**'
   pull_request:
     branches:
+      - dev
       - main
 
 permissions:
@@ -17,6 +22,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  branch-governance:
+    name: branch-governance
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Enforce feature to dev to main flow
+        shell: bash
+        run: |
+          set -euo pipefail
+          base='${{ github.base_ref }}'
+          head='${{ github.head_ref }}'
+
+          if [[ "$base" == "main" && "$head" != "dev" ]]; then
+            echo "PRs into main must originate from dev. Received head=$head."
+            exit 1
+          fi
+
+          if [[ "$base" == "dev" && ( "$head" == "main" || "$head" == "dev" ) ]]; then
+            echo "PRs into dev must originate from a topic branch. Received head=$head."
+            exit 1
+          fi
+
+          echo "Branch promotion path accepted: $head -> $base"
+
   quality:
     name: quality
     runs-on: ubuntu-latest
