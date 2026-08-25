@@ -1,20 +1,33 @@
 from argparse import Namespace
 from unittest.mock import Mock, patch
 
+import pytest
+
 from olist_data_platform.jobs.olist_customers_ingestion import (
     CUSTOMERS_SOURCE_COLUMNS,
-    DEFAULT_SOURCE_PATH,
     build_parser,
     run,
 )
 
 
-def test_should_default_source_path():
+def test_should_require_source_path():
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(
+            ["--target-table", "test_catalog.bronze.olist_customers"]
+        )
+
+
+def test_should_parse_explicit_source_and_target():
     args = build_parser().parse_args(
-        ["--target-table", "test_catalog.bronze.olist_customers"]
+        [
+            "--source-path",
+            "/test/olist_customers_dataset.csv",
+            "--target-table",
+            "test_catalog.bronze.olist_customers",
+        ]
     )
 
-    assert args.source_path == DEFAULT_SOURCE_PATH
+    assert args.source_path == "/test/olist_customers_dataset.csv"
     assert args.target_table == "test_catalog.bronze.olist_customers"
 
 
@@ -28,7 +41,7 @@ def test_should_compose_and_run_ingestion(
 ):
     spark = Mock()
     args = Namespace(
-        source_path="/Volumes/source.csv",
+        source_path="/test/source.csv",
         target_table="test_catalog.bronze.olist_customers",
     )
     mock_service_class.return_value.ingest.return_value = 99441
@@ -37,7 +50,7 @@ def test_should_compose_and_run_ingestion(
 
     mock_reader_class.assert_called_once_with(
         spark=spark,
-        source_path="/Volumes/source.csv",
+        source_path="/test/source.csv",
         required_columns=CUSTOMERS_SOURCE_COLUMNS,
         dataset_name="olist_customers",
     )
