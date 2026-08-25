@@ -15,7 +15,7 @@ def test_should_read_count_write_and_return_row_count():
     reader.read.return_value = dataframe
 
     writer = Mock()
-    writer.target_table = "prd.bronze.test"
+    writer.target_table = "test_catalog.bronze.test"
 
     service = OlistSnapshotIngestionService(
         dataset_name="olist_test",
