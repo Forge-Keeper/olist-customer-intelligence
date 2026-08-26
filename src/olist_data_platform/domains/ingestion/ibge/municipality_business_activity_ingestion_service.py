@@ -57,7 +57,9 @@ class MunicipalityBusinessActivityIngestionService:
                     )
                     payload = self.client.get_values(query)
                     decoded = SidraParser.decode(payload)
-                    slice_records = MunicipalityBusinessActivityExtractor.extract(decoded)
+                    slice_records = MunicipalityBusinessActivityExtractor.extract(
+                        decoded
+                    )
                     if not slice_records:
                         raise ValueError(
                             "IBGE CEMPRE ingestion returned no records "
