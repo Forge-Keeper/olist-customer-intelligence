@@ -108,8 +108,10 @@ jobs:
           uv venv .venv-wheel-test --python 3.11
           uv pip install --python .venv-wheel-test/bin/python "pyspark>=4.2.0" dist/*.whl
 
-      - name: Verify packaged GDP entry point
-        run: .venv-wheel-test/bin/olist-ibge-gdp --help
+      - name: Verify packaged job entry points
+        run: |
+          .venv-wheel-test/bin/olist-ibge-gdp --help
+          .venv-wheel-test/bin/olist-ibge-cempre --help
 
       - name: Install Databricks CLI
         uses: databricks/setup-cli@main
