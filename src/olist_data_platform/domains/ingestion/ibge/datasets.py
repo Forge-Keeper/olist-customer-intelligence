@@ -18,3 +18,15 @@ MUNICIPALITY_GDP = SidraDataset(
         "2016-2018 Olist enrichment scope."
     ),
 )
+
+MUNICIPALITY_BUSINESS_ACTIVITY = SidraDataset(
+    name="municipality_business_activity",
+    table_id=1685,
+    territorial_level=6,
+    variables=("367", "706", "707", "708", "5944", "662", "1606", "10143"),
+    description=(
+        "IBGE CEMPRE municipal business activity indicators selected for the "
+        "2016-2018 Olist enrichment scope."
+    ),
+    default_periods=("2016", "2017", "2018"),
+)
