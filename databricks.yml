@@ -10,6 +10,9 @@ variables:
   gdp_periods:
     description: Comma-separated IBGE GDP reference years for the pilot job.
     default: "2016,2017,2018"
+  cempre_periods:
+    description: Comma-separated IBGE CEMPRE reference years for Olist enrichment.
+    default: "2016,2017,2018"
   run_as_service_principal:
     description: Service principal application ID injected by the deployment environment.
 
