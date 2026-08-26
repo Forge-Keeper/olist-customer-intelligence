@@ -1,48 +1,62 @@
 # Olist Customer Intelligence
 
-This site is the living engineering reference for the Olist Customer Intelligence data platform.
+Olist Customer Intelligence is a production-oriented Data Engineering portfolio built around the Olist public e-commerce dataset and justified external data sources.
 
-Its purpose is to make architecture, delivery standards, platform contracts, governance decisions, operational runbooks and public Python APIs discoverable from one place while keeping GitHub as the source of truth.
+The repository demonstrates not only ingestion code, but the platform boundaries needed to deliver and operate data workloads safely: executable contracts, Delta lifecycle management, governance metadata, tests, Databricks Asset Bundles and controlled `dev -> stg -> prd` promotion.
 
-## Platform status
+## Start here
 
-The first platform foundation is now implemented and validated end to end:
+If you are evaluating the project as a portfolio, read these pages first:
 
-- isolated Unity Catalog environments for `dev`, `stg` and `prd`;
-- executable Delta dataset contracts and lifecycle management;
-- controlled schema evolution and metadata reconciliation;
-- Unity Catalog governance foundations, including ABAC smoke validation;
-- Databricks Asset Bundles for repeatable deployment;
-- immutable wheel promotion from staging to production;
-- protected production deployment with retained evidence;
-- environment-specific runtime hardcodes removed from application code;
-- mandatory Git promotion path `topic branch -> dev -> main -> stg -> prd`;
-- CI and documentation build gates.
+1. **Architecture** — end-to-end system and delivery boundaries.
+2. **Platform Status** — what is delivered, what remains intentionally out of scope and known technical debt.
+3. **Data Features** — concrete datasets implemented on top of the platform.
 
-The GDP ingestion pilot has been deployed and smoke-tested through staging and production, proving the delivery path with a real workload.
+The remaining sections are the technical deep dive: ADRs, standards, runbooks, delivery records and generated API documentation.
+
+## Delivered platform foundation
+
+The current repository implements and validates:
+
+- hybrid Platform + Domains Python architecture;
+- lightweight/source-faithful Bronze persistence;
+- reusable HTTP/retry/logging foundations;
+- executable Delta dataset contracts;
+- `DeltaTableLifecycle` and `BronzeWriter` responsibility split;
+- conservative schema evolution and metadata reconciliation;
+- Unity Catalog governance metadata and ABAC policy foundations;
+- Databricks Asset Bundles for `dev`, `stg` and `prd`;
+- immutable staging-to-production wheel promotion;
+- GitHub Actions CI/CD and documentation gates;
+- MkDocs Material documentation published from `main`.
+
+The GDP pilot proved the complete shared promotion path through staging and production. CEMPRE was subsequently added as another DAB-managed workload, exposing the deployment smoke-coverage gap tracked separately as technical debt.
+
+## Delivered data slices
+
+- Weather / Open-Meteo;
+- Olist Customers;
+- Olist Closed Deals;
+- IBGE Localidades / municipalities;
+- IBGE municipality population;
+- IBGE municipality GDP / VAB;
+- IBGE CEMPRE municipal business activity, 2016–2018.
 
 ## Documentation model
 
 ```text
-Code + docstrings
-      |
-      +-- mkdocstrings -> API Reference
-      |
-Markdown docs
-      +-- architecture decisions
-      +-- engineering and branch standards
-      +-- feature specifications and delivery records
-      +-- deployment and operational runbooks
-      |
-      v
-Material for MkDocs
-      |
-      v
-GitHub Pages
+Portfolio entry pages
+    |
+    +-- Architecture
+    +-- Platform Status
+    |
+    v
+Technical deep dive
+    +-- Engineering standards / DoD
+    +-- Platform & Delivery records
+    +-- Feature documentation
+    +-- ADRs
+    +-- API Reference
 ```
 
-## Start here
-
-For development workflow and promotion rules, read **Engineering -> Branch Governance**. For deployment and environment operations, use **Platform & Delivery -> Deployment Runbook**. For the implemented architectural decisions, use the **Architecture Decisions** section. The **Data Features** section records the delivered IBGE ingestion slices.
-
-Documentation is treated as part of the engineering product: changes are versioned with the code, validated with `mkdocs build --strict`, and published from `main`.
+Documentation is versioned with the code, validated with `mkdocs build --strict`, and published from the stable `main` branch. GitHub remains the source of truth.

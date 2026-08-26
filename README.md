@@ -1,405 +1,214 @@
 # Olist Customer Intelligence
 
-End-to-end Data Engineering project built around the Olist public e-commerce dataset and justified external data sources.
+Production-oriented Data Engineering portfolio built around the Olist public e-commerce dataset and justified external data sources.
 
-## Current Architecture
+The project has evolved from isolated ingestion pipelines into a small Databricks-oriented data platform foundation with explicit contracts, Delta lifecycle management, governance metadata, CI/CD and controlled environment promotion.
 
-The Python package follows a hybrid **Platform + Domains** structure.
+## What is implemented
+
+### Data ingestion and Bronze persistence
+
+Implemented Bronze vertical slices:
+
+- Weather / Open-Meteo;
+- Olist Customers;
+- Olist Closed Deals;
+- IBGE Localidades / municipalities;
+- IBGE municipality population;
+- IBGE municipality GDP / VAB;
+- IBGE CEMPRE municipal business activity for 2016–2018.
+
+Bronze is intentionally lightweight and source-faithful: source semantics are preserved, technical metadata is explicit and business normalization is deferred to downstream analytical layers.
+
+### Platform capabilities
+
+- modular Python package using a hybrid **Platform + Domains** structure;
+- reusable HTTP/retry/logging infrastructure;
+- executable `DatasetContract` definitions;
+- reusable `DeltaTableLifecycle`;
+- `BronzeWriter` with explicit write strategies and idempotent behavior;
+- controlled schema-evolution policy with fail-fast drift handling;
+- metadata reconciliation for table/column descriptions and tags;
+- Unity Catalog governance foundation and ABAC policy lifecycle;
+- Liquid Clustering where justified by dataset access/layout needs;
+- Databricks Asset Bundles with `dev`, `stg` and `prd` targets;
+- immutable wheel promotion from staging to production;
+- GitHub Actions quality, documentation and deployment workflows;
+- MkDocs Material engineering portal published through GitHub Pages.
+
+## Architecture
 
 ```text
-src/
-└── olist_data_platform/
-    ├── platform/
-    │   ├── delta/
-    │   │   └── bronze/
-    │   ├── http/
-    │   └── logging/
-    ├── domains/
-    │   ├── ingestion/
-    │   │   ├── ibge/
-    │   │   ├── olist/
-    │   │   └── weather/
-    │   ├── bronze/
-    │   │   ├── ibge/
-    │   │   ├── olist/
-    │   │   └── weather/
-    │   └── customer_intelligence/
-    └── jobs/
-        ├── ibge_municipalities_ingestion.py
-        ├── ibge_municipality_population_ingestion.py
-        ├── ibge_municipality_gdp_ingestion.py
-        ├── olist_customers_ingestion.py
-        ├── olist_closed_deals_ingestion.py
-        └── weather_ingestion.py
+Olist CSV        Open-Meteo         IBGE APIs / SIDRA
+    \                |                    /
+     +---------------+-------------------+
+                     |
+                     v
+            Domain ingestion services
+                     |
+                     v
+             Bronze adapters/writers
+                     |
+                     v
+               BronzeWriter
+                     |
+          +----------+-----------+
+          |                      |
+          v                      v
+   DatasetContract       DeltaTableLifecycle
+          |                      |
+          +----------+-----------+
+                     |
+                     v
+          Delta tables / Unity Catalog
+                     |
+                     v
+        metadata + governance / ABAC
 ```
 
-`platform/` contains reusable technical capabilities. `domains/` contains cohesive source/product-specific behavior. `jobs/` contains executable application composition entrypoints; deployment and orchestration remain separate concerns.
+Deployment is a separate delivery plane:
 
-## Bronze Design
+```text
+topic branch -> dev -> main -> stg -> prd
+                                ^      ^
+                                |      |
+                         same validated wheel
+```
 
-Bronze is the first persistent landing layer. There is no separate RAW persistence layer in the current design.
+`main` is the stable source for shared deployment. Staging validates the approved artifact before protected production promotion.
+
+For the complete architecture and delivery boundary, use the documentation site pages **Architecture** and **Platform Status**.
+
+## Package structure
+
+```text
+src/olist_data_platform/
+├── platform/
+│   ├── delta/
+│   ├── governance/
+│   ├── http/
+│   └── logging/
+├── domains/
+│   ├── ingestion/
+│   │   ├── ibge/
+│   │   ├── olist/
+│   │   └── weather/
+│   ├── bronze/
+│   │   ├── ibge/
+│   │   ├── olist/
+│   │   └── weather/
+│   ├── silver/
+│   ├── gold/
+│   └── customer_intelligence/
+└── jobs/
+```
+
+`platform/` owns reusable technical capabilities. `domains/` owns source/product-specific behavior. `jobs/` owns executable application composition. Deployment/orchestration stays in repository-owned DAB and GitHub Actions configuration rather than application code.
+
+## Bronze design
 
 Core rules:
 
 - preserve source semantics / AS-IS values;
-- keep business typing and normalization downstream;
-- use explicit schemas and technical metadata;
-- define natural keys/idempotency keys explicitly;
-- use `MERGE` or full-replace semantics according to the source contract;
-- choose partitioning or Liquid Clustering based on the dataset/use case;
-- preserve semi-structured source payloads in `VARIANT` where that protects source fidelity.
-
-See:
-
-- `docs/adr/ADR-001-liquid-clustering-bronze-weather.md`;
-- `docs/adr/ADR-002-hybrid-domain-platform-package-structure.md`;
-- `docs/adr/ADR-003-bronze-landing-with-variant.md`.
-
-## Implemented Bronze Vertical Slices
-
-### Weather / Open-Meteo
-
-```text
-Open-Meteo API
-      ↓
-OpenMeteoClient
-      ↓
-WeatherIngestionService
-      ↓
-WeatherDailyExtractor
-      ↓
-BronzeWeatherWriter
-      ↓
-BronzeWriter
-      ↓
-Delta Bronze
-```
-
-Natural key:
-
-```text
-(dt_base, requested_latitude, requested_longitude)
-```
-
-Write strategy: `MERGE`.
-
-Layout: Liquid Clustering by `dt_base`.
-
-### Olist authoritative CSV snapshots
-
-```text
-Olist CSV in Unity Catalog Volume
-      ↓
-OlistCsvSnapshotReader
-      ↓
-OlistSnapshotIngestionService
-      ↓
-BronzeWriter
-      ↓
-Delta Bronze
-```
-
-Implemented datasets:
-
-- Olist Customers;
-- Olist Closed Deals.
-
-These sources are treated as authoritative full snapshots. Source values are preserved as strings unless a source-specific contract requires otherwise. `source_file` and `ingestion_timestamp` provide technical lineage.
-
-Write strategy: `FULL_REPLACE` after validation of a non-empty snapshot.
-
-### IBGE Localidades
-
-```text
-IBGE Localidades API
-      ↓
-LocalitiesClient
-      ↓
-MunicipalitiesIngestionService
-      ↓
-BronzeMunicipalitiesWriter
-      ↓
-BronzeWriter
-      ↓
-Delta Bronze
-```
-
-Bronze keeps:
-
-- `municipality_code`;
-- capture-date `dt_base`;
-- full source object in `payload VARIANT`;
-- request/ingestion metadata.
-
-Natural key:
-
-```text
-(municipality_code, dt_base)
-```
-
-The current Localidades endpoint is treated as a current snapshot. Historical municipality snapshots are not fabricated from the current response.
-
-### IBGE Municipality Population
-
-SIDRA table `6579`, variable `9324`.
-
-```text
-SIDRA API
-   ↓
-SidraClient / SidraQuery / SidraDataset
-   ↓
-SidraParser
-   ↓
-MunicipalityPopulationExtractor
-   ↓
-MunicipalityPopulationIngestionService
-   ↓
-BronzeMunicipalityPopulationWriter
-   ↓
-Delta Bronze
-```
-
-Production scope currently covers 2016, 2017 and 2018.
-
-Natural key:
-
-```text
-(municipality_code, reference_year, variable_code)
-```
-
-`dt_base` is January 1 of the reference year. `Valor` remains source-like inside `payload VARIANT`.
-
-To reduce SIDRA timeout/retry blast radius, periods are requested independently and accumulated into one logical Bronze write.
-
-### IBGE Municipality GDP
-
-SIDRA table `5938`.
-
-Production scope:
-
-- years: 2016, 2017, 2018;
-- territorial level: municipality (`6`);
-- variables: `37`, `498`, `513`, `517`, `525`, `6575`.
-
-The selected variables cover GDP at current prices plus total and sector gross value added. Participation/share variables are intentionally outside the current production contract.
-
-Natural key:
-
-```text
-(municipality_code, reference_year, variable_code)
-```
-
-Bronze contract:
-
-- `municipality_code STRING`;
-- `reference_year STRING`;
-- `variable_code STRING`;
-- `dt_base DATE`;
-- `payload VARIANT`;
-- `request_id STRING`;
-- `ingestion_timestamp TIMESTAMP`.
-
-Write strategy: idempotent `MERGE`.
-
-Layout: Liquid Clustering by `dt_base`.
-
-GDP requests are bounded to one `year × variable × all municipalities` slice. The current 3-year × 6-variable scope therefore executes 18 SIDRA requests under one ingestion request context and performs one logical Bronze write.
-
-Final Databricks validation for this feature produced:
-
-- `100260` rows total;
-- 18 year × variable combinations;
-- `5570` rows / `5570` unique municipalities in every combination;
-- `special_value_rows = 0` for the approved scope;
-- key uniqueness, payload preservation, annual `dt_base`, municipality-code compatibility, clustering and idempotent re-execution all validated.
-
-The `5570` GDP cardinality is observed source evidence for this SIDRA table/scope, not a permanent contract. It differs from the `5571` municipality cardinality observed in the population/Localidades validations.
-
-See `docs/development/ibge-municipality-gdp.md` for the complete feature contract and validation evidence.
-
-## Reusable SIDRA Infrastructure
-
-IBGE SIDRA ingestion shares:
-
-- `SidraClient` — transport;
-- `SidraQuery` — query contract;
-- `SidraDataset` — logical dataset configuration;
-- `SidraParser` — source header decoding;
-- common HTTP timeout/retry/backoff/logging capabilities.
-
-Dataset-specific semantics remain in their own extractor/service/writer/configuration code. New SIDRA datasets should reuse this stack rather than create a parallel transport/parser implementation.
-
-## Job Entrypoints
-
-### Weather
-
-```text
-olist_data_platform.jobs.weather_ingestion
-```
-
-### Olist Customers
-
-```text
-olist_data_platform.jobs.olist_customers_ingestion
-```
-
-### Olist Closed Deals
-
-```text
-olist_data_platform.jobs.olist_closed_deals_ingestion
-```
-
-### IBGE Localidades
-
-```text
-olist_data_platform.jobs.ibge_municipalities_ingestion
-```
-
-### IBGE Municipality Population
-
-```text
-olist_data_platform.jobs.ibge_municipality_population_ingestion
-```
-
-### IBGE Municipality GDP
-
-```text
-olist_data_platform.jobs.ibge_municipality_gdp_ingestion
-```
-
-Deployment and scheduling remain separate from Python application composition and are part of the deployment/orchestration roadmap.
-
-## Data Sources
-
-### Olist
-
-The public Olist Brazilian e-commerce dataset is the primary analytical source and foundation for the Customer Intelligence data product.
-
-### Open-Meteo
-
-Open-Meteo provides historical weather enrichment and demonstrates reusable API communication, semi-structured Bronze landing, request metadata, idempotent Delta persistence, explicit reprocessing and Liquid Clustering.
-
-### IBGE
-
-IBGE provides municipality/locality and socioeconomic enrichment.
-
-Current implemented API datasets:
-
-- Localidades municipalities;
-- SIDRA municipality population;
-- SIDRA municipality GDP / gross value added.
-
-Additional IBGE datasets should only be added when a concrete analytical or engineering requirement justifies them.
-
-## Development Environment
-
-Requirements:
-
-- Python 3.11+
-- Java 17+
-- `uv`
-
-Java 17 or newer is required for local PySpark integration tests.
-
-Databricks validation of Bronze `VARIANT` and managed-table clustering behavior requires a compatible Databricks Runtime.
-
-Synchronize dependencies:
+- use explicit persisted schemas and technical metadata;
+- make logical keys and idempotency explicit;
+- use `MERGE` or `FULL_REPLACE` according to the source contract;
+- use partitioning or Liquid Clustering only when justified;
+- preserve semi-structured source payloads in `VARIANT` when this protects fidelity;
+- fail on incompatible table drift rather than silently widening production state.
+
+Relevant ADRs are under `docs/adr/`.
+
+## Data sources and delivered datasets
+
+| Source | Delivered slices | Persistence behavior |
+| --- | --- | --- |
+| Olist | Customers, Closed Deals | authoritative CSV snapshots / `FULL_REPLACE` after validation |
+| Open-Meteo | historical weather | idempotent `MERGE` |
+| IBGE Localidades | municipalities | dated source snapshot / `MERGE` |
+| IBGE SIDRA 6579 | municipality population | annual slices / `MERGE` |
+| IBGE SIDRA 5938 | municipality GDP/VAB | bounded year × variable slices / `MERGE` |
+| IBGE SIDRA 1685 | CEMPRE municipal business activity | 2016–2018 year × variable slices / `MERGE` |
+
+The reusable SIDRA stack includes `SidraClient`, `SidraQuery`, `SidraDataset` and `SidraParser`; dataset semantics remain in dedicated extractors/services/writers.
+
+## Testing and quality gates
 
 ```powershell
 uv sync
-```
-
-Runtime and development dependencies are resolved from `pyproject.toml` and locked in `uv.lock`.
-
-## Testing
-
-Unit tests:
-
-```powershell
+uv run ruff check .
+uv run ty check
 uv run pytest tests/unit -q
-```
-
-Integration tests:
-
-```powershell
 uv run pytest tests/integration -q
-```
-
-Full suite:
-
-```powershell
 uv run pytest -q
 ```
 
-Lint/type checks:
+Some Databricks-specific behaviors such as managed Delta metadata, `VARIANT`, clustering, Unity Catalog governance and deployment are validated in workspace smoke tests in addition to local tests.
+
+Documentation is validated with:
 
 ```powershell
-uv run ruff check .
-uv run ty check
+uv run mkdocs build --strict
 ```
 
-Some behaviors, including Databricks Delta `VARIANT` and managed Liquid Clustering metadata, are validated in Databricks notebooks in addition to local tests.
+## Delivery and environments
 
-## Engineering Principles
-
-1. Architecture should solve real project problems rather than maximize the technology stack.
-2. Reusable abstractions should emerge from concrete reuse.
-3. Source-specific behavior stays close to its domain.
-4. Shared technical capabilities belong in `platform/`.
-5. Bronze, Silver and Gold have distinct responsibilities.
-6. Schemas and persistence behavior should be explicit.
-7. Idempotency and controlled reprocessing are first-class requirements.
-8. Tests are part of the architecture.
-9. Data Quality and observability should become first-class capabilities.
-10. Durable architectural decisions with meaningful alternatives should be documented as ADRs.
-11. Professional architectures may inspire principles, but third-party code, rules, datasets or intellectual property must not be copied into the portfolio.
-
-## Development Gates
-
-Relevant features follow:
+The mandatory Git path is:
 
 ```text
-Discovery
-→ Requirements
-→ Technical Design
-→ Impact Analysis
-→ Approved Plan
-→ Implementation
-→ Validation
-→ Done
+topic branch -> PR into dev -> merge dev
+-> PR dev into main -> merge main
+-> automatic staging deployment/validation
+-> protected production promotion
 ```
 
-Completed feature scope must not silently expand after `Done`; a material extension starts a new feature/gate cycle.
+DAB provides distinct Unity Catalog targets:
 
-## Current State
+- `dev` -> development catalog;
+- `stg` -> shared pre-production catalog;
+- `prd` -> production catalog.
 
-Completed and merged into `dev`:
+The staging-approved wheel is retained with integrity metadata and reused for production promotion; production is not rebuilt from materially different source after staging acceptance.
 
-- Weather Bronze;
-- Olist Customers Bronze;
-- Olist Closed Deals Bronze;
-- IBGE Localidades Bronze;
-- IBGE municipality population Bronze;
-- IBGE municipality GDP Bronze.
+## Governance
 
-The municipality GDP feature was merged through PR #6 on 2026-08-24, merge commit `cff34e52179ff532e1c9bd2567ee85325b334e1b`.
+The platform separates dataset facts from access policies:
 
-## Near-term Roadmap
+- `DatasetContract` / `ColumnContract` represent persisted schema and metadata, including approved table/column tags;
+- `DeltaTableLifecycle` reconciles table state and metadata;
+- governance policy definitions/lifecycle own centralized ABAC row-filter and column-mask policies;
+- public datasets are not assigned fabricated sensitivity metadata merely to demonstrate governance capabilities.
 
-The next feature is intentionally **not selected in this README**. Before implementation, re-evaluate the current `dev` branch and backlog and choose the next work item explicitly.
+## Documentation
 
-Durable candidates/capabilities include:
+The MkDocs site is the public engineering portal. It contains:
 
-- additional justified Bronze/source ingestion;
-- Table Contracts;
-- reusable Delta table lifecycle management;
-- explicit table-layout strategy;
-- Data Quality framework;
-- Silver architecture/modeling;
-- Gold/data-product architecture;
-- incremental processing, backfill and replay;
-- Databricks Asset Bundles deployment/orchestration;
-- observability;
-- governance / Unity Catalog.
+- portfolio-oriented architecture and platform-status pages;
+- engineering standards and Definition of Done;
+- branch and deployment runbooks;
+- DAB design/delivery records;
+- feature documentation;
+- ADRs;
+- generated API reference through `mkdocstrings`.
 
-Databricks remains the project's primary specialization, but the portfolio is intentionally not limited to the Databricks ecosystem.
+GitHub remains the source of truth for both code and documentation.
+
+## Current boundary and roadmap
+
+Delivered scope is currently centered on the Bronze/platform foundation. Silver, Gold and the final Customer Intelligence analytical product remain future layers; their package boundaries exist but they are not represented as completed analytical implementations.
+
+Known near-term technical debt is tracked in GitHub issues. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy; smoke coverage should remain targeted, cheap and explicit.
+
+Future work must be selected from the current GitHub backlog rather than inferred from historical README checkpoints.
+
+## Engineering principles
+
+1. Solve concrete project problems before adding abstractions.
+2. Reuse should emerge from demonstrated repetition.
+3. Keep source-specific behavior close to its domain.
+4. Keep shared technical capabilities in `platform/`.
+5. Treat idempotency, contracts and failure behavior as first-class concerns.
+6. Keep environment resolution outside domain/application logic.
+7. Treat tests and documentation as delivery artifacts.
+8. Record durable architectural decisions as ADRs.
+9. Do not add technologies merely to inflate the visible stack.
