@@ -6,7 +6,6 @@ import os
 import re
 import subprocess
 from pathlib import Path
-from typing import Any
 
 DEFAULT_MANIFEST = Path("deployment/smoke-jobs.yml")
 DEFAULT_RESOURCES_DIR = Path("resources")
@@ -14,7 +13,9 @@ DEFAULT_RESULTS = Path("dist/deployment-smoke-results.txt")
 JOB_KEY_PATTERN = re.compile(r"^    ([A-Za-z0-9_-]+):\s*$")
 
 
-def load_manifest(path: Path = DEFAULT_MANIFEST) -> dict[str, dict[str, dict[str, str]]]:
+def load_manifest(
+    path: Path = DEFAULT_MANIFEST,
+) -> dict[str, dict[str, dict[str, str]]]:
     data = json.loads(path.read_text(encoding="utf-8"))
     jobs = data.get("jobs")
     if not isinstance(jobs, dict) or not jobs:
@@ -29,8 +30,14 @@ def load_manifest(path: Path = DEFAULT_MANIFEST) -> dict[str, dict[str, dict[str
         variables = config.get("variables", {})
         if not isinstance(variables, dict):
             raise ValueError(f"Smoke variables for {job_name} must be a mapping.")
-        if not all(isinstance(key, str) and isinstance(value, str) for key, value in variables.items()):
-            raise ValueError(f"Smoke variables for {job_name} must be string-to-string.")
+        valid_variables = all(
+            isinstance(key, str) and isinstance(value, str)
+            for key, value in variables.items()
+        )
+        if not valid_variables:
+            raise ValueError(
+                f"Smoke variables for {job_name} must be string-to-string."
+            )
         normalized[job_name] = {"variables": variables}
     return normalized
 
@@ -90,14 +97,23 @@ def run_smokes(
     for job_name, config in manifest.items():
         command = ["databricks", "bundle", "run", "-t", target, job_name]
         variables = config["variables"]
-        print(f"Running deployment smoke: target={target} job={job_name} variables={variables}")
+        print(
+            "Running deployment smoke: "
+            f"target={target} job={job_name} variables={variables}"
+        )
         subprocess.run(command, check=True, env=build_environment(variables))
+        serialized_variables = json.dumps(variables, sort_keys=True)
         with results_path.open("a", encoding="utf-8") as handle:
-            handle.write(f"target={target} job={job_name} status=success variables={json.dumps(variables, sort_keys=True)}\n")
+            handle.write(
+                f"target={target} job={job_name} status=success "
+                f"variables={serialized_variables}\n"
+            )
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Validate and execute DAB deployment smoke contracts.")
+    parser = argparse.ArgumentParser(
+        description="Validate and execute DAB deployment smoke contracts."
+    )
     parser.add_argument("--target", choices=("stg", "prd"))
     parser.add_argument("--validate-only", action="store_true")
     parser.add_argument("--manifest", type=Path, default=DEFAULT_MANIFEST)
