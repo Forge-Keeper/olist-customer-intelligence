@@ -85,6 +85,9 @@ jobs:
       - name: Tests
         run: uv run pytest -q
 
+      - name: Validate deployment smoke coverage
+        run: uv run python scripts/run_deployment_smokes.py --validate-only
+
       - name: Build wheel
         run: uv build --wheel
 

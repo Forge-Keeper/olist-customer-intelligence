@@ -52,8 +52,8 @@ jobs:
       - name: Deploy staging bundle
         run: databricks bundle deploy -t stg
 
-      - name: Run staging GDP smoke
-        run: databricks bundle run -t stg ibge_municipality_gdp
+      - name: Run staging deployment smokes
+        run: python scripts/run_deployment_smokes.py --target stg
 
       - name: Capture promoted wheel manifest
         run: |
@@ -70,5 +70,6 @@ jobs:
             dist/*.whl
             dist/SHA256SUMS
             dist/promotion-manifest.txt
+            dist/deployment-smoke-results.txt
           if-no-files-found: error
           retention-days: 30

@@ -54,6 +54,7 @@ jobs:
           set -euo pipefail
           test -f promotion/promotion-manifest.txt
           test -f promotion/SHA256SUMS
+          test -f promotion/deployment-smoke-results.txt
 
           promoted_sha="$(awk -F= '$1 == "git_sha" {print $2}' promotion/promotion-manifest.txt)"
           wheel_name="$(awk -F= '$1 == "wheel" {print $2}' promotion/promotion-manifest.txt)"
@@ -73,6 +74,7 @@ jobs:
           cp "promotion/$wheel_name" "dist/$wheel_name"
           cp promotion/SHA256SUMS dist/SHA256SUMS
           cp promotion/promotion-manifest.txt dist/promotion-manifest.txt
+          cp promotion/deployment-smoke-results.txt dist/staging-smoke-results.txt
 
           printf 'stg_run_id=%s\nprd_git_sha=%s\nwheel=%s\nsha256=%s\n' \
             "${{ inputs.stg_run_id }}" "$current_sha" "$wheel_name" "$actual_sha256" \
@@ -92,8 +94,8 @@ jobs:
           DATABRICKS_BUNDLE_USE_PREBUILT_WHEEL: "1"
         run: databricks bundle deploy -t prd
 
-      - name: Run production GDP smoke
-        run: databricks bundle run -t prd ibge_municipality_gdp
+      - name: Run production deployment smokes
+        run: python scripts/run_deployment_smokes.py --target prd
 
       - name: Retain production deployment evidence
         uses: actions/upload-artifact@v4
@@ -104,5 +106,7 @@ jobs:
             dist/SHA256SUMS
             dist/promotion-manifest.txt
             dist/production-promotion-manifest.txt
+            dist/staging-smoke-results.txt
+            dist/deployment-smoke-results.txt
           if-no-files-found: error
           retention-days: 90

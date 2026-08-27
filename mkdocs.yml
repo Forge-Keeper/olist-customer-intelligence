@@ -57,6 +57,7 @@ nav:
   - Platform & Delivery:
       - Databricks Asset Bundles: development/databricks-asset-bundles.md
       - Deployment Runbook: development/dab-deployment-runbook.md
+      - Deployment Smoke Runbook: development/deployment-smoke-runbook.md
       - Historical Delivery Records:
           - Discovery: development/dab-platform-discovery.md
           - Requirements: development/dab-platform-requirements.md
