@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import re
 import subprocess
 from pathlib import Path
@@ -15,30 +14,24 @@ JOB_KEY_PATTERN = re.compile(r"^    ([A-Za-z0-9_-]+):\s*$")
 
 def load_manifest(
     path: Path = DEFAULT_MANIFEST,
-) -> dict[str, dict[str, dict[str, str]]]:
+) -> dict[str, dict[str, list[str]]]:
     data = json.loads(path.read_text(encoding="utf-8"))
     jobs = data.get("jobs")
     if not isinstance(jobs, dict) or not jobs:
         raise ValueError("Smoke manifest must contain a non-empty 'jobs' mapping.")
 
-    normalized: dict[str, dict[str, dict[str, str]]] = {}
+    normalized: dict[str, dict[str, list[str]]] = {}
     for job_name, config in jobs.items():
         if not isinstance(job_name, str) or not job_name:
             raise ValueError("Smoke job names must be non-empty strings.")
         if not isinstance(config, dict):
             raise ValueError(f"Smoke config for {job_name} must be a mapping.")
-        variables = config.get("variables", {})
-        if not isinstance(variables, dict):
-            raise ValueError(f"Smoke variables for {job_name} must be a mapping.")
-        valid_variables = all(
-            isinstance(key, str) and isinstance(value, str)
-            for key, value in variables.items()
-        )
-        if not valid_variables:
-            raise ValueError(
-                f"Smoke variables for {job_name} must be string-to-string."
-            )
-        normalized[job_name] = {"variables": variables}
+        arguments = config.get("arguments", [])
+        if not isinstance(arguments, list) or not all(
+            isinstance(argument, str) for argument in arguments
+        ):
+            raise ValueError(f"Smoke arguments for {job_name} must be a string list.")
+        normalized[job_name] = {"arguments": arguments}
     return normalized
 
 
@@ -59,7 +52,7 @@ def discover_dab_jobs(resources_dir: Path = DEFAULT_RESOURCES_DIR) -> set[str]:
 
 
 def validate_manifest_coverage(
-    manifest: dict[str, dict[str, dict[str, str]]],
+    manifest: dict[str, dict[str, list[str]]],
     resources_dir: Path = DEFAULT_RESOURCES_DIR,
 ) -> None:
     declared_jobs = discover_dab_jobs(resources_dir)
@@ -76,16 +69,16 @@ def validate_manifest_coverage(
         raise ValueError("; ".join(problems))
 
 
-def build_environment(variables: dict[str, str]) -> dict[str, str]:
-    env = os.environ.copy()
-    for key, value in variables.items():
-        env[f"BUNDLE_VAR_{key}"] = value
-    return env
+def build_command(target: str, job_name: str, arguments: list[str]) -> list[str]:
+    command = ["databricks", "bundle", "run", "-t", target, job_name]
+    if arguments:
+        command.extend(["--", *arguments])
+    return command
 
 
 def run_smokes(
     target: str,
-    manifest: dict[str, dict[str, dict[str, str]]],
+    manifest: dict[str, dict[str, list[str]]],
     results_path: Path = DEFAULT_RESULTS,
 ) -> None:
     if target not in {"stg", "prd"}:
@@ -95,18 +88,18 @@ def run_smokes(
     results_path.write_text("", encoding="utf-8")
 
     for job_name, config in manifest.items():
-        command = ["databricks", "bundle", "run", "-t", target, job_name]
-        variables = config["variables"]
+        arguments = config["arguments"]
+        command = build_command(target, job_name, arguments)
         print(
             "Running deployment smoke: "
-            f"target={target} job={job_name} variables={variables}"
+            f"target={target} job={job_name} arguments={arguments}"
         )
-        subprocess.run(command, check=True, env=build_environment(variables))
-        serialized_variables = json.dumps(variables, sort_keys=True)
+        subprocess.run(command, check=True)
+        serialized_arguments = json.dumps(arguments)
         with results_path.open("a", encoding="utf-8") as handle:
             handle.write(
                 f"target={target} job={job_name} status=success "
-                f"variables={serialized_variables}\n"
+                f"arguments={serialized_arguments}\n"
             )
 
 
