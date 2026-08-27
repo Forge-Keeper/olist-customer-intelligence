@@ -16,6 +16,15 @@
 
 ## Validation
 
+Run the local quality preflight before commit/push when Python or tests change. This avoids using CI as the first lint feedback loop; Ruff enforces the repository line-length limit (`88`) and other configured rules.
+
+```bash
+uv run ruff check .
+uv run ty check
+uv run pytest -q
+```
+
+- [ ] Local quality preflight completed before commit/push
 - [ ] Ruff/static checks green
 - [ ] Type checks green (when configured/applicable)
 - [ ] Unit tests green
