@@ -71,7 +71,9 @@ def test_manifest_coverage_rejects_unknown_smoke_contract(tmp_path: Path) -> Non
         validate_manifest_coverage(load_manifest(manifest_path), resources)
 
 
-def test_build_environment_scopes_bundle_variables(monkeypatch: pytest.MonkeyPatch) -> None:
+def test_build_environment_scopes_bundle_variables(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
     monkeypatch.setenv("EXISTING_VALUE", "kept")
 
     env = build_environment({"cempre_periods": "2018"})
