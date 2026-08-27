@@ -1,10 +1,20 @@
 {
   "jobs": {
     "ibge_municipality_gdp": {
-      "arguments": ["--periods", "2018"]
+      "arguments": [
+        "--target-table",
+        "${target}.bronze.ibge_municipality_gdp",
+        "--periods",
+        "2018"
+      ]
     },
     "ibge_municipality_business_activity": {
-      "arguments": ["--periods", "2018"]
+      "arguments": [
+        "--target-table",
+        "${target}.bronze.ibge_municipality_business_activity",
+        "--periods",
+        "2018"
+      ]
     }
   }
 }

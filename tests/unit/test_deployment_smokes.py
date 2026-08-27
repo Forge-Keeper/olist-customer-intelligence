@@ -7,6 +7,7 @@ from scripts.run_deployment_smokes import (
     build_command,
     discover_dab_jobs,
     load_manifest,
+    resolve_arguments,
     validate_manifest_coverage,
 )
 
@@ -82,11 +83,33 @@ def test_load_manifest_rejects_non_string_arguments(tmp_path: Path) -> None:
         load_manifest(manifest_path)
 
 
-def test_build_command_passes_runtime_arguments_after_separator() -> None:
+def test_resolve_arguments_replaces_target_placeholder() -> None:
+    arguments = ["--target-table", "${target}.bronze.example", "--periods", "2018"]
+
+    assert resolve_arguments("stg", arguments) == [
+        "--target-table",
+        "stg.bronze.example",
+        "--periods",
+        "2018",
+    ]
+    assert resolve_arguments("prd", arguments) == [
+        "--target-table",
+        "prd.bronze.example",
+        "--periods",
+        "2018",
+    ]
+
+
+def test_build_command_passes_complete_runtime_arguments_after_separator() -> None:
     command = build_command(
         "stg",
         "ibge_municipality_gdp",
-        ["--periods", "2018"],
+        [
+            "--target-table",
+            "${target}.bronze.ibge_municipality_gdp",
+            "--periods",
+            "2018",
+        ],
     )
 
     assert command == [
@@ -97,16 +120,27 @@ def test_build_command_passes_runtime_arguments_after_separator() -> None:
         "stg",
         "ibge_municipality_gdp",
         "--",
+        "--target-table",
+        "stg.bronze.ibge_municipality_gdp",
         "--periods",
         "2018",
     ]
 
 
-def test_runtime_smoke_contracts_are_bounded_to_2018() -> None:
+def test_runtime_smoke_contracts_are_complete_and_bounded_to_2018() -> None:
     manifest = load_manifest()
 
-    assert manifest["ibge_municipality_gdp"]["arguments"] == ["--periods", "2018"]
-    assert manifest["ibge_municipality_business_activity"]["arguments"] == [
+    assert resolve_arguments("stg", manifest["ibge_municipality_gdp"]["arguments"]) == [
+        "--target-table",
+        "stg.bronze.ibge_municipality_gdp",
+        "--periods",
+        "2018",
+    ]
+    assert resolve_arguments(
+        "prd", manifest["ibge_municipality_business_activity"]["arguments"]
+    ) == [
+        "--target-table",
+        "prd.bronze.ibge_municipality_business_activity",
         "--periods",
         "2018",
     ]
