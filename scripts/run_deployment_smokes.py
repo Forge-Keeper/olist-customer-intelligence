@@ -10,6 +10,7 @@ DEFAULT_MANIFEST = Path("deployment/smoke-jobs.yml")
 DEFAULT_RESOURCES_DIR = Path("resources")
 DEFAULT_RESULTS = Path("dist/deployment-smoke-results.txt")
 JOB_KEY_PATTERN = re.compile(r"^    ([A-Za-z0-9_-]+):\s*$")
+TARGET_PLACEHOLDER = "${target}"
 
 
 def load_manifest(
@@ -69,10 +70,15 @@ def validate_manifest_coverage(
         raise ValueError("; ".join(problems))
 
 
+def resolve_arguments(target: str, arguments: list[str]) -> list[str]:
+    return [argument.replace(TARGET_PLACEHOLDER, target) for argument in arguments]
+
+
 def build_command(target: str, job_name: str, arguments: list[str]) -> list[str]:
+    resolved_arguments = resolve_arguments(target, arguments)
     command = ["databricks", "bundle", "run", "-t", target, job_name]
-    if arguments:
-        command.extend(["--", *arguments])
+    if resolved_arguments:
+        command.extend(["--", *resolved_arguments])
     return command
 
 
@@ -88,8 +94,8 @@ def run_smokes(
     results_path.write_text("", encoding="utf-8")
 
     for job_name, config in manifest.items():
-        arguments = config["arguments"]
-        command = build_command(target, job_name, arguments)
+        arguments = resolve_arguments(target, config["arguments"])
+        command = build_command(target, job_name, config["arguments"])
         print(
             "Running deployment smoke: "
             f"target={target} job={job_name} arguments={arguments}"

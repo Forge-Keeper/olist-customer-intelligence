@@ -22,8 +22,10 @@ and fails when a DAB job has no smoke contract or when the manifest references a
 
 | DAB job | Runtime arguments |
 | --- | --- |
-| `ibge_municipality_gdp` | `--periods 2018` |
-| `ibge_municipality_business_activity` | `--periods 2018` |
+| `ibge_municipality_gdp` | `--target-table ${target}.bronze.ibge_municipality_gdp --periods 2018` |
+| `ibge_municipality_business_activity` | `--target-table ${target}.bronze.ibge_municipality_business_activity --periods 2018` |
+
+`${target}` is resolved by the smoke runner to `stg` or `prd` before invoking the Databricks CLI.
 
 A single representative year is intentional. Deployment smoke verifies the operational path without turning promotion into a complete historical reload/regression.
 
@@ -31,11 +33,13 @@ A single representative year is intentional. Deployment smoke verifies the opera
 
 Bundle variables such as `gdp_periods` and `cempre_periods` are resolved when the bundle is deployed. Setting `BUNDLE_VAR_*` only when calling an already-deployed job does not retroactively change the task parameters stored in that job.
 
-For deployment smoke, bounded parameters are therefore passed as Python wheel task arguments at run time. The runner builds commands equivalent to:
+For Python wheel tasks, runtime arguments passed after the Databricks CLI `--` separator replace the task's complete parameter list for that run. The smoke contract must therefore include every required task argument, not only the value being bounded.
+
+The runner builds commands equivalent to:
 
 ```bash
-databricks bundle run -t stg ibge_municipality_gdp -- --periods 2018
-databricks bundle run -t stg ibge_municipality_business_activity -- --periods 2018
+databricks bundle run -t stg ibge_municipality_gdp -- --target-table stg.bronze.ibge_municipality_gdp --periods 2018
+databricks bundle run -t stg ibge_municipality_business_activity -- --target-table stg.bronze.ibge_municipality_business_activity --periods 2018
 ```
 
 The normal deployed job configuration remains unchanged; only the smoke execution is bounded.
@@ -73,10 +77,11 @@ GitHub Actions logs remain the detailed execution evidence, including the Databr
 When adding a production job under `resources/*.job.yml`:
 
 1. define the smallest safe representative execution for deployment smoke;
-2. add the job key and bounded runtime arguments to `deployment/smoke-jobs.yml`;
-3. use task arguments when the normal workload would be unnecessarily expensive;
-4. run `python scripts/run_deployment_smokes.py --validate-only` locally or rely on CI;
-5. update this runbook when the smoke semantics materially change.
+2. add the job key and the complete bounded runtime argument list to `deployment/smoke-jobs.yml`;
+3. include all required Python wheel task arguments because runtime overrides replace the complete parameter list;
+4. use `${target}` when a target-dependent table or resource must resolve consistently in STG and PRD;
+5. run `python scripts/run_deployment_smokes.py --validate-only` locally or rely on CI;
+6. update this runbook when the smoke semantics materially change.
 
 A new job without a manifest entry must fail CI rather than silently bypass the deployment gate.
 
