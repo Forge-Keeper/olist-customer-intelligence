@@ -2,6 +2,8 @@
 
 Production-oriented Data Engineering portfolio built around the Olist public e-commerce dataset and justified external data sources.
 
+[📚 Full Documentation](https://forge-keeper.github.io/olist-customer-intelligence/)
+
 The project has evolved from isolated ingestion pipelines into a small Databricks-oriented data platform foundation with explicit contracts, Delta lifecycle management, governance metadata, CI/CD and controlled environment promotion.
 
 ## What is implemented
