@@ -1,0 +1,14 @@
+{
+  "jobs": {
+    "ibge_municipality_gdp": {
+      "variables": {
+        "gdp_periods": "2018"
+      }
+    },
+    "ibge_municipality_business_activity": {
+      "variables": {
+        "cempre_periods": "2018"
+      }
+    }
+  }
+}
