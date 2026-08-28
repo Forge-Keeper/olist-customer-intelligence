@@ -18,6 +18,12 @@ variables:
   run_as_service_principal:
     description: Service principal application ID injected by the deployment environment.
 
+artifacts:
+  default:
+    type: whl
+    path: .
+    build: python scripts/build_bundle_artifact.py
+
 targets:
   dev:
     mode: development
