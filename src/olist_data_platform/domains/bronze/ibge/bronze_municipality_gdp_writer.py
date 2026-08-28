@@ -15,7 +15,6 @@ from olist_data_platform.platform.operations import (
 )
 from olist_data_platform.platform.quality import (
     DataQualityContract,
-    DataQualityRunner,
     QualityCheckedBatch,
     QualityOutcome,
     QualityReport,
