@@ -54,10 +54,5 @@ jobs:
       - name: Deploy feature bundle to DEV
         run: databricks bundle deploy -t dev
 
-      - name: Run GDP Data Quality pilot in DEV
-        run: |
-          databricks bundle run -t dev ibge_municipality_gdp -- \
-            --target-table dev.bronze.ibge_municipality_gdp \
-            --execution-runs-table dev_admin.operations.execution_runs \
-            --quality-results-table dev_admin.quality.data_quality_results \
-            --periods 2018
+      - name: Validate persisted DQ evidence and blocking write gate
+        run: databricks bundle run -t dev data_quality_runtime_validation
