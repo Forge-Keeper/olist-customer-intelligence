@@ -35,7 +35,9 @@ def build_municipality_gdp_quality_contract(
             NonEmptyRule(
                 rule_id="GDP-DQ01",
                 version=1,
-                description="The evaluated GDP execution scope must contain records.",
+                description=(
+                    "The evaluated GDP execution scope must contain records."
+                ),
                 category=QualityCategory.COMPLETENESS,
                 severity=QualitySeverity.ERROR,
             ),
@@ -50,7 +52,9 @@ def build_municipality_gdp_quality_contract(
             UniqueRule(
                 rule_id="GDP-DQ03",
                 version=1,
-                description="GDP natural keys must be unique within the evaluated scope.",
+                description=(
+                    "GDP natural keys must be unique within the evaluated scope."
+                ),
                 category=QualityCategory.UNIQUENESS,
                 severity=QualitySeverity.ERROR,
                 columns=GDP_KEY_COLUMNS,
@@ -58,7 +62,9 @@ def build_municipality_gdp_quality_contract(
             AllowedValuesRule(
                 rule_id="GDP-DQ04",
                 version=1,
-                description="Reference years must belong to the requested execution scope.",
+                description=(
+                    "Reference years must belong to the requested execution scope."
+                ),
                 category=QualityCategory.VALIDITY,
                 severity=QualitySeverity.ERROR,
                 column="reference_year",
@@ -67,7 +73,10 @@ def build_municipality_gdp_quality_contract(
             AllowedValuesRule(
                 rule_id="GDP-DQ05",
                 version=1,
-                description="Variable codes must belong to the approved GDP dataset selection.",
+                description=(
+                    "Variable codes must belong to the approved GDP dataset "
+                    "selection."
+                ),
                 category=QualityCategory.VALIDITY,
                 severity=QualitySeverity.ERROR,
                 column="variable_code",
@@ -85,7 +94,10 @@ def build_municipality_gdp_quality_contract(
             ExpectedCombinationsRule(
                 rule_id="GDP-DQ07",
                 version=1,
-                description="Every requested reference-year and variable combination must be represented.",
+                description=(
+                    "Every requested reference-year and variable combination "
+                    "must be represented."
+                ),
                 category=QualityCategory.COMPLETENESS,
                 severity=QualitySeverity.ERROR,
                 columns=("reference_year", "variable_code"),
@@ -94,11 +106,16 @@ def build_municipality_gdp_quality_contract(
             ObservedCountRule(
                 rule_id="GDP-DQ08",
                 version=1,
-                description="Observe SIDRA special-value markers without altering Bronze payload fidelity.",
+                description=(
+                    "Observe SIDRA special-value markers without altering Bronze "
+                    "payload fidelity."
+                ),
                 category=QualityCategory.OBSERVATION,
                 severity=QualitySeverity.INFO,
                 expression="variant_get(payload, '$.Valor', 'string') = '...'",
-                expected_condition="observation only; source special-value markers are preserved",
+                expected_condition=(
+                    "observation only; source special-value markers are preserved"
+                ),
             ),
         ),
     )
