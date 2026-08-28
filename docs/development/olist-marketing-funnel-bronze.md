@@ -16,9 +16,9 @@ It contains:
 - `olist_marketing_qualified_leads_dataset.csv`
 - `olist_closed_deals_dataset.csv`
 
-The MQL slice is complete. Closed Deals now uses the same first-class Data
-Quality, execution tracking, DAB and smoke-delivery pattern and awaits DEV
-runtime validation before the Marketing Funnel can be declared Bronze-complete.
+Both Funnel slices are complete. MQL and Closed Deals use the same first-class
+Data Quality, execution tracking, DAB and smoke-delivery pattern and have been
+validated successfully in DEV.
 
 ## Discovery evidence
 
@@ -148,13 +148,38 @@ Observed runtime evidence:
 
 Target table: `dev.bronze.olist_marketing_qualified_leads`.
 
+## Closed Deals DEV validation evidence
+
+The Closed Deals job completed successfully in DEV on 2026-08-28 with run ID
+`bd971f31-4082-4c41-ac28-7234b783a931`.
+
+Observed runtime evidence:
+
+| Check | Result |
+| --- | --- |
+| Job status | `TERMINATED SUCCESS` |
+| Records read | 842 |
+| Records written | 842 |
+| Target rows | 842 |
+| Distinct `mql_id` | 842 |
+| Null `mql_id` | 0 |
+| Write strategy | `FULL_REPLACE` |
+| Blocking DQ rules | all three rules passed before protected write |
+
+Target table: `dev.bronze.olist_closed_deals`.
+
+Because `BronzeWriter.write_checked()` is only reached after the first-class DQ
+report has no blocking failures, the successful protected write also validates
+that `CLOSED-DEALS-DQ01` through `CLOSED-DEALS-DQ03` passed for this run.
+
 ## Status
 
-The MQL Bronze slice is `DONE`: Discovery, contract, implementation, first-class
-Data Quality, DAB delivery, runtime execution and DEV validation are complete.
+The Olist Marketing Funnel Bronze domain is `DONE`.
 
-The Closed Deals uplift is `IMPLEMENTED`: the existing persisted contract is
-preserved while first-class Data Quality, execution tracking, packaged job,
-DAB resource, smoke contract and automated tests are in place. DEV runtime
-execution and post-write validation remain before Closed Deals, and therefore
-the Marketing Funnel domain, can be marked `DONE`.
+Both MQL and Closed Deals have completed Discovery/contract confirmation,
+first-class Data Quality, execution tracking, DAB delivery, deployment smoke
+coverage, automated tests, DEV runtime execution and post-write validation.
+
+Silver keeps the discovered funnel relationship as a downstream design input:
+all 842 Closed Deals map to MQL while 7,158 MQL records have no Closed Deal.
+Bronze intentionally does not enforce that relationship as a cross-table rule.
