@@ -19,7 +19,12 @@ class SidraValuesClient(Protocol):
 
 
 class MunicipalityGdpWriter(Protocol):
-    def write(self, records: list[dict[str, Any]], request_id: str) -> None: ...
+    def write(
+        self,
+        records: list[dict[str, Any]],
+        request_id: str,
+        periods: tuple[str, ...] | None = None,
+    ) -> None: ...
 
 
 class MunicipalityGdpIngestionService:
@@ -63,11 +68,6 @@ class MunicipalityGdpIngestionService:
                     payload = self.client.get_values(query)
                     decoded = SidraParser.decode(payload)
                     slice_records = MunicipalityGdpExtractor.extract(decoded)
-                    if not slice_records:
-                        raise ValueError(
-                            "IBGE municipal GDP ingestion returned no records "
-                            f"for period {period} and variable {variable_code}."
-                        )
                     records.extend(slice_records)
                     logger.info(
                         "ibge_gdp_slice_completed | request_id=%s | period=%s | "
@@ -78,10 +78,7 @@ class MunicipalityGdpIngestionService:
                         len(slice_records),
                     )
 
-            if not records:
-                raise ValueError("IBGE municipal GDP ingestion returned no records.")
-
-            self.bronze_writer.write(records, request_id)
+            self.bronze_writer.write(records, request_id, periods)
             logger.info(
                 "ibge_gdp_ingestion_completed | request_id=%s | record_count=%s",
                 request_id,

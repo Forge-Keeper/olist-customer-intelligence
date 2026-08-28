@@ -9,6 +9,7 @@ from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 from olist_data_platform.platform.delta.contract import DatasetContract
 from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.logging import LoggerFactory
+from olist_data_platform.platform.quality.model import QualityCheckedBatch
 
 logger = LoggerFactory.get_logger(__name__)
 
@@ -20,6 +21,11 @@ class BronzeWriter:
     injection, logical-key validation and MERGE/FULL_REPLACE/replaceWhere write
     behavior. Delta table creation, schema evolution, physical layout validation
     and Unity Catalog metadata reconciliation belong to ``DeltaTableLifecycle``.
+
+    ``write_checked`` accepts a batch whose logical-key evidence was already
+    produced by the Data Quality capability. This incremental path avoids
+    repeating equivalent Spark scans while the legacy ``write`` API remains
+    unchanged for datasets that have not adopted first-class Data Quality yet.
     """
 
     INGESTION_TIMESTAMP_COLUMN = "ingestion_timestamp"
@@ -41,15 +47,30 @@ class BronzeWriter:
         self.lifecycle = DeltaTableLifecycle(spark, target_table, config)
 
     def write(self, dataframe: DataFrame) -> None:
-        """Persist one validated Bronze batch using the configured write strategy.
-
-        The method adds the platform ingestion timestamp, validates logical key
-        values/duplicates, ensures the target table contract through the lifecycle
-        boundary and then applies MERGE or FULL_REPLACE semantics. An empty
-        FULL_REPLACE snapshot fails before any target lifecycle or write operation.
-        """
+        """Persist one legacy Bronze batch with built-in logical-key checks."""
         prepared = self._prepare_dataframe(dataframe)
+        self._persist_prepared(prepared)
 
+    def write_checked(self, checked_batch: QualityCheckedBatch) -> None:
+        """Persist a batch after reusable Data Quality evidence has been produced.
+
+        Blocking Data Quality failures are rejected defensively at this boundary.
+        The evidence must cover exactly the dataset logical key so this method can
+        skip the legacy null/duplicate scans without weakening key integrity.
+        """
+        if not isinstance(checked_batch, QualityCheckedBatch):
+            raise TypeError("checked_batch must be a QualityCheckedBatch.")
+        checked_batch.report.raise_for_blocking_failures()
+        if tuple(checked_batch.validated_key_columns) != tuple(self.config.key_columns):
+            raise ValueError(
+                "Quality-checked batch key evidence does not match DatasetContract "
+                f"key_columns: expected {self.config.key_columns}, received "
+                f"{checked_batch.validated_key_columns}."
+            )
+        prepared = self._prepare_checked_dataframe(checked_batch.dataframe)
+        self._persist_prepared(prepared)
+
+    def _persist_prepared(self, prepared: DataFrame) -> None:
         logger.info(
             "bronze_write_started | target_table=%s | strategy=%s",
             self.target_table,
@@ -69,13 +90,7 @@ class BronzeWriter:
         )
 
     def replace_where(self, dataframe: DataFrame, predicate: str) -> None:
-        """Atomically replace one explicitly bounded Bronze scope.
-
-        ``predicate`` is passed to Delta ``replaceWhere`` and must therefore be
-        supplied deliberately by the caller; this method never infers the scope.
-        Invalid/empty predicates fail before any persistence operation. The target
-        table contract is ensured before the bounded overwrite executes.
-        """
+        """Atomically replace one explicitly bounded Bronze scope."""
         if not isinstance(predicate, str):
             raise TypeError("predicate must be a string.")
         if not predicate.strip():
@@ -105,15 +120,16 @@ class BronzeWriter:
         )
 
     def _prepare_dataframe(self, dataframe: DataFrame) -> DataFrame:
-        self._validate_dataframe_contract(dataframe)
+        prepared = self._prepare_checked_dataframe(dataframe)
+        self._validate_primary_key_values(prepared)
+        return prepared
 
-        prepared = dataframe.withColumn(
+    def _prepare_checked_dataframe(self, dataframe: DataFrame) -> DataFrame:
+        self._validate_dataframe_contract(dataframe)
+        return dataframe.withColumn(
             self.INGESTION_TIMESTAMP_COLUMN,
             F.current_timestamp(),
         )
-
-        self._validate_primary_key_values(prepared)
-        return prepared
 
     def _validate_dataframe_contract(self, dataframe: DataFrame) -> None:
         columns = set(dataframe.columns)

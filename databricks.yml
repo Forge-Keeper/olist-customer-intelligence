@@ -6,7 +6,9 @@ include:
 
 variables:
   catalog:
-    description: Unity Catalog catalog used by this deployment target.
+    description: Unity Catalog data-plane catalog used by this deployment target.
+  admin_catalog:
+    description: Unity Catalog administrative control-plane catalog used by this deployment target.
   gdp_periods:
     description: Comma-separated IBGE GDP reference years for the pilot job.
     default: "2016,2017,2018"
@@ -28,6 +30,7 @@ targets:
     default: true
     variables:
       catalog: dev
+      admin_catalog: dev_admin
 
   stg:
     workspace:
@@ -36,6 +39,7 @@ targets:
       service_principal_name: ${var.run_as_service_principal}
     variables:
       catalog: stg
+      admin_catalog: stg_admin
 
   prd:
     mode: production
@@ -47,3 +51,4 @@ targets:
       service_principal_name: ${var.run_as_service_principal}
     variables:
       catalog: prd
+      admin_catalog: prd_admin
