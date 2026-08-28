@@ -102,7 +102,6 @@ class BronzeMunicipalityGdpWriter:
             contract=build_municipality_gdp_quality_contract(periods),
             run_id=request_id,
             evaluation_scope=scope,
-            validated_key_columns=IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG.key_columns,
         )
         self.quality_result_writer.write(checked.report)
 
