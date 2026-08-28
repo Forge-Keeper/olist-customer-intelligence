@@ -60,13 +60,13 @@ class BronzeWriter:
         """
         if not isinstance(checked_batch, QualityCheckedBatch):
             raise TypeError("checked_batch must be a QualityCheckedBatch.")
+        checked_batch.report.raise_for_blocking_failures()
         if tuple(checked_batch.validated_key_columns) != tuple(self.config.key_columns):
             raise ValueError(
                 "Quality-checked batch key evidence does not match DatasetContract "
                 f"key_columns: expected {self.config.key_columns}, received "
                 f"{checked_batch.validated_key_columns}."
             )
-        checked_batch.report.raise_for_blocking_failures()
         prepared = self._prepare_checked_dataframe(checked_batch.dataframe)
         self._persist_prepared(prepared)
 
