@@ -4,12 +4,12 @@ from uuid import uuid4
 
 from pyspark.sql import Row, SparkSession
 
+from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 from olist_data_platform.platform.delta.contract import (
     ColumnContract,
     DatasetContract,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.operations.model import ExecutionRun
 
