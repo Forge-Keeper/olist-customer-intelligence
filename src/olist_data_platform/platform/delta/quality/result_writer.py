@@ -4,30 +4,90 @@ from uuid import uuid4
 
 from pyspark.sql import Row, SparkSession
 
-from olist_data_platform.platform.delta import (
+from olist_data_platform.platform.delta.bronze.config import WriteStrategy
+from olist_data_platform.platform.delta.contract import (
     ColumnContract,
     DatasetContract,
-    DeltaTableLifecycle,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.bronze import WriteStrategy
+from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.quality.model import QualityReport
 
 
 DATA_QUALITY_RESULT_CONTRACT = DatasetContract(
     columns=(
-        ColumnContract("run_id", "string", False, "Platform execution identifier."),
-        ColumnContract("dataset", "string", False, "Logical dataset evaluated."),
-        ColumnContract("layer", "string", False, "Data layer evaluated."),
-        ColumnContract("rule_id", "string", False, "Stable Data Quality rule identifier."),
-        ColumnContract("rule_version", "bigint", False, "Version of the evaluated rule."),
-        ColumnContract("category", "string", False, "Data Quality rule category."),
-        ColumnContract("severity", "string", False, "Configured rule severity."),
-        ColumnContract("status", "string", False, "PASS or FAIL evaluation result."),
-        ColumnContract("observed_value", "string", False, "Canonical JSON observation produced by the rule."),
-        ColumnContract("expected_condition", "string", False, "Human-readable expected rule condition."),
-        ColumnContract("evaluation_scope", "string", False, "Canonical JSON scope for the evaluation."),
-        ColumnContract("evaluated_at", "timestamp", False, "Timestamp when the rule was evaluated."),
+        ColumnContract(
+            "run_id",
+            "string",
+            False,
+            "Platform execution identifier.",
+        ),
+        ColumnContract(
+            "dataset",
+            "string",
+            False,
+            "Logical dataset evaluated.",
+        ),
+        ColumnContract(
+            "layer",
+            "string",
+            False,
+            "Data layer evaluated.",
+        ),
+        ColumnContract(
+            "rule_id",
+            "string",
+            False,
+            "Stable Data Quality rule identifier.",
+        ),
+        ColumnContract(
+            "rule_version",
+            "bigint",
+            False,
+            "Version of the evaluated rule.",
+        ),
+        ColumnContract(
+            "category",
+            "string",
+            False,
+            "Data Quality rule category.",
+        ),
+        ColumnContract(
+            "severity",
+            "string",
+            False,
+            "Configured rule severity.",
+        ),
+        ColumnContract(
+            "status",
+            "string",
+            False,
+            "PASS or FAIL evaluation result.",
+        ),
+        ColumnContract(
+            "observed_value",
+            "string",
+            False,
+            "Canonical JSON observation produced by the rule.",
+        ),
+        ColumnContract(
+            "expected_condition",
+            "string",
+            False,
+            "Human-readable expected rule condition.",
+        ),
+        ColumnContract(
+            "evaluation_scope",
+            "string",
+            False,
+            "Canonical JSON scope for the evaluation.",
+        ),
+        ColumnContract(
+            "evaluated_at",
+            "timestamp",
+            False,
+            "Timestamp when the rule was evaluated.",
+        ),
     ),
     key_columns=(
         "run_id",
@@ -38,7 +98,9 @@ DATA_QUALITY_RESULT_CONTRACT = DatasetContract(
     ),
     write_strategy=WriteStrategy.MERGE,
     metadata=TableMetadata(
-        description="Persisted Data Quality results correlated with platform execution runs.",
+        description=(
+            "Persisted Data Quality results correlated with platform execution runs."
+        ),
         tags={"managed_by": "olist_data_platform"},
     ),
 )
