@@ -12,6 +12,7 @@ from olist_data_platform.platform.quality.model import (
     QualityCheckedBatch,
     QualityReport,
     QualityResult,
+    QualitySeverity,
     QualityStatus,
 )
 from olist_data_platform.platform.quality.rules import (
@@ -57,8 +58,14 @@ class DataQualityRunner:
         contract: DataQualityContract,
         run_id: str,
         evaluation_scope: str,
-        validated_key_columns: tuple[str, ...] = (),
     ) -> QualityCheckedBatch:
+        """Evaluate one DataFrame and return results plus reusable integrity evidence.
+
+        Compatible row-level metrics share one Spark aggregate. Uniqueness uses
+        one grouped aggregate per distinct configured key. Key evidence is derived
+        only when matching blocking not-null and uniqueness rules actually pass;
+        callers cannot declare key evidence independently of evaluated rules.
+        """
         aggregate_expressions: list[Column] = [
             F.count(F.lit(1)).alias("_row_count")
         ]
@@ -70,9 +77,7 @@ class DataQualityRunner:
             if isinstance(rule, NotNullRule):
                 conditions = [F.col(column).isNull() for column in rule.columns]
                 combined = reduce(lambda left, right: left | right, conditions)
-                aggregate_expressions.append(
-                    _sum_when(combined).alias(alias)
-                )
+                aggregate_expressions.append(_sum_when(combined).alias(alias))
                 metric_aliases[identity] = alias
             elif isinstance(rule, AllowedValuesRule):
                 column = F.col(rule.column).cast("string")
@@ -252,6 +257,29 @@ class DataQualityRunner:
             row_count=row_count,
             results=tuple(results),
         )
+        status_by_identity = {
+            (result.rule_id, result.rule_version): result.status
+            for result in report.results
+        }
+        passed_blocking_not_null = {
+            rule.columns
+            for rule in contract.rules
+            if isinstance(rule, NotNullRule)
+            and rule.severity is QualitySeverity.ERROR
+            and status_by_identity[(rule.rule_id, rule.version)] is QualityStatus.PASS
+        }
+        passed_blocking_unique = {
+            rule.columns
+            for rule in contract.rules
+            if isinstance(rule, UniqueRule)
+            and rule.severity is QualitySeverity.ERROR
+            and status_by_identity[(rule.rule_id, rule.version)] is QualityStatus.PASS
+        }
+        reusable_key_sets = passed_blocking_not_null & passed_blocking_unique
+        validated_key_columns = (
+            next(iter(reusable_key_sets)) if len(reusable_key_sets) == 1 else ()
+        )
+
         return QualityCheckedBatch(
             dataframe=dataframe,
             report=report,
