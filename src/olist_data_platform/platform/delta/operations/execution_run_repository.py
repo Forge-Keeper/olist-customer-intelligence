@@ -4,36 +4,126 @@ from uuid import uuid4
 
 from pyspark.sql import Row, SparkSession
 
-from olist_data_platform.platform.delta import (
+from olist_data_platform.platform.delta.bronze.config import WriteStrategy
+from olist_data_platform.platform.delta.contract import (
     ColumnContract,
     DatasetContract,
-    DeltaTableLifecycle,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.bronze import WriteStrategy
+from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.operations.model import ExecutionRun
 
 
 EXECUTION_RUN_CONTRACT = DatasetContract(
     columns=(
-        ColumnContract("run_id", "string", False, "Unique platform execution identifier."),
-        ColumnContract("dataset", "string", False, "Logical dataset processed by the execution."),
-        ColumnContract("layer", "string", False, "Data layer targeted by the execution."),
-        ColumnContract("source_system", "string", False, "Source system associated with the execution."),
-        ColumnContract("target_table", "string", False, "Fully qualified data-plane target table."),
-        ColumnContract("execution_scope", "string", False, "Canonical JSON execution scope."),
-        ColumnContract("started_at", "timestamp", False, "Execution start timestamp."),
-        ColumnContract("finished_at", "timestamp", True, "Execution completion timestamp when terminal."),
-        ColumnContract("status", "string", False, "Execution lifecycle status."),
-        ColumnContract("quality_status", "string", False, "Data-quality outcome for the execution."),
-        ColumnContract("records_extracted", "bigint", True, "Records extracted from the source when known."),
-        ColumnContract("records_evaluated", "bigint", True, "Records evaluated by data quality when known."),
-        ColumnContract("records_written", "bigint", True, "Records submitted to the target write when known."),
-        ColumnContract("error_stage", "string", True, "Execution stage that produced the terminal error."),
-        ColumnContract("error_type", "string", True, "Error class or stable operational classification."),
-        ColumnContract("error_message", "string", True, "Sanitized operational error message."),
-        ColumnContract("orchestrator_run_id", "string", True, "External orchestrator run identifier when available."),
-        ColumnContract("last_stage", "string", False, "Last coarse execution stage reached."),
+        ColumnContract(
+            "run_id",
+            "string",
+            False,
+            "Unique platform execution identifier.",
+        ),
+        ColumnContract(
+            "dataset",
+            "string",
+            False,
+            "Logical dataset processed by the execution.",
+        ),
+        ColumnContract(
+            "layer",
+            "string",
+            False,
+            "Data layer targeted by the execution.",
+        ),
+        ColumnContract(
+            "source_system",
+            "string",
+            False,
+            "Source system associated with the execution.",
+        ),
+        ColumnContract(
+            "target_table",
+            "string",
+            False,
+            "Fully qualified data-plane target table.",
+        ),
+        ColumnContract(
+            "execution_scope",
+            "string",
+            False,
+            "Canonical JSON execution scope.",
+        ),
+        ColumnContract(
+            "started_at",
+            "timestamp",
+            False,
+            "Execution start timestamp.",
+        ),
+        ColumnContract(
+            "finished_at",
+            "timestamp",
+            True,
+            "Execution completion timestamp when terminal.",
+        ),
+        ColumnContract(
+            "status",
+            "string",
+            False,
+            "Execution lifecycle status.",
+        ),
+        ColumnContract(
+            "quality_status",
+            "string",
+            False,
+            "Data-quality outcome for the execution.",
+        ),
+        ColumnContract(
+            "records_extracted",
+            "bigint",
+            True,
+            "Records extracted from the source when known.",
+        ),
+        ColumnContract(
+            "records_evaluated",
+            "bigint",
+            True,
+            "Records evaluated by data quality when known.",
+        ),
+        ColumnContract(
+            "records_written",
+            "bigint",
+            True,
+            "Records submitted to the target write when known.",
+        ),
+        ColumnContract(
+            "error_stage",
+            "string",
+            True,
+            "Execution stage that produced the terminal error.",
+        ),
+        ColumnContract(
+            "error_type",
+            "string",
+            True,
+            "Error class or stable operational classification.",
+        ),
+        ColumnContract(
+            "error_message",
+            "string",
+            True,
+            "Sanitized operational error message.",
+        ),
+        ColumnContract(
+            "orchestrator_run_id",
+            "string",
+            True,
+            "External orchestrator run identifier when available.",
+        ),
+        ColumnContract(
+            "last_stage",
+            "string",
+            False,
+            "Last coarse execution stage reached.",
+        ),
     ),
     key_columns=("run_id",),
     write_strategy=WriteStrategy.MERGE,
@@ -50,7 +140,11 @@ class ExecutionRunRepository:
     def __init__(self, spark: SparkSession, target_table: str) -> None:
         self.spark = spark
         self.target_table = target_table
-        self.lifecycle = DeltaTableLifecycle(spark, target_table, EXECUTION_RUN_CONTRACT)
+        self.lifecycle = DeltaTableLifecycle(
+            spark,
+            target_table,
+            EXECUTION_RUN_CONTRACT,
+        )
 
     def upsert(self, run: ExecutionRun) -> None:
         dataframe = self.spark.createDataFrame(
