@@ -133,6 +133,10 @@ def test_runtime_smoke_contracts_are_complete_and_bounded_to_2018() -> None:
     assert resolve_arguments("stg", manifest["ibge_municipality_gdp"]["arguments"]) == [
         "--target-table",
         "stg.bronze.ibge_municipality_gdp",
+        "--execution-runs-table",
+        "stg_admin.operations.execution_runs",
+        "--quality-results-table",
+        "stg_admin.quality.data_quality_results",
         "--periods",
         "2018",
     ]
