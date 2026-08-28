@@ -78,7 +78,9 @@ class DataQualityContract:
             raise TypeError("rules must contain only QualityRule values.")
         identities = tuple((rule.rule_id, rule.version) for rule in self.rules)
         if len(identities) != len(set(identities)):
-            raise ValueError("quality rules cannot duplicate rule_id/version identities.")
+            raise ValueError(
+                "quality rules cannot duplicate rule_id/version identities."
+            )
 
 
 @dataclass(frozen=True)
