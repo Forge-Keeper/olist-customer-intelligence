@@ -108,7 +108,10 @@ class ExpectedCombinationsRule(QualityRule):
                 raise ValueError(
                     "each expected combination must match the configured column count."
                 )
-            if not all(isinstance(value, str) and value.strip() for value in combination):
+            if not all(
+                isinstance(value, str) and value.strip()
+                for value in combination
+            ):
                 raise ValueError(
                     "expected combinations must contain non-empty string values."
                 )
