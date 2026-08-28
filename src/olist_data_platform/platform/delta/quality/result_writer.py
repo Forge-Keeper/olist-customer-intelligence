@@ -13,7 +13,6 @@ from olist_data_platform.platform.delta.contract import (
 from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.quality.model import QualityReport
 
-
 DATA_QUALITY_RESULT_CONTRACT = DatasetContract(
     columns=(
         ColumnContract(
