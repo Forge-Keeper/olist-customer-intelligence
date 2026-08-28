@@ -4,7 +4,7 @@ Production-oriented Data Engineering portfolio built around the Olist public e-c
 
 [📚 Full Documentation](https://forge-keeper.github.io/olist-customer-intelligence/)
 
-The project has evolved from isolated ingestion pipelines into a small Databricks-oriented data platform foundation with explicit contracts, Delta lifecycle management, governance metadata, CI/CD and controlled environment promotion.
+The project has evolved from isolated ingestion pipelines into a small Databricks-oriented data platform foundation with explicit contracts, Delta lifecycle management, first-class Data Quality, structured operational evidence, governance metadata, CI/CD and controlled environment promotion.
 
 ## What is implemented
 
@@ -28,12 +28,16 @@ Bronze is intentionally lightweight and source-faithful: source semantics are pr
 - reusable HTTP/retry/logging infrastructure;
 - executable `DatasetContract` definitions;
 - reusable `DeltaTableLifecycle`;
-- `BronzeWriter` with explicit write strategies and idempotent behavior;
+- `BronzeWriter` with explicit write strategies, idempotent behavior and checked-batch evidence reuse;
+- lightweight first-class PySpark Data Quality contracts, rules and structured results;
+- persisted `ERROR` / `WARNING` / `INFO` quality evidence;
+- environment-isolated administrative Control Plane for execution history and Data Quality results;
+- GDP pre-write Data Quality gate validated in real DEV runtime;
 - controlled schema-evolution policy with fail-fast drift handling;
 - metadata reconciliation for table/column descriptions and tags;
 - Unity Catalog governance foundation and ABAC policy lifecycle;
 - Liquid Clustering where justified by dataset access/layout needs;
-- Databricks Asset Bundles with `dev`, `stg` and `prd` targets;
+- Databricks Asset Bundles with `dev`, `stg` and `prd` data/admin targets;
 - immutable wheel promotion from staging to production;
 - GitHub Actions quality, documentation and deployment workflows;
 - MkDocs Material engineering portal published through GitHub Pages.
@@ -49,24 +53,30 @@ Olist CSV        Open-Meteo         IBGE APIs / SIDRA
             Domain ingestion services
                      |
                      v
-             Bronze adapters/writers
+             source/domain adapters
                      |
                      v
-               BronzeWriter
-                     |
-          +----------+-----------+
-          |                      |
-          v                      v
-   DatasetContract       DeltaTableLifecycle
-          |                      |
-          +----------+-----------+
-                     |
-                     v
-          Delta tables / Unity Catalog
-                     |
-                     v
-        metadata + governance / ABAC
+             DataQualityRunner
+              /             \
+             v               v
+  quality evidence      checked batch
+             |               |
+             v               v
+   Admin Control Plane   BronzeWriter
+             |               |
+             |       +-------+--------+
+             |       |                |
+             |       v                v
+             | DatasetContract  DeltaTableLifecycle
+             |       |                |
+             |       +-------+--------+
+             |               |
+             v               v
+ execution_runs /      business Delta tables
+ data_quality_results      / Unity Catalog
 ```
+
+The GDP workload is the first consumer of the first-class Data Quality path. Existing non-migrated Bronze datasets retain their current contract/source/writer validations until a concrete migration is justified.
 
 Deployment is a separate delivery plane:
 
@@ -89,7 +99,9 @@ src/olist_data_platform/
 │   ├── delta/
 │   ├── governance/
 │   ├── http/
-│   └── logging/
+│   ├── logging/
+│   ├── operations/
+│   └── quality/
 ├── domains/
 │   ├── ingestion/
 │   │   ├── ibge/
@@ -121,6 +133,21 @@ Core rules:
 
 Relevant ADRs are under `docs/adr/`.
 
+## Data Quality and operational evidence
+
+`DataQualityContract` is intentionally separate from the persisted `DatasetContract`. Rules carry stable IDs, versions, categories and severities; evaluation produces structured PASS/FAIL evidence before the protected write.
+
+For the GDP pilot:
+
+- failed `ERROR` rules reject the Bronze write;
+- `WARNING` and `INFO` do not block;
+- quality evidence is persisted in `<admin_catalog>.quality.data_quality_results`;
+- execution lifecycle is persisted in `<admin_catalog>.operations.execution_runs`;
+- both are correlated by one platform `run_id`;
+- passing key-integrity evidence can be consumed by `BronzeWriter.write_checked()` without repeating equivalent logical-key scans.
+
+The real DEV proof for period 2018 produced 33,420 Bronze rows with 33,420 distinct natural keys and eight passing quality-rule results. A deliberate duplicate-key batch failed `GDP-DQ03`, recorded `REJECTED` / `FAILED` with `records_written = 0`, and left the isolated Bronze validation table unchanged.
+
 ## Data sources and delivered datasets
 
 | Source | Delivered slices | Persistence behavior |
@@ -129,7 +156,7 @@ Relevant ADRs are under `docs/adr/`.
 | Open-Meteo | historical weather | idempotent `MERGE` |
 | IBGE Localidades | municipalities | dated source snapshot / `MERGE` |
 | IBGE SIDRA 6579 | municipality population | annual slices / `MERGE` |
-| IBGE SIDRA 5938 | municipality GDP/VAB | bounded year × variable slices / `MERGE` |
+| IBGE SIDRA 5938 | municipality GDP/VAB | bounded year × variable slices / `MERGE` with first-class pre-write DQ |
 | IBGE SIDRA 1685 | CEMPRE municipal business activity | 2016–2018 year × variable slices / `MERGE` |
 
 The reusable SIDRA stack includes `SidraClient`, `SidraQuery`, `SidraDataset` and `SidraParser`; dataset semantics remain in dedicated extractors/services/writers.
@@ -145,7 +172,7 @@ uv run pytest tests/integration -q
 uv run pytest -q
 ```
 
-Some Databricks-specific behaviors such as managed Delta metadata, `VARIANT`, clustering, Unity Catalog governance and deployment are validated in workspace smoke tests in addition to local tests.
+Some Databricks-specific behaviors such as managed Delta metadata, `VARIANT`, clustering, Unity Catalog governance, Data Quality persistence/write-gate behavior and deployment are validated in workspace/runtime checks in addition to local tests.
 
 Documentation is validated with:
 
@@ -164,13 +191,13 @@ topic branch -> PR into dev -> merge dev
 -> protected production promotion
 ```
 
-DAB provides distinct Unity Catalog targets:
+DAB provides distinct Unity Catalog Data Plane and Control Plane targets:
 
-- `dev` -> development catalog;
-- `stg` -> shared pre-production catalog;
-- `prd` -> production catalog.
+- `dev` -> `dev` + `dev_admin`;
+- `stg` -> `stg` + `stg_admin`;
+- `prd` -> `prd` + `prd_admin`.
 
-The staging-approved wheel is retained with integrity metadata and reused for production promotion; production is not rebuilt from materially different source after staging acceptance.
+The staging-approved wheel is retained with integrity metadata and reused for production promotion; production is not rebuilt from materially different source after staging acceptance. Workload identities require explicit least-privilege access to the relevant data and administrative catalogs before execution.
 
 ## Governance
 
@@ -189,7 +216,7 @@ The MkDocs site is the public engineering portal. It contains:
 - engineering standards and Definition of Done;
 - branch and deployment runbooks;
 - DAB design/delivery records;
-- feature documentation;
+- Data Quality / Control Plane feature documentation;
 - ADRs;
 - generated API reference through `mkdocstrings`.
 
@@ -197,9 +224,9 @@ GitHub remains the source of truth for both code and documentation.
 
 ## Current boundary and roadmap
 
-Delivered scope is currently centered on the Bronze/platform foundation. Silver, Gold and the final Customer Intelligence analytical product remain future layers; their package boundaries exist but they are not represented as completed analytical implementations.
+Delivered scope is currently centered on the Bronze/platform foundation, now including the first-class GDP Data Quality pilot and administrative Control Plane. Silver, Gold and the final Customer Intelligence analytical product remain future layers; their package boundaries exist but they are not represented as completed analytical implementations.
 
-Known near-term technical debt is tracked in GitHub issues. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy; smoke coverage should remain targeted, cheap and explicit.
+First-class Data Quality adoption beyond GDP, broader observability and shared-environment runtime hardening remain future work to be justified by concrete requirements. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy; smoke coverage should remain targeted, cheap and explicit.
 
 Future work must be selected from the current GitHub backlog rather than inferred from historical README checkpoints.
 

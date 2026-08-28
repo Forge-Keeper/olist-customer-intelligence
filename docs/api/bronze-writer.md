@@ -7,4 +7,5 @@ This page is generated from the public Python API and docstrings.
       show_root_heading: true
       members:
         - write
+        - write_checked
         - replace_where

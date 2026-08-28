@@ -48,6 +48,7 @@ nav:
       - IBGE Municipality GDP: development/ibge-municipality-gdp.md
       - IBGE CEMPRE: development/ibge-cempre.md
   - Engineering:
+      - Data Quality + Control Plane: development/data-quality-control-plane.md
       - Branch Governance: development/branch-governance.md
       - Standards & Naming: development/engineering-standards.md
       - Definition of Done: development/definition-of-done.md
@@ -71,7 +72,11 @@ nav:
       - ADR-004 Executable Contracts: adr/ADR-004-executable-dataset-contracts-and-delta-lifecycle.md
       - ADR-005 DAB Environments: adr/ADR-005-dab-environment-and-promotion-boundary.md
       - ADR-006 Unity Catalog ABAC: adr/ADR-006-unity-catalog-abac-governance.md
+      - ADR-007 Administrative Control Plane: adr/ADR-007-platform-administrative-control-plane.md
+      - ADR-008 Data Quality Execution: adr/ADR-008-first-class-data-quality-execution-model.md
   - API Reference:
       - Delta Contracts: api/delta-contracts.md
       - Delta Lifecycle: api/delta-lifecycle.md
       - Bronze Writer: api/bronze-writer.md
+      - Data Quality: api/data-quality.md
+      - Operations: api/operations.md

@@ -4,6 +4,10 @@
       "arguments": [
         "--target-table",
         "${target}.bronze.ibge_municipality_gdp",
+        "--execution-runs-table",
+        "${target}_admin.operations.execution_runs",
+        "--quality-results-table",
+        "${target}_admin.quality.data_quality_results",
         "--periods",
         "2018"
       ]
