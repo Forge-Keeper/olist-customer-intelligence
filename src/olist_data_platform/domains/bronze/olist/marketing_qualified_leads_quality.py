@@ -57,7 +57,9 @@ OLIST_MARKETING_QUALIFIED_LEADS_QUALITY_CONTRACT = DataQualityContract(
             description="MQL first_contact_date must be parseable as yyyy-MM-dd.",
             category=QualityCategory.VALIDITY,
             severity=QualitySeverity.ERROR,
-            expression="to_date(first_contact_date, 'yyyy-MM-dd') IS NOT NULL",
+            expression=(
+                "try_to_timestamp(first_contact_date, 'yyyy-MM-dd') IS NOT NULL"
+            ),
             expected_condition="first_contact_date is parseable as yyyy-MM-dd",
         ),
     ),

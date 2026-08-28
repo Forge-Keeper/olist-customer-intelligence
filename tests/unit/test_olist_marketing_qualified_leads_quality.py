@@ -31,4 +31,4 @@ def test_mql_quality_contract_should_protect_discovered_technical_invariants():
     assert isinstance(contract.rules[3], NotNullRule)
     assert contract.rules[3].columns == ("first_contact_date", "landing_page_id")
     assert isinstance(contract.rules[4], PredicateRule)
-    assert "to_date(first_contact_date" in contract.rules[4].expression
+    assert "try_to_timestamp(first_contact_date" in contract.rules[4].expression
