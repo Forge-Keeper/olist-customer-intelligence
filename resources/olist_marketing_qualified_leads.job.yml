@@ -1,0 +1,26 @@
+resources:
+  jobs:
+    olist_marketing_qualified_leads:
+      name: olist_marketing_qualified_leads
+      max_concurrent_runs: 1
+      tasks:
+        - task_key: ingest_marketing_qualified_leads
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-mql
+            parameters:
+              - --source-path
+              - /Volumes/${var.catalog}/bronze/raw_storage/raw/olist/funnel/olist_marketing_qualified_leads_dataset.csv
+              - --target-table
+              - ${var.catalog}.bronze.olist_marketing_qualified_leads
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
