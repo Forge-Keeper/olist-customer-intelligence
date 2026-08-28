@@ -41,8 +41,15 @@ def test_gdp_quality_contract_passes_complete_scope_and_observes_special_values(
 
     assert checked.report.row_count == len(MUNICIPALITY_GDP.variables)
     assert checked.report.has_blocking_failures is False
-    assert all(result.status is QualityStatus.PASS for result in checked.report.results)
-    special = next(result for result in checked.report.results if result.rule_id == "GDP-DQ08")
+    assert all(
+        result.status is QualityStatus.PASS
+        for result in checked.report.results
+    )
+    special = next(
+        result
+        for result in checked.report.results
+        if result.rule_id == "GDP-DQ08"
+    )
     assert '"observed_row_count":1' in special.observed_value
 
 
