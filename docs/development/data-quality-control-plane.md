@@ -5,8 +5,8 @@
 - Owner: Project maintainers
 - Branch: `feature/data-quality-control-plane`
 - Pull request: #36 into `dev`
-- Current gate: Validation complete / closeout
-- Decision status: Architecture accepted; implementation validated in real DEV runtime
+- Current gate: Done
+- Decision status: Architecture accepted; implementation validated through DEV -> STG -> PRD
 
 ## 1. Objective
 
@@ -249,9 +249,20 @@ bronze_rows_after_rejection: 6
 
 The protected table did not change after the rejection. The temporary runtime-validation job/table/resource files were removed after the proof; the correlated administrative evidence remains as the audit record.
 
-### Promotion prerequisites
+### Shared-environment promotion proof
 
-Before staging/production execution, the workload identity must have the required least-privilege access to the corresponding `stg_admin`/`prd_admin` schemas and data targets. Catalog/schema existence alone does not prove these grants.
+The same delivery was subsequently promoted through STG and PRD with retained deployment evidence.
+
+```text
+approved_stg_workflow_run: 33136649426
+prd_workflow_run: 33137618230
+main_commit: d12e82f57732b8329fbc1e2ebe39685a36808877
+shared_workload_identity: olist-ci
+```
+
+For PRD, the workflow verified the approved STG artifact identity/digest, authenticated with the Databricks service principal, validated the PRD bundle, deployed the exact STG-approved wheel, passed production deployment smokes and retained production deployment evidence. The `olist-ci` workload identity was confirmed with the required runtime permissions on `prd` and `prd_admin` for this lab delivery.
+
+The Data Quality Control Plane promotion is therefore validated through DEV -> STG -> PRD. The detailed accepted/rejected behavior proof remains the DEV evidence above; STG/PRD prove shared-environment deployment/runtime promotion.
 
 ## 8. Feature Definition of Done
 
@@ -263,12 +274,15 @@ In addition to the repository-wide Definition of Done:
 - [x] administrative persistence is idempotent by logical key;
 - [x] DAB validates all targets with `admin_catalog` resolution;
 - [x] real `dev` GDP execution produces correlated execution and quality evidence;
+- [x] STG promotion/runtime validation succeeded with retained evidence;
+- [x] PRD exact-artifact promotion/runtime validation succeeded with retained evidence;
 - [x] ADR-007 and ADR-008 reflect implemented behavior;
 - [x] documentation and platform status reflect the delivered capability;
 - [x] `/revisar` findings are resolved before merge/promotion.
 
 ## 9. Remaining operational boundary
 
-- least-privilege grants for shared-environment workload identities remain a promotion prerequisite before executing this workload in `stg` or `prd`;
-- first-class Data Quality adoption beyond GDP remains future work and must be justified dataset by dataset;
+- shared-environment grants required by this delivery are satisfied in the current lab using the confirmed `olist-ci` workload identity;
+- least-privilege grant refinement and stronger per-environment workload-identity separation remain target architecture, not an active blocker for the completed Data Quality promotion;
+- first-class Data Quality adoption beyond the currently migrated datasets remains future work and must be justified dataset by dataset;
 - no deadline is assigned to further Data Quality expansion.

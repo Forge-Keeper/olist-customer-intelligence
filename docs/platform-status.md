@@ -18,7 +18,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 - first-class PySpark Data Quality contracts, rules and structured results;
 - persisted Data Quality evidence with `ERROR`, `WARNING` and `INFO` policy semantics;
 - administrative Control Plane with environment-isolated `execution_runs` and `data_quality_results` history;
-- GDP pre-write Data Quality gate validated in DEV, including a deliberate rejected batch that left Bronze unchanged;
+- GDP pre-write Data Quality gate validated end-to-end through DEV -> STG -> PRD, with a deliberate DEV rejected batch proving Bronze remains unchanged on blocking failure;
 - DAB targets for `dev`, `stg` and `prd`, with separate data-plane and administrative catalogs;
 - GitHub Actions CI/CD;
 - same staging-approved wheel artifact promoted to production;
@@ -29,6 +29,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 - Weather / Open-Meteo;
 - Olist Customers;
+- Olist Marketing Qualified Leads;
 - Olist Closed Deals;
 - IBGE Localidades / municipalities;
 - IBGE municipality population;
@@ -37,12 +38,12 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 ## Known limitations / technical debt
 
-- first-class Data Quality is currently adopted by the GDP pilot; other Bronze datasets still use their existing contract/source/writer validations until a concrete migration is justified;
-- deployment smoke coverage is narrower than the current set of DAB workloads; GDP is the proven deployment pilot and CEMPRE exposes the coverage gap tracked in GitHub Issue #21;
+- first-class Data Quality is adopted by the GDP pilot and the Olist Marketing Funnel Bronze datasets (MQL and Closed Deals); remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
+- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
 - full regression of every pipeline during deployment is intentionally out of scope;
 - Silver/Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
-- shared-environment Control Plane/Data Plane runtime grants remain an environment prerequisite before executing the new GDP path in `stg` or `prd`;
+- shared-environment grants required by the Data Quality Control Plane delivery were validated with the `olist-ci` workload identity in the lab STG/PRD environments; least-privilege and stronger per-environment identity separation remain target architecture rather than an active blocker for that completed promotion;
 - repository server-side branch protection may depend on account/plan capabilities, so process and CI guardrails remain important.
 
 ## Roadmap boundary
@@ -53,7 +54,7 @@ Likely capability families include:
 
 - Silver modeling and harmonization;
 - Gold / Customer Intelligence products;
-- Data Quality adoption beyond GDP and broader observability where concrete use cases justify it;
+- Data Quality adoption beyond the currently migrated datasets and broader observability where concrete use cases justify it;
 - incremental processing/backfill/replay where required;
 - additional justified source datasets;
 - deployment and operational hardening driven by concrete gaps.
