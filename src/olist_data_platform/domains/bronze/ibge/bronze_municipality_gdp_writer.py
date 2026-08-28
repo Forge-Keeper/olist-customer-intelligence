@@ -1,23 +1,55 @@
 from __future__ import annotations
 
 import json
-from typing import Any
+from typing import Any, Protocol
 
 from pyspark.sql import DataFrame, Row, SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import DateType, StringType, StructField, StructType
 
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
-from olist_data_platform.platform.delta.quality import QualityResultWriter
 from olist_data_platform.platform.operations import (
     ExecutionRunTracker,
     ExecutionStage,
     QualityRunStatus,
 )
-from olist_data_platform.platform.quality import DataQualityRunner, QualityOutcome
+from olist_data_platform.platform.quality import (
+    DataQualityContract,
+    DataQualityRunner,
+    QualityCheckedBatch,
+    QualityOutcome,
+    QualityReport,
+)
 
 from .municipality_gdp_bronze_config import IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG
 from .municipality_gdp_quality import build_municipality_gdp_quality_contract
+
+
+class QualityEvaluator(Protocol):
+    """Structural boundary for evaluating one Data Quality contract."""
+
+    def evaluate(
+        self,
+        *,
+        dataframe: DataFrame,
+        contract: DataQualityContract,
+        run_id: str,
+        evaluation_scope: str,
+    ) -> QualityCheckedBatch: ...
+
+
+class QualityResultSink(Protocol):
+    """Structural boundary for persisting Data Quality evidence."""
+
+    def write(self, report: QualityReport) -> None: ...
+
+
+class BronzeBatchWriter(Protocol):
+    """Persistence boundary used by the GDP domain adapter."""
+
+    def write(self, dataframe: DataFrame) -> None: ...
+
+    def write_checked(self, checked_batch: QualityCheckedBatch) -> None: ...
 
 
 class BronzeMunicipalityGdpWriter:
@@ -44,8 +76,8 @@ class BronzeMunicipalityGdpWriter:
         spark: SparkSession,
         target_table: str,
         *,
-        quality_runner: DataQualityRunner | None = None,
-        quality_result_writer: QualityResultWriter | None = None,
+        quality_runner: QualityEvaluator | None = None,
+        quality_result_writer: QualityResultSink | None = None,
         run_tracker: ExecutionRunTracker | None = None,
     ) -> None:
         if (quality_runner is None) != (quality_result_writer is None):
@@ -53,7 +85,7 @@ class BronzeMunicipalityGdpWriter:
                 "quality_runner and quality_result_writer must be configured together."
             )
         self.spark = spark
-        self.writer = BronzeWriter(
+        self.writer: BronzeBatchWriter = BronzeWriter(
             spark=spark,
             target_table=target_table,
             config=IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG,
