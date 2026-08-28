@@ -2,13 +2,13 @@
 
 Olist Customer Intelligence is a production-oriented Data Engineering portfolio built around the Olist public e-commerce dataset and justified external data sources.
 
-The repository demonstrates not only ingestion code, but the platform boundaries needed to deliver and operate data workloads safely: executable contracts, Delta lifecycle management, governance metadata, tests, Databricks Asset Bundles and controlled `dev -> stg -> prd` promotion.
+The repository demonstrates not only ingestion code, but the platform boundaries needed to deliver and operate data workloads safely: executable contracts, Delta lifecycle management, governance metadata, first-class Data Quality, structured operational evidence, tests, Databricks Asset Bundles and controlled `dev -> stg -> prd` promotion.
 
 ## Start here
 
 If you are evaluating the project as a portfolio, read these pages first:
 
-1. **Architecture** — end-to-end system and delivery boundaries.
+1. **Architecture** — end-to-end system, Data Plane / Control Plane and delivery boundaries.
 2. **Platform Status** — what is delivered, what remains intentionally out of scope and known technical debt.
 3. **Data Features** — concrete datasets implemented on top of the platform.
 
@@ -25,12 +25,15 @@ The current repository implements and validates:
 - `DeltaTableLifecycle` and `BronzeWriter` responsibility split;
 - conservative schema evolution and metadata reconciliation;
 - Unity Catalog governance metadata and ABAC policy foundations;
-- Databricks Asset Bundles for `dev`, `stg` and `prd`;
+- lightweight first-class PySpark Data Quality contracts/rules/results;
+- environment-isolated administrative Control Plane for execution and quality history;
+- GDP pre-write Data Quality gate with persisted evidence and checked-batch key reuse;
+- Databricks Asset Bundles for `dev`, `stg` and `prd` with separate data/admin catalogs;
 - immutable staging-to-production wheel promotion;
 - GitHub Actions CI/CD and documentation gates;
 - MkDocs Material documentation published from `main`.
 
-The GDP pilot proved the complete shared promotion path through staging and production. CEMPRE was subsequently added as another DAB-managed workload, exposing the deployment smoke-coverage gap tracked separately as technical debt.
+The GDP Data Quality pilot has real DEV runtime evidence for both an accepted 2018 execution and a deliberately rejected duplicate-key batch that left Bronze unchanged. Earlier GDP deployment work also proved the shared promotion path through staging and production. CEMPRE remains another DAB-managed workload and the broader deployment smoke-coverage gap is tracked separately as technical debt.
 
 ## Delivered data slices
 
