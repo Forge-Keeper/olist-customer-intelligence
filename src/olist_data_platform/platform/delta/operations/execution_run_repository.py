@@ -13,7 +13,6 @@ from olist_data_platform.platform.delta.contract import (
 from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
 from olist_data_platform.platform.operations.model import ExecutionRun
 
-
 EXECUTION_RUN_CONTRACT = DatasetContract(
     columns=(
         ColumnContract(
