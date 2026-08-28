@@ -131,13 +131,3 @@ jobs:
           databricks bundle validate -t dev
           databricks bundle validate -t stg
           databricks bundle validate -t prd
-
-      - name: Deploy and run Data Quality pilot in DEV
-        if: github.event_name == 'pull_request' && github.head_ref == 'feature/data-quality-control-plane'
-        run: |
-          databricks bundle deploy -t dev
-          databricks bundle run -t dev ibge_municipality_gdp -- \
-            --target-table dev.bronze.ibge_municipality_gdp \
-            --execution-runs-table dev_admin.operations.execution_runs \
-            --quality-results-table dev_admin.quality.data_quality_results \
-            --periods 2018
