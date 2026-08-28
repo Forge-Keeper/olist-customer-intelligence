@@ -117,6 +117,8 @@ jobs:
         run: |
           .venv-wheel-test/bin/olist-ibge-gdp --help
           .venv-wheel-test/bin/olist-ibge-cempre --help
+          .venv-wheel-test/bin/olist-mql --help
+          .venv-wheel-test/bin/olist-closed-deals --help
 
       - name: Install Databricks CLI
         uses: databricks/setup-cli@a0617808a1c52de06972a31670ce426578b35c7a # v1.14.0

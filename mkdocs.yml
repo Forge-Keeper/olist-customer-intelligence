@@ -44,6 +44,7 @@ nav:
       - Architecture: architecture.md
       - Platform Status: platform-status.md
   - Data Features:
+      - Olist Marketing Funnel Bronze: development/olist-marketing-funnel-bronze.md
       - IBGE API Ingestion: development/ibge-api-ingestion.md
       - IBGE Municipality GDP: development/ibge-municipality-gdp.md
       - IBGE CEMPRE: development/ibge-cempre.md

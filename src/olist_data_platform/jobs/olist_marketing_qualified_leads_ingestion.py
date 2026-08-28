@@ -6,11 +6,11 @@ from uuid import uuid4
 
 from pyspark.sql import SparkSession
 
-from olist_data_platform.domains.bronze.olist.closed_deals_bronze_config import (
-    OLIST_CLOSED_DEALS_BRONZE_CONFIG,
+from olist_data_platform.domains.bronze.olist import (
+    marketing_qualified_leads_bronze_config as mql_config,
 )
-from olist_data_platform.domains.bronze.olist.closed_deals_quality import (
-    OLIST_CLOSED_DEALS_QUALITY_CONTRACT,
+from olist_data_platform.domains.bronze.olist.marketing_qualified_leads_quality import (
+    OLIST_MARKETING_QUALIFIED_LEADS_QUALITY_CONTRACT,
 )
 from olist_data_platform.domains.ingestion.olist.csv_snapshot_reader import (
     OlistCsvSnapshotReader,
@@ -27,27 +27,17 @@ from olist_data_platform.platform.quality import (
     DataQualityRunner,
 )
 
-CLOSED_DEALS_SOURCE_COLUMNS = (
+MQL_SOURCE_COLUMNS = (
     "mql_id",
-    "seller_id",
-    "sdr_id",
-    "sr_id",
-    "won_date",
-    "business_segment",
-    "lead_type",
-    "lead_behaviour_profile",
-    "has_company",
-    "has_gtin",
-    "average_stock",
-    "business_type",
-    "declared_product_catalog_size",
-    "declared_monthly_revenue",
+    "first_contact_date",
+    "landing_page_id",
+    "origin",
 )
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
-        description="Load the Olist closed deals CSV snapshot into Bronze."
+        description="Load the Olist marketing qualified leads snapshot into Bronze."
     )
     parser.add_argument("--source-path", required=True)
     parser.add_argument("--target-table", required=True)
@@ -68,7 +58,7 @@ def run(args: argparse.Namespace, spark: SparkSession) -> tuple[str, int]:
     )
     tracker.start(
         run_id=run_id,
-        dataset="olist_closed_deals",
+        dataset="olist_marketing_qualified_leads",
         layer="bronze",
         source_system="olist_csv",
         target_table=args.target_table,
@@ -78,19 +68,19 @@ def run(args: argparse.Namespace, spark: SparkSession) -> tuple[str, int]:
     reader = OlistCsvSnapshotReader(
         spark=spark,
         source_path=args.source_path,
-        required_columns=CLOSED_DEALS_SOURCE_COLUMNS,
-        dataset_name="olist_closed_deals",
+        required_columns=MQL_SOURCE_COLUMNS,
+        dataset_name="olist_marketing_qualified_leads",
     )
     writer = BronzeWriter(
         spark=spark,
         target_table=args.target_table,
-        config=OLIST_CLOSED_DEALS_BRONZE_CONFIG,
+        config=mql_config.OLIST_MARKETING_QUALIFIED_LEADS_BRONZE_CONFIG,
     )
     service = OlistSnapshotIngestionService(
-        dataset_name="olist_closed_deals",
+        dataset_name="olist_marketing_qualified_leads",
         reader=reader,
         bronze_writer=writer,
-        quality_contract=OLIST_CLOSED_DEALS_QUALITY_CONTRACT,
+        quality_contract=OLIST_MARKETING_QUALIFIED_LEADS_QUALITY_CONTRACT,
         quality_runner=DataQualityRunner(),
         quality_result_writer=QualityResultWriter(
             spark,
@@ -121,7 +111,7 @@ def main() -> None:
     spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
     run_id, row_count = run(args=args, spark=spark)
     print(
-        "olist_closed_deals_ingestion_completed "
+        "olist_marketing_qualified_leads_ingestion_completed "
         f"run_id={run_id} rows={row_count}"
     )
 
