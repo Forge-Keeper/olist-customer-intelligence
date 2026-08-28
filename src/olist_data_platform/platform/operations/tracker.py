@@ -17,6 +17,8 @@ def _utcnow() -> datetime:
 
 
 class ExecutionRunStore(Protocol):
+    """Persistence boundary required by the execution tracker."""
+
     def upsert(self, run: ExecutionRun) -> None: ...
 
 
@@ -42,6 +44,7 @@ class ExecutionRunTracker:
         execution_scope: str,
         orchestrator_run_id: str | None = None,
     ) -> ExecutionRun:
+        """Create and persist the initial RUNNING state for a logical execution."""
         run = ExecutionRun(
             run_id=run_id,
             dataset=dataset,
@@ -67,12 +70,14 @@ class ExecutionRunTracker:
         return run
 
     def current(self, run_id: str) -> ExecutionRun:
+        """Return the current in-process state for an execution run."""
         try:
             return self._runs[run_id]
         except KeyError as exc:
             raise KeyError(f"Unknown execution run: {run_id}") from exc
 
     def set_stage(self, run_id: str, stage: ExecutionStage) -> ExecutionRun:
+        """Persist the last coarse processing stage reached by a run."""
         return self._update(run_id, last_stage=stage)
 
     def update_metrics(
@@ -83,6 +88,7 @@ class ExecutionRunTracker:
         records_evaluated: int | None = None,
         records_written: int | None = None,
     ) -> ExecutionRun:
+        """Persist any supplied non-negative row metrics for a run."""
         changes: dict[str, int] = {}
         if records_extracted is not None:
             changes["records_extracted"] = records_extracted
@@ -99,12 +105,14 @@ class ExecutionRunTracker:
         *,
         records_evaluated: int | None = None,
     ) -> ExecutionRun:
+        """Persist the quality roll-up and optional evaluated row count."""
         changes: dict[str, object] = {"quality_status": quality_status}
         if records_evaluated is not None:
             changes["records_evaluated"] = records_evaluated
         return self._update(run_id, **changes)
 
     def succeed(self, run_id: str) -> ExecutionRun:
+        """Finalize a run as successfully completed."""
         return self._update(
             run_id,
             status=ExecutionStatus.SUCCEEDED,
@@ -119,6 +127,7 @@ class ExecutionRunTracker:
         error_message: str,
         records_written: int = 0,
     ) -> ExecutionRun:
+        """Finalize a run rejected by blocking Data Quality rules."""
         return self._update(
             run_id,
             status=ExecutionStatus.REJECTED,
@@ -132,6 +141,7 @@ class ExecutionRunTracker:
         )
 
     def fail(self, run_id: str, error: Exception) -> ExecutionRun:
+        """Finalize a run as technically failed at its last recorded stage."""
         current = self.current(run_id)
         return self._update(
             run_id,
