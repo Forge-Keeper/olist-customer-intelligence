@@ -12,6 +12,10 @@ resources:
             parameters:
               - --target-table
               - ${var.catalog}.bronze.ibge_municipality_gdp
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
               - --periods
               - ${var.gdp_periods}
       environments:
