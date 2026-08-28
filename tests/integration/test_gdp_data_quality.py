@@ -3,10 +3,8 @@ from datetime import date
 from olist_data_platform.domains.bronze.ibge.bronze_municipality_gdp_writer import (
     BronzeMunicipalityGdpWriter,
 )
-from olist_data_platform.domains.bronze.ibge.municipality_gdp_bronze_config import (
-    IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG,
-)
 from olist_data_platform.domains.bronze.ibge.municipality_gdp_quality import (
+    GDP_KEY_COLUMNS,
     build_municipality_gdp_quality_contract,
 )
 from olist_data_platform.domains.ingestion.ibge.datasets import MUNICIPALITY_GDP
@@ -36,11 +34,11 @@ def test_gdp_quality_contract_passes_complete_scope_and_observes_special_values(
         contract=build_municipality_gdp_quality_contract(("2018",)),
         run_id="run-pass",
         evaluation_scope='{"periods":["2018"]}',
-        validated_key_columns=IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG.key_columns,
     )
 
     assert checked.report.row_count == len(MUNICIPALITY_GDP.variables)
     assert checked.report.has_blocking_failures is False
+    assert checked.validated_key_columns == GDP_KEY_COLUMNS
     assert all(
         result.status is QualityStatus.PASS
         for result in checked.report.results
@@ -65,7 +63,6 @@ def test_gdp_quality_contract_rejects_duplicate_and_missing_combination(spark):
         contract=build_municipality_gdp_quality_contract(("2018",)),
         run_id="run-fail",
         evaluation_scope='{"periods":["2018"]}',
-        validated_key_columns=IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG.key_columns,
     )
 
     failed = {
@@ -75,3 +72,4 @@ def test_gdp_quality_contract_rejects_duplicate_and_missing_combination(spark):
     }
     assert {"GDP-DQ03", "GDP-DQ07"}.issubset(failed)
     assert checked.report.has_blocking_failures is True
+    assert checked.validated_key_columns == ()
