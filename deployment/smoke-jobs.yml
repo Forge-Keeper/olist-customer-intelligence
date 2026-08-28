@@ -31,6 +31,18 @@
         "--quality-results-table",
         "${target}_admin.quality.data_quality_results"
       ]
+    },
+    "olist_closed_deals": {
+      "arguments": [
+        "--source-path",
+        "/Volumes/${target}/bronze/raw_storage/raw/olist/funnel/olist_closed_deals_dataset.csv",
+        "--target-table",
+        "${target}.bronze.olist_closed_deals",
+        "--execution-runs-table",
+        "${target}_admin.operations.execution_runs",
+        "--quality-results-table",
+        "${target}_admin.quality.data_quality_results"
+      ]
     }
   }
 }
