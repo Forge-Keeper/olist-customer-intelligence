@@ -5,8 +5,8 @@
 - Owner: Project maintainers
 - Branch: `feature/data-quality-control-plane`
 - Pull request: #36 into `dev`
-- Current gate: Implementation / Validation
-- Decision status: Architecture accepted; implementation in validation
+- Current gate: Validation complete / closeout
+- Decision status: Architecture accepted; implementation validated in real DEV runtime
 
 ## 1. Objective
 
@@ -173,7 +173,7 @@ The existing GDP Bronze schema and historical data are not migrated or rewritten
 
 ### Security / governance impact
 
-Development currently permits manual broad access for iteration. Shared environments require explicit workload access to their data/admin catalogs. The target model is least privilege with runtime service-principal grants separated from catalog/schema ownership where supported. No sensitivity/PII classifications are invented by this feature.
+Runtime access uses environment-scoped workload identities. Shared environments require explicit workload access to their data/admin catalogs. The target model is least privilege with runtime service-principal grants separated from catalog/schema ownership where supported. No sensitivity/PII classifications are invented by this feature.
 
 ### Main risks
 
@@ -195,29 +195,59 @@ Development currently permits manual broad access for iteration. Shared environm
 8. ADRs and operator/developer documentation.
 9. Full CI and Databricks runtime validation.
 
-## 7. Validation Plan
+All implementation checkpoints are complete for the GDP MVP.
+
+## 7. Validation Evidence
 
 ### Repository CI
+
+The final feature branch is validated by the repository gates:
 
 ```text
 ruff
 ty
-pytest
+pytest (237 passed)
 deployment smoke contract validation
 wheel build
 isolated wheel installation
 packaged GDP/CEMPRE entry-point checks
 authenticated DAB validate dev/stg/prd
+mkdocs / Documentation workflow
 ```
 
-### Runtime
+### Real DEV accepted execution
 
-In `dev`, execute the GDP pilot and verify:
+The GDP pilot was executed in DEV for period `2018`.
 
-- one row exists in `dev_admin.operations.execution_runs` for the run;
-- quality rows exist in `dev_admin.quality.data_quality_results` with the same `run_id`;
-- accepted data is written to `dev.bronze.ibge_municipality_gdp`;
-- a deliberate blocking-failure test can prove rejection without mutating Bronze before shared-environment promotion.
+```text
+run_id: 9893929e-8f1e-4e88-8792-8ca956b9b756
+execution_status: SUCCEEDED
+quality_status: PASSED
+quality_rule_count: 8
+bronze_2018_rows: 33420
+bronze_2018_distinct_keys: 33420
+bronze_2018_variable_combinations: 6
+```
+
+This proves the same run is represented in the Control Plane and that accepted data reaches `dev.bronze.ibge_municipality_gdp` with the expected 2018 natural-key uniqueness and requested variable coverage.
+
+### Real DEV blocking-write proof
+
+A deliberate duplicate-key batch was evaluated against an isolated temporary Bronze table.
+
+```text
+rejected_run_id: dq-runtime-rejected-b6eed530-eda4-44be-8f74-2812bb189099
+blocking_rule: GDP-DQ03
+blocking_rule_severity: ERROR
+blocking_rule_status: FAIL
+execution_status: REJECTED
+quality_status: FAILED
+records_written: 0
+bronze_rows_before_rejection: 6
+bronze_rows_after_rejection: 6
+```
+
+The protected table did not change after the rejection. The temporary runtime-validation job/table/resource files were removed after the proof; the correlated administrative evidence remains as the audit record.
 
 ### Promotion prerequisites
 
@@ -227,18 +257,18 @@ Before staging/production execution, the workload identity must have the require
 
 In addition to the repository-wide Definition of Done:
 
-- [ ] repository CI is green;
-- [ ] legacy Bronze writer regression remains green;
-- [ ] GDP PASS and blocking-failure quality behavior are covered by tests;
-- [ ] administrative persistence is idempotent by logical key;
-- [ ] DAB validates all targets with `admin_catalog` resolution;
-- [ ] real `dev` GDP execution produces correlated execution and quality evidence;
-- [ ] ADR-007 and ADR-008 reflect implemented behavior;
-- [ ] documentation and platform status reflect the delivered capability;
-- [ ] `/revisar` findings are resolved before merge/promotion.
+- [x] repository CI is green;
+- [x] legacy Bronze writer regression remains green;
+- [x] GDP PASS and blocking-failure quality behavior are covered by tests;
+- [x] administrative persistence is idempotent by logical key;
+- [x] DAB validates all targets with `admin_catalog` resolution;
+- [x] real `dev` GDP execution produces correlated execution and quality evidence;
+- [x] ADR-007 and ADR-008 reflect implemented behavior;
+- [x] documentation and platform status reflect the delivered capability;
+- [x] `/revisar` findings are resolved before merge/promotion.
 
-## 9. Open operational items
+## 9. Remaining operational boundary
 
-- least-privilege grants for shared-environment workload identities remain a promotion prerequisite;
-- real Databricks `dev` runtime validation remains required before the feature can be considered Done;
-- no deadline is assigned to this feature.
+- least-privilege grants for shared-environment workload identities remain a promotion prerequisite before executing this workload in `stg` or `prd`;
+- first-class Data Quality adoption beyond GDP remains future work and must be justified dataset by dataset;
+- no deadline is assigned to further Data Quality expansion.
