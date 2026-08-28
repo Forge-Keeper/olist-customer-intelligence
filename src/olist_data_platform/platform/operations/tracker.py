@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import replace
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Protocol
 
 from olist_data_platform.platform.operations.model import (
@@ -13,7 +13,7 @@ from olist_data_platform.platform.operations.model import (
 
 
 def _utcnow() -> datetime:
-    return datetime.now(timezone.utc).replace(tzinfo=None)
+    return datetime.now(UTC).replace(tzinfo=None)
 
 
 class ExecutionRunStore(Protocol):
