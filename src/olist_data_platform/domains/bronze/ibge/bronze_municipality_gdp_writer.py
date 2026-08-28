@@ -14,10 +14,7 @@ from olist_data_platform.platform.operations import (
     ExecutionStage,
     QualityRunStatus,
 )
-from olist_data_platform.platform.quality import (
-    DataQualityRunner,
-    QualityOutcome,
-)
+from olist_data_platform.platform.quality import DataQualityRunner, QualityOutcome
 
 from .municipality_gdp_bronze_config import IBGE_MUNICIPALITY_GDP_BRONZE_CONFIG
 from .municipality_gdp_quality import build_municipality_gdp_quality_contract
@@ -83,7 +80,9 @@ class BronzeMunicipalityGdpWriter:
         if periods is None or not periods:
             raise ValueError("periods are required when GDP Data Quality is enabled.")
         if self.quality_result_writer is None:
-            raise RuntimeError("quality_result_writer is required when Data Quality is enabled.")
+            raise RuntimeError(
+                "quality_result_writer is required when Data Quality is enabled."
+            )
 
         scope = json.dumps(
             {"periods": list(periods)},
@@ -110,7 +109,9 @@ class BronzeMunicipalityGdpWriter:
         if self.run_tracker is not None:
             outcome_mapping = {
                 QualityOutcome.PASSED: QualityRunStatus.PASSED,
-                QualityOutcome.PASSED_WITH_WARNINGS: QualityRunStatus.PASSED_WITH_WARNINGS,
+                QualityOutcome.PASSED_WITH_WARNINGS: (
+                    QualityRunStatus.PASSED_WITH_WARNINGS
+                ),
                 QualityOutcome.FAILED: QualityRunStatus.FAILED,
             }
             self.run_tracker.update_quality(
@@ -124,11 +125,14 @@ class BronzeMunicipalityGdpWriter:
                 failed_rules = ", ".join(
                     result.rule_id
                     for result in checked.report.results
-                    if result.status.value == "FAIL" and result.severity.value == "ERROR"
+                    if result.status.value == "FAIL"
+                    and result.severity.value == "ERROR"
                 )
                 self.run_tracker.reject(
                     request_id,
-                    error_message=f"Blocking Data Quality rules failed: {failed_rules}",
+                    error_message=(
+                        "Blocking Data Quality rules failed: " f"{failed_rules}"
+                    ),
                 )
             checked.report.raise_for_blocking_failures()
 
