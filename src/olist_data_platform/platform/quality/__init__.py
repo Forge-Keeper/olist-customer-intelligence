@@ -9,7 +9,6 @@ from olist_data_platform.platform.quality.model import (
     QualitySeverity,
     QualityStatus,
 )
-from olist_data_platform.platform.quality.runner import DataQualityRunner
 from olist_data_platform.platform.quality.rules import (
     AllowedValuesRule,
     ExpectedCombinationsRule,
@@ -19,6 +18,7 @@ from olist_data_platform.platform.quality.rules import (
     PredicateRule,
     UniqueRule,
 )
+from olist_data_platform.platform.quality.runner import DataQualityRunner
 
 __all__ = [
     "AllowedValuesRule",
