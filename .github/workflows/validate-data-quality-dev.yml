@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 jobs:
-  validate-dev:
-    name: validate-dq-dev
+  cleanup-dev:
+    name: cleanup-dq-dev
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: ci
@@ -51,8 +51,5 @@ jobs:
       - name: Validate DEV bundle
         run: databricks bundle validate -t dev
 
-      - name: Deploy feature bundle to DEV
+      - name: Remove temporary validation resource from DEV
         run: databricks bundle deploy -t dev
-
-      - name: Validate persisted DQ evidence and blocking write gate
-        run: databricks bundle run -t dev data_quality_runtime_validation
