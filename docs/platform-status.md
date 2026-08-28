@@ -11,11 +11,15 @@ This page is the public checkpoint for delivered capability versus future scope.
 - source-faithful Bronze landing;
 - executable `DatasetContract` model;
 - `DeltaTableLifecycle` for table state and metadata lifecycle;
-- `BronzeWriter` for write semantics;
+- `BronzeWriter` for write semantics, including checked-batch evidence reuse;
 - fail-fast schema drift with conservative explicit evolution;
 - table/column metadata and tag reconciliation;
 - Unity Catalog governance / ABAC policy foundation;
-- DAB targets for `dev`, `stg` and `prd`;
+- first-class PySpark Data Quality contracts, rules and structured results;
+- persisted Data Quality evidence with `ERROR`, `WARNING` and `INFO` policy semantics;
+- administrative Control Plane with environment-isolated `execution_runs` and `data_quality_results` history;
+- GDP pre-write Data Quality gate validated in DEV, including a deliberate rejected batch that left Bronze unchanged;
+- DAB targets for `dev`, `stg` and `prd`, with separate data-plane and administrative catalogs;
 - GitHub Actions CI/CD;
 - same staging-approved wheel artifact promoted to production;
 - deployment runbook and retained deployment evidence;
@@ -33,10 +37,12 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 ## Known limitations / technical debt
 
+- first-class Data Quality is currently adopted by the GDP pilot; other Bronze datasets still use their existing contract/source/writer validations until a concrete migration is justified;
 - deployment smoke coverage is narrower than the current set of DAB workloads; GDP is the proven deployment pilot and CEMPRE exposes the coverage gap tracked in GitHub Issue #21;
 - full regression of every pipeline during deployment is intentionally out of scope;
 - Silver/Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
+- shared-environment Control Plane/Data Plane runtime grants remain an environment prerequisite before executing the new GDP path in `stg` or `prd`;
 - repository server-side branch protection may depend on account/plan capabilities, so process and CI guardrails remain important.
 
 ## Roadmap boundary
@@ -47,14 +53,14 @@ Likely capability families include:
 
 - Silver modeling and harmonization;
 - Gold / Customer Intelligence products;
-- first-class data quality and observability expansion;
+- Data Quality adoption beyond GDP and broader observability where concrete use cases justify it;
 - incremental processing/backfill/replay where required;
 - additional justified source datasets;
 - deployment and operational hardening driven by concrete gaps.
 
 ## Historical delivery records
 
-The DAB Discovery, Requirements, Technical Design, Impact Analysis and Implementation Plan pages are retained as engineering records of the gate process. Their proposed wording describes the state at the time each gate was written; the implemented/accepted outcome is represented by the current code, runbook, ADRs and this status page.
+The DAB and feature Discovery, Requirements, Technical Design, Impact Analysis and Implementation Plan pages are retained as engineering records of the gate process. Their proposed wording describes the state at the time each gate was written; the implemented/accepted outcome is represented by the current code, runtime evidence, ADRs and this status page.
 
 The current public narrative therefore distinguishes:
 
