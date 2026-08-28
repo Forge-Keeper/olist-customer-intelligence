@@ -1,0 +1,27 @@
+resources:
+  jobs:
+    data_quality_runtime_validation:
+      name: olist_data_quality_runtime_validation
+      max_concurrent_runs: 1
+      tasks:
+        - task_key: validate_runtime
+          environment_key: default
+          spark_python_task:
+            python_file: ../scripts/validate_data_quality_dev_runtime.py
+            parameters:
+              - --success-run-id
+              - 9893929e-8f1e-4e88-8792-8ca956b9b756
+              - --target-table
+              - ${var.catalog}.bronze.ibge_municipality_gdp
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+              - --temp-table
+              - ${var.catalog}.bronze._dq_runtime_validation_gdp
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
