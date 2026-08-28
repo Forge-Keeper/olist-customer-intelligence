@@ -96,9 +96,36 @@ same code with environment-isolated paths.
 The deployment smoke executes the full 8,000-row MQL snapshot because the source
 is small and the write is a bounded `FULL_REPLACE`.
 
+The bundle wheel build removes stale wheel artifacts before normal DEV/STG builds
+and requires exactly one resulting wheel. Production exact-artifact promotion
+keeps its separate prebuilt-wheel path and never rebuilds the approved artifact.
+The CI wheel-isolation gate also executes the `olist-mql` packaged entry point.
+
+## DEV validation evidence
+
+The MQL job completed successfully in DEV on 2026-08-28 with run ID
+`fc1a93ae-3151-437b-bd39-b3d1ee977787`.
+
+Observed runtime evidence:
+
+| Check | Result |
+| --- | --- |
+| Execution status | `SUCCEEDED` |
+| Quality status | `PASSED` |
+| Records extracted | 8,000 |
+| Records evaluated | 8,000 |
+| Records written | 8,000 |
+| Target rows | 8,000 |
+| Distinct `mql_id` | 8,000 |
+| Required-column nulls | 0 |
+| Invalid `first_contact_date` values | 0 |
+| Blocking DQ rules | `MQL-DQ01` through `MQL-DQ05` all `PASS` |
+
+Target table: `dev.bronze.olist_marketing_qualified_leads`.
+
 ## Status
 
-Implementation is present on the feature branch. Runtime validation in Databricks
-is still required before MQL is marked `DONE`, and Closed Deals still requires
-its first-class DQ/DAB/smoke uplift before the Marketing Funnel domain is
-Bronze-complete.
+The MQL Bronze slice is `DONE`: Discovery, contract, implementation, first-class
+Data Quality, DAB delivery, runtime execution and DEV validation are complete.
+Closed Deals still requires its first-class DQ/DAB/smoke uplift before the Olist
+Marketing Funnel domain can be declared Bronze-complete.
