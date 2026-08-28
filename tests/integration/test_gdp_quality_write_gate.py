@@ -47,6 +47,9 @@ class _BronzeWriter:
     def __init__(self, events: list[str]) -> None:
         self.events = events
 
+    def write(self, dataframe) -> None:
+        self.events.append("bronze-legacy")
+
     def write_checked(self, checked_batch: QualityCheckedBatch) -> None:
         self.events.append("bronze")
 
