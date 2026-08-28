@@ -12,23 +12,31 @@ class DataQualityRejectedError(ValueError):
 
 
 class QualitySeverity(StrEnum):
+    """Policy severity controlling whether a failed rule blocks persistence."""
+
     ERROR = "ERROR"
     WARNING = "WARNING"
     INFO = "INFO"
 
 
 class QualityStatus(StrEnum):
+    """Observed outcome of evaluating one rule condition."""
+
     PASS = "PASS"
     FAIL = "FAIL"
 
 
 class QualityOutcome(StrEnum):
+    """Roll-up quality outcome for one dataset evaluation."""
+
     PASSED = "PASSED"
     PASSED_WITH_WARNINGS = "PASSED_WITH_WARNINGS"
     FAILED = "FAILED"
 
 
 class QualityCategory(StrEnum):
+    """Small stable taxonomy describing the intent of a quality rule."""
+
     COMPLETENESS = "COMPLETENESS"
     UNIQUENESS = "UNIQUENESS"
     VALIDITY = "VALIDITY"
@@ -85,6 +93,8 @@ class DataQualityContract:
 
 @dataclass(frozen=True)
 class QualityResult:
+    """Persistable evidence produced by evaluating one quality rule."""
+
     run_id: str
     dataset: str
     layer: str
@@ -112,6 +122,7 @@ class QualityReport:
 
     @property
     def has_blocking_failures(self) -> bool:
+        """Return whether at least one failed ERROR rule blocks persistence."""
         return any(
             result.status is QualityStatus.FAIL
             and result.severity is QualitySeverity.ERROR
@@ -120,6 +131,7 @@ class QualityReport:
 
     @property
     def outcome(self) -> QualityOutcome:
+        """Roll up rule results without conflating severity with PASS/FAIL."""
         if self.has_blocking_failures:
             return QualityOutcome.FAILED
         if any(
@@ -131,6 +143,7 @@ class QualityReport:
         return QualityOutcome.PASSED
 
     def raise_for_blocking_failures(self) -> None:
+        """Raise with the failed blocking rule IDs when persistence must stop."""
         if not self.has_blocking_failures:
             return
         failed = [
