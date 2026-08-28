@@ -52,10 +52,17 @@ class _Writer:
     def __init__(self) -> None:
         self.records: list[dict[str, Any]] = []
         self.request_id = ""
+        self.periods: tuple[str, ...] = ()
 
-    def write(self, records: list[dict[str, Any]], request_id: str) -> None:
+    def write(
+        self,
+        records: list[dict[str, Any]],
+        request_id: str,
+        periods: tuple[str, ...] | None = None,
+    ) -> None:
         self.records = records
         self.request_id = request_id
+        self.periods = periods or ()
 
 
 def test_gdp_service_partitions_requests_by_period_and_variable() -> None:
@@ -84,3 +91,4 @@ def test_gdp_service_partitions_requests_by_period_and_variable() -> None:
     )
     assert any(record["payload"]["Valor"] == "..." for record in writer.records)
     assert writer.request_id == request_id
+    assert writer.periods == ("2016", "2017", "2018")
