@@ -1,10 +1,32 @@
 # Olist Customer Intelligence
 
-Production-oriented Data Engineering portfolio built around the Olist public e-commerce dataset and justified external data sources.
+<p align="center">
+  <strong>Production-oriented Databricks data platform portfolio</strong><br/>
+  PySpark · Delta Lake · Unity Catalog · Data Quality · Databricks Asset Bundles · GitHub Actions
+</p>
 
-[📚 Full Documentation](https://forge-keeper.github.io/olist-customer-intelligence/)
+<p align="center">
+  <a href="https://github.com/Forge-Keeper/olist-customer-intelligence/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Forge-Keeper/olist-customer-intelligence/actions/workflows/ci.yml/badge.svg?branch=main"></a>
+  <a href="https://github.com/Forge-Keeper/olist-customer-intelligence/actions/workflows/docs.yml"><img alt="Documentation" src="https://github.com/Forge-Keeper/olist-customer-intelligence/actions/workflows/docs.yml/badge.svg?branch=main"></a>
+  <a href="https://forge-keeper.github.io/olist-customer-intelligence/"><img alt="Engineering documentation" src="https://img.shields.io/badge/docs-engineering%20portal-0969da"></a>
+</p>
 
-The project has evolved from isolated ingestion pipelines into a small Databricks-oriented data platform foundation with explicit contracts, Delta lifecycle management, first-class Data Quality, structured operational evidence, governance metadata, CI/CD and controlled environment promotion.
+A small data platform foundation built around the Olist public e-commerce dataset and justified external sources to demonstrate production Data Engineering concerns: explicit contracts, idempotent persistence, Data Quality, operational evidence, governance, CI/CD and controlled environment promotion.
+
+## Portfolio snapshot
+
+- **Databricks / PySpark / Delta Lake** as the core execution and persistence stack;
+- source-faithful Bronze ingestion across **Olist CSV, Open-Meteo and IBGE APIs / SIDRA**;
+- executable dataset contracts, explicit logical keys and fail-fast schema-drift handling;
+- first-class PySpark **Data Quality** with persisted rule evidence and blocking write gates;
+- **Unity Catalog** metadata/governance foundation, ABAC policy lifecycle and justified Liquid Clustering;
+- **Databricks Asset Bundles** with isolated `dev`, `stg` and `prd` targets;
+- immutable wheel promotion from staging to production through **GitHub Actions**;
+- real DEV evidence: **33,420 GDP rows**, **8 passing quality rules**, and a deliberate duplicate-key batch rejected with **0 records written**.
+
+> **Current boundary:** the delivered scope is the Bronze/platform foundation. Silver, Gold and the final Customer Intelligence analytical product remain roadmap work and are not represented as completed implementations.
+
+[📚 Full Engineering Documentation](https://forge-keeper.github.io/olist-customer-intelligence/)
 
 ## What is implemented
 
