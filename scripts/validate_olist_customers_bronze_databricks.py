@@ -6,14 +6,14 @@ from pyspark.sql import SparkSession
 from pyspark.sql import functions as F
 from pyspark.sql.types import StringType, TimestampType
 
-REQUIRED_SOURCE_COLUMNS = (
+REQUIRED_BUSINESS_COLUMNS = (
     "customer_id",
     "customer_unique_id",
     "customer_zip_code_prefix",
     "customer_city",
     "customer_state",
-    "source_file",
 )
+REQUIRED_SOURCE_COLUMNS = (*REQUIRED_BUSINESS_COLUMNS, "source_file")
 
 
 def validate_table(spark: SparkSession, target_table: str) -> None:
@@ -39,9 +39,10 @@ def validate_table(spark: SparkSession, target_table: str) -> None:
     if not isinstance(schema.get("ingestion_timestamp"), TimestampType):
         raise AssertionError("ingestion_timestamp must be TIMESTAMP.")
 
-    null_primary_keys = dataframe.where(F.col("customer_id").isNull()).limit(1).count()
-    if null_primary_keys:
-        raise AssertionError("customer_id contains NULL values.")
+    for column in REQUIRED_BUSINESS_COLUMNS:
+        null_rows = dataframe.where(F.col(column).isNull()).limit(1).count()
+        if null_rows:
+            raise AssertionError(f"{column} contains NULL values.")
 
     duplicate_primary_keys = (
         dataframe.groupBy("customer_id")
@@ -52,6 +53,16 @@ def validate_table(spark: SparkSession, target_table: str) -> None:
     )
     if duplicate_primary_keys:
         raise AssertionError("customer_id contains duplicate values.")
+
+    invalid_zip_prefixes = (
+        dataframe.where(~F.col("customer_zip_code_prefix").rlike(r"^[0-9]{5}$"))
+        .limit(1)
+        .count()
+    )
+    if invalid_zip_prefixes:
+        raise AssertionError(
+            "customer_zip_code_prefix contains values outside the five-digit shape."
+        )
 
     leading_zero_zip_codes = (
         dataframe.where(F.col("customer_zip_code_prefix").startswith("0"))
