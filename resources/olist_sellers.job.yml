@@ -1,0 +1,26 @@
+resources:
+  jobs:
+    olist_sellers:
+      name: olist_sellers
+      max_concurrent_runs: 1
+      tasks:
+        - task_key: ingest_sellers
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-sellers
+            parameters:
+              - --source-path
+              - /Volumes/${var.catalog}/bronze/raw_storage/raw/olist/e_commerce/olist_sellers_dataset.csv
+              - --target-table
+              - ${var.catalog}.bronze.olist_sellers
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
