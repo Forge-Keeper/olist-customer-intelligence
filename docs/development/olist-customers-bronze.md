@@ -21,9 +21,10 @@ deployment-smoke patterns.
 - Requirements: complete.
 - Technical Design: complete.
 - Impact Analysis: complete.
-- Implementation Plan: accepted for implementation.
-- Implementation: pending at this checkpoint.
-- Runtime Validation: pending.
+- Implementation Plan: complete.
+- Implementation: complete.
+- Runtime Validation: complete in DEV.
+- Promotion: pending PR approval and the normal delivery flow.
 
 No new platform architecture or ADR is required.
 
@@ -160,37 +161,127 @@ source-value invariants rather than introducing Silver transformations.
 
 ### Operational risk
 
-The principal migration risk is replacing the legacy direct write path with the
-checked-batch path. This is mitigated by reusing the already delivered MQL and
-Closed Deals pattern, automated tests, deployment-smoke validation and a DEV
-runtime execution before promotion.
+The principal migration risk was replacing the legacy direct write path with the
+checked-batch path. The delivered implementation mitigates that risk by reusing
+the established platform pattern, automated tests, deployment-smoke validation,
+a successful DEV runtime execution and a controlled DEV rejection proving that
+a blocking DQ failure cannot replace the valid Bronze target.
 
-## Implementation plan
+## Implementation result
 
-1. add the Customers DQ contract and tests;
-2. wire the Customers job to execution tracking and persisted DQ results;
-3. add packaging, DAB resource and smoke configuration;
-4. extend CI packaged-entry-point validation;
-5. run the repository CI suite;
-6. deploy/run the Customers job in DEV;
-7. validate target table and Control Plane evidence;
-8. only after runtime evidence is green, mark the feature `DONE` and promote via
-   the normal topic-branch -> `dev` -> `main` path.
+The delivered feature includes:
+
+1. Customers first-class DQ contract and tests;
+2. execution tracking and persisted rule-level DQ evidence;
+3. protected checked-batch `FULL_REPLACE` writing;
+4. packaged `olist-customers` entry point;
+5. DAB Customers job and deployment-smoke coverage;
+6. packaged-entry-point CI validation;
+7. strengthened Databricks post-write validation;
+8. real DEV positive-path and controlled rejection evidence.
+
+## DEV runtime validation
+
+### Authoritative snapshot
+
+The deployed DEV Customers job completed successfully with logical run ID:
+
+```text
+1e270fd6-b768-4bc6-8b76-9412048126e7
+```
+
+Persisted execution evidence:
+
+```text
+status=SUCCEEDED
+quality_status=PASSED
+records_extracted=99441
+records_evaluated=99441
+records_written=99441
+last_stage=COMPLETE
+```
+
+All five Customers DQ rules persisted `PASS`. The resulting Bronze table also
+proved:
+
+```text
+row_count=99441
+distinct_customer_ids=99441
+null_customer_ids=0
+required_attribute_null_rows=0
+invalid_zip_rows=0
+leading_zero_zip_rows=23995
+partitionColumns=[]
+clusteringColumns=[]
+```
+
+### Controlled write-gate proof
+
+A temporary DEV target was first seeded through a valid two-row Customers batch.
+The baseline logical run ID was:
+
+```text
+521e646a-10fd-42cb-9435-cabcc7652c37
+```
+
+Its persisted execution evidence was:
+
+```text
+status=SUCCEEDED
+quality_status=PASSED
+records_extracted=2
+records_evaluated=2
+records_written=2
+last_stage=COMPLETE
+```
+
+A subsequent deliberately invalid batch duplicated `customer_id`. The canonical
+rejection evidence used for this feature is logical run ID:
+
+```text
+8d00ca97-0661-4852-8903-b24687c9ab0d
+```
+
+The Control Plane persisted:
+
+```text
+status=REJECTED
+quality_status=FAILED
+records_extracted=2
+records_evaluated=2
+records_written=0
+last_stage=QUALITY
+error_stage=QUALITY
+error_type=DataQualityRejectedError
+error_message=Blocking Data Quality rules failed: CUSTOMERS-DQ03
+```
+
+`CUSTOMERS-DQ03` persisted `FAIL` with one duplicate group and one duplicate
+excess row, while the other four rules persisted `PASS`. After rejection, the
+temporary target still contained exactly the original two distinct customer IDs,
+proving that the blocking failure occurred before the protected write.
+
+A repeated controlled rejection produced the same terminal state and was not
+needed as the canonical acceptance record.
 
 ## Acceptance criteria
 
-Implementation is complete when:
+DEV implementation and runtime validation are complete:
 
-- repository CI is green;
+- repository CI is green for the implementation checkpoint;
 - DAB validates for DEV/STG/PRD;
 - the Customers job exists in the bundle and packaged wheel;
-- a DEV run finishes successfully;
-- exactly 99,441 source rows are evaluated and written for the current snapshot;
-- `customer_id` remains complete and unique;
-- all five blocking Customers DQ rules pass;
-- 23,995 leading-zero ZIP rows remain representable as strings;
-- target layout remains unpartitioned and unclustered;
-- `execution_runs` and `data_quality_results` contain the run evidence.
+- the authoritative DEV run finished successfully;
+- exactly 99,441 source rows were evaluated and written for the validated
+  snapshot;
+- `customer_id` remained complete and unique;
+- all five blocking Customers DQ rules passed on the authoritative snapshot;
+- 23,995 leading-zero ZIP rows remained representable as strings;
+- target layout remained unpartitioned and unclustered;
+- `execution_runs` and `data_quality_results` contain the positive-path evidence;
+- a controlled duplicate-key batch was persisted as `REJECTED` with
+  `records_written=0`;
+- the controlled target remained unchanged after rejection.
 
-Runtime evidence is intentionally not predeclared as successful in this design
-record; it must be captured from an actual DEV run.
+Promotion beyond the feature branch remains a separate delivery decision and
+must follow repository branch governance and approval gates.
