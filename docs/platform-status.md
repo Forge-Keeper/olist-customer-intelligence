@@ -19,6 +19,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 - persisted Data Quality evidence with `ERROR`, `WARNING` and `INFO` policy semantics;
 - administrative Control Plane with environment-isolated `execution_runs` and `data_quality_results` history;
 - GDP pre-write Data Quality gate validated end-to-end through DEV -> STG -> PRD, with a deliberate DEV rejected batch proving Bronze remains unchanged on blocking failure;
+- Olist Customers pre-write Data Quality and execution tracking validated in DEV, including a deliberate duplicate-key rejection with `records_written=0` and an unchanged protected target;
 - DAB targets for `dev`, `stg` and `prd`, with separate data-plane and administrative catalogs;
 - GitHub Actions CI/CD;
 - same staging-approved wheel artifact promoted to production;
@@ -38,8 +39,8 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 ## Known limitations / technical debt
 
-- first-class Data Quality is adopted by the GDP pilot and the Olist Marketing Funnel Bronze datasets (MQL and Closed Deals); remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
-- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
+- first-class Data Quality is adopted by the GDP pilot and the Olist Customers, Marketing Qualified Leads and Closed Deals Bronze datasets; remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
+- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP, Olist Customers and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
 - full regression of every pipeline during deployment is intentionally out of scope;
 - Silver/Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
