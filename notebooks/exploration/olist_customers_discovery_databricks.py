@@ -8,7 +8,7 @@
 
 dbutils.widgets.text(
     "source_path",
-    "/Volumes/dev/bronze/raw_storage/raw/olist/e_commerce/olist_customers_dataset.csv",
+    "",
     "Customers CSV source path",
 )
 SOURCE_PATH = dbutils.widgets.get("source_path").strip()
