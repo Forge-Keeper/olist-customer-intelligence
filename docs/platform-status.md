@@ -37,6 +37,31 @@ This page is the public checkpoint for delivered capability versus future scope.
 - IBGE municipality GDP / VAB;
 - IBGE CEMPRE municipal business activity for 2016–2018.
 
+### Olist Bronze completeness
+
+The physical Olist source boundary is 11 CSV files: nine Brazilian E-commerce files plus two Marketing Funnel files. The completion milestone intentionally includes every inventoried Olist source; none is excluded.
+
+Current status: **3/11 complete, 8/11 remaining**.
+
+Completed end-to-end through DEV -> STG -> PRD:
+
+- `olist_customers_dataset.csv`;
+- `olist_marketing_qualified_leads_dataset.csv`;
+- `olist_closed_deals_dataset.csv`.
+
+Remaining Bronze sources:
+
+- `olist_geolocation_dataset.csv`;
+- `olist_order_items_dataset.csv`;
+- `olist_order_payments_dataset.csv`;
+- `olist_order_reviews_dataset.csv`;
+- `olist_orders_dataset.csv`;
+- `olist_products_dataset.csv`;
+- `olist_sellers_dataset.csv`;
+- `product_category_name_translation.csv`.
+
+`BRONZE OLIST COMPLETE` is reached only when all 11 source files have production-grade Bronze slices and the applicable delivery validation is complete.
+
 ## Known limitations / technical debt
 
 - first-class Data Quality is adopted by the GDP pilot and the Olist Customers, Marketing Qualified Leads and Closed Deals Bronze datasets; remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
