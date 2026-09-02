@@ -20,6 +20,9 @@ dbutils.widgets.text(
     "",
     "Sellers CSV source path",
 )
+
+# COMMAND ----------
+
 SOURCE_PATH = dbutils.widgets.get("source_path").strip()
 if not SOURCE_PATH:
     raise ValueError("Set source_path before running Discovery.")
@@ -37,7 +40,6 @@ df = (
     .option("header", True)
     .option("inferSchema", False)
     .csv(SOURCE_PATH)
-    .cache()
 )
 row_count = df.count()
 
@@ -49,7 +51,6 @@ display(df.limit(20))
 
 # COMMAND ----------
 
-# Physical file metadata.
 parent = str(PurePosixPath(SOURCE_PATH).parent)
 name = PurePosixPath(SOURCE_PATH).name
 matches = [x for x in dbutils.fs.ls(parent) if x.name.rstrip("/") == name]
@@ -66,7 +67,6 @@ file_metadata = {
 
 # COMMAND ----------
 
-# Generic column profile: source values remain strings for discovery.
 profile_rows = []
 for column in df.columns:
     c = F.col(column)
@@ -102,7 +102,6 @@ display(profile_df.orderBy(F.desc("null_rate_pct"), "column"))
 
 # COMMAND ----------
 
-# Candidate grain/key investigation. This does not make `seller_id` a contract yet.
 seller_id_evidence = None
 seller_id_duplicates = None
 if "seller_id" in df.columns:
@@ -125,7 +124,6 @@ if "seller_id" in df.columns:
         .count()
         .where(F.col("count") > 1)
         .orderBy(F.desc("count"), F.col("seller_id").asc_nulls_last())
-        .cache()
     )
     duplicate_group_count = seller_id_duplicates.count()
     duplicate_row_excess = (
@@ -148,12 +146,10 @@ else:
 
 # COMMAND ----------
 
-# Exact duplicate rows.
 full_duplicates = (
     df.groupBy(*df.columns)
     .count()
     .where(F.col("count") > 1)
-    .cache()
 )
 full_duplicate_groups = full_duplicates.count()
 full_duplicate_excess = (
@@ -163,7 +159,6 @@ display(full_duplicates.orderBy(F.desc("count")).limit(50))
 
 # COMMAND ----------
 
-# ZIP preservation / shape. Observation only; not a DQ proposal.
 zip_evidence = None
 if "seller_zip_code_prefix" in df.columns:
     zip_col = F.col("seller_zip_code_prefix")
@@ -201,7 +196,6 @@ else:
 
 # COMMAND ----------
 
-# City/state whitespace, cardinality, case and basic encoding symptoms.
 text_shape = {}
 for column in ("seller_city", "seller_state"):
     if column not in df.columns:
@@ -240,8 +234,6 @@ if {"seller_state", "seller_city"}.issubset(df.columns):
 
 # COMMAND ----------
 
-# Optional sibling-source relationship evidence: order_items -> sellers by seller_id.
-# This is descriptive evidence for downstream modeling, not a Bronze FK rule.
 relationship_evidence = {
     "order_items_checked": False,
     "order_items_path": None,
@@ -256,17 +248,13 @@ order_items_candidates = [
     x for x in dbutils.fs.ls(parent) if x.name.rstrip("/") == order_items_name
 ]
 
-if (
-    order_items_candidates
-    and "seller_id" in df.columns
-):
+if order_items_candidates and "seller_id" in df.columns:
     order_items_path = order_items_candidates[0].path
     order_items_df = (
         spark.read
         .option("header", True)
         .option("inferSchema", False)
         .csv(order_items_path)
-        .cache()
     )
 
     if "seller_id" in order_items_df.columns:
@@ -278,15 +266,15 @@ if (
             .distinct()
         )
 
-        missing_from_sellers = (
-            order_item_seller_ids_df
-            .join(seller_ids_df, on="seller_id", how="left_anti")
-            .cache()
+        missing_from_sellers = order_item_seller_ids_df.join(
+            seller_ids_df,
+            on="seller_id",
+            how="left_anti",
         )
-        unused_by_order_items = (
-            seller_ids_df
-            .join(order_item_seller_ids_df, on="seller_id", how="left_anti")
-            .cache()
+        unused_by_order_items = seller_ids_df.join(
+            order_item_seller_ids_df,
+            on="seller_id",
+            how="left_anti",
         )
 
         relationship_evidence = {
@@ -307,8 +295,6 @@ else:
 
 # COMMAND ----------
 
-# Deterministic content signature for later snapshot/re-run comparison.
-# Uses the discovered source column order rather than a predeclared persisted contract.
 hash_columns = [F.coalesce(F.col(c), F.lit("<NULL>")) for c in df.columns]
 if hash_columns:
     row_hash = F.xxhash64(*hash_columns)
@@ -337,9 +323,7 @@ summary = {
         "row_count": row_count,
         "actual_columns": df.columns,
         "column_count": len(df.columns),
-        "schema": {
-            f.name: f.dataType.simpleString() for f in df.schema.fields
-        },
+        "schema": {f.name: f.dataType.simpleString() for f in df.schema.fields},
     },
     "column_profile": {
         row["column"]: {
