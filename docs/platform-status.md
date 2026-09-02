@@ -19,7 +19,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 - persisted Data Quality evidence with `ERROR`, `WARNING` and `INFO` policy semantics;
 - administrative Control Plane with environment-isolated `execution_runs` and `data_quality_results` history;
 - GDP pre-write Data Quality gate validated end-to-end through DEV -> STG -> PRD, with a deliberate DEV rejected batch proving Bronze remains unchanged on blocking failure;
-- Olist Customers pre-write Data Quality and execution tracking validated in DEV, including a deliberate duplicate-key rejection with `records_written=0` and an unchanged protected target;
+- Olist Customers pre-write Data Quality and execution tracking validated end-to-end through DEV -> STG -> PRD, including a deliberate DEV duplicate-key rejection with `records_written=0` and an unchanged protected target;
 - DAB targets for `dev`, `stg` and `prd`, with separate data-plane and administrative catalogs;
 - GitHub Actions CI/CD;
 - same staging-approved wheel artifact promoted to production;

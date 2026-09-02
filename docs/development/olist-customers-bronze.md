@@ -24,7 +24,9 @@ deployment-smoke patterns.
 - Implementation Plan: complete.
 - Implementation: complete.
 - Runtime Validation: complete in DEV.
-- Promotion: pending PR approval and the normal delivery flow.
+- STG Promotion: complete.
+- PRD Promotion: complete.
+- Feature status: DONE.
 
 No new platform architecture or ADR is required.
 
@@ -264,9 +266,76 @@ proving that the blocking failure occurred before the protected write.
 A repeated controlled rejection produced the same terminal state and was not
 needed as the canonical acceptance record.
 
+## Promotion validation
+
+The feature was promoted through the normal immutable-artifact delivery path.
+
+### STG
+
+GitHub Actions `Deploy STG` run `33660371927` completed successfully for commit:
+
+```text
+67488ec7baa2b5bfba72d2700d6bcf8f68fc9d6e
+```
+
+The Customers STG smoke completed successfully with logical run ID:
+
+```text
+b5067d57-9f1d-4323-b61a-13f7d405c83a
+```
+
+Observed STG result:
+
+```text
+target_table=stg.bronze.olist_customers
+row_count=99441
+strategy=full_replace
+```
+
+The retained staging promotion artifact contains the wheel:
+
+```text
+olist_customer_intelligence-0.1.1.dev145+g67488ec7b-py3-none-any.whl
+```
+
+with wheel SHA-256:
+
+```text
+591064ff7ac067c2a7733bddf7f1f3c1c84a1df939728f05895426381782afb5
+```
+
+### PRD
+
+GitHub Actions `Deploy PRD` run `33666795303` completed successfully using
+`stg_run_id=33660371927`. The workflow verified the staging promotion manifest,
+Git commit identity and wheel digest before deployment.
+
+The Customers PRD smoke completed successfully with logical run ID:
+
+```text
+71b9c65c-4686-4c95-97bc-e755bfffce50
+```
+
+Observed PRD result:
+
+```text
+target_table=prd.bronze.olist_customers
+row_count=99441
+strategy=full_replace
+```
+
+Production deployment evidence is retained as artifact:
+
+```text
+prd-deployment-67488ec7baa2b5bfba72d2700d6bcf8f68fc9d6e
+```
+
+The production workflow therefore proves that PRD received the exact wheel
+validated in STG, not a rebuild of the source tree.
+
 ## Acceptance criteria
 
-DEV implementation and runtime validation are complete:
+The feature is complete across DEV -> STG -> PRD:
 
 - repository CI is green for the implementation checkpoint;
 - DAB validates for DEV/STG/PRD;
@@ -281,7 +350,11 @@ DEV implementation and runtime validation are complete:
 - `execution_runs` and `data_quality_results` contain the positive-path evidence;
 - a controlled duplicate-key batch was persisted as `REJECTED` with
   `records_written=0`;
-- the controlled target remained unchanged after rejection.
+- the controlled target remained unchanged after rejection;
+- STG deployment and Customers smoke completed successfully;
+- PRD deployment and Customers smoke completed successfully;
+- PRD used the same staging-approved wheel artifact and verified SHA-256 digest;
+- retained STG and PRD deployment artifacts provide delivery evidence.
 
-Promotion beyond the feature branch remains a separate delivery decision and
-must follow repository branch governance and approval gates.
+Olist Customers Bronze is DONE. Future work on Customers belongs to a new,
+explicitly scoped backlog item rather than this feature record.
