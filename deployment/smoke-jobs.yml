@@ -44,6 +44,18 @@
         "${target}_admin.quality.data_quality_results"
       ]
     },
+    "olist_products": {
+      "arguments": [
+        "--source-path",
+        "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_products_dataset.csv",
+        "--target-table",
+        "${target}.bronze.olist_products",
+        "--execution-runs-table",
+        "${target}_admin.operations.execution_runs",
+        "--quality-results-table",
+        "${target}_admin.quality.data_quality_results"
+      ]
+    },
     "olist_marketing_qualified_leads": {
       "arguments": [
         "--source-path",
