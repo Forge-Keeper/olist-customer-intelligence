@@ -20,7 +20,7 @@ jobs:
   deploy-prd:
     name: deploy-prd
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     environment: olist-prd
     env:
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
