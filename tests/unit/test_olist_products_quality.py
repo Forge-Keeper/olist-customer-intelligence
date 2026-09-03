@@ -39,3 +39,6 @@ def test_products_quality_contract_should_match_discovery_evidence():
         and rule.severity is QualitySeverity.INFO
         for rule in contract.rules[4:]
     )
+    zero_weight_rule = contract.rules[6]
+    assert isinstance(zero_weight_rule, ObservedCountRule)
+    assert "try_cast(product_weight_g AS BIGINT)" in zero_weight_rule.expression

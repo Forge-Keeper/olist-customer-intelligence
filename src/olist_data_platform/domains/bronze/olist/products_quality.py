@@ -110,7 +110,7 @@ OLIST_PRODUCTS_QUALITY_CONTRACT = DataQualityContract(
             description="Count products whose observed source weight is zero.",
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.INFO,
-            expression="CAST(product_weight_g AS BIGINT) = 0",
+            expression="try_cast(product_weight_g AS BIGINT) = 0",
             expected_condition="observed count only; does not block persistence",
         ),
     ),
