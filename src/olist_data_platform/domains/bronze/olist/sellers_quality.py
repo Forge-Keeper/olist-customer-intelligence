@@ -47,7 +47,9 @@ OLIST_SELLERS_QUALITY_CONTRACT = DataQualityContract(
         NotNullRule(
             rule_id="SELLERS-DQ04",
             version=1,
-            description="Required Sellers source attributes cannot contain null values.",
+            description=(
+                "Required Sellers source attributes cannot contain null values."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
             columns=SELLERS_REQUIRED_ATTRIBUTE_COLUMNS,
@@ -55,7 +57,9 @@ OLIST_SELLERS_QUALITY_CONTRACT = DataQualityContract(
         PredicateRule(
             rule_id="SELLERS-DQ05",
             version=1,
-            description="Seller ZIP code prefix must contain exactly five decimal digits.",
+            description=(
+                "Seller ZIP code prefix must contain exactly five decimal digits."
+            ),
             category=QualityCategory.VALIDITY,
             severity=QualitySeverity.ERROR,
             expression="seller_zip_code_prefix RLIKE '^[0-9]{5}$'",
