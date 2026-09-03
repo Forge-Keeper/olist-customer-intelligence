@@ -17,7 +17,7 @@ jobs:
   deploy-stg:
     name: deploy-stg
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 60
     environment: olist-stg
     env:
       DATABRICKS_HOST: ${{ vars.DATABRICKS_HOST }}
