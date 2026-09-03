@@ -148,7 +148,19 @@ Do not invent `pii`, `sensitive`, classification, retention or business-owner va
 
 Governed tags intended for ABAC must use the account-approved taxonomy. Dataset code assigns approved tags; it does not silently create governance truth.
 
-## 4. Public API documentation standard
+## 4. Databricks discovery notebook conventions
+
+Discovery notebooks must remain compatible with the Databricks Free serverless environment used by this project.
+
+- Create notebook widgets in the first executable cell.
+- Read widget values and validate required inputs in the second executable cell.
+- Do not call `.cache()` / `.persist()` in discovery notebooks; serverless discovery must not depend on persisted Spark cache state.
+- Keep discovery read-only: no DDL, Bronze writes or Control Plane writes.
+- Prefer explicit recomputation over hidden persistence for these bounded discovery datasets.
+
+These constraints apply to new discovery notebooks and to existing discovery notebooks when they are materially changed by a feature.
+
+## 5. Public API documentation standard
 
 ### What must have a docstring
 
@@ -202,7 +214,7 @@ Prefer:
 
 Use concise PEP 257-compatible docstrings. Add structured `Args`, `Returns`, `Raises`, or `Side Effects` sections only when they convey information that type hints and the method name do not already make clear.
 
-## 5. Logging conventions
+## 6. Logging conventions
 
 Operational log events should be stable, machine-searchable names followed by explicit fields.
 
@@ -213,7 +225,7 @@ schema_evolution_applied | target_table=... | added_columns=...
 
 Use lowercase `snake_case` event names. Include identifiers needed to investigate the operation (`target_table`, `request_id`, job/dataset key, changed fields) without logging secrets or raw sensitive payloads.
 
-## 6. Test naming conventions
+## 7. Test naming conventions
 
 Use behavior-oriented tests:
 
@@ -227,7 +239,7 @@ A test name should make the expected behavior understandable without reading its
 
 Platform abstractions require tests for invariants and failure semantics, not just happy paths.
 
-## 7. Feature documentation convention
+## 8. Feature documentation convention
 
 A feature that changes architecture or cross-domain behavior follows the repository gates:
 
@@ -245,7 +257,7 @@ Use the feature template under `docs/templates/feature-specification-template.md
 
 Durable architectural decisions receive an ADR using `docs/templates/adr-template.md`.
 
-## 8. Scope rule for legacy code
+## 9. Scope rule for legacy code
 
 When a feature touches an existing public API:
 
@@ -253,7 +265,7 @@ When a feature touches an existing public API:
 - do not perform unrelated repository-wide renames or documentation cleanup;
 - capture larger cleanup as backlog rather than silently expanding scope.
 
-## 9. Enforcement
+## 10. Enforcement
 
 The Definition of Done requires documentation coverage for new/materially changed public APIs.
 
