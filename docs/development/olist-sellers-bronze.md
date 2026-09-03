@@ -25,8 +25,9 @@ Target table pattern:
 - Implementation Plan: approved.
 - Implementation: complete.
 - Runtime Validation: complete in DEV.
-- STG Promotion: pending.
-- PRD Promotion: pending.
+- STG Promotion: complete.
+- PRD Promotion: complete.
+- Feature status: DONE.
 
 No new platform architecture or ADR is required.
 
@@ -255,7 +256,7 @@ The baseline contained two distinct seller IDs:
 
 ```text
 3442f8959a84dea7ee197c632cb2df15
- d1b65fc7debc3361ea86b5f14c68d2e2
+d1b65fc7debc3361ea86b5f14c68d2e2
 ```
 
 A deliberately invalid two-row batch duplicated `seller_id`. The job rejected it before the protected write with:
@@ -288,9 +289,61 @@ DataQualityRejectedError: Data Quality rejected the batch; blocking rules failed
 
 After the rejection, the temporary target still contained the original two distinct seller IDs, each exactly once. This proves the blocking DQ failure occurred before `FULL_REPLACE` and left the valid target unchanged.
 
+## Promotion validation
+
+The feature was promoted through the repository immutable-artifact path.
+
+### STG
+
+GitHub Actions `Deploy STG` run `33706994173` completed successfully for commit:
+
+```text
+b3b9f343e0310dd2aa86ca3c53e7e089dfb8b3aa
+```
+
+The Sellers STG smoke completed successfully:
+
+```text
+target_table=stg.bronze.olist_sellers
+row_count=3095
+logical_run_id=3d936c25-befb-47a9-a577-94cc2dbe2ccc
+strategy=full_replace
+```
+
+The retained staging promotion artifact contains:
+
+```text
+wheel=olist_customer_intelligence-0.1.1.dev167+gb3b9f343e-py3-none-any.whl
+sha256=21b4f6fb7be6a2aa4d80a89619f3cecff48f8f39261d95acbc6819da34134b3d
+artifact=stg-promotion-b3b9f343e0310dd2aa86ca3c53e7e089dfb8b3aa
+```
+
+### PRD
+
+GitHub Actions `Deploy PRD` run `33708894560` completed successfully using `stg_run_id=33706994173`.
+
+The production workflow verified the staging manifest, Git commit identity and wheel SHA-256 before deployment and used the prebuilt staging-approved wheel rather than rebuilding the package.
+
+The Sellers PRD smoke completed successfully:
+
+```text
+target_table=prd.bronze.olist_sellers
+row_count=3095
+logical_run_id=81df86cb-d8f2-427f-b69a-65b57f4ce359
+strategy=full_replace
+```
+
+Production deployment evidence was retained as:
+
+```text
+artifact=prd-deployment-b3b9f343e0310dd2aa86ca3c53e7e089dfb8b3aa
+```
+
+A second, duplicate PRD dispatch (`33710353084`) was later observed and also completed successfully. It did not change the accepted promotion identity: both production deployments used the same `main` commit and the same approved staging artifact.
+
 ## Acceptance criteria
 
-The feature can be marked DONE only when:
+The feature is complete across DEV -> STG -> PRD:
 
 - accepted contracts and non-goals are implemented;
 - local/CI validation is green;
@@ -302,3 +355,5 @@ The feature can be marked DONE only when:
 - STG deployment smoke executes Sellers successfully;
 - PRD promotion uses the exact staging-approved wheel and Sellers production smoke succeeds;
 - final evidence is recorded in GitHub.
+
+Olist Sellers Bronze is DONE. Future work on Sellers belongs to a new, explicitly scoped backlog item rather than this feature record.
