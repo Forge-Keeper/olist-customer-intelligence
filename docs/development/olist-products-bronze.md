@@ -25,8 +25,8 @@ Target table pattern:
 - Technical Design: complete.
 - Impact Analysis: complete.
 - Implementation Plan: approved through feature autopilot.
-- Implementation: complete locally; validation in progress.
-- Runtime Validation: pending DEV.
+- Implementation: complete.
+- Runtime Validation: complete in DEV.
 - STG Promotion: pending.
 - PRD Promotion: pending.
 - Feature status: IN PROGRESS.
@@ -249,3 +249,108 @@ boundary changes.
 9. Open the topic-branch PR to `dev`; merge only after explicit approval.
 10. Promote the approved immutable artifact through STG and PRD gates.
 11. Publish runtime evidence and closeout on `main`.
+
+## DEV runtime validation
+
+### Authoritative snapshot
+
+The deployed DEV Products job completed successfully.
+
+Execution and Control Plane evidence:
+
+```text
+run_id=e8bf5d74-a400-4d93-9d00-ff7c34a014f2
+status=SUCCEEDED
+quality_status=PASSED
+records_extracted=32951
+records_evaluated=32951
+records_written=32951
+last_stage=COMPLETE
+```
+
+The persisted target validation proved:
+
+```text
+target_table=dev.bronze.olist_products
+row_count=32951
+distinct_product_id=32951
+null_product_id=0
+partition_columns=[]
+clustering_columns=[]
+```
+
+The authoritative DQ evaluation passed all blocking rules and preserved the
+accepted non-blocking observations:
+
+```text
+PRODUCTS-DQ01 PASS row_count=32951
+PRODUCTS-DQ02 PASS null_row_count=0
+PRODUCTS-DQ03 PASS duplicate_group_count=0 duplicate_excess_row_count=0
+PRODUCTS-DQ04 PASS invalid_row_count=0
+PRODUCTS-DQ05 PASS observed_row_count=610
+PRODUCTS-DQ06 PASS observed_row_count=2
+PRODUCTS-DQ07 PASS observed_row_count=4
+```
+
+### Controlled write-gate proof
+
+A temporary validation target was seeded from a valid two-row Products batch:
+
+```text
+target_table=dev.bronze.runtime_validation_olist_products
+run_id=a244aa87-c8cc-4f97-935c-7e0e8d502a4d
+status=SUCCEEDED
+quality_status=PASSED
+records_extracted=2
+records_evaluated=2
+records_written=2
+last_stage=COMPLETE
+```
+
+A deliberately malformed numeric batch then supplied one invalid numeric
+source value. The job rejected the batch before the protected write:
+
+```text
+run_id=04b2b0a8-8f65-48e8-9831-275633c2df5f
+status=REJECTED
+quality_status=FAILED
+records_extracted=2
+records_evaluated=2
+records_written=0
+last_stage=QUALITY
+error_stage=QUALITY
+error_type=DataQualityRejectedError
+error_message=Blocking Data Quality rules failed: PRODUCTS-DQ04
+```
+
+The corresponding DQ result independently recorded:
+
+```text
+PRODUCTS-DQ04 FAIL invalid_row_count=1
+```
+
+After rejection, the temporary target remained unchanged:
+
+```text
+row_count=2
+distinct_product_id=2
+null_product_id=0
+```
+
+This proves the blocking DQ failure occurred before `FULL_REPLACE` and
+preserved the valid target.
+
+## Acceptance criteria for DEV gate
+
+The DEV gate is complete:
+
+- authoritative Products ingestion succeeds;
+- all blocking DQ rules pass on the physical snapshot;
+- INFO observations match Discovery evidence;
+- persisted target has the expected key grain and source-faithful row count;
+- target has no partitioning or clustering;
+- controlled malformed numeric input is rejected by `PRODUCTS-DQ04`;
+- rejected execution records zero writes and terminates at QUALITY;
+- protected runtime-validation target remains unchanged after rejection.
+
+The feature is ready for the topic-branch PR to `dev`. Merge remains a human approval gate.
