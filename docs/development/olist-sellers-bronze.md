@@ -23,8 +23,8 @@ Target table pattern:
 - Technical Design: complete.
 - Impact Analysis: complete.
 - Implementation Plan: approved.
-- Implementation: in progress.
-- Runtime Validation: pending.
+- Implementation: complete.
+- Runtime Validation: complete in DEV.
 - STG Promotion: pending.
 - PRD Promotion: pending.
 
@@ -204,6 +204,89 @@ No existing table schema, platform API or architectural boundary changes.
 10. Execute controlled DEV rejection proving `records_written=0` and unchanged protected target.
 11. Promote through DEV -> STG -> PRD using the repository immutable-artifact path.
 12. Record final runtime evidence and mark the feature DONE.
+
+## DEV runtime validation
+
+### Authoritative snapshot
+
+The deployed DEV Sellers job completed successfully.
+
+Databricks job and run evidence:
+
+```text
+job_id=952075409424523
+job_run_id=211439755736915
+logical_run_id=acce160f-d376-46dc-8293-a336b0c8d13a
+status=SUCCEEDED
+quality_status=PASSED
+records_extracted=3095
+records_evaluated=3095
+records_written=3095
+last_stage=COMPLETE
+```
+
+The persisted target validation proved:
+
+```text
+target_table=dev.bronze.olist_sellers
+row_count=3095
+partition_columns=[]
+clustering_columns=[]
+```
+
+The validation also confirmed the required string schema, non-null business columns, unique `seller_id`, five-digit ZIP shape and preservation of leading-zero ZIP values.
+
+### Controlled write-gate proof
+
+A temporary validation target was seeded from a valid two-row Sellers batch:
+
+```text
+target_table=dev.bronze.runtime_validation_olist_sellers
+logical_run_id=6b8bbd7c-9512-4da4-9146-78f8e0320e70
+status=SUCCEEDED
+quality_status=PASSED
+records_extracted=2
+records_evaluated=2
+records_written=2
+last_stage=COMPLETE
+```
+
+The baseline contained two distinct seller IDs:
+
+```text
+3442f8959a84dea7ee197c632cb2df15
+ d1b65fc7debc3361ea86b5f14c68d2e2
+```
+
+A deliberately invalid two-row batch duplicated `seller_id`. The job rejected it before the protected write with:
+
+```text
+status=REJECTED
+quality_status=FAILED
+records_extracted=2
+records_evaluated=2
+records_written=0
+last_stage=QUALITY
+error_stage=QUALITY
+error_type=DataQualityRejectedError
+error_message=Blocking Data Quality rules failed: SELLERS-DQ03
+```
+
+The latest recorded rejection run was:
+
+```text
+logical_run_id=2ba1be86-2bdf-42a7-b75f-7b5472bd33d1
+```
+
+A previous retry/rejection produced the same expected terminal state under logical run ID `1fd7183f-6086-4266-bb42-0824098dea62`.
+
+The Databricks task output independently reported:
+
+```text
+DataQualityRejectedError: Data Quality rejected the batch; blocking rules failed: SELLERS-DQ03
+```
+
+After the rejection, the temporary target still contained the original two distinct seller IDs, each exactly once. This proves the blocking DQ failure occurred before `FULL_REPLACE` and left the valid target unchanged.
 
 ## Acceptance criteria
 
