@@ -20,6 +20,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 - administrative Control Plane with environment-isolated `execution_runs` and `data_quality_results` history;
 - GDP pre-write Data Quality gate validated end-to-end through DEV -> STG -> PRD, with a deliberate DEV rejected batch proving Bronze remains unchanged on blocking failure;
 - Olist Customers pre-write Data Quality and execution tracking validated end-to-end through DEV -> STG -> PRD, including a deliberate DEV duplicate-key rejection with `records_written=0` and an unchanged protected target;
+- Olist Sellers pre-write Data Quality and execution tracking validated end-to-end through DEV -> STG -> PRD, including a deliberate DEV duplicate-key rejection with `records_written=0` and an unchanged protected target;
 - DAB targets for `dev`, `stg` and `prd`, with separate data-plane and administrative catalogs;
 - GitHub Actions CI/CD;
 - same staging-approved wheel artifact promoted to production;
@@ -30,6 +31,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 - Weather / Open-Meteo;
 - Olist Customers;
+- Olist Sellers;
 - Olist Marketing Qualified Leads;
 - Olist Closed Deals;
 - IBGE Localidades / municipalities;
@@ -39,8 +41,8 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 ## Known limitations / technical debt
 
-- first-class Data Quality is adopted by the GDP pilot and the Olist Customers, Marketing Qualified Leads and Closed Deals Bronze datasets; remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
-- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP, Olist Customers and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
+- first-class Data Quality is adopted by the GDP pilot and the Olist Customers, Sellers, Marketing Qualified Leads and Closed Deals Bronze datasets; remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
+- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP, Olist Customers, Olist Sellers and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
 - full regression of every pipeline during deployment is intentionally out of scope;
 - Silver/Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
