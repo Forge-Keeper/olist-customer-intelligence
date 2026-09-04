@@ -56,6 +56,18 @@
         "${target}_admin.quality.data_quality_results"
       ]
     },
+    "olist_product_category_name_translation": {
+      "arguments": [
+        "--source-path",
+        "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/product_category_name_translation.csv",
+        "--target-table",
+        "${target}.bronze.olist_product_category_name_translation",
+        "--execution-runs-table",
+        "${target}_admin.operations.execution_runs",
+        "--quality-results-table",
+        "${target}_admin.quality.data_quality_results"
+      ]
+    },
     "olist_marketing_qualified_leads": {
       "arguments": [
         "--source-path",
