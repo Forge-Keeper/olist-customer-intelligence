@@ -1,5 +1,5 @@
-from olist_data_platform.domains.bronze.olist.product_category_name_translation_quality import (
-    OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT,
+from olist_data_platform.domains.bronze.olist import (
+    product_category_name_translation_quality as translation_quality,
 )
 from olist_data_platform.platform.quality import (
     NonEmptyRule,
@@ -11,7 +11,9 @@ from olist_data_platform.platform.quality import (
 
 
 def test_category_translation_quality_contract_should_match_discovery_evidence():
-    contract = OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT
+    contract = (
+        translation_quality.OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT
+    )
 
     assert contract.dataset == "olist_product_category_name_translation"
     assert contract.layer == "bronze"
