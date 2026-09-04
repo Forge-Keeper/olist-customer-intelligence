@@ -27,13 +27,14 @@ Target table pattern:
 - Technical Design: complete.
 - Impact Analysis: complete.
 - Implementation Plan: complete.
-- Implementation: complete on topic branch.
-- CI/static validation: complete; latest branch `quality` check succeeded.
+- Implementation: complete and merged through the governed promotion path.
+- CI/static validation: complete.
 - DEV runtime validation: complete.
-- PR to `dev`: pending human review/merge gate.
-- STG: pending.
-- PRD: pending.
-- Closeout: pending.
+- PR to `dev`: complete; PR #66 merged.
+- Promotion `dev -> main`: complete; PR #67 merged.
+- STG: complete; Deploy STG run `33915255555` succeeded.
+- PRD: complete; Deploy PRD run `33923138081` succeeded.
+- Closeout: operational evidence complete; documentation closeout pending human review/merge.
 
 No new shared abstraction or ADR is required.
 
@@ -289,6 +290,54 @@ DEV acceptance criteria are satisfied:
 - rejected execution does not mutate the protected target;
 - branch CI `quality` check is green.
 
-The next gate is PR review from
-`feature/olist-product-category-translation-bronze` to `dev`. Merge is a human
-gate. STG, PRD and final closeout remain pending after merge/promotion.
+## Promotion and closeout evidence
+
+The feature completed the governed Git and deployment path:
+
+```text
+feature/olist-product-category-translation-bronze
+  -> PR #66 -> dev
+  -> PR #67 -> main
+  -> STG
+  -> PRD
+```
+
+The stable production promotion commit is:
+
+```text
+20d995734f4c9f0d4bfab68fa8248940af041cec
+```
+
+### STG
+
+Deploy STG run `33915255555` completed successfully for that commit. The workflow
+validated and deployed the staging bundle, ran deployment smokes, captured the
+promoted wheel manifest and retained the promotion artifact.
+
+Retained STG artifact:
+
+```text
+stg-promotion-20d995734f4c9f0d4bfab68fa8248940af041cec
+```
+
+### PRD
+
+The human-authorized Deploy PRD run `33923138081` completed successfully against
+the same `main` commit and approved STG artifact. The workflow verified artifact
+identity and digest, validated the production bundle, deployed the approved staging
+wheel, ran production deployment smokes and retained production evidence.
+
+Retained PRD artifact:
+
+```text
+prd-deployment-20d995734f4c9f0d4bfab68fa8248940af041cec
+```
+
+### Final conclusion
+
+The Product Category Name Translation Bronze vertical slice is operationally
+complete across DEV, STG and PRD. Source integrity protections, protected
+`FULL_REPLACE`, deployment smokes and promotion evidence all completed successfully.
+
+The known two-category translation coverage gap remains intentionally deferred to
+Silver and is not a Bronze defect.
