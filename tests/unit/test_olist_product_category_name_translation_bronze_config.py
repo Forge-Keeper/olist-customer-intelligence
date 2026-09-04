@@ -1,11 +1,11 @@
-from olist_data_platform.domains.bronze.olist.product_category_name_translation_bronze_config import (
-    OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_BRONZE_CONFIG,
+from olist_data_platform.domains.bronze.olist import (
+    product_category_name_translation_bronze_config as bronze_config,
 )
 from olist_data_platform.platform.delta.bronze import WriteStrategy
 
 
 def test_should_define_category_translation_bronze_contract():
-    config = OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_BRONZE_CONFIG
+    config = bronze_config.OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_BRONZE_CONFIG
 
     assert config.primary_key_columns == ("product_category_name",)
     assert config.required_columns == (
