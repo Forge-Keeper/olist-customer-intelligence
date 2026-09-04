@@ -21,6 +21,7 @@ olist-ibge-cempre = "olist_data_platform.jobs.ibge_municipality_business_activit
 olist-customers = "olist_data_platform.jobs.olist_customers_ingestion:main"
 olist-sellers = "olist_data_platform.jobs.olist_sellers_ingestion:main"
 olist-products = "olist_data_platform.jobs.olist_products_ingestion:main"
+olist-category-translation = "olist_data_platform.jobs.olist_product_category_name_translation_ingestion:main"
 olist-mql = "olist_data_platform.jobs.olist_marketing_qualified_leads_ingestion:main"
 olist-closed-deals = "olist_data_platform.jobs.olist_closed_deals_ingestion:main"
 
