@@ -120,6 +120,7 @@ jobs:
           .venv-wheel-test/bin/olist-customers --help
           .venv-wheel-test/bin/olist-sellers --help
           .venv-wheel-test/bin/olist-products --help
+          .venv-wheel-test/bin/olist-category-translation --help
           .venv-wheel-test/bin/olist-mql --help
           .venv-wheel-test/bin/olist-closed-deals --help
 
