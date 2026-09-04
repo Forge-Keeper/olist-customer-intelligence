@@ -6,11 +6,11 @@ from uuid import uuid4
 
 from pyspark.sql import SparkSession
 
-from olist_data_platform.domains.bronze.olist.product_category_name_translation_bronze_config import (
-    OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_BRONZE_CONFIG,
+from olist_data_platform.domains.bronze.olist import (
+    product_category_name_translation_bronze_config as bronze_config,
 )
-from olist_data_platform.domains.bronze.olist.product_category_name_translation_quality import (
-    OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT,
+from olist_data_platform.domains.bronze.olist import (
+    product_category_name_translation_quality as translation_quality,
 )
 from olist_data_platform.domains.ingestion.olist.csv_snapshot_reader import (
     OlistCsvSnapshotReader,
@@ -36,7 +36,9 @@ CATEGORY_TRANSLATION_SOURCE_COLUMNS = (
 def build_parser() -> argparse.ArgumentParser:
     """Build explicit runtime arguments for the category translation Bronze job."""
     parser = argparse.ArgumentParser(
-        description="Load the Olist product category translation CSV snapshot into Bronze."
+        description=(
+            "Load the Olist product category translation CSV snapshot into Bronze."
+        )
     )
     parser.add_argument("--source-path", required=True)
     parser.add_argument("--target-table", required=True)
@@ -46,7 +48,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def run(args: argparse.Namespace, spark: SparkSession) -> tuple[str, int]:
-    """Execute one category translation snapshot ingestion with Control Plane evidence."""
+    """Execute one category translation snapshot ingestion with DQ evidence."""
     run_id = str(uuid4())
     execution_scope = json.dumps(
         {"source_path": args.source_path},
@@ -74,13 +76,15 @@ def run(args: argparse.Namespace, spark: SparkSession) -> tuple[str, int]:
     writer = BronzeWriter(
         spark=spark,
         target_table=args.target_table,
-        config=OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_BRONZE_CONFIG,
+        config=bronze_config.OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_BRONZE_CONFIG,
     )
     service = OlistSnapshotIngestionService(
         dataset_name="olist_product_category_name_translation",
         reader=reader,
         bronze_writer=writer,
-        quality_contract=OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT,
+        quality_contract=(
+            translation_quality.OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT
+        ),
         quality_runner=DataQualityRunner(),
         quality_result_writer=QualityResultWriter(
             spark,
