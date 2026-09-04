@@ -3,16 +3,14 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from olist_data_platform.jobs.olist_product_category_name_translation_ingestion import (
-    CATEGORY_TRANSLATION_SOURCE_COLUMNS,
-    build_parser,
-    run,
+from olist_data_platform.jobs import (
+    olist_product_category_name_translation_ingestion as job_module,
 )
 
 
 def test_parser_should_require_control_plane_arguments():
     with pytest.raises(SystemExit):
-        build_parser().parse_args(
+        job_module.build_parser().parse_args(
             [
                 "--source-path",
                 "/test/category_translation.csv",
@@ -23,7 +21,7 @@ def test_parser_should_require_control_plane_arguments():
 
 
 def test_parser_should_accept_explicit_runtime_arguments():
-    args = build_parser().parse_args(
+    args = job_module.build_parser().parse_args(
         [
             "--source-path",
             "/test/category_translation.csv",
@@ -37,33 +35,19 @@ def test_parser_should_accept_explicit_runtime_arguments():
     )
 
     assert args.source_path == "/test/category_translation.csv"
-    assert args.target_table == "test_catalog.bronze.olist_product_category_name_translation"
+    assert args.target_table == (
+        "test_catalog.bronze.olist_product_category_name_translation"
+    )
 
 
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.QualityResultWriter"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.DataQualityRunner"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.OlistSnapshotIngestionService"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.BronzeWriter"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.OlistCsvSnapshotReader"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.ExecutionRunTracker"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.ExecutionRunRepository"
-)
-@patch(
-    "olist_data_platform.jobs.olist_product_category_name_translation_ingestion.uuid4"
-)
+@patch.object(job_module, "QualityResultWriter")
+@patch.object(job_module, "DataQualityRunner")
+@patch.object(job_module, "OlistSnapshotIngestionService")
+@patch.object(job_module, "BronzeWriter")
+@patch.object(job_module, "OlistCsvSnapshotReader")
+@patch.object(job_module, "ExecutionRunTracker")
+@patch.object(job_module, "ExecutionRunRepository")
+@patch.object(job_module, "uuid4")
 def test_run_should_compose_first_class_category_translation_ingestion(
     uuid_factory: Mock,
     repository_class: Mock,
@@ -84,14 +68,14 @@ def test_run_should_compose_first_class_category_translation_ingestion(
     uuid_factory.return_value = "run-1"
     service_class.return_value.ingest.return_value = 71
 
-    run_id, row_count = run(args=args, spark=spark)
+    run_id, row_count = job_module.run(args=args, spark=spark)
 
     assert run_id == "run-1"
     assert row_count == 71
     reader_class.assert_called_once_with(
         spark=spark,
         source_path=args.source_path,
-        required_columns=CATEGORY_TRANSLATION_SOURCE_COLUMNS,
+        required_columns=job_module.CATEGORY_TRANSLATION_SOURCE_COLUMNS,
         dataset_name="olist_product_category_name_translation",
     )
     writer_class.assert_called_once()
