@@ -23,7 +23,9 @@ OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT = DataQualityContract(
         NonEmptyRule(
             rule_id="CATEGORY-TRANSLATION-DQ01",
             version=1,
-            description="The authoritative category translation snapshot must contain records.",
+            description=(
+                "The authoritative category translation snapshot must contain records."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
         ),
@@ -54,7 +56,9 @@ OLIST_PRODUCT_CATEGORY_NAME_TRANSLATION_QUALITY_CONTRACT = DataQualityContract(
         PredicateRule(
             rule_id="CATEGORY-TRANSLATION-DQ05",
             version=1,
-            description="Category and English translation values cannot be blank strings.",
+            description=(
+                "Category and English translation values cannot be blank strings."
+            ),
             category=QualityCategory.VALIDITY,
             severity=QualitySeverity.ERROR,
             expression=(
