@@ -28,8 +28,9 @@ Target table pattern:
 - Impact Analysis: complete.
 - Implementation Plan: complete.
 - Implementation: complete on topic branch.
-- CI/static validation: running.
-- DEV runtime validation: pending.
+- CI/static validation: complete; latest branch `quality` check succeeded.
+- DEV runtime validation: complete.
+- PR to `dev`: pending human review/merge gate.
 - STG: pending.
 - PRD: pending.
 - Closeout: pending.
@@ -249,5 +250,45 @@ deployment/smoke-jobs.yml
 
 ## DEV validation
 
-Pending CI completion and authoritative Databricks DEV execution. Do not mark this
-feature DONE until DEV, STG, PRD and closeout gates are complete.
+Authoritative DEV validation is complete.
+
+### Positive path and persisted target
+
+The production-like DEV job completed successfully against the canonical source
+snapshot. The persisted target `dev.bronze.olist_product_category_name_translation`
+was validated after the write, confirming the expected Bronze contract and the
+source-faithful snapshot persisted through the protected `FULL_REPLACE` path.
+
+The successful execution also confirmed the Control Plane path for the dataset:
+DQ evaluation completed before persistence and execution lifecycle evidence was
+recorded for the run.
+
+### Controlled negative path
+
+A controlled duplicate-key fixture was executed against an isolated validation
+source path. The run was rejected by:
+
+```text
+CATEGORY-TRANSLATION-DQ03
+```
+
+The rule correctly blocked the write with zero records written for the rejected
+execution.
+
+Target protection was explicitly verified: the previously valid persisted target
+remained unchanged after the failed negative-path run. This proves that a duplicate
+`product_category_name` cannot replace a healthy Bronze snapshot.
+
+### DEV gate conclusion
+
+DEV acceptance criteria are satisfied:
+
+- positive path succeeds;
+- persisted target is valid;
+- DQ03 rejects duplicate logical keys;
+- rejected execution does not mutate the protected target;
+- branch CI `quality` check is green.
+
+The next gate is PR review from
+`feature/olist-product-category-translation-bronze` to `dev`. Merge is a human
+gate. STG, PRD and final closeout remain pending after merge/promotion.
