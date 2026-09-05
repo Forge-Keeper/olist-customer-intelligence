@@ -1,5 +1,5 @@
 import pytest
-from pyspark.sql.types import StringType, TimestampType
+from pyspark.sql.types import DecimalType, StringType, TimestampType
 
 from olist_data_platform.platform.delta.bronze import WriteStrategy
 from olist_data_platform.platform.delta.contract import (
@@ -38,6 +38,31 @@ def test_should_build_column_contract_and_struct_field():
     assert field.nullable is False
     assert field.metadata["comment"] == "Description for id."
     assert column.tags["classification"] == "identifier"
+
+
+def test_should_build_decimal_column_contract():
+    column = _column("valor_venda", "decimal(18, 3)")
+
+    field = column.to_struct_field()
+
+    assert isinstance(field.dataType, DecimalType)
+    assert field.dataType.precision == 18
+    assert field.dataType.scale == 3
+
+
+@pytest.mark.parametrize(
+    "data_type",
+    [
+        "decimal(0,0)",
+        "decimal(39,2)",
+        "decimal(10,11)",
+        "decimal(10,-1)",
+        "decimal(foo,2)",
+    ],
+)
+def test_should_reject_invalid_decimal_type(data_type: str):
+    with pytest.raises(ValueError, match="Invalid Spark DDL type"):
+        _column("amount", data_type)
 
 
 def test_should_reject_invalid_ddl_type():
