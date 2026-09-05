@@ -22,7 +22,8 @@ variables:
     description: PostgreSQL database for the ANP JDBC source.
     default: "olist"
   run_as_service_principal:
-    description: Service principal application ID injected by the deployment environment.
+    description: Service principal application ID injected by STG/PRD deployment environments.
+    default: ""
 
 artifacts:
   default:
