@@ -32,6 +32,22 @@ The recovered ANP contract keeps:
 - `source_file` lineage;
 - `source_system = azure_postgresql`.
 
+## Current DEV runtime wiring
+
+The current Azure PostgreSQL DEV endpoint was revalidated from the Azure resource overview:
+
+```text
+pg-olist-ci-dev.postgres.database.azure.com
+```
+
+The PostgreSQL database remains `olist`.
+
+The Databricks secret scope `olist-jdbc` was also revalidated and contains the expected `username` and `password` keys. Secret values are not stored in GitHub.
+
+The ANP Bronze Databricks job resource reads the non-sensitive host/database from bundle configuration and resolves JDBC username/password at runtime through `dbutils.secrets`. The recovered job no longer depends on developer shell `JDBC_*` environment variables when executed in Databricks.
+
+Only DEV has a configured PostgreSQL hostname. STG and PRD intentionally keep the bundle hostname variable empty until their PostgreSQL sources are explicitly defined, preventing accidental cross-environment reads from the DEV database.
+
 ## Historical runtime evidence
 
 The historical implementation documentation records a successful reprocessing validation for `2016-01-04` through `2016-06-30` with:
@@ -42,11 +58,12 @@ The historical implementation documentation records a successful reprocessing va
 - final `source_file = ca-2016-01.csv`;
 - repeated execution preserving the same final state.
 
-This evidence is historical. The recovery PR must pass the current CI/static gates, and current-environment runtime validation remains a separate deployment gate.
+This evidence is historical. Current-environment runtime validation remains a separate deployment gate until the recovered DAB job is deployed and executed again in DEV.
 
-## Explicit non-goals of the recovery PR
+## Explicit non-goals of the recovery work
 
 - do not merge the stale historical branch;
 - do not restore unrelated Weather/Olist code from that branch;
-- do not invent PostgreSQL credentials, hosts, firewall rules, or deployment secrets;
+- do not commit PostgreSQL passwords or Databricks secret values;
+- do not configure STG/PRD PostgreSQL endpoints without explicit environment evidence;
 - do not claim current DEV/STG/PRD runtime validation until it is executed again.

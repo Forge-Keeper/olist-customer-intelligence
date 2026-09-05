@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import date
+from importlib import import_module
 
 from pyspark.sql import SparkSession
 
@@ -30,6 +31,13 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--start-date", type=_parse_date, required=True)
     parser.add_argument("--end-date", type=_parse_date, required=True)
     parser.add_argument("--target-table", required=True)
+    parser.add_argument("--jdbc-host", required=True)
+    parser.add_argument("--jdbc-database", required=True)
+    parser.add_argument("--jdbc-port", type=int, default=5432)
+    parser.add_argument("--jdbc-sslmode", default="require")
+    parser.add_argument("--jdbc-secret-scope", default="olist-jdbc")
+    parser.add_argument("--jdbc-user-secret-key", default="username")
+    parser.add_argument("--jdbc-password-secret-key", default="password")
     return parser
 
 
@@ -37,6 +45,27 @@ def _build_replace_where_predicate(start_date: date, end_date: date) -> str:
     return (
         f"dt_base >= DATE '{start_date.isoformat()}' "
         f"AND dt_base <= DATE '{end_date.isoformat()}'"
+    )
+
+
+def _build_jdbc_config_from_databricks(args: argparse.Namespace) -> JdbcConfig:
+    runtime = import_module("databricks.sdk.runtime")
+    dbutils = runtime.dbutils
+    user = dbutils.secrets.get(
+        scope=args.jdbc_secret_scope,
+        key=args.jdbc_user_secret_key,
+    )
+    password = dbutils.secrets.get(
+        scope=args.jdbc_secret_scope,
+        key=args.jdbc_password_secret_key,
+    )
+    return JdbcConfig(
+        host=args.jdbc_host,
+        port=args.jdbc_port,
+        database=args.jdbc_database,
+        user=user,
+        password=password,
+        sslmode=args.jdbc_sslmode,
     )
 
 
@@ -51,7 +80,7 @@ def run(
     )
     jdbc_reader = JdbcReader(
         spark=spark,
-        config=jdbc_config or JdbcConfig.from_env(),
+        config=jdbc_config or _build_jdbc_config_from_databricks(args),
     )
     reader = AnpCombustiveisPostgresReader(jdbc_reader)
     dataframe = reader.read(request)
