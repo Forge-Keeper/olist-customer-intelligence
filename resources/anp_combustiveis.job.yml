@@ -1,0 +1,35 @@
+resources:
+  jobs:
+    anp_combustiveis:
+      name: anp_combustiveis
+      max_concurrent_runs: 1
+      parameters:
+        - name: start_date
+          default: "2016-01-04"
+        - name: end_date
+          default: "2016-06-30"
+      tasks:
+        - task_key: ingest_anp_combustiveis
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-anp-bronze
+            parameters:
+              - --start-date
+              - "{{job.parameters.start_date}}"
+              - --end-date
+              - "{{job.parameters.end_date}}"
+              - --target-table
+              - ${var.catalog}.bronze.anp_combustiveis_precos
+              - --jdbc-host
+              - ${var.anp_jdbc_host}
+              - --jdbc-database
+              - ${var.anp_jdbc_database}
+              - --jdbc-secret-scope
+              - olist-jdbc
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
