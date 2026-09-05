@@ -50,6 +50,18 @@ Only DEV has a configured PostgreSQL hostname. STG and PRD intentionally keep th
 
 The bundle-level `run_as_service_principal` variable now defaults to an empty value so local DEV validation/deployment does not require a STG/PRD service-principal identifier. STG/PRD deployment automation continues to inject the identifier explicitly.
 
+### Target isolation
+
+The ANP resource is not a top-level bundle resource. `resources/anp_combustiveis.dev.yml` defines `anp_combustiveis` under `targets.dev.resources.jobs`, so Databricks resolves that job only for the DEV target. Including the YAML file through the bundle-level `include` glob does not promote the resource into STG or PRD; target-scoped resource definitions remain scoped to that target.
+
+CI now validates the resolved bundle configuration for all three targets and enforces this invariant explicitly:
+
+- `anp_combustiveis` must be present in DEV;
+- `anp_combustiveis` must be absent from STG;
+- `anp_combustiveis` must be absent from PRD.
+
+This guard is required before ANP recovery changes can be promoted further. STG/PRD PostgreSQL endpoints and ANP runtime resources remain undefined until separate environment evidence and approval exist.
+
 ## Fresh DEV runtime evidence
 
 The recovered DAB job was deployed and executed successfully in DEV against Azure PostgreSQL.
