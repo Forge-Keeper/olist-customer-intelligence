@@ -13,8 +13,6 @@ from olist_data_platform.domains.ingestion.anp import (
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
 from olist_data_platform.platform.jdbc import JdbcConfig, JdbcReader
 
-DEFAULT_TARGET_TABLE = "prd.bronze.anp_combustiveis_precos"
-
 
 def _parse_date(value: str) -> date:
     try:
@@ -31,7 +29,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--start-date", type=_parse_date, required=True)
     parser.add_argument("--end-date", type=_parse_date, required=True)
-    parser.add_argument("--target-table", default=DEFAULT_TARGET_TABLE)
+    parser.add_argument("--target-table", required=True)
     return parser
 
 
