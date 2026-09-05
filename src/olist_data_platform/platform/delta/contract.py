@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from collections.abc import Mapping
 from dataclasses import dataclass, field
 from types import MappingProxyType
@@ -7,6 +8,7 @@ from types import MappingProxyType
 from pyspark.sql.types import (
     BooleanType,
     DateType,
+    DecimalType,
     DoubleType,
     IntegerType,
     LongType,
@@ -18,6 +20,8 @@ from pyspark.sql.types import (
 )
 
 from olist_data_platform.platform.delta.bronze.config import WriteStrategy
+
+_DECIMAL_TYPE_PATTERN = re.compile(r"^decimal\(\s*(\d+)\s*,\s*(\d+)\s*\)$")
 
 
 def _freeze_tags(tags: Mapping[str, str]) -> Mapping[str, str]:
@@ -55,9 +59,20 @@ def _parse_data_type(data_type: str):
     }
 
     type_factory = primitive_types.get(normalized)
-    if type_factory is None:
-        raise ValueError(f"Unsupported Spark DDL type: {data_type!r}.")
-    return type_factory()
+    if type_factory is not None:
+        return type_factory()
+
+    decimal_match = _DECIMAL_TYPE_PATTERN.fullmatch(normalized)
+    if decimal_match is not None:
+        precision = int(decimal_match.group(1))
+        scale = int(decimal_match.group(2))
+        if not 1 <= precision <= 38:
+            raise ValueError("Decimal precision must be between 1 and 38.")
+        if not 0 <= scale <= precision:
+            raise ValueError("Decimal scale must be between 0 and precision.")
+        return DecimalType(precision=precision, scale=scale)
+
+    raise ValueError(f"Unsupported Spark DDL type: {data_type!r}.")
 
 
 @dataclass(frozen=True)
@@ -267,30 +282,26 @@ class DatasetContract:
         allow_empty: bool,
     ) -> None:
         if not isinstance(columns, tuple):
-            raise TypeError(f"{field_name} must be a tuple of ColumnContract.")
+            raise TypeError(f"{field_name} must be a tuple of ColumnContract values.")
         if not allow_empty and not columns:
             raise ValueError(f"{field_name} cannot be empty.")
         if not all(isinstance(column, ColumnContract) for column in columns):
             raise TypeError(f"{field_name} must contain only ColumnContract values.")
 
-        names = tuple(column.name for column in columns)
-        if len(names) != len(set(names)):
-            raise ValueError(f"{field_name} cannot contain duplicate column names.")
-
     @staticmethod
     def _validate_names(
         field_name: str,
-        values: tuple[str, ...],
+        names: tuple[str, ...],
         *,
         allow_empty: bool,
     ) -> None:
-        if not isinstance(values, tuple):
+        if not isinstance(names, tuple):
             raise TypeError(f"{field_name} must be a tuple of strings.")
-        if not allow_empty and not values:
+        if not allow_empty and not names:
             raise ValueError(f"{field_name} cannot be empty.")
-        if not all(isinstance(value, str) for value in values):
+        if not all(isinstance(name, str) for name in names):
             raise TypeError(f"{field_name} must contain only strings.")
-        if any(not value.strip() for value in values):
-            raise ValueError(f"{field_name} cannot contain empty values.")
-        if len(values) != len(set(values)):
-            raise ValueError(f"{field_name} cannot contain duplicate values.")
+        if any(not name.strip() for name in names):
+            raise ValueError(f"{field_name} cannot contain empty column names.")
+        if len(names) != len(set(names)):
+            raise ValueError(f"{field_name} cannot contain duplicate column names.")
