@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 from datetime import date
+from importlib import import_module
 
 from pyspark.sql import SparkSession
 
@@ -48,8 +49,8 @@ def _build_replace_where_predicate(start_date: date, end_date: date) -> str:
 
 
 def _build_jdbc_config_from_databricks(args: argparse.Namespace) -> JdbcConfig:
-    from databricks.sdk.runtime import dbutils
-
+    runtime = import_module("databricks.sdk.runtime")
+    dbutils = runtime.dbutils
     user = dbutils.secrets.get(
         scope=args.jdbc_secret_scope,
         key=args.jdbc_user_secret_key,
