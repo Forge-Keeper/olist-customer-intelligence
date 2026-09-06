@@ -82,6 +82,47 @@ Observation-only rule:
 
 There is deliberately no uniqueness rule. Duplicate rows are source facts and must survive Bronze persistence.
 
+## DEV runtime acceptance
+
+Runtime acceptance was completed against `dev.bronze.olist_geolocation` after the feature was merged into `dev`.
+
+First execution:
+
+- Databricks job: `[dev bruno_cavi] olist_geolocation`;
+- run ID: `788438005360116`;
+- status: `SUCCESS`;
+- source rows read: `1,000,163`;
+- persisted rows: `1,000,163`;
+- write strategy observed in runtime logs: `FULL_REPLACE`.
+
+Post-write integrity check:
+
+- rows: `1,000,163`;
+- distinct ZIP prefixes: `19,015`;
+- distinct full source rows: `738,332`;
+- null `source_file`: `0`;
+- null `ingestion_timestamp`: `0`.
+
+The integrity result confirms that exact source duplicates remain present in Bronze rather than being collapsed.
+
+Idempotence was then exercised with a second execution:
+
+- run ID: `956084946863022`;
+- status: `SUCCESS`;
+- source rows read: `1,000,163`;
+- persisted rows reported by the job: `1,000,163`;
+- write strategy observed in runtime logs: `FULL_REPLACE`.
+
+The same integrity query after the rerun returned exactly the same state:
+
+- rows: `1,000,163`;
+- distinct ZIP prefixes: `19,015`;
+- distinct full source rows: `738,332`;
+- null `source_file`: `0`;
+- null `ingestion_timestamp`: `0`.
+
+DEV acceptance is therefore complete for source fidelity, duplicate preservation, managed metadata completeness, and repeatable `FULL_REPLACE` behavior.
+
 ## Bronze non-goals
 
 The Bronze job does not:
