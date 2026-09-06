@@ -240,7 +240,10 @@ class DatasetContract:
 
         if not isinstance(self.write_strategy, WriteStrategy):
             raise TypeError("write_strategy must be a WriteStrategy.")
-        if not self.key_columns and self.write_strategy is not WriteStrategy.FULL_REPLACE:
+        if (
+            not self.key_columns
+            and self.write_strategy is not WriteStrategy.FULL_REPLACE
+        ):
             raise ValueError(
                 "key_columns can be empty only for FULL_REPLACE datasets."
             )
