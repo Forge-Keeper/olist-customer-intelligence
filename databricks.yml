@@ -15,8 +15,15 @@ variables:
   cempre_periods:
     description: Comma-separated IBGE CEMPRE reference years for Olist enrichment.
     default: "2016,2017,2018"
+  anp_jdbc_host:
+    description: PostgreSQL hostname for the ANP JDBC source. Non-DEV targets default to empty and must be configured explicitly before execution.
+    default: ""
+  anp_jdbc_database:
+    description: PostgreSQL database for the ANP JDBC source.
+    default: "olist"
   run_as_service_principal:
-    description: Service principal application ID injected by the deployment environment.
+    description: Service principal application ID injected by STG/PRD deployment environments.
+    default: ""
 
 artifacts:
   default:
@@ -31,6 +38,7 @@ targets:
     variables:
       catalog: dev
       admin_catalog: dev_admin
+      anp_jdbc_host: pg-olist-ci-dev.postgres.database.azure.com
 
   stg:
     workspace:

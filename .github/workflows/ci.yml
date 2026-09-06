@@ -137,3 +137,6 @@ jobs:
           databricks bundle validate -t dev
           databricks bundle validate -t stg
           databricks bundle validate -t prd
+
+      - name: Verify ANP target isolation
+        run: uv run python scripts/validate_bundle_target_isolation.py
