@@ -213,7 +213,7 @@ class DatasetContract:
         self._validate_column_contracts(
             "managed_columns", self.managed_columns, allow_empty=True
         )
-        self._validate_names("key_columns", self.key_columns, allow_empty=False)
+        self._validate_names("key_columns", self.key_columns, allow_empty=True)
 
         resolved_names = tuple(column.name for column in self.resolved_columns)
         if len(resolved_names) != len(set(resolved_names)):
@@ -240,6 +240,10 @@ class DatasetContract:
 
         if not isinstance(self.write_strategy, WriteStrategy):
             raise TypeError("write_strategy must be a WriteStrategy.")
+        if not self.key_columns and self.write_strategy is not WriteStrategy.FULL_REPLACE:
+            raise ValueError(
+                "key_columns can be empty only for FULL_REPLACE datasets."
+            )
         if not isinstance(self.layout, TableLayout):
             raise TypeError("layout must be a TableLayout.")
         if not isinstance(self.metadata, TableMetadata):
