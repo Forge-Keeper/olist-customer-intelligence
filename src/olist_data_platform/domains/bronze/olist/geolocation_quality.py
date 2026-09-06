@@ -32,7 +32,9 @@ OLIST_GEOLOCATION_QUALITY_CONTRACT = DataQualityContract(
         NotNullRule(
             rule_id="GEOLOCATION-DQ02",
             version=1,
-            description="Observed Geolocation source columns cannot contain null values.",
+            description=(
+                "Observed Geolocation source columns cannot contain null values."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
             columns=GEOLOCATION_SOURCE_COLUMNS,
