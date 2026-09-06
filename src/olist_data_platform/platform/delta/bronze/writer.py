@@ -153,6 +153,9 @@ class BronzeWriter:
             )
 
     def _validate_primary_key_values(self, dataframe: DataFrame) -> None:
+        if not self.config.key_columns:
+            return
+
         null_condition = None
         for column_name in self.config.key_columns:
             condition = F.col(column_name).isNull()
@@ -213,6 +216,9 @@ class BronzeWriter:
         )
 
     def _merge(self, dataframe: DataFrame) -> None:
+        if not self.config.key_columns:
+            raise ValueError("MERGE Bronze datasets require key_columns.")
+
         source_view = f"_bronze_source_{uuid4().hex}"
         dataframe.createOrReplaceTempView(source_view)
 
