@@ -67,16 +67,5 @@ OLIST_GEOLOCATION_QUALITY_CONTRACT = DataQualityContract(
             expression="NOT (geolocation_state RLIKE '^[A-Z]{2}$')",
             expected_condition="observed count only; source value remains unchanged",
         ),
-        ObservedCountRule(
-            rule_id="GEOLOCATION-DQ06",
-            version=1,
-            description="Count exact duplicate source observations.",
-            category=QualityCategory.OBSERVATION,
-            severity=QualitySeverity.INFO,
-            expression="false",
-            expected_condition=(
-                "duplicate cardinality is profiled separately; duplicates are retained"
-            ),
-        ),
     ),
 )
