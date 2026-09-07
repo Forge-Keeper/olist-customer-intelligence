@@ -16,7 +16,7 @@ A small data platform foundation built around the Olist public e-commerce datase
 ## Portfolio snapshot
 
 - **Databricks / PySpark / Delta Lake** as the core execution and persistence stack;
-- source-faithful Bronze ingestion across **Olist CSV, Open-Meteo and IBGE APIs / SIDRA**;
+- source-faithful Bronze ingestion across **Olist CSV, ANP fuel prices via Azure PostgreSQL/JDBC, Open-Meteo and IBGE APIs / SIDRA**;
 - executable dataset contracts, explicit logical keys and fail-fast schema-drift handling;
 - first-class PySpark **Data Quality** with persisted rule evidence and blocking write gates;
 - **Unity Catalog** metadata/governance foundation, ABAC policy lifecycle and justified Liquid Clustering;
@@ -37,6 +37,7 @@ Implemented Bronze vertical slices:
 - Weather / Open-Meteo;
 - Olist Customers;
 - Olist Closed Deals;
+- ANP fuel prices from Azure PostgreSQL through JDBC into Databricks Bronze (DEV runtime validated);
 - IBGE Localidades / municipalities;
 - IBGE municipality population;
 - IBGE municipality GDP / VAB;
@@ -48,6 +49,7 @@ Bronze is intentionally lightweight and source-faithful: source semantics are pr
 
 - modular Python package using a hybrid **Platform + Domains** structure;
 - reusable HTTP/retry/logging infrastructure;
+- reusable PostgreSQL and JDBC access infrastructure for operational-source ingestion;
 - executable `DatasetContract` definitions;
 - reusable `DeltaTableLifecycle`;
 - `BronzeWriter` with explicit write strategies, idempotent behavior and checked-batch evidence reuse;
@@ -67,36 +69,38 @@ Bronze is intentionally lightweight and source-faithful: source semantics are pr
 ## Architecture
 
 ```text
-Olist CSV        Open-Meteo         IBGE APIs / SIDRA
-    \                |                    /
-     +---------------+-------------------+
-                     |
-                     v
-            Domain ingestion services
-                     |
-                     v
-             source/domain adapters
-                     |
-                     v
-             DataQualityRunner
-              /             \
-             v               v
-  quality evidence      checked batch
-             |               |
-             v               v
-   Admin Control Plane   BronzeWriter
-             |               |
-             |       +-------+--------+
-             |       |                |
-             |       v                v
-             | DatasetContract  DeltaTableLifecycle
-             |       |                |
-             |       +-------+--------+
-             |               |
-             v               v
- execution_runs /      business Delta tables
- data_quality_results      / Unity Catalog
+Olist CSV      ANP / Azure PostgreSQL      Open-Meteo      IBGE APIs / SIDRA
+    \                   |                       |                  /
+     +------------------+-----------------------+-----------------+
+                                |
+                                v
+                       Domain ingestion services
+                                |
+                                v
+                        source/domain adapters
+                                |
+                                v
+                        DataQualityRunner
+                         /             \
+                        v               v
+             quality evidence      checked batch
+                        |               |
+                        v               v
+              Admin Control Plane   BronzeWriter
+                        |               |
+                        |       +-------+--------+
+                        |       |                |
+                        |       v                v
+                        | DatasetContract  DeltaTableLifecycle
+                        |       |                |
+                        |       +-------+--------+
+                        |               |
+                        v               v
+                execution_runs /      business Delta tables
+                data_quality_results      / Unity Catalog
 ```
+
+The ANP path enters the platform from Azure PostgreSQL through JDBC; the recovered DEV workload uses bounded `REPLACE_WHERE` reprocessing and remains intentionally isolated from STG/PRD PostgreSQL endpoints until those environments are explicitly configured and validated.
 
 The GDP workload is the first consumer of the first-class Data Quality path. Existing non-migrated Bronze datasets retain their current contract/source/writer validations until a concrete migration is justified.
 
@@ -175,11 +179,14 @@ The real DEV proof for period 2018 produced 33,420 Bronze rows with 33,420 disti
 | Source | Delivered slices | Persistence behavior |
 | --- | --- | --- |
 | Olist | Customers, Closed Deals | authoritative CSV snapshots / `FULL_REPLACE` after validation |
+| ANP via Azure PostgreSQL / JDBC | fuel-price records (`anp_combustiveis_precos`) | bounded date-window reprocessing / `REPLACE_WHERE` in DEV |
 | Open-Meteo | historical weather | idempotent `MERGE` |
 | IBGE Localidades | municipalities | dated source snapshot / `MERGE` |
 | IBGE SIDRA 6579 | municipality population | annual slices / `MERGE` |
 | IBGE SIDRA 5938 | municipality GDP/VAB | bounded year × variable slices / `MERGE` with first-class pre-write DQ |
 | IBGE SIDRA 1685 | CEMPRE municipal business activity | 2016–2018 year × variable slices / `MERGE` |
+
+The ANP DEV path has fresh runtime evidence for `2016-01-04` through `2016-06-30`: 486,897 rows, 486,897 distinct technical IDs and repeatable bounded reprocessing from Azure PostgreSQL through JDBC into `dev.bronze.anp_combustiveis_precos`. STG/PRD PostgreSQL sources remain intentionally unconfigured and are not represented as runtime-validated.
 
 The reusable SIDRA stack includes `SidraClient`, `SidraQuery`, `SidraDataset` and `SidraParser`; dataset semantics remain in dedicated extractors/services/writers.
 
