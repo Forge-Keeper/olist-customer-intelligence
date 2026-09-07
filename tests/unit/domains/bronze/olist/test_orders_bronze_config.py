@@ -48,6 +48,7 @@ def test_orders_quality_contract_has_blocking_core_rules() -> None:
         "ORDERS-DQ04",
         "ORDERS-DQ05",
         "ORDERS-DQ06",
+        "ORDERS-DQ07",
     ]
-    assert [rule.severity for rule in rules[:4]] == [QualitySeverity.ERROR] * 4
-    assert [rule.severity for rule in rules[4:]] == [QualitySeverity.INFO] * 2
+    assert [rule.severity for rule in rules[:5]] == [QualitySeverity.ERROR] * 5
+    assert [rule.severity for rule in rules[5:]] == [QualitySeverity.INFO] * 2
