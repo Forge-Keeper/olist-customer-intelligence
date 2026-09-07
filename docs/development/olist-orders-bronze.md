@@ -80,16 +80,19 @@ Approval and actual delivery timestamps remain nullable because DEV profiling co
 Blocking rules:
 
 - `ORDERS-DQ01`: snapshot is non-empty;
-- `ORDERS-DQ02`: order ID, customer ID, status, purchase timestamp and estimated-delivery timestamp are non-null;
-- `ORDERS-DQ03`: `order_id` is unique;
-- `ORDERS-DQ04`: present timestamp values parse as timestamps.
+- `ORDERS-DQ02`: `order_id` is non-null and provides reusable key-completeness evidence;
+- `ORDERS-DQ03`: `order_id` is unique and provides reusable key-uniqueness evidence;
+- `ORDERS-DQ04`: required non-key attributes (`customer_id`, `order_status`, purchase timestamp and estimated-delivery timestamp) are non-null;
+- `ORDERS-DQ05`: present timestamp values parse as timestamps.
 
 Observation-only rules:
 
-- `ORDERS-DQ05`: count orders without approval timestamp;
-- `ORDERS-DQ06`: count orders without customer delivery timestamp.
+- `ORDERS-DQ06`: count orders without approval timestamp;
+- `ORDERS-DQ07`: count orders without customer delivery timestamp.
 
-The observed DEV profile is compatible with the initial DQ contract: no blocking condition is expected from source shape, while DQ05 and DQ06 capture genuine source incompleteness without altering it.
+The key not-null rule is intentionally separated from the other required attributes. `DataQualityRunner` only emits reusable key evidence when the same key-column tuple passes both blocking `NotNullRule` and `UniqueRule`; `BronzeWriter.write_checked` requires that evidence to match the dataset contract before persistence.
+
+The first DEV execution exposed this contract requirement before any Bronze write occurred: the original combined not-null rule produced no reusable `order_id` key evidence, so the writer rejected the checked batch. The DQ layout was corrected without changing source semantics or the Bronze key decision.
 
 ## Bronze non-goals
 
@@ -107,8 +110,10 @@ Those concerns belong to Silver or downstream modeling.
 
 ## DEV runtime acceptance pending
 
-Source profiling is complete. Runtime acceptance still must confirm:
+Source profiling is complete. The first runtime attempt reached the write gate and failed safely before persistence because reusable key evidence was missing from the original DQ layout. The corrective DQ contract now has integration coverage proving `validated_key_columns == ("order_id",)` for a valid batch.
 
-1. successful first `FULL_REPLACE` run with `99,441` source/persisted rows;
+Runtime acceptance still must confirm:
+
+1. successful first `FULL_REPLACE` run after the key-evidence correction with `99,441` source/persisted rows;
 2. target integrity: `99,441` rows, `99,441` distinct order IDs and non-null managed metadata;
 3. unchanged semantic state after a second `FULL_REPLACE` run.
