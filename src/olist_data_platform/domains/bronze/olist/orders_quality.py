@@ -12,8 +12,7 @@ from olist_data_platform.platform.quality import (
 )
 
 ORDERS_KEY_COLUMNS = ("order_id",)
-ORDERS_REQUIRED_COLUMNS = (
-    "order_id",
+ORDERS_REQUIRED_NON_KEY_COLUMNS = (
     "customer_id",
     "order_status",
     "order_purchase_timestamp",
@@ -46,10 +45,10 @@ OLIST_ORDERS_QUALITY_CONTRACT = DataQualityContract(
         NotNullRule(
             rule_id="ORDERS-DQ02",
             version=1,
-            description="Required Orders source attributes cannot contain null values.",
+            description="The Orders natural key cannot contain null values.",
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
-            columns=ORDERS_REQUIRED_COLUMNS,
+            columns=ORDERS_KEY_COLUMNS,
         ),
         UniqueRule(
             rule_id="ORDERS-DQ03",
@@ -59,8 +58,16 @@ OLIST_ORDERS_QUALITY_CONTRACT = DataQualityContract(
             severity=QualitySeverity.ERROR,
             columns=ORDERS_KEY_COLUMNS,
         ),
-        PredicateRule(
+        NotNullRule(
             rule_id="ORDERS-DQ04",
+            version=1,
+            description="Required non-key Orders attributes cannot contain null values.",
+            category=QualityCategory.COMPLETENESS,
+            severity=QualitySeverity.ERROR,
+            columns=ORDERS_REQUIRED_NON_KEY_COLUMNS,
+        ),
+        PredicateRule(
+            rule_id="ORDERS-DQ05",
             version=1,
             description="Present Orders timestamp attributes must parse as timestamps.",
             category=QualityCategory.VALIDITY,
@@ -69,7 +76,7 @@ OLIST_ORDERS_QUALITY_CONTRACT = DataQualityContract(
             expected_condition="timestamp source values are null or parseable timestamps",
         ),
         ObservedCountRule(
-            rule_id="ORDERS-DQ05",
+            rule_id="ORDERS-DQ06",
             version=1,
             description="Count orders without an approval timestamp.",
             category=QualityCategory.OBSERVATION,
@@ -78,7 +85,7 @@ OLIST_ORDERS_QUALITY_CONTRACT = DataQualityContract(
             expected_condition="observed count only; source value remains unchanged",
         ),
         ObservedCountRule(
-            rule_id="ORDERS-DQ06",
+            rule_id="ORDERS-DQ07",
             version=1,
             description="Count orders without a customer delivery timestamp.",
             category=QualityCategory.OBSERVATION,
