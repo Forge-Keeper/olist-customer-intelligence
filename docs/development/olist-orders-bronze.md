@@ -108,12 +108,35 @@ Bronze does not:
 
 Those concerns belong to Silver or downstream modeling.
 
-## DEV runtime acceptance pending
+## DEV runtime acceptance
 
-Source profiling is complete. The first runtime attempt reached the write gate and failed safely before persistence because reusable key evidence was missing from the original DQ layout. The corrective DQ contract now has integration coverage proving `validated_key_columns == ("order_id",)` for a valid batch.
+The corrected pipeline completed DEV runtime acceptance against `dev.bronze.olist_orders`.
 
-Runtime acceptance still must confirm:
+First successful execution after the key-evidence correction:
 
-1. successful first `FULL_REPLACE` run after the key-evidence correction with `99,441` source/persisted rows;
-2. target integrity: `99,441` rows, `99,441` distinct order IDs and non-null managed metadata;
-3. unchanged semantic state after a second `FULL_REPLACE` run.
+- Databricks run ID: `560598913584146`;
+- application run ID: `c59d0230-b318-4652-81ed-d8dd1f9a7879`;
+- status: `SUCCESS`;
+- source rows read: `99,441`;
+- persisted rows reported by the job: `99,441`;
+- write strategy observed in runtime logs: `FULL_REPLACE`.
+
+Post-write integrity check:
+
+- rows: `99,441`;
+- distinct `order_id`: `99,441`;
+- null `source_file`: `0`;
+- null `ingestion_timestamp`: `0`.
+
+Idempotence was then exercised with a second execution:
+
+- Databricks run ID: `49566048640583`;
+- application run ID: `ad01698e-65b3-4219-8faf-3f8e205442ad`;
+- status: `SUCCESS`;
+- source rows read: `99,441`;
+- persisted rows reported by the job: `99,441`;
+- write strategy observed in runtime logs: `FULL_REPLACE`.
+
+The second run completed without changing the expected semantic cardinality of the snapshot. Together with the first integrity result, this proves the Orders Bronze can be repeatedly rebuilt from the authoritative CSV snapshot while preserving the natural-key cardinality and managed metadata requirements.
+
+DEV acceptance is complete for source profiling, natural-key evidence, source fidelity, timestamp parseability, managed metadata completeness and repeatable `FULL_REPLACE` behavior.
