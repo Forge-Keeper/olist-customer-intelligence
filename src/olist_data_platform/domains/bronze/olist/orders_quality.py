@@ -61,7 +61,9 @@ OLIST_ORDERS_QUALITY_CONTRACT = DataQualityContract(
         NotNullRule(
             rule_id="ORDERS-DQ04",
             version=1,
-            description="Required non-key Orders attributes cannot contain null values.",
+            description=(
+                "Required non-key Orders attributes cannot contain null values."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
             columns=ORDERS_REQUIRED_NON_KEY_COLUMNS,
@@ -73,7 +75,9 @@ OLIST_ORDERS_QUALITY_CONTRACT = DataQualityContract(
             category=QualityCategory.VALIDITY,
             severity=QualitySeverity.ERROR,
             expression=_TIMESTAMP_SOURCE_SHAPE,
-            expected_condition="timestamp source values are null or parseable timestamps",
+            expected_condition=(
+                "timestamp source values are null or parseable timestamps"
+            ),
         ),
         ObservedCountRule(
             rule_id="ORDERS-DQ06",
