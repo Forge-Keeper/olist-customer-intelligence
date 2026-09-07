@@ -6,13 +6,13 @@ Land `olist_orders_dataset.csv` in Bronze while preserving the source snapshot f
 
 ## Source contract
 
-Expected source path:
+Source path:
 
 ```text
-/Volumes/${catalog}/bronze/raw_storage/raw/olist/e_commerce/olist_orders_dataset.csv
+/Volumes/dev/bronze/raw_storage/raw/olist/e_commerce/olist_orders_dataset.csv
 ```
 
-Expected source columns:
+Observed source columns:
 
 - `order_id`
 - `customer_id`
@@ -23,11 +23,37 @@ Expected source columns:
 - `order_delivered_customer_date`
 - `order_estimated_delivery_date`
 
-Runtime profiling in DEV is still required before acceptance is closed. This implementation deliberately avoids introducing status-domain semantics or lifecycle ordering rules before those source facts are verified.
+DEV profiling result:
+
+- rows: `99,441`;
+- distinct `order_id`: `99,441`;
+- null `order_id`: `0`;
+- null `customer_id`: `0`;
+- null `order_status`: `0`;
+- null `order_purchase_timestamp`: `0`;
+- null `order_approved_at`: `160`;
+- null `order_delivered_carrier_date`: `1,783`;
+- null `order_delivered_customer_date`: `2,965`;
+- null `order_estimated_delivery_date`: `0`.
+
+Observed statuses:
+
+- `approved`;
+- `canceled`;
+- `created`;
+- `delivered`;
+- `invoiced`;
+- `processing`;
+- `shipped`;
+- `unavailable`.
+
+All five timestamp source columns had zero non-null values that failed `TRY_CAST(... AS TIMESTAMP)` in the DEV profile.
+
+No status-domain semantics or lifecycle ordering constraints are introduced in Bronze.
 
 ## Identity decision
 
-`order_id` is the Bronze natural key candidate and is enforced as non-null and unique by Data Quality.
+`order_id` is the Bronze natural key and is enforced as non-null and unique by Data Quality. The DEV profile confirmed `99,441` rows and `99,441` distinct order IDs.
 
 The snapshot uses `FULL_REPLACE`, consistent with the current Olist CSV snapshot pattern.
 
@@ -47,7 +73,7 @@ Source values are persisted as strings:
 - `source_file`;
 - managed `ingestion_timestamp`.
 
-The approval and actual delivery timestamps are nullable because lifecycle events may not exist for every source order. Purchase and estimated-delivery timestamps are required by the initial contract and must be verified in DEV profiling.
+Approval and actual delivery timestamps remain nullable because DEV profiling confirms missing lifecycle events in the source. Purchase and estimated-delivery timestamps are required and had zero nulls in the DEV profile.
 
 ## Data Quality
 
@@ -63,6 +89,8 @@ Observation-only rules:
 - `ORDERS-DQ05`: count orders without approval timestamp;
 - `ORDERS-DQ06`: count orders without customer delivery timestamp.
 
+The observed DEV profile is compatible with the initial DQ contract: no blocking condition is expected from source shape, while DQ05 and DQ06 capture genuine source incompleteness without altering it.
+
 ## Bronze non-goals
 
 Bronze does not:
@@ -77,14 +105,10 @@ Bronze does not:
 
 Those concerns belong to Silver or downstream modeling.
 
-## DEV acceptance pending
+## DEV runtime acceptance pending
 
-Before promotion, DEV runtime acceptance must confirm:
+Source profiling is complete. Runtime acceptance still must confirm:
 
-1. source file and exact schema;
-2. row count and distinct `order_id` count;
-3. null counts for all source columns;
-4. observed `order_status` values;
-5. timestamp parsing compatibility;
-6. successful first `FULL_REPLACE` run;
-7. unchanged semantic state after a second run.
+1. successful first `FULL_REPLACE` run with `99,441` source/persisted rows;
+2. target integrity: `99,441` rows, `99,441` distinct order IDs and non-null managed metadata;
+3. unchanged semantic state after a second `FULL_REPLACE` run.
