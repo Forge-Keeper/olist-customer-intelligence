@@ -45,7 +45,15 @@ nav:
       - Platform Status: platform-status.md
   - Data Features:
       - Olist Customers Bronze: development/olist-customers-bronze.md
+      - Olist Sellers Bronze: development/olist-sellers-bronze.md
       - Olist Marketing Funnel Bronze: development/olist-marketing-funnel-bronze.md
+      - Olist Products Bronze: development/olist-products-bronze.md
+      - Olist Product Category Translation Bronze: development/olist-product-category-name-translation-bronze.md
+      - Olist Geolocation Bronze: development/olist-geolocation-bronze.md
+      - Olist Orders Bronze: development/olist-orders-bronze.md
+      - Olist Order Items Bronze: development/olist-order-items-bronze.md
+      - Olist Order Payments Bronze: development/olist-order-payments-bronze.md
+      - Olist Order Reviews Bronze: development/olist-order-reviews-bronze.md
       - IBGE API Ingestion: development/ibge-api-ingestion.md
       - IBGE Municipality GDP: development/ibge-municipality-gdp.md
       - IBGE CEMPRE: development/ibge-cempre.md
