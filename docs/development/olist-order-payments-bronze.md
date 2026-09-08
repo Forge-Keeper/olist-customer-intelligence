@@ -93,11 +93,13 @@ Those concerns belong to downstream modeling unless a separate Bronze requiremen
 
 ## DEV runtime acceptance
 
-Pending runtime execution.
+DEV runtime acceptance is complete.
 
-Acceptance requires two successful DEV executions with stable semantic cardinality and post-write evidence showing:
+Execution evidence:
 
-- 103,886 rows;
-- 103,886 distinct `(order_id, payment_sequential)` keys;
-- zero null `source_file` values;
-- zero null ingestion timestamps.
+- first Databricks run `944861675496142` completed with `TERMINATED SUCCESS`, application run ID `029b4e3c-ddb3-4901-8eb1-1d20c9050f48`, and 103,886 ingested rows;
+- second Databricks run `583140817447126` completed with `TERMINATED SUCCESS`, application run ID `21e379b6-0a7f-458c-a5d7-78e15ed49cc6`, and 103,886 ingested rows;
+- both executions used `FULL_REPLACE` against `dev.bronze.olist_order_payments`;
+- post-rerun integrity evidence showed 103,886 rows, 103,886 distinct `(order_id, payment_sequential)` keys, zero null `source_file` values, and zero null ingestion timestamps.
+
+The stable semantic cardinality across both successful runs demonstrates snapshot rerun idempotence for the approved source snapshot.
