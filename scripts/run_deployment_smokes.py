@@ -102,7 +102,10 @@ def validate_manifest_dependencies(manifest: SmokeManifest) -> None:
                 f"unknown dependencies for {job_name}: {', '.join(unknown)}"
             )
 
-    indegree = {job_name: len(config["depends_on"]) for job_name, config in manifest.items()}
+    indegree = {
+        job_name: len(config["depends_on"])
+        for job_name, config in manifest.items()
+    }
     downstream: dict[str, list[str]] = {job_name: [] for job_name in manifest}
     for job_name, config in manifest.items():
         for dependency in config["depends_on"]:
@@ -137,6 +140,22 @@ def build_command(target: str, job_name: str, arguments: list[str]) -> list[str]
 
 def _default_command_runner(command: list[str]) -> object:
     return subprocess.run(command, check=True)
+
+
+def _propagate_blocked(
+    manifest: SmokeManifest,
+    statuses: dict[str, str],
+) -> None:
+    changed = True
+    while changed:
+        changed = False
+        for job_name, config in manifest.items():
+            if statuses[job_name] != "PENDING":
+                continue
+            dependency_states = [statuses[name] for name in config["depends_on"]]
+            if any(state in TERMINAL_FAILURE_STATES for state in dependency_states):
+                statuses[job_name] = "BLOCKED"
+                changed = True
 
 
 def _write_results(
@@ -177,12 +196,7 @@ def run_smokes(
 
     with ThreadPoolExecutor(max_workers=max_workers) as executor:
         while any(status == "PENDING" for status in statuses.values()) or running:
-            for job_name, config in manifest.items():
-                if statuses[job_name] != "PENDING":
-                    continue
-                dependency_states = [statuses[name] for name in config["depends_on"]]
-                if any(state in TERMINAL_FAILURE_STATES for state in dependency_states):
-                    statuses[job_name] = "BLOCKED"
+            _propagate_blocked(manifest, statuses)
 
             available_slots = max_workers - len(running)
             if available_slots > 0:
@@ -190,7 +204,10 @@ def run_smokes(
                     job_name
                     for job_name, config in manifest.items()
                     if statuses[job_name] == "PENDING"
-                    and all(statuses[name] == "SUCCESS" for name in config["depends_on"])
+                    and all(
+                        statuses[name] == "SUCCESS"
+                        for name in config["depends_on"]
+                    )
                 ]
                 for job_name in ready_jobs[:available_slots]:
                     config = manifest[job_name]
@@ -205,10 +222,15 @@ def run_smokes(
                     running[future] = job_name
 
             if not running:
-                pending = [job_name for job_name, status in statuses.items() if status == "PENDING"]
+                pending = [
+                    job_name
+                    for job_name, status in statuses.items()
+                    if status == "PENDING"
+                ]
                 if pending:
+                    pending_jobs = ", ".join(pending)
                     raise RuntimeError(
-                        "Smoke scheduler stalled with pending jobs: " + ", ".join(pending)
+                        f"Smoke scheduler stalled with pending jobs: {pending_jobs}"
                     )
                 break
 
@@ -231,7 +253,10 @@ def run_smokes(
         if status in TERMINAL_FAILURE_STATES
     ]
     if failures:
-        raise RuntimeError("Deployment smokes did not fully succeed: " + ", ".join(failures))
+        failure_summary = ", ".join(failures)
+        raise RuntimeError(
+            f"Deployment smokes did not fully succeed: {failure_summary}"
+        )
 
 
 def parse_args() -> argparse.Namespace:
