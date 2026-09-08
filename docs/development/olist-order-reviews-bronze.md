@@ -59,7 +59,7 @@ Optional source attributes:
 - `review_comment_title`;
 - `review_comment_message`.
 
-`source_file` and the managed Bronze ingestion timestamp provide technical lineage.
+`source_file` and `ingestion_timestamp` provide technical lineage.
 
 ## Data Quality policy
 
@@ -138,4 +138,12 @@ Second runtime execution against the same source snapshot:
 - Bronze rows written: 99,224;
 - target: `dev.bronze.olist_order_reviews`.
 
-The repeated successful `FULL_REPLACE` execution with the same 99,224-row snapshot provides runtime evidence for semantic idempotence. Final post-rerun integrity checks still verify target row count, distinct composite-key count and managed lineage completeness before promotion.
+Post-rerun integrity checks on `dev.bronze.olist_order_reviews` confirmed:
+
+- `row_count = 99224`;
+- `distinct_key_count = 99224` for `(review_id, order_id)`;
+- `null_key_rows = 0`;
+- `null_source_file_rows = 0`;
+- `null_ingestion_timestamp_rows = 0`.
+
+The repeated successful `FULL_REPLACE` execution plus the post-rerun integrity checks provide runtime evidence for semantic idempotence and complete technical lineage in DEV.
