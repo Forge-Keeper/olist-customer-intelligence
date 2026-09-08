@@ -9,8 +9,14 @@ from olist_data_platform.platform.quality import QualitySeverity
 
 
 def test_order_reviews_bronze_contract_uses_composite_key_full_replace() -> None:
-    assert OLIST_ORDER_REVIEWS_BRONZE_CONFIG.key_columns == ("review_id", "order_id")
-    assert OLIST_ORDER_REVIEWS_BRONZE_CONFIG.write_strategy is WriteStrategy.FULL_REPLACE
+    assert OLIST_ORDER_REVIEWS_BRONZE_CONFIG.key_columns == (
+        "review_id",
+        "order_id",
+    )
+    assert (
+        OLIST_ORDER_REVIEWS_BRONZE_CONFIG.write_strategy
+        is WriteStrategy.FULL_REPLACE
+    )
 
 
 def test_order_reviews_bronze_contract_preserves_source_nullability() -> None:
