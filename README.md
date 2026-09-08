@@ -35,9 +35,15 @@ A small data platform foundation built around the Olist public e-commerce datase
 Implemented Bronze vertical slices:
 
 - Weather / Open-Meteo;
-- Olist Customers;
-- Olist Closed Deals;
 - ANP fuel prices from Azure PostgreSQL through JDBC into Databricks Bronze (DEV runtime validated);
+- Olist Customers;
+- Olist Sellers;
+- Olist Products;
+- Olist Product Category Name Translation;
+- Olist Geolocation;
+- Olist Orders;
+- Olist Marketing Qualified Leads;
+- Olist Closed Deals;
 - IBGE Localidades / municipalities;
 - IBGE municipality population;
 - IBGE municipality GDP / VAB;
@@ -56,7 +62,6 @@ Bronze is intentionally lightweight and source-faithful: source semantics are pr
 - lightweight first-class PySpark Data Quality contracts, rules and structured results;
 - persisted `ERROR` / `WARNING` / `INFO` quality evidence;
 - environment-isolated administrative Control Plane for execution history and Data Quality results;
-- GDP pre-write Data Quality gate validated in real DEV runtime;
 - controlled schema-evolution policy with fail-fast drift handling;
 - metadata reconciliation for table/column descriptions and tags;
 - Unity Catalog governance foundation and ABAC policy lifecycle;
@@ -102,8 +107,6 @@ Olist CSV      ANP / Azure PostgreSQL      Open-Meteo      IBGE APIs / SIDRA
 
 The ANP path enters the platform from Azure PostgreSQL through JDBC; the recovered DEV workload uses bounded `REPLACE_WHERE` reprocessing and remains intentionally isolated from STG/PRD PostgreSQL endpoints until those environments are explicitly configured and validated.
 
-The GDP workload is the first consumer of the first-class Data Quality path. Existing non-migrated Bronze datasets retain their current contract/source/writer validations until a concrete migration is justified.
-
 Deployment is a separate delivery plane:
 
 ```text
@@ -125,15 +128,19 @@ src/olist_data_platform/
 │   ├── delta/
 │   ├── governance/
 │   ├── http/
+│   ├── jdbc/
 │   ├── logging/
 │   ├── operations/
+│   ├── postgres/
 │   └── quality/
 ├── domains/
 │   ├── ingestion/
+│   │   ├── anp/
 │   │   ├── ibge/
 │   │   ├── olist/
 │   │   └── weather/
 │   ├── bronze/
+│   │   ├── anp/
 │   │   ├── ibge/
 │   │   ├── olist/
 │   │   └── weather/
@@ -152,7 +159,7 @@ Core rules:
 - preserve source semantics / AS-IS values;
 - use explicit persisted schemas and technical metadata;
 - make logical keys and idempotency explicit;
-- use `MERGE` or `FULL_REPLACE` according to the source contract;
+- choose the write strategy from the source contract (`MERGE`, `FULL_REPLACE` or bounded `REPLACE_WHERE` where justified);
 - use partitioning or Liquid Clustering only when justified;
 - preserve semi-structured source payloads in `VARIANT` when this protects fidelity;
 - fail on incompatible table drift rather than silently widening production state.
@@ -161,24 +168,23 @@ Relevant ADRs are under `docs/adr/`.
 
 ## Data Quality and operational evidence
 
-`DataQualityContract` is intentionally separate from the persisted `DatasetContract`. Rules carry stable IDs, versions, categories and severities; evaluation produces structured PASS/FAIL evidence before the protected write.
+`DataQualityContract` is intentionally separate from the persisted `DatasetContract`. Rules carry stable IDs, versions, categories and severities; evaluation produces structured PASS/FAIL evidence before protected writes where the workload uses the first-class DQ path.
 
-For the GDP pilot:
-
-- failed `ERROR` rules reject the Bronze write;
+- failed `ERROR` rules reject the protected Bronze write;
 - `WARNING` and `INFO` do not block;
 - quality evidence is persisted in `<admin_catalog>.quality.data_quality_results`;
 - execution lifecycle is persisted in `<admin_catalog>.operations.execution_runs`;
 - both are correlated by one platform `run_id`;
 - passing key-integrity evidence can be consumed by `BronzeWriter.write_checked()` without repeating equivalent logical-key scans.
 
-The real DEV proof for period 2018 produced 33,420 Bronze rows with 33,420 distinct natural keys and eight passing quality-rule results. A deliberate duplicate-key batch failed `GDP-DQ03`, recorded `REJECTED` / `FAILED` with `records_written = 0`, and left the isolated Bronze validation table unchanged.
+The GDP DEV proof for period 2018 produced 33,420 Bronze rows with 33,420 distinct natural keys and eight passing quality-rule results. A deliberate duplicate-key batch failed `GDP-DQ03`, recorded `REJECTED` / `FAILED` with `records_written = 0`, and left the isolated Bronze validation table unchanged.
 
 ## Data sources and delivered datasets
 
 | Source | Delivered slices | Persistence behavior |
 | --- | --- | --- |
-| Olist | Customers, Closed Deals | authoritative CSV snapshots / `FULL_REPLACE` after validation |
+| Olist e-commerce CSV | Customers, Sellers, Products, Product Category Name Translation, Geolocation, Orders | authoritative source snapshots; current workload contracts use source-appropriate full-snapshot semantics after validation |
+| Olist marketing funnel CSV | Marketing Qualified Leads, Closed Deals | authoritative CSV snapshots / `FULL_REPLACE` after validation |
 | ANP via Azure PostgreSQL / JDBC | fuel-price records (`anp_combustiveis_precos`) | bounded date-window reprocessing / `REPLACE_WHERE` in DEV |
 | Open-Meteo | historical weather | idempotent `MERGE` |
 | IBGE Localidades | municipalities | dated source snapshot / `MERGE` |
@@ -242,6 +248,7 @@ The platform separates dataset facts from access policies:
 The MkDocs site is the public engineering portal. It contains:
 
 - portfolio-oriented architecture and platform-status pages;
+- current Bronze feature pages and runtime closeouts where available;
 - engineering standards and Definition of Done;
 - branch and deployment runbooks;
 - DAB design/delivery records;
@@ -253,9 +260,9 @@ GitHub remains the source of truth for both code and documentation.
 
 ## Current boundary and roadmap
 
-Delivered scope is currently centered on the Bronze/platform foundation, now including the first-class GDP Data Quality pilot and administrative Control Plane. Silver, Gold and the final Customer Intelligence analytical product remain future layers; their package boundaries exist but they are not represented as completed analytical implementations.
+Delivered scope is centered on the Bronze/platform foundation. The core Olist e-commerce Bronze set is partially complete: Customers, Sellers, Products, Product Category Name Translation, Geolocation and Orders are implemented; Order Items, Order Payments and Order Reviews remain future Bronze work. Silver, Gold and the final Customer Intelligence analytical product remain future layers and are not represented as completed analytical implementations.
 
-First-class Data Quality adoption beyond GDP, broader observability and shared-environment runtime hardening remain future work to be justified by concrete requirements. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy; smoke coverage should remain targeted, cheap and explicit.
+Broader observability, additional Data Quality adoption where needed and shared-environment runtime hardening remain future work to be justified by concrete requirements. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy; smoke coverage should remain targeted, cheap and explicit.
 
 Future work must be selected from the current GitHub backlog rather than inferred from historical README checkpoints.
 
