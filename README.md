@@ -132,10 +132,12 @@ src/olist_data_platform/
 │   └── quality/
 ├── domains/
 │   ├── ingestion/
+│   │   ├── anp/
 │   │   ├── ibge/
 │   │   ├── olist/
 │   │   └── weather/
 │   ├── bronze/
+│   │   ├── anp/
 │   │   ├── ibge/
 │   │   ├── olist/
 │   │   └── weather/
@@ -154,7 +156,7 @@ Core rules:
 - preserve source semantics / AS-IS values;
 - use explicit persisted schemas and technical metadata;
 - make logical keys and idempotency explicit;
-- use `MERGE`, `FULL_REPLACE` or bounded reprocessing according to the source contract;
+- use `MERGE`, `FULL_REPLACE` or bounded `replaceWhere` reprocessing according to the source contract;
 - use partitioning or Liquid Clustering only when justified;
 - preserve semi-structured source payloads in `VARIANT` when this protects fidelity;
 - fail on incompatible table drift rather than silently widening production state.
