@@ -13,16 +13,24 @@
 
 A small data platform foundation built around the Olist public e-commerce dataset and justified external sources to demonstrate production Data Engineering concerns: explicit contracts, idempotent persistence, Data Quality, operational evidence, governance, CI/CD and controlled environment promotion.
 
+> **Source of truth**
+>
+> `main` represents the implemented code baseline.  
+> [Platform Status](docs/platform-status.md) is the canonical human-readable view of delivered datasets, capabilities and environment readiness.  
+> [GitHub Issues](https://github.com/Forge-Keeper/olist-customer-intelligence/issues) are the canonical backlog.  
+> [ADRs](docs/adr/) record accepted architectural decisions.  
+> This README is a portfolio overview and may intentionally summarize those sources.
+
 ## Portfolio snapshot
 
 - **Databricks / PySpark / Delta Lake** as the core execution and persistence stack;
-- source-faithful Bronze ingestion across **Olist CSV, ANP fuel prices via Azure PostgreSQL/JDBC, Open-Meteo and IBGE APIs / SIDRA**;
+- source-faithful Bronze ingestion across file snapshots, HTTP APIs / SIDRA and an Azure PostgreSQL/JDBC path;
 - executable dataset contracts, explicit logical keys and fail-fast schema-drift handling;
 - first-class PySpark **Data Quality** with persisted rule evidence and blocking write gates;
 - **Unity Catalog** metadata/governance foundation, ABAC policy lifecycle and justified Liquid Clustering;
 - **Databricks Asset Bundles** with isolated `dev`, `stg` and `prd` targets;
 - immutable wheel promotion from staging to production through **GitHub Actions**;
-- real DEV evidence: **33,420 GDP rows**, **8 passing quality rules**, and a deliberate duplicate-key batch rejected with **0 records written**.
+- dependency-aware deployment smokes with bounded parallelism and retained per-job evidence.
 
 > **Current boundary:** the delivered scope is the Bronze/platform foundation. Silver, Gold and the final Customer Intelligence analytical product remain roadmap work and are not represented as completed implementations.
 
@@ -32,16 +40,9 @@ A small data platform foundation built around the Olist public e-commerce datase
 
 ### Data ingestion and Bronze persistence
 
-Implemented Bronze vertical slices:
+Current delivered sources include authoritative Olist CSV snapshots, Open-Meteo, IBGE APIs / SIDRA and a DEV-validated Azure PostgreSQL/JDBC path for ANP fuel prices.
 
-- Weather / Open-Meteo;
-- Olist Customers;
-- Olist Closed Deals;
-- ANP fuel prices from Azure PostgreSQL through JDBC into Databricks Bronze (DEV runtime validated);
-- IBGE Localidades / municipalities;
-- IBGE municipality population;
-- IBGE municipality GDP / VAB;
-- IBGE CEMPRE municipal business activity for 2016–2018.
+The exact dataset list and environment readiness matrix intentionally live in [Platform Status](docs/platform-status.md) rather than being duplicated here.
 
 Bronze is intentionally lightweight and source-faithful: source semantics are preserved, technical metadata is explicit and business normalization is deferred to downstream analytical layers.
 
@@ -56,13 +57,13 @@ Bronze is intentionally lightweight and source-faithful: source semantics are pr
 - lightweight first-class PySpark Data Quality contracts, rules and structured results;
 - persisted `ERROR` / `WARNING` / `INFO` quality evidence;
 - environment-isolated administrative Control Plane for execution history and Data Quality results;
-- GDP pre-write Data Quality gate validated in real DEV runtime;
 - controlled schema-evolution policy with fail-fast drift handling;
 - metadata reconciliation for table/column descriptions and tags;
 - Unity Catalog governance foundation and ABAC policy lifecycle;
 - Liquid Clustering where justified by dataset access/layout needs;
 - Databricks Asset Bundles with `dev`, `stg` and `prd` data/admin targets;
 - immutable wheel promotion from staging to production;
+- manifest-driven deployment smoke coverage with a DAG-aware scheduler and bounded concurrency;
 - GitHub Actions quality, documentation and deployment workflows;
 - MkDocs Material engineering portal published through GitHub Pages.
 
@@ -100,20 +101,21 @@ Olist CSV      ANP / Azure PostgreSQL      Open-Meteo      IBGE APIs / SIDRA
                 data_quality_results      / Unity Catalog
 ```
 
-The ANP path enters the platform from Azure PostgreSQL through JDBC; the recovered DEV workload uses bounded `REPLACE_WHERE` reprocessing and remains intentionally isolated from STG/PRD PostgreSQL endpoints until those environments are explicitly configured and validated.
+The ANP path enters the platform from Azure PostgreSQL through JDBC. Its accepted environment readiness is intentionally narrower than the file/API paths; consult [Platform Status](docs/platform-status.md) for the current matrix rather than inferring readiness from code presence.
 
-The GDP workload is the first consumer of the first-class Data Quality path. Existing non-migrated Bronze datasets retain their current contract/source/writer validations until a concrete migration is justified.
+The GDP workload was the first consumer of the first-class Data Quality path. Adoption now varies by dataset and is tracked as an explicit capability/readiness concern instead of being inferred from Bronze delivery alone.
 
 Deployment is a separate delivery plane:
 
 ```text
-topic branch -> dev -> main -> stg -> prd
-                                ^      ^
-                                |      |
-                         same validated wheel
+topic branch -> dev -> main -> stg -> protected prd
+                                |
+                                v
+                   manifest-driven smoke DAG
+                   bounded parallel execution
 ```
 
-`main` is the stable source for shared deployment. Staging validates the approved artifact before protected production promotion.
+`main` is the stable executable baseline for shared deployment. Staging validates the approved artifact before protected production promotion, and the same retained wheel is reused for PRD.
 
 For the complete architecture and delivery boundary, use the documentation site pages **Architecture** and **Platform Status**.
 
@@ -152,7 +154,7 @@ Core rules:
 - preserve source semantics / AS-IS values;
 - use explicit persisted schemas and technical metadata;
 - make logical keys and idempotency explicit;
-- use `MERGE` or `FULL_REPLACE` according to the source contract;
+- use `MERGE`, `FULL_REPLACE` or bounded reprocessing according to the source contract;
 - use partitioning or Liquid Clustering only when justified;
 - preserve semi-structured source payloads in `VARIANT` when this protects fidelity;
 - fail on incompatible table drift rather than silently widening production state.
@@ -161,34 +163,16 @@ Relevant ADRs are under `docs/adr/`.
 
 ## Data Quality and operational evidence
 
-`DataQualityContract` is intentionally separate from the persisted `DatasetContract`. Rules carry stable IDs, versions, categories and severities; evaluation produces structured PASS/FAIL evidence before the protected write.
+`DataQualityContract` is intentionally separate from the persisted `DatasetContract`. Rules carry stable IDs, versions, categories and severities; evaluation produces structured PASS/FAIL evidence before protected writes where the first-class path is adopted.
 
-For the GDP pilot:
-
-- failed `ERROR` rules reject the Bronze write;
+- failed `ERROR` rules reject the protected write;
 - `WARNING` and `INFO` do not block;
 - quality evidence is persisted in `<admin_catalog>.quality.data_quality_results`;
 - execution lifecycle is persisted in `<admin_catalog>.operations.execution_runs`;
 - both are correlated by one platform `run_id`;
 - passing key-integrity evidence can be consumed by `BronzeWriter.write_checked()` without repeating equivalent logical-key scans.
 
-The real DEV proof for period 2018 produced 33,420 Bronze rows with 33,420 distinct natural keys and eight passing quality-rule results. A deliberate duplicate-key batch failed `GDP-DQ03`, recorded `REJECTED` / `FAILED` with `records_written = 0`, and left the isolated Bronze validation table unchanged.
-
-## Data sources and delivered datasets
-
-| Source | Delivered slices | Persistence behavior |
-| --- | --- | --- |
-| Olist | Customers, Closed Deals | authoritative CSV snapshots / `FULL_REPLACE` after validation |
-| ANP via Azure PostgreSQL / JDBC | fuel-price records (`anp_combustiveis_precos`) | bounded date-window reprocessing / `REPLACE_WHERE` in DEV |
-| Open-Meteo | historical weather | idempotent `MERGE` |
-| IBGE Localidades | municipalities | dated source snapshot / `MERGE` |
-| IBGE SIDRA 6579 | municipality population | annual slices / `MERGE` |
-| IBGE SIDRA 5938 | municipality GDP/VAB | bounded year × variable slices / `MERGE` with first-class pre-write DQ |
-| IBGE SIDRA 1685 | CEMPRE municipal business activity | 2016–2018 year × variable slices / `MERGE` |
-
-The ANP DEV path has fresh runtime evidence for `2016-01-04` through `2016-06-30`: 486,897 rows, 486,897 distinct technical IDs and repeatable bounded reprocessing from Azure PostgreSQL through JDBC into `dev.bronze.anp_combustiveis_precos`. STG/PRD PostgreSQL sources remain intentionally unconfigured and are not represented as runtime-validated.
-
-The reusable SIDRA stack includes `SidraClient`, `SidraQuery`, `SidraDataset` and `SidraParser`; dataset semantics remain in dedicated extractors/services/writers.
+Exact per-dataset rule sets and accepted runtime evidence belong to feature documentation and [Platform Status](docs/platform-status.md), not this portfolio summary.
 
 ## Testing and quality gates
 
@@ -237,6 +221,8 @@ The platform separates dataset facts from access policies:
 - governance policy definitions/lifecycle own centralized ABAC row-filter and column-mask policies;
 - public datasets are not assigned fabricated sensitivity metadata merely to demonstrate governance capabilities.
 
+Project status follows a separate evidence rule: a merge does not by itself make a feature publicly `DONE`. Closeout evidence must update [Platform Status](docs/platform-status.md) with the stage actually reached.
+
 ## Documentation
 
 The MkDocs site is the public engineering portal. It contains:
@@ -249,15 +235,15 @@ The MkDocs site is the public engineering portal. It contains:
 - ADRs;
 - generated API reference through `mkdocstrings`.
 
-GitHub remains the source of truth for both code and documentation.
+Historical feature/gate documents are retained for traceability and may describe the state at the time they were written. They do not override the current readiness recorded in Platform Status.
 
 ## Current boundary and roadmap
 
-Delivered scope is currently centered on the Bronze/platform foundation, now including the first-class GDP Data Quality pilot and administrative Control Plane. Silver, Gold and the final Customer Intelligence analytical product remain future layers; their package boundaries exist but they are not represented as completed analytical implementations.
+Delivered scope is currently centered on the Bronze/platform foundation. Silver, Gold and the final Customer Intelligence analytical product remain future layers; their package boundaries exist but they are not represented as completed analytical implementations.
 
-First-class Data Quality adoption beyond GDP, broader observability and shared-environment runtime hardening remain future work to be justified by concrete requirements. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy; smoke coverage should remain targeted, cheap and explicit.
+First-class Data Quality adoption, runtime acceptance depth and operational hardening vary by dataset and must be justified by concrete requirements. Full regression of every workload on every deployment is intentionally not part of the deployment smoke strategy.
 
-Future work must be selected from the current GitHub backlog rather than inferred from historical README checkpoints.
+Future work is selected from GitHub Issues rather than inferred from README wording or historical feature plans.
 
 ## Engineering principles
 

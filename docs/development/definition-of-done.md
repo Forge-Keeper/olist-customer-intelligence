@@ -1,6 +1,6 @@
 # Definition of Done
 
-A feature is Done only when its accepted scope is implemented, validated, documented and operable. Passing tests alone is not sufficient.
+A feature is Done only when its accepted scope is implemented, validated, documented, operable and reflected in the canonical project status. Passing tests or merging code alone is not sufficient.
 
 ## Core Definition of Done
 
@@ -46,15 +46,43 @@ When applicable:
 - deployment configuration validates for intended targets;
 - `dev -> stg -> prd` promotion behavior is documented and tested at the appropriate stage;
 - production deployment is protected by the accepted approval model;
+- deployment smoke and runtime acceptance are not treated as interchangeable evidence;
 - operational logs expose meaningful lifecycle/failure information;
 - rollback/recovery expectations are documented.
 
 ### Documentation
 
-- Discovery/Requirements/Technical Design/Impact/Implementation Plan reflect the implemented result, not only the original proposal.
+- Discovery/Requirements/Technical Design/Impact/Implementation Plan reflect the implemented result or are clearly retained as historical gate records.
 - Developer/operator instructions exist for new recurring workflows.
 - Public API documentation has been reviewed for all touched APIs.
 - Naming/convention changes are reflected in `engineering-standards.md` when they establish a reusable rule.
+- README is updated only when the durable portfolio narrative or architecture changes; routine readiness updates belong in `docs/platform-status.md`.
+
+### Public status and closeout
+
+A feature may not be represented publicly as `DONE` solely because its code was merged.
+
+The default closeout flow is:
+
+```text
+feature implementation
+  -> runtime evidence appropriate to the accepted scope
+  -> merge / promotion gates
+  -> closeout
+  -> Platform Status update
+  -> DONE
+```
+
+The exact order of environment evidence may vary when STG/PRD can only execute after promotion, but the final `DONE` claim still requires closeout and a Platform Status update.
+
+Before marking a feature Done:
+
+- `docs/platform-status.md` records the feature/capability and the exact readiness stage reached;
+- Code, DEV, STG and PRD are distinguished rather than collapsed into one vague `implemented` state;
+- missing or intentionally unavailable environment evidence is represented explicitly rather than inferred;
+- the closeout points to accepted runtime/deployment evidence when such evidence is in scope;
+- historical feature documents do not override the canonical current status;
+- GitHub Issues contain any deferred work that remains future scope.
 
 ### Delivery
 
@@ -62,6 +90,7 @@ When applicable:
 - PR description reflects actual scope and major decisions.
 - No unresolved blocker or known high-severity defect remains hidden.
 - Source of truth is GitHub and the final branch/PR state is auditable.
+- The public status checkpoint is consistent with the delivered evidence before the feature is called Done.
 
 ## Feature-level Definition of Done
 
@@ -76,5 +105,6 @@ Before marking a feature Done, inspect every public API created or materially ch
 3. Are non-obvious side effects and fail-fast behaviors documented?
 4. Are arguments/returns already obvious from types, or does the docstring add useful semantics?
 5. Would a future implementation agent know how to use it without reconstructing design decisions from Git history?
+6. Does Platform Status state the feature's current readiness without relying on stale README or gate-document wording?
 
 If the answer to an important item is no, the feature is not Done.

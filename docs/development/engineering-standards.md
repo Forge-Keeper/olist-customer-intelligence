@@ -194,20 +194,20 @@ For a public method, explain as needed:
 Avoid noise such as:
 
 ```python
- def write(...):
-     """Writes data."""
+def write(...):
+    """Writes data."""
 ```
 
 Prefer:
 
 ```python
- def write(self, dataframe: DataFrame) -> None:
-     """Persist one validated Bronze batch using the dataset write strategy.
+def write(self, dataframe: DataFrame) -> None:
+    """Persist one validated Bronze batch using the dataset write strategy.
 
-     The writer injects platform-managed values and validates batch-level keys.
-     Delta table creation, schema evolution and governance reconciliation belong
-     to the table lifecycle collaborator rather than this method.
-     """
+    The writer injects platform-managed values and validates batch-level keys.
+    Delta table creation, schema evolution and governance reconciliation belong
+    to the table lifecycle collaborator rather than this method.
+    """
 ```
 
 ### Style
@@ -250,12 +250,15 @@ Discovery
   -> Impact Analysis
   -> Implementation Plan
   -> Implementation / Validation
+  -> Closeout / Platform Status update
   -> Done
 ```
 
 Use the feature template under `docs/templates/feature-specification-template.md` as the starting point. Separate confirmed decisions from proposals and open questions.
 
 Durable architectural decisions receive an ADR using `docs/templates/adr-template.md`.
+
+Feature/gate documents are detailed engineering records. They may preserve historical wording from the point in time when a gate was written. Current environment readiness belongs in `docs/platform-status.md` and must not be inferred from an older `pending`/`in progress` section.
 
 ## 9. Scope rule for legacy code
 
@@ -270,3 +273,25 @@ When a feature touches an existing public API:
 The Definition of Done requires documentation coverage for new/materially changed public APIs.
 
 CI may progressively enforce docstring/naming rules once the existing touched surface is compliant. Enforcement should target public APIs first; requiring documentation for every private helper is explicitly not a goal.
+
+## 11. Documentation source-of-truth hierarchy
+
+Documentation has explicit ownership to avoid the same fact being maintained in several places.
+
+| Question | Canonical source |
+| --- | --- |
+| What code/resources are implemented? | `main` |
+| What datasets/capabilities are currently ready in each environment? | `docs/platform-status.md` |
+| What should be worked on next? | GitHub Issues |
+| Why was a durable architectural choice made? | accepted ADRs |
+| What should a portfolio reviewer understand quickly? | README / docs home |
+| What were the detailed requirements, design and validation steps for one feature? | feature/gate documents |
+
+Rules:
+
+- README is a portfolio surface, not an operational ledger.
+- Exact dataset inventories and Code/DEV/STG/PRD readiness are maintained in Platform Status rather than duplicated in README.
+- A merge does not itself authorize a `DONE` claim; closeout must update Platform Status with accepted evidence.
+- If evidence for an environment is absent, do not infer readiness from code, DAB configuration or another environment's smoke result.
+- If a feature is intentionally DEV-only, record STG/PRD as unavailable/not configured rather than leaving the reader to infer failure.
+- Historical feature documents never override Platform Status for current-state questions.
