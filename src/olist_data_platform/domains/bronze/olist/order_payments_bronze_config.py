@@ -19,7 +19,8 @@ OLIST_ORDER_PAYMENTS_BRONZE_CONFIG = DatasetContract(
             data_type="string",
             nullable=False,
             description=(
-                "Payment sequence identifier within the order, preserved as source text."
+                "Payment sequence identifier within the order, preserved as source "
+                "text."
             ),
         ),
         ColumnContract(
