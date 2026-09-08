@@ -18,7 +18,9 @@ OLIST_ORDER_ITEMS_BRONZE_CONFIG = DatasetContract(
             name="order_item_id",
             data_type="string",
             nullable=False,
-            description="Item sequence identifier within the order, preserved as source text.",
+            description=(
+                "Item sequence identifier within the order, preserved as source text."
+            ),
         ),
         ColumnContract(
             name="product_id",
@@ -61,7 +63,9 @@ OLIST_ORDER_ITEMS_BRONZE_CONFIG = DatasetContract(
     key_columns=("order_id", "order_item_id"),
     write_strategy=WriteStrategy.FULL_REPLACE,
     metadata=TableMetadata(
-        description="Olist order items CSV snapshot landed in Bronze as source strings.",
+        description=(
+            "Olist order items CSV snapshot landed in Bronze as source strings."
+        ),
         tags={
             "layer": "bronze",
             "domain": "olist",
