@@ -25,7 +25,9 @@ OLIST_ORDER_PAYMENTS_QUALITY_CONTRACT = DataQualityContract(
         NonEmptyRule(
             rule_id="ORDER-PAYMENTS-DQ01",
             version=1,
-            description="The authoritative Order Payments snapshot must contain records.",
+            description=(
+                "The authoritative Order Payments snapshot must contain records."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
         ),
@@ -40,7 +42,9 @@ OLIST_ORDER_PAYMENTS_QUALITY_CONTRACT = DataQualityContract(
         UniqueRule(
             rule_id="ORDER-PAYMENTS-DQ03",
             version=1,
-            description="The Order Payments natural key must be unique in the snapshot.",
+            description=(
+                "The Order Payments natural key must be unique in the snapshot."
+            ),
             category=QualityCategory.UNIQUENESS,
             severity=QualitySeverity.ERROR,
             columns=ORDER_PAYMENTS_KEY_COLUMNS,
