@@ -8,6 +8,7 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 - modular Platform + Domains Python package;
 - reusable HTTP, retry/backoff and logging infrastructure;
+- reusable PostgreSQL and JDBC access infrastructure for operational-source ingestion;
 - source-faithful Bronze landing;
 - executable `DatasetContract` model;
 - `DeltaTableLifecycle` for table state and metadata lifecycle;
@@ -29,9 +30,16 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 ### Data features
 
+Implemented Bronze vertical slices currently represented in the repository:
+
 - Weather / Open-Meteo;
+- ANP fuel prices from Azure PostgreSQL through JDBC into Databricks Bronze, with DEV runtime validation and bounded `REPLACE_WHERE` reprocessing;
 - Olist Customers;
 - Olist Sellers;
+- Olist Products;
+- Olist Product Category Name Translation;
+- Olist Geolocation;
+- Olist Orders;
 - Olist Marketing Qualified Leads;
 - Olist Closed Deals;
 - IBGE Localidades / municipalities;
@@ -39,10 +47,13 @@ This page is the public checkpoint for delivered capability versus future scope.
 - IBGE municipality GDP / VAB;
 - IBGE CEMPRE municipal business activity for 2016–2018.
 
+The remaining core Olist e-commerce Bronzes are backlog work. Current implementation evidence does not yet include Order Items, Order Payments or Order Reviews.
+
 ## Known limitations / technical debt
 
-- first-class Data Quality is adopted by the GDP pilot and the Olist Customers, Sellers, Marketing Qualified Leads and Closed Deals Bronze datasets; remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
-- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP, Olist Customers, Olist Sellers and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
+- the first-class Data Quality path is not yet uniform across every historical Bronze workload; adoption remains dataset-specific and should follow concrete feature work rather than a bulk rewrite;
+- deployment smoke coverage is intentionally targeted rather than a full regression suite, although the current smoke manifest now includes the implemented Olist Customers, Sellers, Products, Product Category Name Translation, Geolocation, Orders and Marketing Funnel workloads alongside selected IBGE jobs;
+- the recovered ANP PostgreSQL/JDBC runtime is intentionally configured only for DEV; STG/PRD PostgreSQL endpoints remain undefined until separately configured and validated;
 - full regression of every pipeline during deployment is intentionally out of scope;
 - Silver/Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
@@ -55,9 +66,10 @@ Future work must be selected explicitly from the current GitHub backlog. The rep
 
 Likely capability families include:
 
+- completion of remaining Olist Bronze datasets;
 - Silver modeling and harmonization;
 - Gold / Customer Intelligence products;
-- Data Quality adoption beyond the currently migrated datasets and broader observability where concrete use cases justify it;
+- broader Data Quality and observability adoption where concrete use cases justify it;
 - incremental processing/backfill/replay where required;
 - additional justified source datasets;
 - deployment and operational hardening driven by concrete gaps.
