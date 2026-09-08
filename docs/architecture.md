@@ -9,9 +9,11 @@ flowchart TD
     O[Olist CSV snapshots] --> I[Domain ingestion services]
     W[Open-Meteo API] --> I
     B[IBGE Localidades / SIDRA] --> I
+    P[ANP / Azure PostgreSQL] --> J[JDBC source boundary]
+    J --> I
 
     I --> A[Source-specific extractors / adapters]
-    A --> DQ[DataQualityRunner / dataset quality contract]
+    A --> DQ[DataQualityRunner / dataset quality contract where adopted]
     DQ --> QR[Structured quality results]
     DQ --> BW[BronzeWriter / write_checked]
 
@@ -33,7 +35,9 @@ flowchart TD
     S -. future .-> G[Gold / Customer Intelligence products]
 ```
 
-Solid edges represent delivered platform behavior. The GDP workload is the first consumer of the first-class Data Quality path; non-migrated Bronze datasets continue using their existing contract/source/writer validations. Dotted edges represent future analytical layers and must not be interpreted as delivered Silver/Gold products.
+Solid edges represent delivered platform behavior. The GDP workload was the first consumer of the first-class Data Quality path; adoption now varies by dataset and must be read from Platform Status rather than inferred from Bronze delivery alone. Dotted edges represent future analytical layers and must not be interpreted as delivered Silver/Gold products.
+
+The ANP path is intentionally different from the file/API sources: the implementation is present in `main` and the Azure PostgreSQL/JDBC workload is runtime-accepted in DEV, while STG/PRD PostgreSQL source endpoints remain intentionally unconfigured. Environment readiness is a status concern, not an architectural inference from code presence.
 
 ## Application architecture
 
@@ -89,14 +93,14 @@ The layer prioritizes source fidelity:
 
 - AS-IS/source-like semantics;
 - explicit technical lineage;
-- deterministic logical keys;
-- idempotent writes;
+- deterministic logical keys where the source provides meaningful row identity;
+- idempotent/repeatable writes according to the source contract;
 - `VARIANT` payload preservation where useful;
 - no premature business normalization.
 
-`DatasetContract` is the authoritative persisted-table contract. `DeltaTableLifecycle` owns creation, inspection, compatible metadata reconciliation and controlled evolution. `BronzeWriter` owns batch preparation and write semantics such as `MERGE`, `FULL_REPLACE` and explicit reprocessing.
+`DatasetContract` is the authoritative persisted-table contract. `DeltaTableLifecycle` owns creation, inspection, compatible metadata reconciliation and controlled evolution. `BronzeWriter` owns batch preparation and write semantics such as `MERGE`, `FULL_REPLACE` and explicit bounded reprocessing.
 
-The GDP pilot additionally evaluates a separate `DataQualityContract` before the protected write. Failed `ERROR` rules persist their evidence and reject the batch. Passing key-integrity evidence is carried in `QualityCheckedBatch` and consumed by `BronzeWriter.write_checked()` so equivalent key scans are not deliberately repeated.
+Where the first-class Data Quality path is adopted, a separate `DataQualityContract` is evaluated before the protected write. Failed `ERROR` rules persist their evidence and reject the batch. Passing key-integrity evidence may be carried in `QualityCheckedBatch` and consumed by `BronzeWriter.write_checked()` so equivalent key scans are not deliberately repeated.
 
 ## Delivery plane
 
@@ -116,6 +120,36 @@ flowchart LR
 
 The stable `main` branch is the shared deployment source. Staging validates the exact approved artifact before production promotion. Runtime code receives environment-specific object names from deployment configuration rather than hardcoding `dev`, `stg` or `prd` decisions.
 
+### Deployment-smoke DAG
+
+Deployment smoke orchestration is manifest-driven and dependency-aware.
+
+```mermaid
+flowchart TD
+    MF[deployment/smoke-jobs.yml] --> V[coverage + dependency validation]
+    V --> R[READY nodes]
+    R --> W[bounded worker pool]
+    W --> S1[SUCCESS]
+    W --> F1[FAILED]
+    F1 --> B1[dependent nodes BLOCKED]
+    S1 --> N[next newly-ready nodes]
+    B1 --> X[unrelated branches continue]
+    N --> W
+```
+
+Each smoke contract declares its complete runtime `arguments` and explicit `depends_on` relationships. The runner rejects missing coverage, unknown dependencies and cycles before starting Databricks jobs.
+
+Execution is readiness-based rather than a fixed Bronze/Silver/Gold wave barrier:
+
+- a node becomes runnable when all of its own dependencies are `SUCCESS`;
+- independent nodes may execute concurrently;
+- concurrency is bounded (`max_workers=4` by default);
+- a failed upstream blocks only its dependency closure;
+- unrelated DAG branches continue;
+- the overall smoke command fails when any node ends `FAILED` or `BLOCKED`.
+
+The first accepted STG runtime of this scheduler completed 13/13 current smoke nodes successfully and reduced the observed deployment-smoke wall-clock from roughly 59 minutes in the preceding sequential run to roughly 14m23s. This validates the scheduler and representative deployment paths, not full runtime regression of every dataset.
+
 ## Environment boundary
 
 ```text
@@ -124,7 +158,15 @@ stg -> data catalog stg -> admin catalog stg_admin
 prd -> data catalog prd -> admin catalog prd_admin
 ```
 
-Staging and production use environment-scoped service-principal identities. Production promotion is protected and must reuse the staging-approved artifact. Workload access to both the relevant Data Plane and Control Plane remains a least-privilege environment prerequisite.
+Catalog-level Data Plane / Control Plane isolation is implemented across the three DAB targets.
+
+Identity separation must distinguish **current state** from **target architecture**:
+
+- the lab STG/PRD Control Plane delivery has been validated using the shared `olist-ci` workload identity with explicit grants;
+- stronger least-privilege, per-environment workload-identity separation remains target architecture;
+- documentation must not describe that target separation as already implemented evidence.
+
+Production promotion remains protected and must reuse the staging-approved artifact. Workload access to the relevant Data Plane and Control Plane is an explicit environment prerequisite.
 
 ## Governance boundary
 
@@ -137,8 +179,13 @@ The project does not fabricate sensitivity labels for public datasets solely to 
 
 ## Testing boundary
 
-Local CI covers unit/integration tests, lint/type checks, packaging and documentation. Databricks workspace validation covers behaviors that local Spark cannot faithfully prove, including deployment, Unity Catalog metadata, managed Delta behavior and selected governance capabilities.
+Local CI covers unit/integration tests, lint/type checks, packaging, DAB validation and documentation. Databricks workspace validation covers behaviors that local Spark cannot faithfully prove, including deployment, Unity Catalog metadata, managed Delta behavior, Data Quality persistence/write gates and selected governance capabilities.
 
-The GDP Data Quality feature additionally has real DEV evidence for a successful 2018 execution and a deliberate duplicate-key rejection. The rejected validation batch recorded `records_written = 0` and left the isolated Bronze table unchanged, proving the blocking write gate in the target runtime.
+Deployment smoke is a separate evidence class from per-dataset runtime acceptance:
 
-The deployment smoke layer remains intentionally smaller than full regression. Expanding targeted smoke coverage without turning deployment into an expensive full-pipeline test suite is tracked as technical debt.
+- **deployment smoke** proves the declared representative post-deploy path and artifact/environment wiring;
+- **runtime acceptance** proves the feature-specific runtime semantics required by that dataset;
+- **idempotence/reprocessing evidence** proves repeatable behavior when required by the accepted contract;
+- **full regression** is intentionally not executed for every pipeline on every deployment.
+
+Current environment-by-environment evidence is canonical in `docs/platform-status.md`.
