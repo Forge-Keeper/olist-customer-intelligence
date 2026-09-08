@@ -13,7 +13,10 @@ def test_order_payments_bronze_contract_uses_composite_key_full_replace() -> Non
         "order_id",
         "payment_sequential",
     )
-    assert OLIST_ORDER_PAYMENTS_BRONZE_CONFIG.write_strategy is WriteStrategy.FULL_REPLACE
+    assert (
+        OLIST_ORDER_PAYMENTS_BRONZE_CONFIG.write_strategy
+        is WriteStrategy.FULL_REPLACE
+    )
 
 
 def test_order_payments_bronze_contract_preserves_source_columns_as_strings() -> None:
