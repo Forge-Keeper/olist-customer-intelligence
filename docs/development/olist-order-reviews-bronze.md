@@ -116,4 +116,26 @@ The reusable Olist CSV reader keeps its previous single-line behavior by default
 
 ## Runtime acceptance
 
-DEV runtime acceptance is pending. The closeout must record the actual Databricks job run IDs, row counts and post-rerun integrity evidence before the feature is promoted.
+DEV bundle deployment completed successfully from feature head `0be0263265cd7c7226dac0b66d35093b661cadb1`.
+
+First runtime execution:
+
+- Databricks job ID: `798901500146387`;
+- Databricks run ID: `632748785950044`;
+- application run ID: `f6e12a5b-5cd1-4311-8e99-7dd51332d35a`;
+- terminal state: `SUCCESS`;
+- source rows read: 99,224;
+- Bronze rows written: 99,224;
+- target: `dev.bronze.olist_order_reviews`.
+
+Second runtime execution against the same source snapshot:
+
+- Databricks job ID: `798901500146387`;
+- Databricks run ID: `325597771545425`;
+- application run ID: `d4be7a36-6565-4bc5-b296-250704c6ba9b`;
+- terminal state: `SUCCESS`;
+- source rows read: 99,224;
+- Bronze rows written: 99,224;
+- target: `dev.bronze.olist_order_reviews`.
+
+The repeated successful `FULL_REPLACE` execution with the same 99,224-row snapshot provides runtime evidence for semantic idempotence. Final post-rerun integrity checks still verify target row count, distinct composite-key count and managed lineage completeness before promotion.
