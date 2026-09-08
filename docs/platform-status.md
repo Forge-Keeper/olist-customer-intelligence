@@ -29,20 +29,36 @@ This page is the public checkpoint for delivered capability versus future scope.
 
 ### Data features
 
-- Weather / Open-Meteo;
+Olist Bronze CSV coverage is complete for the current public source set implemented by this repository:
+
 - Olist Customers;
 - Olist Sellers;
 - Olist Marketing Qualified Leads;
 - Olist Closed Deals;
+- Olist Products;
+- Olist Product Category Name Translation;
+- Olist Geolocation;
+- Olist Orders;
+- Olist Order Items;
+- Olist Order Payments;
+- Olist Order Reviews.
+
+Additional delivered data features:
+
+- Weather / Open-Meteo;
+- ANP fuel prices from Azure PostgreSQL / JDBC into Databricks Bronze in DEV;
 - IBGE Localidades / municipalities;
 - IBGE municipality population;
 - IBGE municipality GDP / VAB;
 - IBGE CEMPRE municipal business activity for 2016–2018.
 
+Order Reviews is runtime-accepted in DEV with two successful `FULL_REPLACE` executions of the same 99,224-row source snapshot. The final target contains 99,224 rows and 99,224 distinct `(review_id, order_id)` keys, with complete `source_file` and `ingestion_timestamp` lineage. This confirms semantic idempotence for the accepted DEV snapshot.
+
 ## Known limitations / technical debt
 
-- first-class Data Quality is adopted by the GDP pilot and the Olist Customers, Sellers, Marketing Qualified Leads and Closed Deals Bronze datasets; remaining Bronze datasets retain their existing contract/source/writer validations until a concrete migration is justified;
-- deployment smoke coverage is intentionally targeted rather than exhaustive; GDP, Olist Customers, Olist Sellers and the two Marketing Funnel datasets have explicit smoke coverage, while broader workload coverage remains backlog-driven (including the CEMPRE gap tracked in GitHub Issue #21);
+- first-class Data Quality adoption and runtime evidence vary by dataset; per-feature documentation is the source for the exact rule set and environment acceptance status of each vertical slice;
+- deployment smoke coverage is intentionally targeted rather than exhaustive; broader workload coverage remains backlog-driven where concrete risk justifies it, including the CEMPRE gap tracked in GitHub Issue #21;
+- a successful STG deployment/smoke is not equivalent to full STG runtime acceptance for every dataset; runtime acceptance must be recorded explicitly when performed;
 - full regression of every pipeline during deployment is intentionally out of scope;
 - Silver/Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
@@ -57,7 +73,7 @@ Likely capability families include:
 
 - Silver modeling and harmonization;
 - Gold / Customer Intelligence products;
-- Data Quality adoption beyond the currently migrated datasets and broader observability where concrete use cases justify it;
+- broader observability where concrete use cases justify it;
 - incremental processing/backfill/replay where required;
 - additional justified source datasets;
 - deployment and operational hardening driven by concrete gaps.
