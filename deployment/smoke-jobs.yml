@@ -1,6 +1,7 @@
 {
   "jobs": {
     "ibge_municipality_gdp": {
+      "depends_on": [],
       "arguments": [
         "--target-table",
         "${target}.bronze.ibge_municipality_gdp",
@@ -13,6 +14,7 @@
       ]
     },
     "ibge_municipality_business_activity": {
+      "depends_on": [],
       "arguments": [
         "--target-table",
         "${target}.bronze.ibge_municipality_business_activity",
@@ -21,6 +23,7 @@
       ]
     },
     "olist_customers": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_customers_dataset.csv",
@@ -33,6 +36,7 @@
       ]
     },
     "olist_sellers": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_sellers_dataset.csv",
@@ -45,6 +49,7 @@
       ]
     },
     "olist_products": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_products_dataset.csv",
@@ -57,6 +62,7 @@
       ]
     },
     "olist_product_category_name_translation": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/product_category_name_translation.csv",
@@ -69,6 +75,7 @@
       ]
     },
     "olist_geolocation": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_geolocation_dataset.csv",
@@ -81,6 +88,7 @@
       ]
     },
     "olist_orders": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_orders_dataset.csv",
@@ -93,6 +101,7 @@
       ]
     },
     "olist_order_items": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_order_items_dataset.csv",
@@ -105,6 +114,7 @@
       ]
     },
     "olist_order_payments": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_order_payments_dataset.csv",
@@ -117,6 +127,7 @@
       ]
     },
     "olist_order_reviews": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/e_commerce/olist_order_reviews_dataset.csv",
@@ -129,6 +140,7 @@
       ]
     },
     "olist_marketing_qualified_leads": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/funnel/olist_marketing_qualified_leads_dataset.csv",
@@ -141,6 +153,7 @@
       ]
     },
     "olist_closed_deals": {
+      "depends_on": [],
       "arguments": [
         "--source-path",
         "/Volumes/${target}/bronze/raw_storage/raw/olist/funnel/olist_closed_deals_dataset.csv",
