@@ -15,6 +15,9 @@ class OlistCsvSnapshotReader:
         source_path: str,
         required_columns: Sequence[str],
         dataset_name: str,
+        *,
+        multiline: bool = False,
+        escape: str | None = None,
     ) -> None:
         if not isinstance(source_path, str):
             raise TypeError("source_path must be a string.")
@@ -29,12 +32,20 @@ class OlistCsvSnapshotReader:
         self.source_path = source_path
         self.required_columns = tuple(required_columns)
         self.dataset_name = dataset_name
+        self.multiline = multiline
+        self.escape = escape
 
     def read(self) -> DataFrame:
-        dataframe = (
+        reader = (
             self.spark.read.option("header", True)
             .option("inferSchema", False)
-            .csv(self.source_path)
+            .option("multiLine", self.multiline)
+        )
+        if self.escape is not None:
+            reader = reader.option("escape", self.escape)
+
+        dataframe = (
+            reader.csv(self.source_path)
             .select(
                 "*",
                 F.col("_metadata.file_path").alias("source_file"),
