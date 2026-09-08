@@ -25,6 +25,8 @@ A small data platform foundation built around the Olist public e-commerce datase
 
 - **Databricks / PySpark / Delta Lake** as the core execution and persistence stack;
 - source-faithful Bronze ingestion across file snapshots, HTTP APIs / SIDRA and an Azure PostgreSQL/JDBC path;
+- **486,897 ANP fuel-price records processed in a single DEV execution through Azure PostgreSQL/JDBC**;
+- idempotent window reprocessing for ANP with bounded `replaceWhere`, preserving the same final state on rerun;
 - executable dataset contracts, explicit logical keys and fail-fast schema-drift handling;
 - first-class PySpark **Data Quality** with persisted rule evidence and blocking write gates;
 - **Unity Catalog** metadata/governance foundation, ABAC policy lifecycle and justified Liquid Clustering;
