@@ -50,7 +50,9 @@ OLIST_ORDER_ITEMS_QUALITY_CONTRACT = DataQualityContract(
         NotNullRule(
             rule_id="ORDER-ITEMS-DQ04",
             version=1,
-            description="Required non-key Order Items attributes cannot contain null values.",
+            description=(
+                "Required non-key Order Items attributes cannot contain null values."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
             columns=ORDER_ITEMS_REQUIRED_NON_KEY_COLUMNS,
@@ -81,7 +83,9 @@ OLIST_ORDER_ITEMS_QUALITY_CONTRACT = DataQualityContract(
         PredicateRule(
             rule_id="ORDER-ITEMS-DQ07",
             version=1,
-            description="Price and freight values must be parseable non-negative decimals.",
+            description=(
+                "Price and freight values must be parseable non-negative decimals."
+            ),
             category=QualityCategory.VALIDITY,
             severity=QualitySeverity.ERROR,
             expression=(
@@ -99,7 +103,9 @@ OLIST_ORDER_ITEMS_QUALITY_CONTRACT = DataQualityContract(
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.INFO,
             expression="try_cast(freight_value AS DECIMAL(38,18)) = 0",
-            expected_condition="observed count only; zero freight remains source-faithful",
+            expected_condition=(
+                "observed count only; zero freight remains source-faithful"
+            ),
         ),
     ),
 )
