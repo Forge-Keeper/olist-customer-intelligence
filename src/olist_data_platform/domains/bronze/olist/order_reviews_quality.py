@@ -25,7 +25,9 @@ OLIST_ORDER_REVIEWS_QUALITY_CONTRACT = DataQualityContract(
         NonEmptyRule(
             rule_id="ORDER-REVIEWS-DQ01",
             version=1,
-            description="The authoritative Order Reviews snapshot must contain records.",
+            description=(
+                "The authoritative Order Reviews snapshot must contain records."
+            ),
             category=QualityCategory.COMPLETENESS,
             severity=QualitySeverity.ERROR,
         ),
@@ -93,7 +95,9 @@ OLIST_ORDER_REVIEWS_QUALITY_CONTRACT = DataQualityContract(
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.INFO,
             expression="review_comment_title IS NULL",
-            expected_condition="observed count only; missing titles remain valid source data",
+            expected_condition=(
+                "observed count only; missing titles remain valid source data"
+            ),
         ),
         ObservedCountRule(
             rule_id="ORDER-REVIEWS-DQ09",
@@ -116,7 +120,9 @@ OLIST_ORDER_REVIEWS_QUALITY_CONTRACT = DataQualityContract(
                 "review_comment_title IS NOT NULL "
                 "AND trim(review_comment_title) = ''"
             ),
-            expected_condition="observed count only; blank titles remain source-faithful",
+            expected_condition=(
+                "observed count only; blank titles remain source-faithful"
+            ),
         ),
         ObservedCountRule(
             rule_id="ORDER-REVIEWS-DQ11",
@@ -128,12 +134,16 @@ OLIST_ORDER_REVIEWS_QUALITY_CONTRACT = DataQualityContract(
                 "review_comment_message IS NOT NULL "
                 "AND trim(review_comment_message) = ''"
             ),
-            expected_condition="observed count only; blank messages remain source-faithful",
+            expected_condition=(
+                "observed count only; blank messages remain source-faithful"
+            ),
         ),
         ObservedCountRule(
             rule_id="ORDER-REVIEWS-DQ12",
             version=1,
-            description="Count review titles whose source whitespace would change on trim.",
+            description=(
+                "Count review titles whose source whitespace would change on trim."
+            ),
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.INFO,
             expression=(
@@ -147,7 +157,9 @@ OLIST_ORDER_REVIEWS_QUALITY_CONTRACT = DataQualityContract(
         ObservedCountRule(
             rule_id="ORDER-REVIEWS-DQ13",
             version=1,
-            description="Count review messages whose source whitespace would change on trim.",
+            description=(
+                "Count review messages whose source whitespace would change on trim."
+            ),
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.INFO,
             expression=(
