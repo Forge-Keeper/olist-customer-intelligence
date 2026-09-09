@@ -104,6 +104,7 @@ def test_orders_are_typed_and_temporal_source_anomalies_are_warnings(spark):
     )
 
     row = orders.first()
+    assert row is not None
     assert isinstance(row.order_purchase_timestamp, datetime)
     assert row._customer_exists is True
 
