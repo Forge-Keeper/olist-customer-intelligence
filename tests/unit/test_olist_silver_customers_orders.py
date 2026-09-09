@@ -135,7 +135,11 @@ def test_orders_orphan_is_a_blocking_failure(spark):
     ).report
 
     assert report.has_blocking_failures
-    failed = {result.rule_id for result in report.results if result.status is QualityStatus.FAIL}
+    failed = {
+        result.rule_id
+        for result in report.results
+        if result.status is QualityStatus.FAIL
+    }
     assert "OLIST-SILVER-ORDERS-DQ05" in failed
 
 
@@ -153,7 +157,11 @@ def test_optional_timestamp_parse_failure_is_blocking(spark):
         evaluation_scope="{}",
     ).report
 
-    failed = {result.rule_id for result in report.results if result.status is QualityStatus.FAIL}
+    failed = {
+        result.rule_id
+        for result in report.results
+        if result.status is QualityStatus.FAIL
+    }
     assert report.has_blocking_failures
     assert "OLIST-SILVER-ORDERS-DQ04" in failed
 
