@@ -274,11 +274,17 @@ def test_scheduler_enforces_bounded_concurrency(tmp_path: Path) -> None:
     assert max_active == 2
 
 
-def test_runtime_smoke_contracts_are_complete_and_bounded_to_2018() -> None:
+def test_runtime_smoke_contracts_preserve_expected_dependencies_and_bounds() -> None:
     manifest = load_manifest()
     validate_manifest_dependencies(manifest)
 
-    assert all(config["depends_on"] == [] for config in manifest.values())
+    silver_job = "olist_silver_customers_orders"
+    assert manifest[silver_job]["depends_on"] == ["olist_customers", "olist_orders"]
+    assert all(
+        config["depends_on"] == []
+        for job_name, config in manifest.items()
+        if job_name != silver_job
+    )
     assert resolve_arguments("stg", manifest["ibge_municipality_gdp"]["arguments"]) == [
         "--target-table",
         "stg.bronze.ibge_municipality_gdp",
