@@ -164,6 +164,13 @@
         "--quality-results-table",
         "${target}_admin.quality.data_quality_results"
       ]
+    },
+    "olist_silver_customers_orders": {
+      "depends_on": [
+        "olist_customers",
+        "olist_orders"
+      ],
+      "arguments": []
     }
   }
 }

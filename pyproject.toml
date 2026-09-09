@@ -33,6 +33,8 @@ olist-order-payments = "olist_data_platform.jobs.olist_order_payments_ingestion:
 olist-order-reviews = "olist_data_platform.jobs.olist_order_reviews_ingestion:main"
 olist-mql = "olist_data_platform.jobs.olist_marketing_qualified_leads_ingestion:main"
 olist-closed-deals = "olist_data_platform.jobs.olist_closed_deals_ingestion:main"
+olist-silver-customers = "olist_data_platform.jobs.olist_silver_customers:main"
+olist-silver-orders = "olist_data_platform.jobs.olist_silver_orders:main"
 
 [dependency-groups]
 dev = [
