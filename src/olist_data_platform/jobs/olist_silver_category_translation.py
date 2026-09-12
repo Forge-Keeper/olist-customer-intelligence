@@ -65,7 +65,10 @@ def main() -> None:
     args = build_parser().parse_args()
     spark = SparkSession.getActiveSession() or SparkSession.builder.getOrCreate()
     run_id, row_count = run(args=args, spark=spark)
-    print(f"olist_silver_category_translation_completed run_id={run_id} rows={row_count}")
+    print(
+        "olist_silver_category_translation_completed "
+        f"run_id={run_id} rows={row_count}"
+    )
 
 
 if __name__ == "__main__":
