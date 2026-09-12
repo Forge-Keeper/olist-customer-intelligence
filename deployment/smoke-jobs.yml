@@ -171,6 +171,16 @@
         "olist_orders"
       ],
       "arguments": []
+    },
+    "olist_silver_products_category_sellers_order_items": {
+      "depends_on": [
+        "olist_product_category_name_translation",
+        "olist_products",
+        "olist_sellers",
+        "olist_order_items",
+        "olist_silver_customers_orders"
+      ],
+      "arguments": []
     }
   }
 }
