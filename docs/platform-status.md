@@ -43,16 +43,17 @@ A green deployment smoke proves the declared representative deployment path. It 
 | Olist Order Items Bronze | ✅ | ✅ | ◐ | ? | DEV runtime accepted including repeatable `FULL_REPLACE`; current DAB job covered by the STG deployment-smoke DAG |
 | Olist Order Payments Bronze | ✅ | ✅ | ◐ | ? | DEV runtime accepted including repeatable `FULL_REPLACE`; current DAB job covered by the STG deployment-smoke DAG |
 | Olist Order Reviews Bronze | ✅ | ✅ | ◐ | ? | two successful DEV `FULL_REPLACE` executions preserve 99,224 semantic rows; current DAB job covered by the STG deployment-smoke DAG |
+| Olist Customers Silver | ✅ | ✅ | ? | ? | first Silver slice accepted in DEV: 99,441 rows / 99,441 distinct `customer_id`, 96,096 distinct `customer_unique_id`, deterministic rerun, explicit lineage and blocking DQ |
+| Olist Orders Silver | ✅ | ✅ | ? | ? | first Silver slice accepted in DEV: 99,441 rows / 99,441 distinct `order_id`, zero Orders -> Customers orphans, typed lifecycle timestamps, warnings for 1,359 carrier-before-approval and 23 delivered-before-carrier observations, controlled DQ rejection preserved the target |
 | ANP Azure PostgreSQL/JDBC Bronze | ✅ | ✅ | — | — | DEV runtime recovery accepted with bounded `REPLACE_WHERE`; STG/PRD PostgreSQL sources intentionally unconfigured |
 | IBGE municipality GDP / VAB Bronze | ✅ | ✅ | ✅ | ✅ | first-class DQ gate and deployment path accepted end-to-end; deliberate DEV rejection proved protected target behavior |
 | IBGE CEMPRE municipal business activity Bronze | ✅ | ? | ◐ | ? | implementation is present; current DAB job covered by STG deployment smoke; environment closeout evidence remains to be normalized |
 | IBGE Localidades / municipalities | ✅ | ? | ? | ? | implementation is present; historical environment evidence has not yet been normalized into this checkpoint |
 | IBGE municipality population | ✅ | ? | ? | ? | implementation is present; historical environment evidence has not yet been normalized into this checkpoint |
 | Weather / Open-Meteo | ✅ | ? | ? | ? | implementation is present; historical environment evidence has not yet been normalized into this checkpoint |
-| Silver analytical layer | — | — | — | — | roadmap only; package boundary does not represent a delivered analytical model |
 | Gold / Customer Intelligence | — | — | — | — | roadmap only; no completed analytical product is claimed |
 
-Olist Bronze CSV code coverage is complete for the current public Olist source set represented by this repository. Environment readiness is intentionally shown separately above rather than inferred from that implementation statement.
+Olist Bronze CSV code coverage is complete for the current public Olist source set represented by this repository. The first Olist Silver slice is now delivered for Customers + Orders in DEV. Environment readiness is intentionally shown separately above rather than inferred from implementation alone.
 
 ## Platform capability readiness
 
@@ -60,7 +61,8 @@ Olist Bronze CSV code coverage is complete for the current public Olist source s
 | --- | :---: | :---: | :---: | :---: | --- |
 | Platform + Domains package architecture | ✅ | ✅ | ✅ | ✅ | exercised by delivered workloads across the promotion path |
 | Dataset contracts / Delta lifecycle / Bronze write strategies | ✅ | ✅ | ✅ | ✅ | reused by delivered Bronze workloads |
-| First-class Data Quality + administrative Control Plane | ✅ | ✅ | ✅ | ✅ | GDP, Customers and Sellers provide accepted cross-environment evidence; adoption still varies by dataset |
+| Silver typed contracts + protected full-snapshot writes | ✅ | ✅ | ? | ? | Customers + Orders DEV acceptance proves explicit typed schemas, blocking/non-blocking DQ, deterministic reruns and target preservation on blocking rejection |
+| First-class Data Quality + administrative Control Plane | ✅ | ✅ | ✅ | ✅ | GDP, Customers and Sellers provide accepted cross-environment evidence; Silver Customers + Orders add accepted DEV evidence; adoption still varies by dataset |
 | DAB environment targets and exact-wheel promotion | ✅ | ✅ | ✅ | ✅ | `dev`, `stg`, `prd` targets with retained staging-approved artifact for production |
 | Manifest-driven deployment smoke coverage | ✅ | ✅ | ✅ | ? | every current declared DAB job has one smoke contract; current STG evidence is complete |
 | DAG-aware bounded smoke scheduler | ✅ | ✅ | ✅ | ? | STG Deploy #37 validated `max_workers=4`, 13/13 `SUCCESS`, no `FAILED`/`BLOCKED`, no observed shared-control-plane conflict |
@@ -94,6 +96,7 @@ The implemented foundation includes:
 - first-class PySpark Data Quality contracts, rules and structured results;
 - persisted Data Quality evidence with `ERROR`, `WARNING` and `INFO` policy semantics;
 - administrative Control Plane with environment-isolated `execution_runs` and `data_quality_results` history;
+- explicit Silver Customers + Orders contracts with typed lifecycle fields, referential DQ, lineage, deterministic `FULL_REPLACE` and protected writes;
 - DAB targets for `dev`, `stg` and `prd`, with separate Data Plane and administrative catalogs;
 - GitHub Actions CI/CD;
 - same staging-approved wheel artifact promotion to production;
@@ -102,6 +105,7 @@ The implemented foundation includes:
 
 ## Current evidence highlights
 
+- **Silver Customers + Orders DEV:** Customers contains 99,441 rows at unique `customer_id` grain and preserves 96,096 longitudinal `customer_unique_id` values. Orders contains 99,441 unique `order_id` rows with zero Orders -> Customers orphans and typed lifecycle timestamps. Bidirectional `EXCEPT ALL` after a rerun returned `0/0` for both datasets when excluding the expected processing timestamp. A controlled one-orphan rejection persisted `OLIST-SILVER-ORDERS-DQ05` as `ERROR/FAIL` with `invalid_row_count=1` and left the protected target unchanged (`0/0` bidirectional comparison).
 - **Order Reviews DEV:** two successful `FULL_REPLACE` executions of the same 99,224-row source snapshot. The target contains 99,224 rows and 99,224 distinct `(review_id, order_id)` keys with complete `source_file` and `ingestion_timestamp` lineage.
 - **ANP DEV:** bounded Azure PostgreSQL/JDBC reprocessing is accepted only in DEV; absence of STG/PRD readiness is intentional, not an implied failure.
 - **Products:** explicit closeout records DEV -> STG -> PRD and exact staging-wheel reuse in production.
@@ -113,7 +117,7 @@ The implemented foundation includes:
 - several earlier source slices have implementation history but their environment-specific evidence has not yet been normalized into this matrix; `?` is intentional until evidence is reconciled rather than guessed;
 - a successful STG deployment/smoke is not equivalent to full STG runtime acceptance for every dataset;
 - full regression of every pipeline during deployment is intentionally out of scope;
-- Silver/Gold analytical products are not yet delivered;
+- Silver delivery currently covers only Customers + Orders in DEV; remaining Silver domains and all Gold analytical products are not yet delivered;
 - account/workspace-level governance taxonomy provisioning remains subject to external Unity Catalog permissions/capabilities;
 - shared-environment grants required by the Data Quality Control Plane delivery were validated with the shared `olist-ci` workload identity in the lab STG/PRD environments; stronger per-environment identity separation remains target architecture rather than current-state fact;
 - repository server-side branch protection may depend on account/plan capabilities, so process and CI guardrails remain important.
@@ -143,7 +147,7 @@ Future work is selected from GitHub Issues. Historical Discovery, Requirements, 
 
 Likely capability families remain:
 
-- Silver modeling and harmonization;
+- remaining Silver modeling and harmonization;
 - Gold / Customer Intelligence products;
 - broader observability where concrete use cases justify it;
 - incremental processing/backfill/replay where required;
