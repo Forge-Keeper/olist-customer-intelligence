@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from functools import reduce
+from operator import or_
+
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql import functions as F
 
@@ -69,10 +72,30 @@ OLIST_PRODUCTS_SILVER_CONTRACT = DatasetContract(
             "Product description length.",
         ),
         ColumnContract("product_photos_qty", "int", True, "Product photo count."),
-        ColumnContract("product_weight_g", "decimal(18,2)", True, "Weight in grams."),
-        ColumnContract("product_length_cm", "decimal(18,2)", True, "Length in cm."),
-        ColumnContract("product_height_cm", "decimal(18,2)", True, "Height in cm."),
-        ColumnContract("product_width_cm", "decimal(18,2)", True, "Width in cm."),
+        ColumnContract(
+            "product_weight_g",
+            "decimal(18,2)",
+            True,
+            "Weight in grams.",
+        ),
+        ColumnContract(
+            "product_length_cm",
+            "decimal(18,2)",
+            True,
+            "Length in cm.",
+        ),
+        ColumnContract(
+            "product_height_cm",
+            "decimal(18,2)",
+            True,
+            "Height in cm.",
+        ),
+        ColumnContract(
+            "product_width_cm",
+            "decimal(18,2)",
+            True,
+            "Width in cm.",
+        ),
         ColumnContract(
             "source_file",
             "string",
@@ -127,7 +150,9 @@ OLIST_PRODUCTS_SILVER_QUALITY_CONTRACT = DataQualityContract(
             category=QualityCategory.VALIDITY,
             severity=QualitySeverity.ERROR,
             expression="NOT _invalid_numeric_cast",
-            expected_condition="all non-null typed product attributes are parseable",
+            expected_condition=(
+                "all non-null typed product attributes are parseable"
+            ),
         ),
         PredicateRule(
             rule_id="OLIST-SILVER-PRODUCTS-DQ04",
@@ -146,20 +171,24 @@ OLIST_PRODUCTS_SILVER_QUALITY_CONTRACT = DataQualityContract(
         PredicateRule(
             rule_id="OLIST-SILVER-PRODUCTS-DQ05",
             version=1,
-            description="Observe non-null categories missing an English translation.",
+            description="Observe categories missing an English translation.",
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.WARNING,
             expression="product_category_name IS NULL OR _translation_exists",
-            expected_condition="non-null product categories should have translations",
+            expected_condition=(
+                "non-null product categories should have translations"
+            ),
         ),
         PredicateRule(
             rule_id="OLIST-SILVER-PRODUCTS-DQ06",
             version=1,
-            description="Observe zero product weight without blocking the snapshot.",
+            description="Observe zero weight without blocking the snapshot.",
             category=QualityCategory.OBSERVATION,
             severity=QualitySeverity.WARNING,
             expression="product_weight_g IS NULL OR product_weight_g <> 0",
-            expected_condition="product weight should be greater than zero when present",
+            expected_condition=(
+                "product weight should be greater than zero when present"
+            ),
         ),
     ),
 )
@@ -181,6 +210,13 @@ def transform_products(bronze: DataFrame, translations: DataFrame) -> DataFrame:
         name: _try_cast(name, data_type)
         for name, data_type in _NUMERIC_SOURCE_COLUMNS.items()
     }
+    invalid_numeric_cast = reduce(
+        or_,
+        [
+            F.col(source_name).isNotNull() & parsed_column.isNull()
+            for source_name, parsed_column in parsed.items()
+        ],
+    )
     transformed = bronze.select(
         F.col("product_id").cast("string").alias("product_id"),
         F.col("product_category_name")
@@ -200,21 +236,7 @@ def transform_products(bronze: DataFrame, translations: DataFrame) -> DataFrame:
         .cast("timestamp")
         .alias("bronze_ingestion_timestamp"),
         F.current_timestamp().alias("silver_processed_timestamp"),
-        F.lit(False).alias("_invalid_numeric_cast"),
-    )
-
-    invalid_expression = None
-    for source_name, parsed_column in parsed.items():
-        condition = F.col(source_name).isNotNull() & parsed_column.isNull()
-        invalid_expression = (
-            condition
-            if invalid_expression is None
-            else invalid_expression | condition
-        )
-
-    transformed = transformed.drop("_invalid_numeric_cast").withColumn(
-        "_invalid_numeric_cast",
-        invalid_expression,
+        invalid_numeric_cast.alias("_invalid_numeric_cast"),
     )
 
     translation_keys = (
