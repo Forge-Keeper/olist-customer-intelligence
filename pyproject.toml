@@ -35,6 +35,10 @@ olist-mql = "olist_data_platform.jobs.olist_marketing_qualified_leads_ingestion:
 olist-closed-deals = "olist_data_platform.jobs.olist_closed_deals_ingestion:main"
 olist-silver-customers = "olist_data_platform.jobs.olist_silver_customers:main"
 olist-silver-orders = "olist_data_platform.jobs.olist_silver_orders:main"
+olist-silver-category-translation = "olist_data_platform.jobs.olist_silver_category_translation:main"
+olist-silver-products = "olist_data_platform.jobs.olist_silver_products:main"
+olist-silver-sellers = "olist_data_platform.jobs.olist_silver_sellers:main"
+olist-silver-order-items = "olist_data_platform.jobs.olist_silver_order_items:main"
 
 [dependency-groups]
 dev = [
