@@ -278,14 +278,28 @@ def test_runtime_smoke_contracts_preserve_expected_dependencies_and_bounds() -> 
     manifest = load_manifest()
     validate_manifest_dependencies(manifest)
 
-    silver_job = "olist_silver_customers_orders"
-    assert manifest[silver_job]["depends_on"] == ["olist_customers", "olist_orders"]
+    first_silver = "olist_silver_customers_orders"
+    second_silver = "olist_silver_products_category_sellers_order_items"
+    assert manifest[first_silver]["depends_on"] == [
+        "olist_customers",
+        "olist_orders",
+    ]
+    assert manifest[second_silver]["depends_on"] == [
+        "olist_product_category_name_translation",
+        "olist_products",
+        "olist_sellers",
+        "olist_order_items",
+        first_silver,
+    ]
     assert all(
         config["depends_on"] == []
         for job_name, config in manifest.items()
-        if job_name != silver_job
+        if job_name not in {first_silver, second_silver}
     )
-    assert resolve_arguments("stg", manifest["ibge_municipality_gdp"]["arguments"]) == [
+    assert resolve_arguments(
+        "stg",
+        manifest["ibge_municipality_gdp"]["arguments"],
+    ) == [
         "--target-table",
         "stg.bronze.ibge_municipality_gdp",
         "--execution-runs-table",
@@ -296,7 +310,8 @@ def test_runtime_smoke_contracts_preserve_expected_dependencies_and_bounds() -> 
         "2018",
     ]
     assert resolve_arguments(
-        "prd", manifest["ibge_municipality_business_activity"]["arguments"]
+        "prd",
+        manifest["ibge_municipality_business_activity"]["arguments"],
     ) == [
         "--target-table",
         "prd.bronze.ibge_municipality_business_activity",
