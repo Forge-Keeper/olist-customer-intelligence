@@ -69,7 +69,16 @@ def _products_bronze(spark, *, category="beleza_saude", weight="100"):
 
 def _sellers_bronze(spark):
     return spark.createDataFrame(
-        [("seller-1", "01234", "sao paulo", "SP", "sellers.csv", datetime(2026, 9, 12))],
+        [
+            (
+                "seller-1",
+                "01234",
+                "sao paulo",
+                "SP",
+                "sellers.csv",
+                datetime(2026, 9, 12),
+            )
+        ],
         (
             "seller_id string, seller_zip_code_prefix string, seller_city string, "
             "seller_state string, source_file string, ingestion_timestamp timestamp"
