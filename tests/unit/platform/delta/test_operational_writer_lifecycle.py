@@ -1,5 +1,6 @@
 from datetime import datetime
 from types import SimpleNamespace
+from typing import cast
 from unittest.mock import Mock
 
 from olist_data_platform.platform.delta.operations.execution_run_repository import (
@@ -12,6 +13,7 @@ from olist_data_platform.platform.operations.model import (
     ExecutionStatus,
     QualityRunStatus,
 )
+from olist_data_platform.platform.quality.model import QualityReport
 
 
 def _execution_run() -> ExecutionRun:
@@ -71,7 +73,7 @@ def test_quality_result_writer_skips_metadata_reconciliation() -> None:
         evaluation_scope="{}",
         evaluated_at=datetime(2026, 9, 12),
     )
-    report = SimpleNamespace(results=[result])
+    report = cast(QualityReport, SimpleNamespace(results=[result]))
 
     writer.write(report)
 
