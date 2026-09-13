@@ -79,8 +79,13 @@ class DeltaTableLifecycle:
         self.target_table = target_table
         self.contract = contract
 
-    def ensure(self) -> None:
-        """Create or validate the table and reconcile supported metadata drift."""
+    def ensure(self, *, reconcile_metadata: bool = True) -> None:
+        """Create or validate the table and optionally reconcile metadata drift.
+
+        Runtime writers that share a control-plane table may disable metadata
+        reconciliation after provisioning. Schema and layout validation still
+        run, but repeated COMMENT/TAGS DDL is avoided on the concurrent hot path.
+        """
         if not self.spark.catalog.tableExists(self.target_table):
             self.create()
             return
@@ -99,7 +104,8 @@ class DeltaTableLifecycle:
         if not layout_diff.is_compatible:
             raise ValueError(self._format_layout_drift(layout_diff))
 
-        self.reconcile_metadata()
+        if reconcile_metadata:
+            self.reconcile_metadata()
 
     def create(self) -> None:
         """Create an empty Delta table from the authoritative dataset contract."""

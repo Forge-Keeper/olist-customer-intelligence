@@ -171,7 +171,7 @@ class ExecutionRunRepository:
             ],
             schema=EXECUTION_RUN_CONTRACT.to_struct_type(),
         )
-        self.lifecycle.ensure()
+        self.lifecycle.ensure(reconcile_metadata=False)
         source_view = f"_execution_run_{uuid4().hex}"
         dataframe.createOrReplaceTempView(source_view)
         try:

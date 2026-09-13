@@ -141,7 +141,7 @@ class QualityResultWriter:
             rows,
             schema=DATA_QUALITY_RESULT_CONTRACT.to_struct_type(),
         )
-        self.lifecycle.ensure()
+        self.lifecycle.ensure(reconcile_metadata=False)
         source_view = f"_quality_results_{uuid4().hex}"
         dataframe.createOrReplaceTempView(source_view)
         try:
