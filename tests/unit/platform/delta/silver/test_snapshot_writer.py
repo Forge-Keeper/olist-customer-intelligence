@@ -5,7 +5,7 @@ from unittest.mock import MagicMock
 
 import pytest
 
-import olist_data_platform.platform.delta.silver.snapshot_writer as snapshot_writer_module
+from olist_data_platform.platform.delta.silver import snapshot_writer as snapshot_writer_module
 from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 from olist_data_platform.platform.delta.contract import (
     ColumnContract,
