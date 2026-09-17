@@ -84,6 +84,7 @@ nav:
       - ADR-006 Unity Catalog ABAC: adr/ADR-006-unity-catalog-abac-governance.md
       - ADR-007 Administrative Control Plane: adr/ADR-007-platform-administrative-control-plane.md
       - ADR-008 Data Quality Execution: adr/ADR-008-first-class-data-quality-execution-model.md
+      - ADR-009 Olist Snapshot FULL_REPLACE: adr/ADR-009-olist-authoritative-snapshot-full-replace.md
   - API Reference:
       - Delta Contracts: api/delta-contracts.md
       - Delta Lifecycle: api/delta-lifecycle.md
