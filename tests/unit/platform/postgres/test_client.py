@@ -1,7 +1,7 @@
 from unittest.mock import MagicMock, patch
 
 import pytest
-from psycopg.sql import Composable, SQL
+from psycopg.sql import SQL, Composable
 
 from olist_data_platform.platform.postgres.client import PostgresClient
 from olist_data_platform.platform.postgres.config import PostgresConfig
