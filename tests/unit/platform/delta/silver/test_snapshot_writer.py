@@ -196,13 +196,14 @@ def test_empty_snapshot_preserves_target_and_message(
         empty_snapshot_message=message,
     )
 
-    with pytest.raises(ValueError, match="Silver Test FULL_REPLACE"):
+    with pytest.raises(ValueError) as exc_info:
         writer.write_checked(
             dataframe,
             run_id="run-1",
             evaluation_scope='{"source":"test"}',
         )
 
+    assert str(exc_info.value) == message
     result_writer.write.assert_called_once_with(report)
     lifecycle_factory.assert_not_called()
     dataframe.select.assert_not_called()
@@ -248,10 +249,8 @@ def test_success_projects_contract_columns_and_overwrites_target(
     dataframe.select.assert_called_once_with("id", "value")
     persisted.write.format.assert_called_once_with("delta")
     persisted.write.format.return_value.mode.assert_called_once_with("overwrite")
-    (
-        persisted.write.format.return_value.mode.return_value.saveAsTable
-        .assert_called_once_with("catalog.silver.test")
-    )
+    save_as_table = persisted.write.format.return_value.mode.return_value.saveAsTable
+    save_as_table.assert_called_once_with("catalog.silver.test")
 
 
 def test_temporary_quality_columns_are_not_persisted(
