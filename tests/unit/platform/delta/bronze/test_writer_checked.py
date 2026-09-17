@@ -2,6 +2,7 @@ from datetime import datetime
 from unittest.mock import Mock
 
 import pytest
+from pyspark.sql.types import LongType, StringType, StructField, StructType
 
 from olist_data_platform.platform.delta import ColumnContract, DatasetContract
 from olist_data_platform.platform.delta.bronze.writer import BronzeWriter
@@ -103,3 +104,26 @@ def test_checked_write_rejects_blocking_quality_before_key_evidence_check() -> N
 
     with pytest.raises(DataQualityRejectedError, match="DQ01"):
         writer.write_checked(checked)
+
+
+def test_checked_write_rejects_runtime_type_mismatch_before_persistence() -> None:
+    writer = BronzeWriter(Mock(), "bronze.example", _config())
+    writer._persist_prepared = Mock()
+    dataframe = Mock()
+    dataframe.columns = ["id", "payload"]
+    dataframe.schema = StructType(
+        [
+            StructField("id", LongType(), False),
+            StructField("payload", StringType(), False),
+        ]
+    )
+    checked = QualityCheckedBatch(
+        dataframe=dataframe,
+        report=_report(),
+        validated_key_columns=("id",),
+    )
+
+    with pytest.raises(ValueError, match="id:bigint->string"):
+        writer.write_checked(checked)
+
+    writer._persist_prepared.assert_not_called()
