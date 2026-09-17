@@ -9,11 +9,9 @@ from olist_data_platform.platform.delta.contract import (
     DatasetContract,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
-from olist_data_platform.platform.delta.quality import QualityResultWriter
+from olist_data_platform.platform.delta.silver import SilverSnapshotWriter
 from olist_data_platform.platform.quality import (
     DataQualityContract,
-    DataQualityRunner,
     NotNullRule,
     PredicateRule,
     QualityCategory,
@@ -246,34 +244,24 @@ def process_order_items_snapshot(
     run_id: str,
     evaluation_scope: str,
 ) -> QualityReport:
+    """Validate and atomically replace the protected Silver snapshot."""
     transformed = attach_item_relationships(
         transform_order_items(bronze),
         orders,
         products,
         sellers,
     )
-    checked = DataQualityRunner().evaluate(
-        dataframe=transformed,
-        contract=OLIST_ORDER_ITEMS_SILVER_QUALITY_CONTRACT,
-        run_id=run_id,
-        evaluation_scope=evaluation_scope,
-    )
-    QualityResultWriter(spark, quality_results_table).write(checked.report)
-    checked.report.raise_for_blocking_failures()
-    if checked.report.row_count == 0:
-        raise ValueError(
-            "Silver Order Items FULL_REPLACE snapshot cannot be empty; "
-            "the existing target was preserved."
-        )
-    DeltaTableLifecycle(
+    return SilverSnapshotWriter(
         spark,
         target_table,
         OLIST_ORDER_ITEMS_SILVER_CONTRACT,
-    ).ensure()
-    (
-        checked.dataframe.select(*OLIST_ORDER_ITEMS_SILVER_CONTRACT.required_columns)
-        .write.format("delta")
-        .mode("overwrite")
-        .saveAsTable(target_table)
+        OLIST_ORDER_ITEMS_SILVER_QUALITY_CONTRACT,
+        quality_results_table,
+        empty_snapshot_message=(
+            "Silver Order Items FULL_REPLACE snapshot cannot be empty; the existing target was preserved."
+        ),
+    ).write_checked(
+        transformed,
+        run_id=run_id,
+        evaluation_scope=evaluation_scope,
     )
-    return checked.report
