@@ -131,7 +131,8 @@ def process_category_translation_snapshot(
         OLIST_CATEGORY_TRANSLATION_SILVER_QUALITY_CONTRACT,
         quality_results_table,
         empty_snapshot_message=(
-            "Silver Category Translation FULL_REPLACE snapshot cannot be empty; the existing target was preserved."
+            "Silver Category Translation FULL_REPLACE snapshot cannot be empty; "
+            "the existing target was preserved."
         ),
     ).write_checked(
         transformed,
