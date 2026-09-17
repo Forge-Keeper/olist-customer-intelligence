@@ -1,6 +1,6 @@
 # ADR-009 — Use Protected FULL_REPLACE for Authoritative Olist Snapshots
 
-- **Status:** Accepted
+- **Status:** Proposed
 - **Date:** 2026-09-17
 - **Decision owners:** Project maintainers
 - **Scope:** Olist static CSV snapshot persistence in Bronze and deterministic Olist Silver snapshot outputs
