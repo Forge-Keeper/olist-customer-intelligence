@@ -1,6 +1,7 @@
 from unittest.mock import Mock, patch
 
 import pytest
+from pyspark.sql.types import LongType, StringType, StructField, StructType
 
 from olist_data_platform.platform.delta import (
     ColumnContract,
@@ -116,3 +117,21 @@ def test_should_reject_empty_full_replace_snapshot_before_lifecycle(mock_prepare
         writer.write(Mock())
 
     writer.lifecycle.ensure.assert_not_called()
+
+
+def test_legacy_write_rejects_runtime_type_mismatch_before_persistence(config):
+    dataframe = Mock()
+    dataframe.columns = ["id", "payload"]
+    dataframe.schema = StructType(
+        [
+            StructField("id", LongType(), False),
+            StructField("payload", StringType(), False),
+        ]
+    )
+    writer = BronzeWriter(Mock(), "bronze.example", config)
+    writer._persist_prepared = Mock()
+
+    with pytest.raises(ValueError, match="id:bigint->string"):
+        writer.write(dataframe)
+
+    writer._persist_prepared.assert_not_called()

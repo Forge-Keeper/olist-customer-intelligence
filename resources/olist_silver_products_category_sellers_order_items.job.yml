@@ -1,0 +1,81 @@
+resources:
+  jobs:
+    olist_silver_products_category_sellers_order_items:
+      name: olist_silver_products_category_sellers_order_items
+      max_concurrent_runs: 1
+      tasks:
+        - task_key: silver_category_translation
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-silver-category-translation
+            parameters:
+              - --source-table
+              - ${var.catalog}.bronze.olist_product_category_name_translation
+              - --target-table
+              - ${var.catalog}.silver.olist_product_category_name_translation
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+        - task_key: silver_products
+          depends_on:
+            - task_key: silver_category_translation
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-silver-products
+            parameters:
+              - --source-table
+              - ${var.catalog}.bronze.olist_products
+              - --translations-table
+              - ${var.catalog}.silver.olist_product_category_name_translation
+              - --target-table
+              - ${var.catalog}.silver.olist_products
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+        - task_key: silver_sellers
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-silver-sellers
+            parameters:
+              - --source-table
+              - ${var.catalog}.bronze.olist_sellers
+              - --target-table
+              - ${var.catalog}.silver.olist_sellers
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+        - task_key: silver_order_items
+          depends_on:
+            - task_key: silver_products
+            - task_key: silver_sellers
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-silver-order-items
+            parameters:
+              - --source-table
+              - ${var.catalog}.bronze.olist_order_items
+              - --orders-table
+              - ${var.catalog}.silver.olist_orders
+              - --products-table
+              - ${var.catalog}.silver.olist_products
+              - --sellers-table
+              - ${var.catalog}.silver.olist_sellers
+              - --target-table
+              - ${var.catalog}.silver.olist_order_items
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
+      environments:
+        - environment_key: default
+          spec:
+            environment_version: "4"
+            dependencies:
+              - ../dist/*.whl
