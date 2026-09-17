@@ -11,8 +11,8 @@ from olist_data_platform.platform.delta.contract import (
     DatasetContract,
     TableMetadata,
 )
+from olist_data_platform.platform.delta.silver import SilverSnapshotWriter
 from olist_data_platform.platform.delta.silver import (
-    SilverSnapshotWriter,
     snapshot_writer as snapshot_writer_module,
 )
 from olist_data_platform.platform.quality import (
