@@ -258,7 +258,8 @@ def process_order_items_snapshot(
         OLIST_ORDER_ITEMS_SILVER_QUALITY_CONTRACT,
         quality_results_table,
         empty_snapshot_message=(
-            "Silver Order Items FULL_REPLACE snapshot cannot be empty; the existing target was preserved."
+            "Silver Order Items FULL_REPLACE snapshot cannot be empty; "
+            "the existing target was preserved."
         ),
     ).write_checked(
         transformed,
