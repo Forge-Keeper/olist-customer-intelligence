@@ -24,13 +24,12 @@ def _sql_text(value: object) -> str:
     return " ".join(value.as_string().split())
 
 
-def _configure_connection_method(client: PostgresClient) -> tuple[MagicMock, MagicMock]:
+def _connection_mocks() -> tuple[MagicMock, MagicMock]:
     connection = MagicMock()
     cursor = MagicMock()
     connection_method = MagicMock()
     connection_method.return_value.__enter__.return_value = connection
     connection.cursor.return_value.__enter__.return_value = cursor
-    client.connection = connection_method  # type: ignore[method-assign]
     return connection_method, cursor
 
 
@@ -66,11 +65,12 @@ def test_connection_propagates_connect_error() -> None:
 
 def test_execute_scalar_returns_first_column() -> None:
     client = PostgresClient(_config())
-    connection_method, cursor = _configure_connection_method(client)
+    connection_method, cursor = _connection_mocks()
     cursor.fetchone.return_value = (42, "ignored")
     query = SQL("SELECT 42")
 
-    result = client.execute_scalar(query)
+    with patch.object(client, "connection", connection_method):
+        result = client.execute_scalar(query)
 
     assert result == 42
     connection_method.assert_called_once_with()
@@ -79,20 +79,22 @@ def test_execute_scalar_returns_first_column() -> None:
 
 def test_execute_scalar_rejects_query_without_rows() -> None:
     client = PostgresClient(_config())
-    _, cursor = _configure_connection_method(client)
+    connection_method, cursor = _connection_mocks()
     cursor.fetchone.return_value = None
 
-    with pytest.raises(RuntimeError, match="Query returned no rows"):
-        client.execute_scalar(SQL("SELECT NULL WHERE FALSE"))
+    with patch.object(client, "connection", connection_method):
+        with pytest.raises(RuntimeError, match="Query returned no rows"):
+            client.execute_scalar(SQL("SELECT NULL WHERE FALSE"))
 
 
 def test_execute_scalar_propagates_query_error() -> None:
     client = PostgresClient(_config())
-    _, cursor = _configure_connection_method(client)
+    connection_method, cursor = _connection_mocks()
     cursor.execute.side_effect = RuntimeError("query failed")
 
-    with pytest.raises(RuntimeError, match="query failed"):
-        client.execute_scalar(SQL("SELECT broken"))
+    with patch.object(client, "connection", connection_method):
+        with pytest.raises(RuntimeError, match="query failed"):
+            client.execute_scalar(SQL("SELECT broken"))
 
 
 @pytest.mark.parametrize(("scalar", "expected"), [(1, True), (0, False)])
