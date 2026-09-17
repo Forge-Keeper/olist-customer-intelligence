@@ -5,14 +5,16 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from olist_data_platform.platform.delta.silver import snapshot_writer as snapshot_writer_module
 from olist_data_platform.platform.delta.bronze.config import WriteStrategy
 from olist_data_platform.platform.delta.contract import (
     ColumnContract,
     DatasetContract,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.silver import SilverSnapshotWriter
+from olist_data_platform.platform.delta.silver import (
+    SilverSnapshotWriter,
+    snapshot_writer as snapshot_writer_module,
+)
 from olist_data_platform.platform.quality import (
     DataQualityContract,
     DataQualityRejectedError,
