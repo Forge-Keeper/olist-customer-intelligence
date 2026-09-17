@@ -1,100 +1,329 @@
 # olist-customer-intelligence
 
-## Contexto do projeto
+## Contexto atual do projeto
 
-Plataforma de engenharia de dados ponta a ponta construída sobre o
-dataset público da Olist (e-commerce brasileiro). Stack: Databricks,
-PySpark, Delta Lake, Unity Catalog, ingestão via REST API (Open-Meteo),
-qualidade de dados, orquestração, feature engineering e MLflow.
+Plataforma de Engenharia de Dados orientada a Databricks, construída com fontes
+públicas da Olist e fontes complementares como IBGE, Open-Meteo e ANP/Azure
+PostgreSQL.
 
-Estrutura de código-fonte (`src/olist_data_platform/`):
+Stack principal:
 
-- `ingestion/api` — clientes de API externas (ex.: `open_meteo_client.py`)
-- `ingestion/parsers` — parsing de payloads de resposta em registros
-- `ingestion/services` — orquestração do fluxo de ingestão
-- `ingestion/writers` — persistência em Delta (camada Bronze)
-- `common/logging` — factory de logger compartilhado
-- `transformations`, `features`, `ml`, `quality` — camadas seguintes do
-  pipeline (Silver/Gold, features, modelos, validações)
+- Python 3.11+;
+- PySpark;
+- Databricks / Delta Lake / Unity Catalog;
+- Databricks Asset Bundles (DAB);
+- Data Quality first-class com evidência persistida;
+- Control Plane operacional para runs e resultados de qualidade;
+- GitHub Actions;
+- MkDocs Material.
 
-Testes em `tests/unit` (lógica isolada, sem Spark real quando possível)
-e `tests/integration` (Spark local via fixture `spark` em
-`tests/conftest.py`, sessão `local[2]`).
+Não inferir maturidade pela existência de diretórios ou código. O estado público
+atual de datasets e ambientes está em `docs/platform-status.md`. Gold / Customer
+Intelligence continua roadmap enquanto o Platform Status não registrar evidência
+aceita.
 
-Decisões arquiteturais relevantes são registradas em `docs/adr/` no
-formato Status/Context/Decision/Rationale/Consequences/Alternatives
-Considered/Revisit Criteria (ver `ADR-001-liquid-clustering-bronze-weather.md`
-como modelo de referência).
+## Hierarquia de source of truth
 
-## Convenções obrigatórias
+Use as fontes conforme a pergunta:
 
-- **Liquid Clustering em vez de Hive-style `PARTITION BY`** para tabelas
-  Delta gerenciadas — decisão registrada no ADR-001. Nunca sugerir
-  `PARTITION BY` ou Z-Order como alternativa padrão sem justificar
-  explicitamente por que o caso é diferente do que motivou o ADR-001.
-- Clustering é propriedade de layout da tabela: definir apenas na
-  criação (`writer.clusterBy(...)` quando `not table_exists`);
-  escritas subsequentes preservam a configuração existente. Nunca
-  combinar `clusterBy` com `partitionBy` na mesma tabela.
-- Reprocessamento usa `replaceWhere` seletivo por predicado de data +
-  chave de negócio (ex.: `dt_base` + coordenadas), nunca overwrite
-  completo da tabela.
-- Camada Bronze não faz transformação de negócio — só valida,
-  enriquece com metadados técnicos (`ingestion_timestamp`, `request_id`)
-  e persiste com schema explícito (`StructType`, sem inferência).
-- Logging estruturado via `LoggerFactory.get_logger(__name__)`, padrão
-  `chave=valor` separado por `" | "`, sempre com um evento nomeado em
-  `snake_case` no início da mensagem (ex.: `bronze_weather_write_started`).
-- Validação de entrada em métodos `_validate_*` estáticos, levantando
-  `TypeError`/`ValueError` com mensagem explícita — não falhar
-  silenciosamente nem depender apenas de exceções do Spark.
-- Toda mudança de comportamento de escrita/idempotência em um writer
-  precisa de teste correspondente em `tests/unit` e, quando envolver
-  Spark de fato, em `tests/integration`.
-- Python 3.11+, tipagem explícita (`from __future__ import annotations`,
-  `ClassVar`, tipos em assinaturas). `ruff` é o linter do projeto
-  (ver `pyproject.toml`).
+1. `main` — verdade executável: código, recursos e testes implementados;
+2. `docs/platform-status.md` — readiness atual de datasets/capabilities por ambiente;
+3. GitHub Issues — backlog e trabalho futuro;
+4. ADRs aceitos em `docs/adr/` — decisões arquiteturais duráveis;
+5. README/docs home — narrativa de portfólio;
+6. documentos de feature/gate — histórico detalhado, sem sobrepor o estado atual.
 
-## Como revisar meu código
+Um merge de código não autoriza sozinho um claim de `DONE`. Runtime evidence e
+closeout devem corresponder ao escopo aceito.
 
-- Aponte falhas de idempotência antes de qualquer outra coisa: um job
-  de ingestão rodado duas vezes para o mesmo período/chave deve ser
-  seguro. Se não for, isso é bloqueante.
-- Verifique schema explícito e nullability — nunca aceitar
-  `inferSchema` implícito em caminhos de escrita para Bronze/Silver.
-- Questione qualquer PySpark que funcione numa amostra pequena mas não
-  escale: `collect()`/`toPandas()` desnecessário, `Row(**dict)` em
-  volume alto, joins sem estratégia de broadcast quando um dos lados é
-  pequeno, UDFs Python quando existe função nativa equivalente.
-- Se eu estiver reimplementando algo que o Lakeflow Declarative
-  Pipelines, o Auto Loader ou o próprio Delta/Unity Catalog já resolvem
-  de forma nativa, me avise antes de eu terminar de escrever.
-- Verifique se decisões de layout de tabela (partição/clustering) têm
-  justificativa registrada — se não tiver ADR e for uma decisão não
-  trivial, sugira criar um.
-- Não aprove código sem teste correspondente. Não elogie antes de
-  listar os problemas. Seja direto — meu objetivo é aprender onde
-  estou errando, não me sentir bem com o código.
+## Arquitetura atual
+
+Estrutura principal em `src/olist_data_platform/`:
+
+- `domains/ingestion` — adapters/readers e serviços específicos de fonte;
+- `domains/bronze` — contratos, DQ e adapters específicos da Bronze;
+- `domains/silver` — contratos e transformações Silver tipadas;
+- `domains/gold`, `domains/customer_intelligence`, `domains/ml` — namespaces
+  existentes; existência do pacote não significa readiness funcional;
+- `platform/delta` — `DatasetContract`, lifecycle, Bronze persistence e writers
+  operacionais relacionados a Delta;
+- `platform/quality` — regras, contracts, runner e modelo de Data Quality;
+- `platform/operations` — tracking e estado operacional;
+- `platform/http`, `jdbc`, `postgres`, `governance`, `logging` — capacidades
+  compartilhadas;
+- `jobs/` — composition roots/entry points executáveis.
+
+Outros pontos importantes:
+
+- `resources/` — recursos Databricks Asset Bundles;
+- `deployment/smoke-jobs.yml` — contratos do deployment smoke;
+- `docs/adr/` — decisões arquiteturais;
+- `docs/development/` — especificações, runbooks e registros de entrega;
+- `tests/unit` — testes isolados;
+- `tests/integration` — testes com Spark local via fixture `spark`.
+
+## Contratos e responsabilidades
+
+### DatasetContract
+
+`DatasetContract` é a autoridade para o schema persistido, tipos, nullability
+lógica, chaves, estratégia de escrita, layout e metadata.
+
+Não introduza schema inference em caminhos persistidos quando existe contrato
+explícito.
+
+### DeltaTableLifecycle
+
+`DeltaTableLifecycle` é responsável por:
+
+- criação/inspeção da tabela;
+- compatibilidade de schema;
+- layout físico;
+- metadata/comments/tags;
+- evolução explicitamente suportada.
+
+Não mover sem necessidade essas responsabilidades para writers de domínio.
+
+### BronzeWriter
+
+`BronzeWriter` é responsável por:
+
+- preparação do batch;
+- `ingestion_timestamp` gerenciado pela plataforma;
+- validação runtime do DataFrame contra o `DatasetContract`;
+- validação de chave quando a evidência não veio do DQ;
+- semântica de `MERGE`, `FULL_REPLACE` e reprocessamento explícito.
+
+O boundary da Bronze não faz cast implícito para "consertar" um DataFrame.
+O tipo Spark recebido deve ser compatível com o tipo declarado no contrato.
+
+## Estratégias de escrita
+
+A estratégia é definida pela semântica da fonte, não por preferência genérica.
+
+### FULL_REPLACE — snapshots Olist
+
+Por ADR-009, os CSVs Olist modelados como snapshots completos/autoritativos usam
+`FULL_REPLACE` como escrita normal.
+
+Invariantes:
+
+- o batch representa o universo completo aceito do dataset;
+- blocking DQ deve falhar antes da substituição;
+- snapshot vazio inesperado deve ser rejeitado;
+- schema/tipos são explícitos;
+- rerun do mesmo business state deve preservar as mesmas linhas/chaves de negócio,
+  desconsiderando timestamps operacionais esperados;
+- linhas ausentes do novo snapshot não devem sobreviver no target;
+- datasets naturalmente keyless, como Geolocation, não recebem chave artificial.
+
+Não tratar full overwrite como antipattern quando o contrato é um snapshot completo.
+
+### MERGE — batches keyed de estado parcial
+
+Use `MERGE` quando o batch contém inserts/updates por chave mas não representa o
+universo completo da tabela.
+
+Ter uma chave não é, sozinho, justificativa para trocar um snapshot Olist para
+`MERGE`.
+
+### replaceWhere — replay/reprocessamento limitado
+
+`replaceWhere` é reprocessamento explícito e limitado por predicado.
+
+Exemplos atuais incluem escopos por data/coordenadas ou intervalo de datas. Não
+usar `replaceWhere` como substituto cerimonial para um snapshot cujo escopo
+autoritativo é a tabela inteira.
+
+## Camadas de dados
+
+### Bronze
+
+Bronze preserva semântica de fonte e evita normalização de negócio.
+
+- Olist CSV: preservar os valores source-faithful, em geral strings, mais metadata
+  técnica;
+- APIs semi-estruturadas governadas pelo ADR-003: preservar payload em `VARIANT`
+  quando aplicável;
+- JDBC/ANP: preservar tipos técnicos/source-compatible definidos pelo adapter;
+- não fabricar histórico que a fonte não fornece;
+- não mover tipagem/normalização analítica para Bronze por conveniência.
+
+### Silver
+
+Silver é responsável por:
+
+- tipos analíticos explícitos;
+- grain explícito;
+- relacionamentos/referential DQ;
+- harmonização determinística;
+- lineage útil;
+- blocking DQ antes de protected writes.
+
+A Silver Olist atualmente entregue usa snapshots completos derivados da Bronze e
+protected `FULL_REPLACE`.
+
+Não criar `SilverWriter`, framework de SCD, CDC, checkpoint, surrogate keys ou
+orquestração genérica antes de repetição observada justificar a abstração.
+
+Regra de evolução:
+
+```text
+necessidade real
+  -> solução explícita
+  -> repetição observada
+  -> contrato
+  -> abstração
+  -> testes
+  -> docs/ADR
+  -> automação
+```
+
+## Data Quality e target protection
+
+Data Quality é comportamento de plataforma, não comentário documental.
+
+- `ERROR` bloqueante deve impedir protected write;
+- `WARNING`/`INFO` registram evidência sem alterar o contrato silenciosamente;
+- evidência deve ser persistida quando o fluxo first-class DQ está configurado;
+- `write_checked()` só pode reutilizar evidência de chave compatível com o
+  `DatasetContract`;
+- falha bloqueante não deve destruir nem substituir o target anterior;
+- não rebaixar severidade apenas para fazer o job passar.
+
+## Layout Delta
+
+ADR-001 governa Weather: Liquid Clustering em vez de Hive-style partitioning.
+
+Regras gerais:
+
+- não sugerir `PARTITION BY` ou Z-Order como padrão Databricks sem evidência;
+- clustering é propriedade da tabela/lifecycle, não detalhe de cada batch;
+- não combinar clustering e partitioning para a mesma coluna/tabela;
+- não alterar semântica lógica de uma coluna para acomodar layout físico.
+
+## Logging
+
+Logging compartilhado via `LoggerFactory.get_logger(__name__)`.
+
+Eventos operacionais devem usar:
+
+```text
+snake_case_event | key=value | key=value
+```
+
+Inclua identificadores úteis para investigação sem logar secrets ou payloads
+sensíveis.
+
+## Como revisar código
+
+Priorize, nesta ordem, quando aplicável:
+
+1. perda/corrupção de dados e idempotência incorreta;
+2. semântica de escrita incompatível com a fonte;
+3. bypass de DQ ou protected-write guarantees;
+4. schema/type drift e contratos inconsistentes;
+5. quebra de lifecycle/layout/governance;
+6. problemas de escalabilidade;
+7. abstração prematura.
+
+Questione especialmente:
+
+- `collect()`/`toPandas()` desnecessário em volume;
+- Python UDF quando existe função Spark nativa;
+- joins sem estratégia proporcional ao tamanho dos lados;
+- casts silenciosos que escondem source/type drift;
+- lógica de negócio vazando para Bronze;
+- regras de DQ inventadas sem evidência;
+- frameworks genéricos criados antes de repetição real.
+
+Não aprove mudança comportamental sem cobertura de teste proporcional.
+
+## Git e promotion flow
+
+Fluxo governado:
+
+```text
+topic branch
+  -> PR para dev
+  -> CI/docs
+  -> human merge gate
+  -> dev
+  -> PR de promoção para main
+  -> CI/docs
+  -> human promotion gate
+  -> main
+```
+
+PR direto de topic branch para `main` viola o branch-governance da CI.
+
+Use merge commit regular em `dev -> main` quando a preservação de ancestry fizer
+parte do fluxo de promoção. Não usar squash automaticamente em promoção sem
+avaliar lineage.
+
+## Documentação e decisões
+
+Mudança arquitetural durável deve usar ADR.
+
+Formato atual:
+
+```text
+Status
+Context
+Decision
+Alternatives considered
+Consequences
+Implementation constraints
+Validation
+Supersession / related decisions
+```
+
+Mudanças relevantes devem respeitar o fluxo de engenharia quando proporcional:
+
+```text
+Discovery
+  -> Requirements
+  -> Technical Design
+  -> Impact Analysis
+  -> Implementation Plan
+  -> Implementation / Validation
+  -> Closeout / Platform Status
+  -> Done
+```
+
+Não crie todos os artefatos mecanicamente para uma correção pequena; preserve a
+proporcionalidade e o source of truth.
 
 ## O que NÃO fazer
 
-- Não sugerir Hive-style `PARTITION BY` como padrão para tabelas Delta
-  gerenciadas sem justificar por que o caso foge do ADR-001.
-- Não misturar transformação de negócio na camada Bronze.
-- Não aceitar overwrite completo de tabela como solução de
-  reprocessamento quando `replaceWhere` seletivo é viável.
-- Não silenciar ou reduzir o nível de um warning de qualidade de dados
-  sem explicar a justificativa no código ou no PR.
-- Não usar nomenclatura antiga da Databricks nas sugestões: usar
-  "Lakeflow Declarative Pipelines" (não "Delta Live Tables"), "Liquid
-  Clustering" (não "Z-Order" como recomendação padrão), "Real-Time
-  Mode" (não "Continuous Processing").
+- não proibir `FULL_REPLACE` genericamente: ADR-009 autoriza e exige essa semântica
+  para snapshots Olist completos;
+- não usar `FULL_REPLACE` quando a completude do batch é desconhecida;
+- não converter `FULL_REPLACE` para `MERGE` só porque existe chave;
+- não misturar transformação de negócio na Bronze;
+- não usar schema inference para contratos persistidos;
+- não introduzir cast implícito no `BronzeWriter`;
+- não aceitar blocking DQ e escrever mesmo assim;
+- não inferir readiness STG/PRD de código ou deployment smoke;
+- não criar abstração genérica antes de repetição observada;
+- não atualizar README como ledger de runtime;
+- não usar nomenclatura Databricks obsoleta nas recomendações quando houver nome
+  atual adotado no projeto.
 
-## Comandos úteis do projeto
+## Comandos de validação
 
-\```bash
-pip install -e ".[dev]"   # instala projeto + deps de dev (pytest, ruff)
-pytest                     # roda toda a suíte (unit + integration)
-pytest tests/unit          # só unit, mais rápido, sem Spark pesado
-ruff check .                # lint
-\```
+Espelhe a CI:
+
+```bash
+uv python install 3.11
+uv sync --frozen --group dev
+uv run ruff check .
+uv run ty check
+uv run pytest -q
+uv run python scripts/run_deployment_smokes.py --validate-only
+uv build --wheel
+uv run mkdocs build --strict
+```
+
+Para testes focados, use `uv run pytest <path> -q`, mas o gate final deve considerar
+a suíte/CI completa correspondente ao escopo.
