@@ -141,6 +141,24 @@ class BronzeWriter:
                 f"{sorted(missing)}"
             )
 
+        actual_fields = {field.name: field for field in dataframe.schema.fields}
+        type_mismatches: list[str] = []
+        for column in self.config.columns:
+            actual_field = actual_fields.get(column.name)
+            if actual_field is None:
+                continue
+            expected_type = column.to_struct_field().dataType
+            if actual_field.dataType != expected_type:
+                type_mismatches.append(
+                    f"{column.name}:{actual_field.dataType.simpleString()}"
+                    f"->{expected_type.simpleString()}"
+                )
+        if type_mismatches:
+            raise ValueError(
+                "DataFrame column types are incompatible with DatasetContract: "
+                f"type_mismatches={type_mismatches}"
+            )
+
         layout_columns = (
             set(self.config.layout.clustering_columns)
             | set(self.config.layout.partition_columns)
