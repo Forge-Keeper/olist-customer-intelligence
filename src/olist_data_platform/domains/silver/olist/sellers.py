@@ -130,7 +130,8 @@ def process_sellers_snapshot(
         OLIST_SELLERS_SILVER_QUALITY_CONTRACT,
         quality_results_table,
         empty_snapshot_message=(
-            "Silver Sellers FULL_REPLACE snapshot cannot be empty; the existing target was preserved."
+            "Silver Sellers FULL_REPLACE snapshot cannot be empty; "
+            "the existing target was preserved."
         ),
     ).write_checked(
         transformed,
