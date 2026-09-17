@@ -326,7 +326,8 @@ def process_orders_snapshot(
         OLIST_ORDERS_SILVER_QUALITY_CONTRACT,
         quality_results_table,
         empty_snapshot_message=(
-            "Silver Orders FULL_REPLACE snapshot cannot be empty; the existing target was preserved."
+            "Silver Orders FULL_REPLACE snapshot cannot be empty; "
+            "the existing target was preserved."
         ),
     ).write_checked(
         transformed,
