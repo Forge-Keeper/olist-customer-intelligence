@@ -41,6 +41,15 @@ def _write_source(tmp_path: Path) -> tuple[Path, bytes]:
     return source, payload
 
 
+def _write_large_source(tmp_path: Path) -> tuple[Path, bytes]:
+    source, payload = _write_source(tmp_path)
+    header, row = payload.splitlines(keepends=True)
+    repeat_count = (1024 * 1024 // len(row)) + 2
+    large_payload = header + row * repeat_count
+    source.write_bytes(large_payload)
+    return source, large_payload
+
+
 def test_anp_loader_rejects_missing_source_file(tmp_path: Path) -> None:
     loader = AnpCombustiveisLoader(MagicMock())
 
@@ -109,10 +118,26 @@ def test_anp_loader_loads_new_hash_and_records_success(tmp_path: Path) -> None:
     copy.write.assert_called_once_with(payload)
 
 
+def test_anp_loader_streams_large_source_across_multiple_copy_writes(
+    tmp_path: Path,
+) -> None:
+    source, payload = _write_large_source(tmp_path)
+    client = MagicMock()
+    _, cursor, copy = _configure_db(client)
+    cursor.fetchone.side_effect = [(False,), (1,)]
+
+    result = AnpCombustiveisLoader(client).load(source)
+
+    assert result.skipped is False
+    writes = [call.args[0] for call in copy.write.call_args_list]
+    assert len(writes) >= 2
+    assert b"".join(writes) == payload
+
+
 def test_anp_loader_row_count_failure_does_not_record_success(tmp_path: Path) -> None:
     source, _ = _write_source(tmp_path)
     client = MagicMock()
-    _, cursor, _ = _configure_db(client)
+    connection, cursor, _ = _configure_db(client)
     cursor.fetchone.side_effect = [(False,), None]
 
     with pytest.raises(RuntimeError, match="Could not count staged ANP rows"):
@@ -129,6 +154,7 @@ def test_anp_loader_row_count_failure_does_not_record_success(tmp_path: Path) ->
     assert not any(
         "INSERT INTO platform.ingestion_control" in query for query in query_texts
     )
+    connection.commit.assert_not_called()
 
 
 def test_anp_loader_business_insert_failure_does_not_record_success(
@@ -136,7 +162,7 @@ def test_anp_loader_business_insert_failure_does_not_record_success(
 ) -> None:
     source, _ = _write_source(tmp_path)
     client = MagicMock()
-    _, cursor, _ = _configure_db(client)
+    connection, cursor, _ = _configure_db(client)
     cursor.fetchone.side_effect = [(False,), (1,)]
     cursor.execute.side_effect = [None, None, None, RuntimeError("insert failed")]
 
@@ -150,3 +176,30 @@ def test_anp_loader_business_insert_failure_does_not_record_success(
     assert not any(
         "INSERT INTO platform.ingestion_control" in query for query in query_texts
     )
+    connection.commit.assert_not_called()
+
+
+def test_anp_loader_control_insert_failure_does_not_commit(
+    tmp_path: Path,
+) -> None:
+    source, _ = _write_source(tmp_path)
+    client = MagicMock()
+    connection, cursor, _ = _configure_db(client)
+    cursor.fetchone.side_effect = [(False,), (1,)]
+    cursor.execute.side_effect = [
+        None,
+        None,
+        None,
+        None,
+        RuntimeError("control insert failed"),
+    ]
+
+    with pytest.raises(RuntimeError, match="control insert failed"):
+        AnpCombustiveisLoader(client).load(source)
+
+    execute_calls = cursor.execute.call_args_list
+    assert len(execute_calls) == 5
+    query_texts = [_sql_text(call.args[0]) for call in execute_calls]
+    assert "INSERT INTO anp.combustiveis_precos" in query_texts[3]
+    assert "INSERT INTO platform.ingestion_control" in query_texts[4]
+    connection.commit.assert_not_called()
