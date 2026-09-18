@@ -45,8 +45,9 @@ Estrutura principal em `src/olist_data_platform/`:
 - `domains/silver` — contratos e transformações Silver tipadas;
 - `domains/gold`, `domains/customer_intelligence`, `domains/ml` — namespaces
   existentes; existência do pacote não significa readiness funcional;
-- `platform/delta` — `DatasetContract`, lifecycle, Bronze persistence e writers
-  operacionais relacionados a Delta;
+- `platform/delta` — `DatasetContract`, lifecycle, Bronze persistence,
+  `SilverSnapshotWriter` para protected full snapshots e writers operacionais
+  relacionados a Delta;
 - `platform/quality` — regras, contracts, runner e modelo de Data Quality;
 - `platform/operations` — tracking e estado operacional;
 - `platform/http`, `jdbc`, `postgres`, `governance`, `logging` — capacidades
@@ -163,8 +164,12 @@ Silver é responsável por:
 A Silver Olist atualmente entregue usa snapshots completos derivados da Bronze e
 protected `FULL_REPLACE`.
 
-Não criar `SilverWriter`, framework de SCD, CDC, checkpoint, surrogate keys ou
-orquestração genérica antes de repetição observada justificar a abstração.
+`SilverSnapshotWriter` centraliza somente o protocolo já observado de DQ,
+persistência de evidência, blocking gate, empty guard, lifecycle e replacement
+integral. Ele não é um `SilverWriter` genérico e não possui MERGE/SCD/CDC.
+
+Não ampliar essa abstração para framework de SCD, CDC, checkpoint, surrogate keys,
+orquestração genérica ou novas estratégias sem nova evidência e novo gate.
 
 Regra de evolução:
 
@@ -186,8 +191,10 @@ Data Quality é comportamento de plataforma, não comentário documental.
 - `ERROR` bloqueante deve impedir protected write;
 - `WARNING`/`INFO` registram evidência sem alterar o contrato silenciosamente;
 - evidência deve ser persistida quando o fluxo first-class DQ está configurado;
-- `write_checked()` só pode reutilizar evidência de chave compatível com o
+- `BronzeWriter.write_checked()` reutiliza evidência de chave compatível com o
   `DatasetContract`;
+- `SilverSnapshotWriter.write_checked()` recebe o DataFrame transformado e possui
+  explicitamente a avaliação/persistência de DQ do protocolo de snapshot Silver;
 - falha bloqueante não deve destruir nem substituir o target anterior;
 - não rebaixar severidade apenas para fazer o job passar.
 

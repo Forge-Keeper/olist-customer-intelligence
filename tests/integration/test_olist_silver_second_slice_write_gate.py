@@ -9,6 +9,9 @@ import olist_data_platform.domains.silver.olist.sellers as sellers_module
 from olist_data_platform.domains.silver.olist.category_translation import (
     transform_category_translation,
 )
+from olist_data_platform.platform.delta.silver import (
+    snapshot_writer as snapshot_writer_module,
+)
 from olist_data_platform.platform.quality import DataQualityRejectedError
 
 
@@ -28,14 +31,14 @@ class _Lifecycle:
         self.events.append("lifecycle")
 
 
-def _patch_external_writes(monkeypatch, module, events: list[str]) -> None:
+def _patch_external_writes(monkeypatch, events: list[str]) -> None:
     monkeypatch.setattr(
-        module,
+        snapshot_writer_module,
         "QualityResultWriter",
         lambda spark, target: _QualityEvidenceWriter(events),
     )
     monkeypatch.setattr(
-        module,
+        snapshot_writer_module,
         "DeltaTableLifecycle",
         lambda spark, target, contract: _Lifecycle(events),
     )
@@ -119,7 +122,7 @@ def _items(spark, *, seller_id="seller-1"):
 
 def test_products_blocking_dq_preserves_target(monkeypatch, spark):
     events: list[str] = []
-    _patch_external_writes(monkeypatch, products_module, events)
+    _patch_external_writes(monkeypatch, events)
 
     with pytest.raises(DataQualityRejectedError):
         products_module.process_products_snapshot(
@@ -137,7 +140,7 @@ def test_products_blocking_dq_preserves_target(monkeypatch, spark):
 
 def test_order_items_orphan_preserves_target(monkeypatch, spark):
     events: list[str] = []
-    _patch_external_writes(monkeypatch, items_module, events)
+    _patch_external_writes(monkeypatch, events)
 
     products = products_module.transform_products(
         _products(spark),
