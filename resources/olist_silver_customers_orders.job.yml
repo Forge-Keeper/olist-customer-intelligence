@@ -36,6 +36,24 @@ resources:
               - ${var.admin_catalog}.operations.execution_runs
               - --quality-results-table
               - ${var.admin_catalog}.quality.data_quality_results
+        - task_key: silver_order_payments
+          depends_on:
+            - task_key: silver_orders
+          environment_key: default
+          python_wheel_task:
+            package_name: olist-customer-intelligence
+            entry_point: olist-silver-order-payments
+            parameters:
+              - --source-table
+              - ${var.catalog}.bronze.olist_order_payments
+              - --orders-table
+              - ${var.catalog}.silver.olist_orders
+              - --target-table
+              - ${var.catalog}.silver.olist_order_payments
+              - --execution-runs-table
+              - ${var.admin_catalog}.operations.execution_runs
+              - --quality-results-table
+              - ${var.admin_catalog}.quality.data_quality_results
       environments:
         - environment_key: default
           spec:
