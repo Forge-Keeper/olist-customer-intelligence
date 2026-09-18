@@ -168,7 +168,8 @@
     "olist_silver_customers_orders": {
       "depends_on": [
         "olist_customers",
-        "olist_orders"
+        "olist_orders",
+        "olist_order_payments"
       ],
       "arguments": []
     },
