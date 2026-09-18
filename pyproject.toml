@@ -39,6 +39,7 @@ olist-silver-category-translation = "olist_data_platform.jobs.olist_silver_categ
 olist-silver-products = "olist_data_platform.jobs.olist_silver_products:main"
 olist-silver-sellers = "olist_data_platform.jobs.olist_silver_sellers:main"
 olist-silver-order-items = "olist_data_platform.jobs.olist_silver_order_items:main"
+olist-silver-order-payments = "olist_data_platform.jobs.olist_silver_order_payments:main"
 
 [dependency-groups]
 dev = [
