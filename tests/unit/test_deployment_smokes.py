@@ -283,6 +283,7 @@ def test_runtime_smoke_contracts_preserve_expected_dependencies_and_bounds() -> 
     assert manifest[first_silver]["depends_on"] == [
         "olist_customers",
         "olist_orders",
+        "olist_order_payments",
     ]
     assert manifest[second_silver]["depends_on"] == [
         "olist_product_category_name_translation",
