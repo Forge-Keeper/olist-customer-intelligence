@@ -5,6 +5,9 @@ from pyspark.sql.readwriter import DataFrameWriter
 
 import olist_data_platform.domains.silver.olist.customers as customers_module
 import olist_data_platform.domains.silver.olist.orders as orders_module
+from olist_data_platform.platform.delta.silver import (
+    snapshot_writer as snapshot_writer_module,
+)
 from olist_data_platform.platform.quality import DataQualityRejectedError
 
 
@@ -72,14 +75,14 @@ def _orders(spark, *, customer_id="customer-1"):
     )
 
 
-def _patch_external_writes(monkeypatch, module, events: list[str]) -> None:
+def _patch_external_writes(monkeypatch, events: list[str]) -> None:
     monkeypatch.setattr(
-        module,
+        snapshot_writer_module,
         "QualityResultWriter",
         lambda spark, target: _QualityEvidenceWriter(events),
     )
     monkeypatch.setattr(
-        module,
+        snapshot_writer_module,
         "DeltaTableLifecycle",
         lambda spark, target, contract: _Lifecycle(events),
     )
@@ -92,7 +95,7 @@ def _patch_external_writes(monkeypatch, module, events: list[str]) -> None:
 
 def test_customers_blocking_dq_preserves_target(monkeypatch, spark):
     events: list[str] = []
-    _patch_external_writes(monkeypatch, customers_module, events)
+    _patch_external_writes(monkeypatch, events)
 
     with pytest.raises(DataQualityRejectedError):
         customers_module.process_customers_snapshot(
@@ -109,7 +112,7 @@ def test_customers_blocking_dq_preserves_target(monkeypatch, spark):
 
 def test_customers_success_writes_only_after_quality(monkeypatch, spark):
     events: list[str] = []
-    _patch_external_writes(monkeypatch, customers_module, events)
+    _patch_external_writes(monkeypatch, events)
 
     customers_module.process_customers_snapshot(
         spark=spark,
@@ -129,7 +132,7 @@ def test_customers_success_writes_only_after_quality(monkeypatch, spark):
 
 def test_orders_orphan_preserves_target(monkeypatch, spark):
     events: list[str] = []
-    _patch_external_writes(monkeypatch, orders_module, events)
+    _patch_external_writes(monkeypatch, events)
 
     with pytest.raises(DataQualityRejectedError):
         orders_module.process_orders_snapshot(

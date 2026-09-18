@@ -9,11 +9,9 @@ from olist_data_platform.platform.delta.contract import (
     DatasetContract,
     TableMetadata,
 )
-from olist_data_platform.platform.delta.lifecycle import DeltaTableLifecycle
-from olist_data_platform.platform.delta.quality import QualityResultWriter
+from olist_data_platform.platform.delta.silver import SilverSnapshotWriter
 from olist_data_platform.platform.quality import (
     DataQualityContract,
-    DataQualityRunner,
     NotNullRule,
     QualityCategory,
     QualityReport,
@@ -158,33 +156,20 @@ def process_customers_snapshot(
     run_id: str,
     evaluation_scope: str,
 ) -> QualityReport:
-    """Validate and atomically replace the Silver Customers snapshot."""
+    """Validate and atomically replace the protected Silver snapshot."""
     transformed = transform_customers(bronze)
-    checked = DataQualityRunner().evaluate(
-        dataframe=transformed,
-        contract=OLIST_CUSTOMERS_SILVER_QUALITY_CONTRACT,
-        run_id=run_id,
-        evaluation_scope=evaluation_scope,
-    )
-    QualityResultWriter(spark, quality_results_table).write(checked.report)
-    checked.report.raise_for_blocking_failures()
-
-    if checked.report.row_count == 0:
-        raise ValueError(
-            "Silver Customers FULL_REPLACE snapshot cannot be empty; "
-            "the existing target was preserved."
-        )
-
-    lifecycle = DeltaTableLifecycle(
+    return SilverSnapshotWriter(
         spark,
         target_table,
         OLIST_CUSTOMERS_SILVER_CONTRACT,
+        OLIST_CUSTOMERS_SILVER_QUALITY_CONTRACT,
+        quality_results_table,
+        empty_snapshot_message=(
+            "Silver Customers FULL_REPLACE snapshot cannot be empty; "
+            "the existing target was preserved."
+        ),
+    ).write_checked(
+        transformed,
+        run_id=run_id,
+        evaluation_scope=evaluation_scope,
     )
-    lifecycle.ensure()
-    (
-        checked.dataframe.select(*OLIST_CUSTOMERS_SILVER_CONTRACT.required_columns)
-        .write.format("delta")
-        .mode("overwrite")
-        .saveAsTable(target_table)
-    )
-    return checked.report

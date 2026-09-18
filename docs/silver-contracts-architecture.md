@@ -225,6 +225,26 @@ The implementation must not create `SilverWriter` preemptively.
 
 If Customers and Orders independently expose repeated orchestration/write code with equivalent semantics, the repetition should be documented during #105. Extraction into a shared capability is then a separate architecture decision.
 
+### Later architecture note — Issue #130
+
+After six Silver datasets were delivered, Issue #130 confirmed stable repetition of
+the protected full-snapshot persistence protocol. The approved extraction adds
+`platform.delta.silver.SilverSnapshotWriter` for exactly this sequence:
+
+1. evaluate the dataset-specific Data Quality contract;
+2. persist quality evidence;
+3. block on failed ERROR rules;
+4. reject unexpected empty snapshots;
+5. ensure the Delta target lifecycle;
+6. project only DatasetContract required columns;
+7. perform the complete `FULL_REPLACE`.
+
+Transformations, relationship joins, Dataset/DataQuality contracts, execution
+tracking, CLI composition and DAB dependencies remain explicit outside the writer.
+
+This satisfies the original deferral above after observed repetition. It does not
+introduce a generic multi-strategy `SilverWriter`, MERGE, SCD or CDC framework.
+
 ## 13. Dataset naming and package boundary
 
 Proposed tables:
