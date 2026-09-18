@@ -1,6 +1,6 @@
+import json
 from datetime import datetime
 from decimal import Decimal
-import json
 
 import pytest
 
