@@ -34,3 +34,8 @@ O arquivo `dados_quadro_societario.py` utiliza tuplas na ordem do seu notebook o
 - Nem todas as PJs nos grupos estão necessariamente elegíveis para os mesmos testes de negócio: verifique situação cadastral, flag de validade, matriz, natureza jurídica, QSA e responsabilidades para cenários positivos.
 - O código do processador de exclusão fotografado referencia uma coluna adicional de componente `cpssoa_fis_jurid_isent`; o contrato reduzido atual tem quatro colunas e pode precisar ser ampliado antes do E2E integral.
 - **Não foram executadas escritas no Databricks nem modificadas tabelas produtivas.**
+
+
+## Estudo dos testes integrados
+
+O roteiro de cenários, composição das massas e coordenação com Frontend, Backend, Motor GRUP e validação funcional está em [docs/README.md](docs/README.md). É um estudo de cobertura e execução: as massas estão preparadas, mas os testes ainda precisam ser rodados e confrontados com a versão atual do motor.
