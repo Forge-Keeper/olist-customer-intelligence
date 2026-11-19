@@ -192,7 +192,7 @@ class TestMassaSintetica(unittest.TestCase):
             self.assertEqual(resultados, {"APROVADO", "REPROVADO"})
 
     def test_sequencias_duas_decisoes_binarias(self):
-        sequencias = [c for c in self.casos if re.fullmatch(r"C\\d{2}", c["id"])]
+        sequencias = [c for c in self.casos if re.fullmatch(r"C\d{2}", c["id"])]
         self.assertEqual(len(sequencias), 16)
         for caso in sequencias:
             etapas = caso["resultados_por_passo"]
