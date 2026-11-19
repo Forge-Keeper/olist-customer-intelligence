@@ -1,63 +1,82 @@
-# Tabelas-verdade e modelo de aceite
+# Tabelas-verdade — decisão binária do Motor
 
-A tabela-verdade não é o log do motor: deve ser fixada antes da execução e assinada pelo negócio. Usar uma linha por decisão de componente e uma linha agregada por grupo/solicitação.
+**Versão 4.0.0 | 19/11/2026 | 217 casos | Expectativas ainda não homologadas.**
 
-## Modelo obrigatório
+A decisão funcional do Motor tem **exatamente dois resultados**:
 
-| Campo | Origem | Regra |
+| Esperado de negócio | Valor técnico recuperado | Interpretação |
 |---|---|---|
-| `id_cenario` | Catálogo | Chave F/I/E/U/C/P/B/FX/UX/EX/IX |
-| `_id`, `cSoltcAtdmt` | Solicitação preparada | Chaves reais da entrada, sem reutilização indevida |
-| `cAcaoGrpEconm` | Ação | 1 Formalização; 2 Inclusão; 3 Exclusão; 4 Unificação |
-| `cGrpEconm` / primário / secundário | Fixture | Código real ou NOVO no caso da Formalização |
-| `cTpoGrpEconm` | GE inicial | 1 Normal; 5 Isolado; 6 Gerencial |
-| `cclub_cli`, CPF/CNPJ | Cadastros | Documento e natureza correspondem à tabela |
-| Membros ativos antes | Fixture | Documento, papel e GE, mais overlays explícitos |
-| QSA do CNPJ | Fixture / overlay | Titular, sócio, `cclub_cli` do sócio e %; total |
-| Responsabilidade | Fixture / overlay | `noper_cli`, vigência e flag derivada |
-| `retorno_solt` e mensagem | Oráculo | Por componente, com motivo exato |
-| Componentes e tipo depois | Oráculo | Deltas esperados e preservação dos anteriores |
-| Eventos grupo e componentes | Oráculo | Operação, chave, quantidade e destino |
-| Status negócio | Aprovação funcional | Aprova, rejeita ou pede alteração |
-| Evidência e defeito | Execução | Hash/snapshot, saída, eventos e estado persistido |
+| **APROVADO** | `retorno_solt = OK` | O componente/solicitação atende aos requisitos |
+| **REPROVADO** | `retorno_solt = Solicitacao Recusada` | O componente/solicitação viola um requisito |
 
-## Exemplos preenchidos
+Não usar `PENDENTE`, `CONDICIONAL` ou `PARCIAL` como resultado do Motor. A confirmação do oráculo e a execução dos testes pertencem a **campos diferentes**.
 
-### F22 — Formalização de Isolado
+## Contrato da tabela-verdade
 
-- **Estado anterior:** nenhum GE alvo; PJ112 e PF281 livres.
-- **Solicitar:** ação 1, tipo 5, PJ112 e PF281.
-- **QSA do cenário:** PJ112 com PF281 = 100%.
-- **Regra:** `valida_composicao_formalizacao` e `valida_socio_major_formalizacao`.
-- **Resultado esperado pelo ramo recuperado:** APROVA. Código de GE gerado unicamente pelo motor; um grupo criado e dois vínculos adicionados. Validar `gera_codigo_grupo_formalizacao`.
+| Campo | Valor/uso |
+|---|---|
+| `id_cenario` | F01–F48, I01–I18, E01–E30, U01–U21, C/P/B/FX/UX/EX/IX |
+| `_id`, `cSoltcAtdmt` | Chaves reais de solicitação a preparar |
+| `cAcaoGrpEconm` | 1 Formalização, 2 Inclusão, 3 Exclusão, 4 Unificação |
+| `cGrpEconm`, tipo e demais grupos | Grupos da massa real; NOVO em Formalização |
+| Componentes do pedido | `cclub_cli`, CPF/CNPJ e sua origem |
+| Componentes ativos antes | Grupo inicial, composição e histórico |
+| QSA | CNPJ titular, documento do sócio, participação e total |
+| Responsabilidade | `noper_cli`, vigência e flag derivada |
+| `decisoes_por_componente` | Apenas APROVADO ou REPROVADO para cada componente |
+| `resultado_esperado` | Resultado binário consolidado da solicitação |
+| `resultados_por_passo` | Resultado binário de cada pedido em casos sequenciais |
+| `componentes_finais_esperados` | Estado após materialização, quando determinável |
+| Mensagens esperadas | Exatamente os motivos das regras testadas |
+| Eventos e transições | Efeito independente da decisão, a confirmar contra CRT |
+| `fundamento_oraculo` | Regra identificada ou hipótese para homologação |
+| `homologacao_funcional` | Estado de validação da expectativa, não resposta do Motor |
+| Status de execução | PASS/FAIL/BLOCKED/NOT_RUN, nunca resposta do Motor |
 
-### I01 — Inclusão PJ em grupo Normal
+**Regra agregadora do catálogo:** se pelo menos um componente está REPROVADO, a expectativa da solicitação é REPROVADO. Cada componente aprovado ainda deve aparecer na tabela de decisões. A aplicação parcial de eventos, quando existir, deve ter aceite explícito do negócio.
 
-- **GE real:** 910101 (tipo 1).
-- **Membros antes:** PJ62, PJ64 e PF101.
-- **Solicitar:** ação 2, PJ112, CNPJ `20010176000131` (sem GE ativo).
-- **QSA:** PJ112 com sócia PJ64 = 100%, além de matriz/ATIVA/natureza permitida.
-- **Regra:** `valida_qsa` e regras de vínculo/validade.
-- **Esperado:** APROVA, membros finais PJ62/PJ64/PJ112/PF101; um vínculo adicional. Confirmar contrato de evento UPDATE do grupo e INSERT do componente.
+## Exemplos concretos
 
-### E27 — Recusa por responsabilidade
+### I03 — Inclusão de PJ em GE Isolado
 
-- **GE real:** 910104 (tipo 1), com PJ74, PJ76 e PF107.
-- **Solicitar:** ação 3, excluir PJ74, CNPJ `75538340000108`.
-- **Snapshot:** situação BAIXADA e `flag_resp_empr=true` pela operação aberta.
-- **Regra:** `valida_cnpj_responsabilidade`.
-- **Esperado:** RECUSA, mensagem de responsabilidade ativa; nenhum evento de exclusão, grupo inalterado.
+GE **910502**, tipo **5**, solicitar **PJ 118**, sem vínculo ativo, com QSA de 100% e demais dados válidos. Regra principal `valida_qsa` e elegibilidade cadastral. **Decisão: APROVADO.** Novo componente aceito. A conversão do tipo do grupo e a quantidade de eventos devem ser verificadas separadamente, sem afetar a decisão do Motor.
 
-### U01 — Unificação Normal → Normal
+### I06 — Inclusão de PF em Gerencial
 
-- **Primário:** 910106 (tipo 1), PJ84/PJ88/PF111.
-- **Secundário:** 910102 (tipo 1), PJ66/PJ68/PF103. **Snapshot de teste:** substituir a PJ68 (MEI) pela PJ112 (não MEI); secundário efetivo PJ66/PJ112/PF103.
-- **QSA:** para PJ84, PJ88, PJ66 e PJ112, PF111=50% e PF103=50% cada; sem CNPJ MEI com vários sócios.
-- **Regras:** `flag_ge_primario`, `valida_composicao_unificacao`, `valida_composicao_grupo_economico`.
-- **Oráculo:** elegibilidade proposta; materialização e seleção de secundário ainda CONDICIONAL, aguardando validação de CRT. Nenhum DELETE/INSERT deve atingir componente recusado.
+GE **910604**, tipo **6**, solicitar **PF 295**, CPF válido, QSA >=50%, sem outro GE. A regra `valida_socios_sao_pf` limita a participação a tipos 1 e 5. **Decisão: REPROVADO.** Não inserir vínculo de PF.
 
-## Classificação de resultado
+### E30 — Decisões diferentes na mesma solicitação
 
-`PASS`: evidência completa e esperada; `FAIL`: divergência funcional ou técnica; `BLOCKED`: faltam contrato/dados/ambiente; `NOT_RUN`: não executado. Resultado `CONDICIONAL` no catálogo não é uma quinta aprovação; é impedimento até definição do negócio.
+GE **910104**, ação Exclusão de **PJ 74 e PJ 76**. PJ74 tem contrato aberto; PJ76 não tem. Ambas estão BAIXADAS no snapshot. `valida_cnpj_responsabilidade`:
 
-**A execução só é aceita depois de verificar o consumidor de eventos**, e não apenas uma linha em `resul_soltc`.
+| Componente | Resultado do Motor | Efeito proposto |
+|---|---|---|
+| PJ 74 | REPROVADO | Preservar vínculo |
+| PJ 76 | APROVADO | Remover vínculo aprovado, conforme CRT |
+
+**Resultado consolidado da solicitação: REPROVADO.** Não existe resultado PARCIAL; a materialização parcial permanece verificação independente.
+
+### U10 — Componente sem controle comum
+
+GE primário **910106**, secundário **910502**. QSA preparado com controladora PF do primário a 100% em todas as PJs, sem participação majoritária da PF do secundário.
+
+| Componente | Resultado do Motor |
+|---|---|
+| PJ 92 | APROVADO |
+| PF 115 | REPROVADO |
+
+**Consolidado: REPROVADO.** A seleção de eventos para os componentes aprovados precisa de validação do processador.
+
+### C06 — Duas inclusões sequenciais da mesma PJ
+
+Primeiro pedido: incluir PJ118 no GE910106, **APROVADO**. Segundo pedido, após atualizar o estado: tentar incluir PJ118 novamente, **REPROVADO** pela regra `valida_cnpj_em_outro_grupo`. Não existe um terceiro status para representar a sequência.
+
+### P07 — Motor aprovado e falha de integração
+
+A solicitação de referência I01 tem decisão esperada **APROVADO**. Se o MERGE não encontrar a solicitação de destino, o **teste de integração** deve identificar a falha ou executar a recuperação prevista. O estado técnico do teste (PASS/FAIL) não substitui a decisão do Motor.
+
+## Critérios de homologação
+
+Cada linha deve ser aprovada com dados de origem, decisão por componente, grupo antes/depois, mensagens e eventos. Hipóteses (por exemplo, entrada ausente, nula, duplicada ou inexistência de GE) possuem decisão binária **proposta**, mas não são apresentadas como comportamento comprovado. Divergências devem ser registradas, não mascaradas por alteração de massa.
+
+[Plano](PLANO_TESTES.md) | [217 casos](MATRIZ_DETALHADA.md) | [Catálogo completo](catalogo_total.json).

@@ -132,7 +132,7 @@ class TestMassaSintetica(unittest.TestCase):
             approved = (tipo == 5 and qpj == 1 and 1 <= qpf <= 2) or (
                 tipo == 1 and qpj >= 2 and 1 <= qpf <= 2
             )
-            self.assertEqual(c["resultado_esperado"], "APROVA" if approved else "RECUSA",
+            self.assertEqual(c["resultado_esperado"], "APROVADO" if approved else "REPROVADO",
                              c["id"])
         self.assertEqual(len(matrix), 48)
 
@@ -162,12 +162,42 @@ class TestMassaSintetica(unittest.TestCase):
 
     def test_overlay_qsa_positivo_total_100(self):
         for c in self.casos:
-            if c.get("resultado_esperado") != "APROVA":
+            if c.get("resultado_esperado") != "APROVADO":
                 continue
             qsa = c.get("preparo",{}).get("qsa_substituir",[])
             for titular in qsa:
                 self.assertEqual(round(sum(float(s[1]) for s in titular["socios"]),2),100.0,
                                  c["id"])
+
+    def test_apenas_duas_decisoes_do_motor(self):
+        permitidos = {"APROVADO", "REPROVADO"}
+        for caso in self.casos:
+            with self.subTest(id=caso["id"]):
+                self.assertIn(caso["resultado_esperado"], permitidos)
+                self.assertEqual(caso["decisao_motor_esperada"], caso["resultado_esperado"])
+                self.assertEqual(caso["homologacao_funcional"], "NAO_HOMOLOGADO")
+                for item in caso.get("decisoes_por_componente", []):
+                    self.assertIn(item["resultado_esperado"], permitidos)
+                for etapa in caso.get("resultados_por_passo", []):
+                    self.assertIn(etapa["resultado_esperado"], permitidos)
+                    for item in etapa.get("decisoes_por_componente", []):
+                        self.assertIn(item["resultado_esperado"], permitidos)
+
+    def test_decisoes_mistas_sem_terceiro_resultado(self):
+        por_id = {c["id"]: c for c in self.casos}
+        for id in ("E30", "U10", "U18", "U20"):
+            caso = por_id[id]
+            self.assertEqual(caso["resultado_esperado"], "REPROVADO")
+            resultados = {r["resultado_esperado"] for r in caso["decisoes_por_componente"]}
+            self.assertEqual(resultados, {"APROVADO", "REPROVADO"})
+
+    def test_sequencias_duas_decisoes_binarias(self):
+        sequencias = [c for c in self.casos if re.fullmatch(r"C\\d{2}", c["id"])]
+        self.assertEqual(len(sequencias), 16)
+        for caso in sequencias:
+            etapas = caso["resultados_por_passo"]
+            self.assertEqual(len(etapas), 2)
+            self.assertEqual(caso["resultado_esperado"], etapas[1]["resultado_esperado"])
 
     def test_matriz_md_corresponde_ao_json(self):
         texto=(DOCS/"MATRIZ_DETALHADA.md").read_text(encoding="utf-8")

@@ -1,3 +1,13 @@
+## Política obrigatória: somente dois resultados de Motor
+
+A decisão funcional esperada é **APROVADO** ou **REPROVADO**. No resultado técnico recuperado, correspondem respectivamente a `retorno_solt=OK` e `retorno_solt=Solicitacao Recusada`. Não existe `CONDICIONAL`, `PARCIAL` ou `PENDENTE` como terceira resposta do Motor.
+
+- Em solicitações com vários componentes, cada componente recebe uma decisão binária. Se algum for REPROVADO, a expectativa da solicitação consolidada é REPROVADO; os componentes APROVADOS permanecem discriminados e seus efeitos são conferidos separadamente.
+- Nos pares sequenciais (C01–C16), há decisão do primeiro pedido e do segundo pedido. `resultado_esperado` representa o **segundo pedido**; não agrega pedidos distintos em uma terceira resposta.
+- Nos testes de persistência/integração (P01–P18), o Motor da solicitação de referência continua binário; o teste técnico é julgado à parte como PASS ou FAIL.
+- Incertezas são mantidas em `fundamento_oraculo`, `homologacao_funcional` e validação dos eventos; nenhuma incerteza é resultado do Motor.
+- Resultados são **expectativas para homologação**, não comprovante de execução. Entradas nulas, ausentes ou duplicadas com comportamento não demonstrado usam o oráculo funcional proposto REPROVADO; se o Motor divergir, registrar defeito ou submeter mudança de critério ao negócio.
+
 # Regras do motor e rastreabilidade de cobertura
 
 **Fonte:** quatro configurações de execução da camada de regras, consultadas em 19/11/2026. Os nomes na coluna `Regra no motor` são os nomes das funções chamadas no pipeline, não nomes arbitrários de testes.
@@ -86,10 +96,10 @@
 2. Preparação de QSA com agregação por `cclub_cli` do sócio pode fragmentar a soma por CNPJ titular, quando há vários sócios.
 3. `flag_troca_componente` em versão recuperada utiliza janela pelo documento sem particionar por solicitação; testar vazamento entre pedidos simultâneos.
 4. `valida_composicao_grupo_economico` examina a composição do GE primário antes da migração: primário Isolado de uma PJ pode ser recusado mesmo quando a unificação final teria mais PJs.
-5. Regras que usam `!=` sobre `null` podem não retornar `True`; os testes nulos estão PENDENTES de comportamento observado.
+5. Regras que usam `!=` sobre `null` podem não retornar `True`; os testes nulos têm resultado esperado REPROVADO por critério de validação, mas exigem confronto com o código em execução.
 6. As regras de grupo, responsável e QSA devem ser confrontadas com as etapas de enriquecimento atuais, pois flags derivadas incorretas podem invalidar o oráculo.
 7. O gerador de código da Formalização não deve acessar namespace produtivo durante testes; validar resolução de ambiente e bloqueio da escrita não autorizada.
 
 ## Critério de encerramento
 
-Cada regra acima deve ter pelo menos um caso positivo e um negativo quando o predicado o permitir, evidência do estado anterior, decisão por componente e efeito materializado. Ausência de fonte/contrato vira `BLOCKED`, não `PASS`. Casos `CONDICIONAL`/`PENDENTE` exigem homologação explícita.
+Cada regra acima deve ter pelo menos um caso positivo e um negativo quando o predicado o permitir, evidência do estado anterior, decisão por componente e efeito materializado. Ausência de fonte/contrato vira `BLOCKED`, não `PASS`. Casos hipóteses funcionais ainda não homologadas exigem homologação explícita.

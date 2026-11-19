@@ -1,3 +1,13 @@
+## Política obrigatória: somente dois resultados de Motor
+
+A decisão funcional esperada é **APROVADO** ou **REPROVADO**. No resultado técnico recuperado, correspondem respectivamente a `retorno_solt=OK` e `retorno_solt=Solicitacao Recusada`. Não existe `CONDICIONAL`, `PARCIAL` ou `PENDENTE` como terceira resposta do Motor.
+
+- Em solicitações com vários componentes, cada componente recebe uma decisão binária. Se algum for REPROVADO, a expectativa da solicitação consolidada é REPROVADO; os componentes APROVADOS permanecem discriminados e seus efeitos são conferidos separadamente.
+- Nos pares sequenciais (C01–C16), há decisão do primeiro pedido e do segundo pedido. `resultado_esperado` representa o **segundo pedido**; não agrega pedidos distintos em uma terceira resposta.
+- Nos testes de persistência/integração (P01–P18), o Motor da solicitação de referência continua binário; o teste técnico é julgado à parte como PASS ou FAIL.
+- Incertezas são mantidas em `fundamento_oraculo`, `homologacao_funcional` e validação dos eventos; nenhuma incerteza é resultado do Motor.
+- Resultados são **expectativas para homologação**, não comprovante de execução. Entradas nulas, ausentes ou duplicadas com comportamento não demonstrado usam o oráculo funcional proposto REPROVADO; se o Motor divergir, registrar defeito ou submeter mudança de critério ao negócio.
+
 # Fixtures sintéticas de Grupo Econômico
 
 **Dados de teste, sem escrita automática em tabelas.** Pacote de preparação e homologação com **217 casos** das quatro ações (Formalização, Inclusão, Exclusão e Unificação), além de integração, limites e testes de ramos.
@@ -21,7 +31,7 @@
 - Não usar o QSA para inferir responsabilidade de crédito. Operações de responsabilidade representam contratos, não participações societárias.
 - Toda mudança de QSA, cadastro, responsabilidade ou composição indicada num caso é **overlay sobre snapshot isolado**, não alteração permanente da massa-base.
 - O prazo fixo das operações documentadas é 19/11/2027: revalidar quando executar em outra data.
-- Caso com situação `PENDENTE` ou `CONDICIONAL` não possui oráculo de negócio fechado.
+- Caso com situação expectativa ainda não homologada não possui oráculo de negócio fechado.
 
 ## Executar as verificações offline
 
@@ -46,4 +56,4 @@ python scripts/future/fixtures/materializar_cenario.py I01
 python scripts/future/fixtures/materializar_cenario.py U01 --saida U01.json
 ```
 
-A saída inclui componentes, QSA, responsabilidade, indicadores de preparo e o oráculo. Os casos que têm preparação textual/contrato ainda pendente emitem avisos. Consulte [materializar_cenario.py](materializar_cenario.py) e [tests/test_materializar_cenario.py](tests/test_materializar_cenario.py).
+A saída inclui componentes, QSA, responsabilidade, indicadores de preparo e o oráculo. Os casos com preparação textual ou contrato de eventos ainda não homologado emitem avisos, mantendo resultado binário. Consulte [materializar_cenario.py](materializar_cenario.py) e [tests/test_materializar_cenario.py](tests/test_materializar_cenario.py).

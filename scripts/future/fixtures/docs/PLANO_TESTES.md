@@ -1,3 +1,13 @@
+## Política obrigatória: somente dois resultados de Motor
+
+A decisão funcional esperada é **APROVADO** ou **REPROVADO**. No resultado técnico recuperado, correspondem respectivamente a `retorno_solt=OK` e `retorno_solt=Solicitacao Recusada`. Não existe `CONDICIONAL`, `PARCIAL` ou `PENDENTE` como terceira resposta do Motor.
+
+- Em solicitações com vários componentes, cada componente recebe uma decisão binária. Se algum for REPROVADO, a expectativa da solicitação consolidada é REPROVADO; os componentes APROVADOS permanecem discriminados e seus efeitos são conferidos separadamente.
+- Nos pares sequenciais (C01–C16), há decisão do primeiro pedido e do segundo pedido. `resultado_esperado` representa o **segundo pedido**; não agrega pedidos distintos em uma terceira resposta.
+- Nos testes de persistência/integração (P01–P18), o Motor da solicitação de referência continua binário; o teste técnico é julgado à parte como PASS ou FAIL.
+- Incertezas são mantidas em `fundamento_oraculo`, `homologacao_funcional` e validação dos eventos; nenhuma incerteza é resultado do Motor.
+- Resultados são **expectativas para homologação**, não comprovante de execução. Entradas nulas, ausentes ou duplicadas com comportamento não demonstrado usam o oráculo funcional proposto REPROVADO; se o Motor divergir, registrar defeito ou submeter mudança de critério ao negócio.
+
 # Plano de testes e homologação — quatro ações
 
 **Referência:** 19/11/2026. **Situação:** massa e matriz documentadas, E2E não executado. **Escopo:** Grupo Econômico Normal (1), Isolado (5) e Gerencial (6); ações Formalização (1), Inclusão (2), Exclusão (3) e Unificação (4).
@@ -56,8 +66,8 @@ Cada caso tem seu próprio `qsa_substituir`, `cadastro_override` e eventualmente
 
 - Executar as quatro ações com snapshot restaurado por caso e comparação do estado inicial/final.
 - Validar `UPDATE/INSERT/DELETE` de GE e componente, transição de tipo, cancelamento, migração e deduplicação.
-- Confirmar casos de aprovação parcial, inclusive sem escrita sobre itens recusados.
-- Tratar `PENDENTE` e `CONDICIONAL` com aceite funcional antes de executar como homologação positiva.
+- Confirmar decisões APROVADO/REPROVADO por componente e por solicitação; não usar PARCIAL como saída do Motor.
+- Tratar resultados não homologados com aceite funcional antes de executar como homologação positiva.
 
 ### Gate G3 — Fluxo integrado
 

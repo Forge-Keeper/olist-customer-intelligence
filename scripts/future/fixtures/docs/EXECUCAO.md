@@ -1,3 +1,13 @@
+## Política obrigatória: somente dois resultados de Motor
+
+A decisão funcional esperada é **APROVADO** ou **REPROVADO**. No resultado técnico recuperado, correspondem respectivamente a `retorno_solt=OK` e `retorno_solt=Solicitacao Recusada`. Não existe `CONDICIONAL`, `PARCIAL` ou `PENDENTE` como terceira resposta do Motor.
+
+- Em solicitações com vários componentes, cada componente recebe uma decisão binária. Se algum for REPROVADO, a expectativa da solicitação consolidada é REPROVADO; os componentes APROVADOS permanecem discriminados e seus efeitos são conferidos separadamente.
+- Nos pares sequenciais (C01–C16), há decisão do primeiro pedido e do segundo pedido. `resultado_esperado` representa o **segundo pedido**; não agrega pedidos distintos em uma terceira resposta.
+- Nos testes de persistência/integração (P01–P18), o Motor da solicitação de referência continua binário; o teste técnico é julgado à parte como PASS ou FAIL.
+- Incertezas são mantidas em `fundamento_oraculo`, `homologacao_funcional` e validação dos eventos; nenhuma incerteza é resultado do Motor.
+- Resultados são **expectativas para homologação**, não comprovante de execução. Entradas nulas, ausentes ou duplicadas com comportamento não demonstrado usam o oráculo funcional proposto REPROVADO; se o Motor divergir, registrar defeito ou submeter mudança de critério ao negócio.
+
 # Execução integrada e registro de evidências
 
 ## Responsabilidades por função
@@ -39,7 +49,7 @@ Não atribuir responsabilidades a pessoas específicas sem confirmação.
 - `BLOCKED`: sem documento cadastral, sem regra oficial, sem esquema, sem liberação de ambiente.
 - `NOT_RUN`: caso preparado, mas execução não realizada.
 
-Casos marcados `CONDICIONAL` ou `PENDENTE` devem permanecer bloqueados para aceite até regra confirmada. Não converter o resultado em aprovação automática por término bem-sucedido do notebook.
+Oráculos ainda não homologados devem permanecer sem aceite, embora tenham decisão esperada APROVADO ou REPROVADO. Não converter o resultado em aprovação automática por término bem-sucedido do notebook.
 
 ## Gate de conclusão
 

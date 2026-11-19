@@ -16,11 +16,22 @@ class TestMaterializador(unittest.TestCase):
                 self.assertIn("tabela_verdade", out)
                 self.assertIn("snapshot", out)
 
+    def test_decisoes_binarias_materializadas(self):
+        for id in ("I03", "I18", "E30", "U10", "C06", "P14", "B35"):
+            with self.subTest(id=id):
+                caso = materializar(id)
+                verdade = caso["tabela_verdade"]
+                self.assertIn(verdade["resultado_esperado"], {"APROVADO","REPROVADO"})
+                for componente in verdade["decisoes_por_componente"]:
+                    self.assertIn(componente["resultado_esperado"], {"APROVADO","REPROVADO"})
+                for etapa in verdade["resultados_por_passo"]:
+                    self.assertIn(etapa["resultado_esperado"], {"APROVADO","REPROVADO"})
+
     def test_inclusao_positiva(self):
         item = materializar("I01")
         self.assertEqual(item["solicitacao_esqueleto"]["cGrpEconm"], 910101)
         self.assertEqual(item["solicitacao_esqueleto"]["componentes"][0]["cclub_cli"], 112)
-        self.assertEqual(item["tabela_verdade"]["resultado_esperado"], "APROVA")
+        self.assertEqual(item["tabela_verdade"]["resultado_esperado"], "APROVADO")
 
     def test_regras_qsa_de_inclusao(self):
         item = materializar("I02")
@@ -40,12 +51,12 @@ class TestMaterializador(unittest.TestCase):
         item = materializar("E27")
         flags = item["snapshot"]["cadastro_override"]
         self.assertTrue(flags[0]["flag_resp_empr"])
-        self.assertEqual(item["tabela_verdade"]["resultado_esperado"], "RECUSA")
+        self.assertEqual(item["tabela_verdade"]["resultado_esperado"], "REPROVADO")
 
     def test_formalizacao_sem_grupo_existente(self):
         item = materializar("F22")
         self.assertIsNone(item["solicitacao_esqueleto"]["cGrpEconm"])
-        self.assertEqual(item["tabela_verdade"]["resultado_esperado"], "APROVA")
+        self.assertEqual(item["tabela_verdade"]["resultado_esperado"], "APROVADO")
 
 if __name__=="__main__":
     unittest.main()

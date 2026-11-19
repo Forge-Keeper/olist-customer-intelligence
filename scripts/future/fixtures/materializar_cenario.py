@@ -110,10 +110,10 @@ def materializar(caso_id):
         avisos.append("Passos sequenciais dependem da execução real anterior; não calcular estado intermediário fictício")
     if ge is None and caso.get("codigo_acao") == 1:
         avisos.append("GE é criado pelo motor; não existe código fixo anterior")
-    if caso.get("resultado_esperado") in ("CONDICIONAL", "PENDENTE"):
-        avisos.append("Oráculo funcional não homologado")
-    if caso.get("resultado_esperado") in ("PENDENTE_CONTRATO_DE_SEQUENCIA", "A_DEFINIR_ORACULO_DE_INTEGRACAO"):
-        avisos.append("Oráculo de integração exige contrato e evidência E2E")
+    if caso.get("homologacao_funcional") != "HOMOLOGADO":
+        avisos.append("Resultado binário proposto e ainda não homologado pelo negócio")
+    if caso.get("fundamento_oraculo") != "REGRA_DO_CODIGO_RECUPERADO":
+        avisos.append("Confirmar hipótese funcional e efeitos do processador; a decisão do Motor continua binária")
 
     solicitados = caso.get("componentes_solicitados", caso.get("componentes_involvidos", []))
     req = [{"cclub_cli": club, "tipo": "PF" if club % 2 else "PJ",
@@ -140,6 +140,10 @@ def materializar(caso_id):
         "tabela_verdade": {
             "regra": caso.get("regra_alvo"),
             "resultado_esperado": caso.get("resultado_esperado"),
+            "decisoes_por_componente": caso.get("decisoes_por_componente", []),
+            "resultados_por_passo": caso.get("resultados_por_passo", []),
+            "homologacao_funcional": caso.get("homologacao_funcional", "NAO_HOMOLOGADO"),
+            "fundamento_oraculo": caso.get("fundamento_oraculo"),
             "componentes_finais": caso.get("componentes_finais_esperados"),
             "efeito_esperado": caso.get("efeito_esperado", caso.get("evento_esperado", caso.get("evento_grupo_esperado"))),
         },
