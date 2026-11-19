@@ -124,7 +124,7 @@ A fonte canônica de cada linha é `catalogo_total.json`, com documentos, atribu
 | U18 | 910106 → 910502 | 92,115 | QSA 84,88,92 | valida_composicao_unificacao | PARCIAL | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
 | U19 | 910106 → 910502 | 92,115 | QSA 84,88,92; SEC+84 | left_anti_componentes_unificacao | CONDICIONAL | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
 | U20 | 910106 → 910502 | 92,115,104,106,125 | QSA 84,88,92,104,106 | valida_composicao_unificacao | CONDICIONAL | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
-| U21 | 9999999 → 910502 | 92,115 | QSA 92 | flag_ge_primario | RECUSA | SEM_EVENTO_APROVADO |
+| U21 | 9999999 → 910502 | 92,115 | QSA 92 | flag_ge_primario | PENDENTE | SEM_EVENTO_APROVADO |
 | C01 | 910106 | 112,281 | estado base | ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO | PENDENTE_CONTRATO_DE_SEQUENCIA | Compor efeitos sem duplicação, respeitar recusas e estado intermediário |
 | C02 | 910106 | 112,281,118 | estado base | ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO | PENDENTE_CONTRATO_DE_SEQUENCIA | Compor efeitos sem duplicação, respeitar recusas e estado intermediário |
 | C03 | 910106 | 112,281,84 | estado base | ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO | PENDENTE_CONTRATO_DE_SEQUENCIA | Compor efeitos sem duplicação, respeitar recusas e estado intermediário |
