@@ -1,0 +1,803 @@
+{
+  "versao": "3.0",
+  "total": 18,
+  "casos": [
+    {
+      "id": "I01",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910101,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "APROVA",
+      "componentes_finais_esperados": [
+        62,
+        64,
+        101,
+        112
+      ],
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PJ nova, QSA 100% com controladora PJ64"
+    },
+    {
+      "id": "I02",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910104,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        74,
+        76,
+        107
+      ],
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 74,
+            "socios": [
+              [
+                107,
+                50
+              ],
+              [
+                299,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "APROVA",
+      "componentes_finais_esperados": [
+        74,
+        76,
+        107,
+        299
+      ],
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PF majoritária 50% na PJ74"
+    },
+    {
+      "id": "I03",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910502,
+      "tipo_grupo_antes": 5,
+      "componentes_antes": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        118
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 118,
+          "tipo": "PJ",
+          "documento": "52592529000145"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
+      "observacao": "PJ nova em Isolado; confirmar conversão 5→1"
+    },
+    {
+      "id": "I04",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910505,
+      "tipo_grupo_antes": 5,
+      "componentes_antes": [
+        98,
+        121
+      ],
+      "componentes_solicitados": [
+        297
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 297,
+          "tipo": "PF",
+          "documento": "73002880906"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 98,
+            "socios": [
+              [
+                121,
+                50
+              ],
+              [
+                297,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
+      "observacao": "PF majoritária 50% em Isolado; manter tipo 5?"
+    },
+    {
+      "id": "I05",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910605,
+      "tipo_grupo_antes": 6,
+      "componentes_antes": [
+        126,
+        128,
+        133
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_natureza_jurid",
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
+      "observacao": "PJ em Gerencial; regra permite PJ, eventos por tipo 6 pendentes"
+    },
+    {
+      "id": "I06",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910604,
+      "tipo_grupo_antes": 6,
+      "componentes_antes": [
+        122,
+        124,
+        131
+      ],
+      "componentes_solicitados": [
+        295
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 295,
+          "tipo": "PF",
+          "documento": "73002861510"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 124,
+            "socios": [
+              [
+                295,
+                50
+              ],
+              [
+                117,
+                25
+              ],
+              [
+                119,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_socios_sao_pf",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        122,
+        124,
+        131
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PF em tipo 6 apesar de ser majoritária"
+    },
+    {
+      "id": "I07",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910101,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_em_outro_grupo",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        62,
+        64,
+        101
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PJ já pertence ao próprio GE"
+    },
+    {
+      "id": "I08",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910102,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        66,
+        68,
+        103
+      ],
+      "componentes_solicitados": [
+        64
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 64,
+          "tipo": "PJ",
+          "documento": "47911744000121"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_em_outro_grupo",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        66,
+        68,
+        103
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PJ pertence ao GE910101"
+    },
+    {
+      "id": "I09",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910103,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        70,
+        72,
+        105
+      ],
+      "componentes_solicitados": [
+        113
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 113,
+          "tipo": "PF",
+          "documento": "63124847504"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cpf_em_outro_grupo",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        70,
+        72,
+        105
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PF pertence ao GE910501 e possui 60% da PJ72"
+    },
+    {
+      "id": "I10",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910104,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        74,
+        76,
+        107
+      ],
+      "componentes_solicitados": [
+        291
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 291,
+          "tipo": "PF",
+          "documento": "73002822701"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 74,
+            "socios": [
+              [
+                107,
+                50
+              ],
+              [
+                291,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [
+          {
+            "id": 291,
+            "cindcd_cpf_valid": 0
+          }
+        ],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cpf_ativo_receita",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        74,
+        76,
+        107
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "CPF inválido; os demais atributos são válidos"
+    },
+    {
+      "id": "I11",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910103,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        70,
+        72,
+        105
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [
+          {
+            "id": 112,
+            "cindcd_cnpj_valid": 0
+          }
+        ],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_ativo_receita",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        70,
+        72,
+        105
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "CNPJ inválido e demais condições favoráveis"
+    },
+    {
+      "id": "I12",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910105,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        80,
+        82,
+        109
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA"
+          }
+        ],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_ativo_receita",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        80,
+        82,
+        109
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PJ não ativa na Receita"
+    },
+    {
+      "id": "I13",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910106,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rmtriz_flial_cnpj": "2"
+          }
+        ],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_matriz",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        84,
+        88,
+        111
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PJ filial"
+    },
+    {
+      "id": "I14",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910102,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        66,
+        68,
+        103
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rnatur_jurid": "Organização Religiosa"
+          }
+        ],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_cnpj_natureza_jurid",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        66,
+        68,
+        103
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Natureza jurídica fora da lista permitida no shared_rules"
+    },
+    {
+      "id": "I15",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910103,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        70,
+        72,
+        105
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                90
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        70,
+        72,
+        105
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "QSA soma 90% apenas no caso"
+    },
+    {
+      "id": "I16",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910505,
+      "tipo_grupo_antes": 5,
+      "componentes_antes": [
+        98,
+        121
+      ],
+      "componentes_solicitados": [
+        289
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 289,
+          "tipo": "PF",
+          "documento": "73002803316"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 98,
+            "socios": [
+              [
+                121,
+                60
+              ],
+              [
+                289,
+                40
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        98,
+        121
+      ],
+      "evento_grupo_esperado": "NENHUM",
+      "evento_componente_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PF participa com 40% na PJ98"
+    },
+    {
+      "id": "I17",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910101,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        112,
+        287
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        },
+        {
+          "cclub_cli": 287,
+          "tipo": "PF",
+          "documento": "73002783960"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                50
+              ],
+              [
+                287,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
+      "observacao": "Inclusão conjunta PJ+PF sem eventos duplicados"
+    },
+    {
+      "id": "I18",
+      "acao": "INCLUSAO",
+      "codigo_acao": 2,
+      "grupo_alvo": 910106,
+      "tipo_grupo_antes": 1,
+      "componentes_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_solicitados": [
+        112,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_override": [],
+        "snapshot_isolado": true
+      },
+      "regra_alvo": "deduplicacao_solicitacao_inclusao",
+      "resultado_esperado": "PENDENTE",
+      "componentes_finais_esperados": null,
+      "evento_grupo_esperado": "UPDATE (confirmar CRT)",
+      "evento_componente_esperado": "INSERT por componente aprovado",
+      "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
+      "observacao": "PJ duplicada em uma única solicitação"
+    }
+  ]
+}
