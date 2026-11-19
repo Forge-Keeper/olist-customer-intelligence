@@ -1,0 +1,2066 @@
+{
+  "versao": "2.0",
+  "total": 21,
+  "casos": [
+    {
+      "id": "U01",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910102,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 1,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        66,
+        68,
+        103
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [
+          68
+        ],
+        "componentes_secundario_add": [
+          112
+        ],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                103,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                103,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 66,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                103,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 112,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                103,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        66,
+        103,
+        112
+      ],
+      "componentes_solicitados": [
+        66,
+        103,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 66,
+          "tipo": "PJ",
+          "documento": "35650844000162"
+        },
+        {
+          "cclub_cli": 103,
+          "tipo": "PF",
+          "documento": "96641610047"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+    },
+    {
+      "id": "U02",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+    },
+    {
+      "id": "U03",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910601,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 6,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        104,
+        106,
+        125
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 104,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 106,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        104,
+        106,
+        125
+      ],
+      "componentes_solicitados": [
+        104,
+        106,
+        125
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 104,
+          "tipo": "PJ",
+          "documento": "99944451000144"
+        },
+        {
+          "cclub_cli": 106,
+          "tipo": "PJ",
+          "documento": "19271940000143"
+        },
+        {
+          "cclub_cli": 125,
+          "tipo": "PF",
+          "documento": "86038028404"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+    },
+    {
+      "id": "U04",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910502,
+      "grupo_secundario": 910106,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 5,
+      "tipo_secundario_antes": 1,
+      "componentes_primario_antes": [
+        92,
+        115
+      ],
+      "componentes_secundario_antes": [
+        84,
+        88,
+        111
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 92,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 84,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        84,
+        88,
+        111
+      ],
+      "componentes_solicitados": [
+        84,
+        88,
+        111
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 84,
+          "tipo": "PJ",
+          "documento": "31929392000100"
+        },
+        {
+          "cclub_cli": 88,
+          "tipo": "PJ",
+          "documento": "49043284000192"
+        },
+        {
+          "cclub_cli": 111,
+          "tipo": "PF",
+          "documento": "77449952602"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE"
+    },
+    {
+      "id": "U05",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910502,
+      "grupo_secundario": 910503,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 5,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        92,
+        115
+      ],
+      "componentes_secundario_antes": [
+        94,
+        117
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 92,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                117,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 94,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                117,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        94,
+        117
+      ],
+      "componentes_solicitados": [
+        94,
+        117
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 94,
+          "tipo": "PJ",
+          "documento": "23211382000106"
+        },
+        {
+          "cclub_cli": 117,
+          "tipo": "PF",
+          "documento": "01860259391"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE"
+    },
+    {
+      "id": "U06",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910502,
+      "grupo_secundario": 910601,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 5,
+      "tipo_secundario_antes": 6,
+      "componentes_primario_antes": [
+        92,
+        115
+      ],
+      "componentes_secundario_antes": [
+        104,
+        106,
+        125
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 92,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 104,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 106,
+            "socios": [
+              [
+                115,
+                50
+              ],
+              [
+                125,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        104,
+        106,
+        125
+      ],
+      "componentes_solicitados": [
+        104,
+        106,
+        125
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 104,
+          "tipo": "PJ",
+          "documento": "99944451000144"
+        },
+        {
+          "cclub_cli": 106,
+          "tipo": "PJ",
+          "documento": "19271940000143"
+        },
+        {
+          "cclub_cli": 125,
+          "tipo": "PF",
+          "documento": "86038028404"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE"
+    },
+    {
+      "id": "U07",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910601,
+      "grupo_secundario": 910106,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 6,
+      "tipo_secundario_antes": 1,
+      "componentes_primario_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_secundario_antes": [
+        84,
+        88,
+        111
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 104,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 106,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 84,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                111,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        84,
+        88,
+        111
+      ],
+      "componentes_solicitados": [
+        84,
+        88,
+        111
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 84,
+          "tipo": "PJ",
+          "documento": "31929392000100"
+        },
+        {
+          "cclub_cli": 88,
+          "tipo": "PJ",
+          "documento": "49043284000192"
+        },
+        {
+          "cclub_cli": 111,
+          "tipo": "PF",
+          "documento": "77449952602"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+    },
+    {
+      "id": "U08",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910601,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 6,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 104,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 106,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+    },
+    {
+      "id": "U09",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910601,
+      "grupo_secundario": 910602,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 6,
+      "tipo_secundario_antes": 6,
+      "componentes_primario_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_secundario_antes": [
+        108,
+        110,
+        127
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 104,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                127,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 106,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                127,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 108,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                127,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 110,
+            "socios": [
+              [
+                125,
+                50
+              ],
+              [
+                127,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        108,
+        110,
+        127
+      ],
+      "componentes_solicitados": [
+        108,
+        110,
+        127
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 108,
+          "tipo": "PJ",
+          "documento": "74254453000180"
+        },
+        {
+          "cclub_cli": 110,
+          "tipo": "PJ",
+          "documento": "05772590000194"
+        },
+        {
+          "cclub_cli": 127,
+          "tipo": "PF",
+          "documento": "24841583947"
+        }
+      ],
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+    },
+    {
+      "id": "U10",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "PARCIAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Apenas a PF primária controla todas as PJs"
+    },
+    {
+      "id": "U11",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Duas PFs com 50% em todas as PJs"
+    },
+    {
+      "id": "U12",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                49.99
+              ],
+              [
+                115,
+                50.01
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "PF primária 49,99% em uma PJ; não controla todas"
+    },
+    {
+      "id": "U13",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                115,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                115,
+                100
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Sem controlador comum para todas as PJs"
+    },
+    {
+      "id": "U14",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Dois controladores 50/50"
+    },
+    {
+      "id": "U15",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": []
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_qsa",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "QSA ausente de uma PJ"
+    },
+    {
+      "id": "U16",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                49
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_qsa",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "QSA 99% de uma PJ"
+    },
+    {
+      "id": "U17",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_qsa",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "QSA com repetição e total 150%"
+    },
+    {
+      "id": "U18",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                100
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "PARCIAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Parcial: PF secundária não elegível"
+    },
+    {
+      "id": "U19",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [
+          84
+        ],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "left_anti_componentes_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Sobreposição PJ84 entre primário e secundário no snapshot"
+    },
+    {
+      "id": "U20",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 910106,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [
+        910601
+      ],
+      "tipo_primario_antes": 1,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [
+        84,
+        88,
+        111
+      ],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 84,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 88,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 104,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 106,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115,
+        104,
+        106,
+        125
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        },
+        {
+          "cclub_cli": 104,
+          "tipo": "PJ",
+          "documento": "99944451000144"
+        },
+        {
+          "cclub_cli": 106,
+          "tipo": "PJ",
+          "documento": "19271940000143"
+        },
+        {
+          "cclub_cli": 125,
+          "tipo": "PF",
+          "documento": "86038028404"
+        }
+      ],
+      "regra_alvo": "valida_composicao_unificacao",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
+      "situacao_oraculo": "PENDENTE_CRT",
+      "observacao": "Unificação de três grupos com terceira PF potencialmente não elegível"
+    },
+    {
+      "id": "U21",
+      "acao": "UNIFICACAO",
+      "codigo_acao": 4,
+      "grupo_primario": 9999999,
+      "grupo_secundario": 910502,
+      "grupos_adicionais": [],
+      "tipo_primario_antes": null,
+      "tipo_secundario_antes": 5,
+      "componentes_primario_antes": [],
+      "componentes_secundario_antes": [
+        92,
+        115
+      ],
+      "preparo": {
+        "componentes_secundario_rem": [],
+        "componentes_secundario_add": [],
+        "qsa_substituir": [
+          {
+            "titular": 92,
+            "socios": [
+              [
+                111,
+                50
+              ],
+              [
+                115,
+                50
+              ]
+            ]
+          }
+        ]
+      },
+      "componentes_secundario_efetivo": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "regra_alvo": "flag_ge_primario",
+      "regras_relacionadas": [
+        "flag_ge_primario",
+        "valida_composicao_unificacao",
+        "valida_composicao_grupo_economico",
+        "valida_qsa"
+      ],
+      "resultado_esperado": "RECUSA",
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Primário ausente; falha controlada"
+    }
+  ]
+}
