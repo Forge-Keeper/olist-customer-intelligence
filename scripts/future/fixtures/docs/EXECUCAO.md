@@ -44,3 +44,7 @@ Casos marcados `CONDICIONAL` ou `PENDENTE` devem permanecer bloqueados para acei
 ## Gate de conclusão
 
 Para cada ID, arquivar versão da massa, ID da solicitação, versões de schemas e motor, oráculo aprovado, mensagens, saídas e hashes/evidências do estado inicial e final. O aceite integrado só ocorre quando comportamento da interface, decisões e persistência estão consistentes.
+
+## Gerar evidência de entrada sem escrever no banco
+
+Para conferir o conteúdo lógico de um caso, use `python scripts/future/fixtures/materializar_cenario.py I01 --saida I01.json`. O arquivo resultante é auxiliar, não o contrato definitivo da solicitação. A aplicação do estado no ambiente de teste e a execução E2E permanecem ações separadas e controladas.
