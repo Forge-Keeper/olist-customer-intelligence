@@ -36,3 +36,14 @@ Os testes não acessam Spark nem bancos de dados. Para integração, conferir an
 ## Documentação
 
 Comece por [docs/README.md](docs/README.md), [docs/PLANO_TESTES.md](docs/PLANO_TESTES.md) e [docs/MATRIZ_DETALHADA.md](docs/MATRIZ_DETALHADA.md). O catálogo integral estruturado está em [docs/catalogo_total.json](docs/catalogo_total.json).
+
+## Preparar um snapshot lógico por cenário
+
+O materializador **não escreve** nas tabelas e não substitui o contrato físico da solicitação. Ele lê o catálogo e combina os dados fixos com o overlay do caso:
+
+```bash
+python scripts/future/fixtures/materializar_cenario.py I01
+python scripts/future/fixtures/materializar_cenario.py U01 --saida U01.json
+```
+
+A saída inclui componentes, QSA, responsabilidade, indicadores de preparo e o oráculo. Os casos que têm preparação textual/contrato ainda pendente emitem avisos. Consulte [materializar_cenario.py](materializar_cenario.py) e [tests/test_materializar_cenario.py](tests/test_materializar_cenario.py).
