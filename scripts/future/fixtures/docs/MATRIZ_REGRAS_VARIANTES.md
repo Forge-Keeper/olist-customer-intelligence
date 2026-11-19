@@ -14,7 +14,7 @@ Esses testes isolam regras compartilhadas **dentro de Formalização e Unificaç
 | FX08 | 1 | NOVO | 112, 281 | CPF com indicador inválido | `valida_cpf_ativo_receita` | RECUSA |
 | FX09 | 1 | NOVO | 112, 281 | CPF minoritário com 40% | `valida_socio_major_formalizacao` | RECUSA |
 | FX10 | 1 | NOVO | 112, 118, 281 | Propagação: uma PJ irregular recusa toda solicitação | `valida_status_componente_formalizacao` | RECUSA |
-| FX11 | 1 | NOVO | 112, 118, 281 | Duas solicitações aprovadas devem gerar códigos distintos | `gera_codigo_grupo_formalizacao` | CONDICIONAL |
+| FX11 | 1 | NOVO | passo 1: 112, 118, 281; passo 2: 120, 283 | Duas solicitações aprovadas devem gerar códigos distintos | `gera_codigo_grupo_formalizacao` | CONDICIONAL |
 | FX12 | 1 | NOVO | 112, 281 | Flag de CPF nula e sem resultado explícito de null | `valida_cpf_ativo_receita` | PENDENTE |
 | FX13 | 1 | NOVO | 112, 281 | Natureza jurídica nula | `valida_cnpj_natureza_jurid` | PENDENTE |
 | FX14 | 1 | NOVO | 112, 281 | QSA não encontrado | `valida_qsa` | PENDENTE |
