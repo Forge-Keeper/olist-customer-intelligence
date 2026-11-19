@@ -28,7 +28,7 @@ Para não violar a restrição de sócio único do MEI, no U01 o cenário substi
 | U18 | 910106 (1) | 910502 (5) | 84,88,92 | 111:100% | `valida_composicao_unificacao` | PARCIAL | Parcial: PF secundária não elegível |
 | U19 | 910106 (1) | 910502 (5) | 84,88,92 | 111:50%+115:50% | `left_anti_componentes_unificacao` | CONDICIONAL | Sobreposição PJ84 entre primário e secundário no snapshot |
 | U20 | 910106 (1) | 910502 (5) | 84,88,92,104,106 | 111:50%+115:50% | `valida_composicao_unificacao` | CONDICIONAL | Unificação de três grupos com terceira PF potencialmente não elegível |
-| U21 | 9999999 (inválido) | 910502 (5) | 92 | 111:50%+115:50% | `flag_ge_primario` | RECUSA | Primário ausente; falha controlada |
+| U21 | 9999999 (inválido) | 910502 (5) | 92 | 111:50%+115:50% | `flag_ge_primario` | PENDENTE | Primário ausente; falha controlada |
 
 ## Tabela-verdade e eventos
 
