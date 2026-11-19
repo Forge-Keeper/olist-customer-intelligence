@@ -1,41 +1,38 @@
-# Fixtures estáticas de Grupo Econômico (uso em ambientes de teste)
+# Fixtures sintéticas de Grupo Econômico
 
-**Não há geração de dados em execução.** Os arquivos de massa contêm exclusivamente valores literais, iguais em qualquer ambiente.
+**Dados de teste, sem escrita automática em tabelas.** Pacote de preparação e homologação com **217 casos** das quatro ações (Formalização, Inclusão, Exclusão e Unificação), além de integração, limites e testes de ramos.
+
+## Dados versionados
 
 | Arquivo | Conteúdo |
 |---|---|
-| `dados_nomes_pj.py` | 100 nomes comerciais de segmentos variados, indexados por `cclub_cli` de PJ (62 a 260, pares) |
-| `dados_grupos_ativos.py` | 18 GEs: seis normais (1), seis isolados (5), seis gerenciais (6) |
-| `dados_componentes_ativos.py` | 48 componentes: 30 PJs e 18 PFs, sem documento ativo em dois GEs |
-| `dados_quadro_societario.py` | 54 vínculos fixos de QSA para 27 PJs não MEI; inclui controladoras PJ e três PF sem majoritário |
+| `dados_nomes_pj.py` | Nomes fixos para 100 PJs (IDs pares 62–260) |
+| `dados_grupos_ativos.py` | 18 GEs físicos: seis Normal (1), seis Isolado (5), seis Gerencial (6) |
+| `dados_componentes_ativos.py` | 48 componentes ativos (30 PJs e 18 PFs) |
+| `dados_quadro_societario.py` | 54 vínculos QSA de 27 PJs não MEI, todos somando 100%; seis Isolados com PF ativa majoritária |
+| `dados_responsabilidade.py` | 70 operações fictícias abertas: 40 PF e 30 PJ, uma por cliente |
+| `dados_pf_cenarios.py` | Dez PFs reservadas (281–299), com CPF sintético fixo para os cenários |
 
-## Como utilizar
+## Regras de integridade
 
-Use os valores em `NOMES_PJ_POR_CCLUB` para substituir apenas `irz_scial` dos cadastros PJ já existentes, mantendo documentos e demais indicadores. Os nomes de sócio PJ em QSA previamente montado também devem ser conciliados por CNPJ, para que não permaneçam as razões sociais anteriores.
+- Cada `cclub_cli` representa um cliente. No QSA, `cclub_cli` é o **sócio**; `ccnpj_empr` é a **empresa titular**.
+- Os 100 cadastros PF/PJ existentes no ambiente não são sobrescritos automaticamente. Conciliar os documentos do catálogo, principalmente as dez PFs reservadas; substituir/upsert controlado em teste se necessário.
+- QSA de MEIs está em fonte separada: importar uma vez por titular e não duplicar vínculos. Os casos de Unificação evitam gerar dois sócios para MEIs.
+- Não usar o QSA para inferir responsabilidade de crédito. Operações de responsabilidade representam contratos, não participações societárias.
+- Toda mudança de QSA, cadastro, responsabilidade ou composição indicada num caso é **overlay sobre snapshot isolado**, não alteração permanente da massa-base.
+- O prazo fixo das operações documentadas é 19/11/2027: revalidar quando executar em outra data.
+- Caso com situação `PENDENTE` ou `CONDICIONAL` não possui oráculo de negócio fechado.
 
-As tuplas de grupos seguem as **sete colunas do StructType da tabela de grupos ativos**. As tuplas de componentes seguem as quatro colunas do schema reduzido da tabela de componentes ativos. Em cada um, utilize os nomes de colunas na mesma ordem das tuplas para preparar registros para `add_rows()`; confira o schema antes da escrita.
+## Executar as verificações offline
 
-## Quadro societário
+Da raiz do checkout:
 
-O arquivo `dados_quadro_societario.py` utiliza tuplas na ordem do seu notebook original: `ccnpj_empr`, `pprtcp_soctr`, `cindcd_quadr_soctr`, `ipartc_empr`, `dfim_prtcp_soctr`, `cclub_cli`, `ccpf_cnpj_pssoa_soctr`, `dptcao_orige`. O `cclub_cli` é **do sócio**. As participações somam 100% por CNPJ titular.
+```bash
+python -m unittest discover -s scripts/future/fixtures/tests -v
+```
 
-- Os vínculos MEI já preparados pelo usuário permanecem separados; **não reinsira os MEIs se já foram persistidos**.
-- 39 vínculos correspondem às 19 empresas do QSA anteriormente discutido; os demais cobrem oito PJs presentes nos grupos ativos.
-- As razões sociais de sócios PJ estão alinhadas aos novos nomes de `dados_nomes_pj.py`.
-- Antes de persistir, verifique a existência no cadastro de três CNPJs titulares usados nas listas anteriores: cclub_cli 112, 118 e 120; os demais grupos têm seus documentos cadastrados nas fixtures de componentes.
-- Os testes em `tests/test_quadro_societario.py` verificam 100% por empresa, inexistência de vínculos repetidos, cinco PFs titulares de MEI, três PJs MEI como sócias e ao menos uma empresa com três PFs sem majoritário.
+Os testes não acessam Spark nem bancos de dados. Para integração, conferir antes o schema e o roteamento das tabelas sintéticas. O pacote não habilita nenhuma escrita em produção.
 
-## Observações funcionais
+## Documentação
 
-- Os nomes são fictícios e não se pretende que representem marcas reais.
-- Os documentos das fixtures foram transcritos das fotografias de cadastros declarados sintéticos pelo usuário; confira os dígitos com a tabela cadastrada antes de persistir.
-- As datas são fixas (5 maio 2026); não há `current_date` nem sorteio.
-- Cada grupo normal contém 2 PJs e 1 PF; cada isolado, 1 PJ e 1 PF; cada gerencial, 2 PJs e 1 PF. Os 48 documentos são distintos.
-- Nem todas as PJs nos grupos estão necessariamente elegíveis para os mesmos testes de negócio: verifique situação cadastral, flag de validade, matriz, natureza jurídica, QSA e responsabilidades para cenários positivos.
-- O código do processador de exclusão fotografado referencia uma coluna adicional de componente `cpssoa_fis_jurid_isent`; o contrato reduzido atual tem quatro colunas e pode precisar ser ampliado antes do E2E integral.
-- **Não foram executadas escritas no Databricks nem modificadas tabelas produtivas.**
-
-
-## Estudo dos testes integrados
-
-O roteiro de cenários, composição das massas e coordenação com Frontend, Backend, Motor GRUP e validação funcional está em [docs/README.md](docs/README.md). É um estudo de cobertura e execução: as massas estão preparadas, mas os testes ainda precisam ser rodados e confrontados com a versão atual do motor.
+Comece por [docs/README.md](docs/README.md), [docs/PLANO_TESTES.md](docs/PLANO_TESTES.md) e [docs/MATRIZ_DETALHADA.md](docs/MATRIZ_DETALHADA.md). O catálogo integral estruturado está em [docs/catalogo_total.json](docs/catalogo_total.json).
