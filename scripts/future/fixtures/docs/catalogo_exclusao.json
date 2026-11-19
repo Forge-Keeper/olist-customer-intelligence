@@ -1,0 +1,1776 @@
+{
+  "versao": "2.0",
+  "total": 30,
+  "casos": [
+    {
+      "id": "E01",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101,
+        112
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_pj_parcial",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Normal com 3 PJ, remove 1 PJ"
+    },
+    {
+      "id": "E02",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101,
+        112
+      ],
+      "componentes_solicitados": [
+        62,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "conversao_normal_isolado",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Normal com 3 PJ, remove 2; resta 1 PJ"
+    },
+    {
+      "id": "E03",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101,
+        112
+      ],
+      "componentes_solicitados": [
+        62,
+        64,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        },
+        {
+          "cclub_cli": 64,
+          "tipo": "PJ",
+          "documento": "47911744000121"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 64,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Normal com 3 PJ, remove todas"
+    },
+    {
+      "id": "E04",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "conversao_normal_isolado",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Normal com 2 PJ, remove uma"
+    },
+    {
+      "id": "E05",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        62,
+        64
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        },
+        {
+          "cclub_cli": 64,
+          "tipo": "PJ",
+          "documento": "47911744000121"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 64,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Normal com 2 PJ, remove as duas"
+    },
+    {
+      "id": "E06",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [
+        64
+      ],
+      "componentes_iniciais": [
+        62,
+        101
+      ],
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Normal anômalo com 1 PJ, remove última"
+    },
+    {
+      "id": "E07",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910502,
+      "tipo_antes": 5,
+      "componentes_antes": [
+        92,
+        115
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 92,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Isolado com 1 PJ, remove última"
+    },
+    {
+      "id": "E08",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910502,
+      "tipo_antes": 5,
+      "componentes_antes": [
+        92,
+        115
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        92,
+        115,
+        112
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_isolado_anomalo",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Isolado anômalo com 2 PJs, remove uma"
+    },
+    {
+      "id": "E09",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910502,
+      "tipo_antes": 5,
+      "componentes_antes": [
+        92,
+        115
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        92,
+        115,
+        112
+      ],
+      "componentes_solicitados": [
+        92,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 92,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Isolado anômalo com 2 PJ, remove ambas"
+    },
+    {
+      "id": "E10",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910601,
+      "tipo_antes": 6,
+      "componentes_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        104,
+        106,
+        125,
+        112
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_gerencial",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Gerencial com 3 PJ, remove uma"
+    },
+    {
+      "id": "E11",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910601,
+      "tipo_antes": 6,
+      "componentes_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        104,
+        106,
+        125,
+        112
+      ],
+      "componentes_solicitados": [
+        104,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 104,
+          "tipo": "PJ",
+          "documento": "99944451000144"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 104,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_gerencial",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Gerencial com 3 PJ, remove duas"
+    },
+    {
+      "id": "E12",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910601,
+      "tipo_antes": 6,
+      "componentes_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_preparo_add": [
+        112
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        104,
+        106,
+        125,
+        112
+      ],
+      "componentes_solicitados": [
+        104,
+        106,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 104,
+          "tipo": "PJ",
+          "documento": "99944451000144"
+        },
+        {
+          "cclub_cli": 106,
+          "tipo": "PJ",
+          "documento": "19271940000143"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 104,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 106,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Gerencial com 3 PJ, remove todas"
+    },
+    {
+      "id": "E13",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910602,
+      "tipo_antes": 6,
+      "componentes_antes": [
+        108,
+        110,
+        127
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        108,
+        110,
+        127
+      ],
+      "componentes_solicitados": [
+        108
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 108,
+          "tipo": "PJ",
+          "documento": "74254453000180"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 108,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_gerencial",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Gerencial com 2 PJ, remove uma"
+    },
+    {
+      "id": "E14",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910602,
+      "tipo_antes": 6,
+      "componentes_antes": [
+        108,
+        110,
+        127
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        108,
+        110,
+        127
+      ],
+      "componentes_solicitados": [
+        108,
+        110
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 108,
+          "tipo": "PJ",
+          "documento": "74254453000180"
+        },
+        {
+          "cclub_cli": 110,
+          "tipo": "PJ",
+          "documento": "05772590000194"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 108,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 110,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Gerencial com 2 PJ, remove ambas"
+    },
+    {
+      "id": "E15",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        101
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 101,
+          "tipo": "PF",
+          "documento": "53762447683"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_pf",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir PF de grupo Normal"
+    },
+    {
+      "id": "E16",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910102,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        66,
+        68,
+        103
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        66,
+        68,
+        103
+      ],
+      "componentes_solicitados": [
+        103
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 103,
+          "tipo": "PF",
+          "documento": "96641610047"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "composicao_ge_sem_pf",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir última PF de Normal"
+    },
+    {
+      "id": "E17",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910502,
+      "tipo_antes": 5,
+      "componentes_antes": [
+        92,
+        115
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_pf_isolado",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir PF de Isolado"
+    },
+    {
+      "id": "E18",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910601,
+      "tipo_antes": 6,
+      "componentes_antes": [
+        104,
+        106,
+        125
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        104,
+        106,
+        125
+      ],
+      "componentes_solicitados": [
+        125
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 125,
+          "tipo": "PF",
+          "documento": "86038028404"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_pf_gerencial",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir PF de Gerencial"
+    },
+    {
+      "id": "E19",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910102,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        66,
+        68,
+        103
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        66,
+        68,
+        103
+      ],
+      "componentes_solicitados": [
+        66,
+        103
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 66,
+          "tipo": "PJ",
+          "documento": "35650844000162"
+        },
+        {
+          "cclub_cli": 103,
+          "tipo": "PF",
+          "documento": "96641610047"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 66,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_mista",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir PJ + PF simultaneamente"
+    },
+    {
+      "id": "E20",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910502,
+      "tipo_antes": 5,
+      "componentes_antes": [
+        92,
+        115
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        92,
+        115
+      ],
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 92,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir grupo todo PJ+PF"
+    },
+    {
+      "id": "E21",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 112,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "componente_inexistente_no_ge",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "PENDENTE",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Componente livre não pertence ao GE"
+    },
+    {
+      "id": "E22",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        68
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 68,
+          "tipo": "PJ",
+          "documento": "93773779000169"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 68,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "componente_de_outro_ge",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "PENDENTE",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "PJ pertence ao GE910102"
+    },
+    {
+      "id": "E23",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910103,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        70,
+        72,
+        105
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        70,
+        72,
+        105
+      ],
+      "componentes_solicitados": [
+        70,
+        72
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 70,
+          "tipo": "PJ",
+          "documento": "31297282000164"
+        },
+        {
+          "cclub_cli": 72,
+          "tipo": "PJ",
+          "documento": "08730759000131"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 70,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 72,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "cancelamento_ge_sem_pj",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir ambas as PJs do Normal"
+    },
+    {
+      "id": "E24",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [
+        281
+      ],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101,
+        281
+      ],
+      "componentes_solicitados": [
+        101,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 101,
+          "tipo": "PF",
+          "documento": "53762447683"
+        },
+        {
+          "cclub_cli": 281,
+          "tipo": "PF",
+          "documento": "73002725765"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "exclusao_multiplas_pf",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "Excluir duas PFs em snapshot com 2 PFs"
+    },
+    {
+      "id": "E25",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "ATIVA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "valida_cnpj_baixado",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        62,
+        64,
+        101
+      ],
+      "tipo_depois_esperado": null,
+      "evento_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_REGRAS",
+      "observacao": "CNPJ ATIVA sem ação 2 e sem responsabilidade"
+    },
+    {
+      "id": "E26",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 62,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "valida_cnpj_baixado",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "APROVA",
+      "componentes_finais_esperados": [
+        64,
+        101
+      ],
+      "tipo_depois_esperado": null,
+      "evento_esperado": "DELETE_COMPONENTE + UPDATE_GE",
+      "situacao_oraculo": "DERIVADO_REGRAS",
+      "observacao": "CNPJ BAIXADA sem responsabilidade"
+    },
+    {
+      "id": "E27",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910104,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        74,
+        76,
+        107
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        74,
+        76,
+        107
+      ],
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 74,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": true,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "RECUSA",
+      "componentes_finais_esperados": [
+        74,
+        76,
+        107
+      ],
+      "tipo_depois_esperado": null,
+      "evento_esperado": "NENHUM",
+      "situacao_oraculo": "DERIVADO_REGRAS",
+      "observacao": "CNPJ BAIXADA mas com contrato aberto"
+    },
+    {
+      "id": "E28",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910101,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        62,
+        64,
+        101
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        62,
+        64,
+        101
+      ],
+      "componentes_solicitados": [
+        64
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 64,
+          "tipo": "PJ",
+          "documento": "47911744000121"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 64,
+            "rsit_docto_recta": "INAPTA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "APROVA",
+      "componentes_finais_esperados": [
+        62,
+        101
+      ],
+      "tipo_depois_esperado": null,
+      "evento_esperado": "DELETE_COMPONENTE + UPDATE_GE",
+      "situacao_oraculo": "DERIVADO_REGRAS",
+      "observacao": "CNPJ INAPTA e sem responsabilidade"
+    },
+    {
+      "id": "E29",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910104,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        74,
+        76,
+        107
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        74,
+        76,
+        107
+      ],
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 74,
+            "rsit_docto_recta": "ATIVA",
+            "flag_resp_empr": true,
+            "tem_acao_2": 1
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "flag_troca_componente",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "CONDICIONAL",
+      "componentes_finais_esperados": null,
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "CNPJ ATIVA+contrato, porém troca via inclusão na mesma solicitação"
+    },
+    {
+      "id": "E30",
+      "acao": "EXCLUSAO",
+      "codigo_acao": 3,
+      "grupo_alvo": 910104,
+      "tipo_antes": 1,
+      "componentes_antes": [
+        74,
+        76,
+        107
+      ],
+      "componentes_preparo_add": [],
+      "componentes_preparo_rem": [],
+      "componentes_iniciais": [
+        74,
+        76,
+        107
+      ],
+      "componentes_solicitados": [
+        74,
+        76
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        },
+        {
+          "cclub_cli": 76,
+          "tipo": "PJ",
+          "documento": "82080682000154"
+        }
+      ],
+      "preparo": {
+        "cadastro_override": [
+          {
+            "id": 74,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": true,
+            "tem_acao_2": 0
+          },
+          {
+            "id": 76,
+            "rsit_docto_recta": "BAIXADA",
+            "flag_resp_empr": false,
+            "tem_acao_2": 0
+          }
+        ],
+        "responsabilidade": "flag_resp_empr derivada conforme contrato; overrides somente neste caso",
+        "qsa_substituir": []
+      },
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "regras_relacionadas": [
+        "filtro_solicitacao_exclusao",
+        "valida_cnpj_baixado",
+        "valida_cnpj_responsabilidade",
+        "flag_troca_componente"
+      ],
+      "resultado_esperado": "PARCIAL",
+      "componentes_finais_esperados": [
+        74,
+        107
+      ],
+      "tipo_depois_esperado": null,
+      "evento_esperado": "CONFIRMAR_CRT_COMPOSICAO",
+      "situacao_oraculo": "PENDENTE_PROCESSADOR",
+      "observacao": "PJ74 recusada por contrato; PJ76 elegível"
+    }
+  ]
+}
