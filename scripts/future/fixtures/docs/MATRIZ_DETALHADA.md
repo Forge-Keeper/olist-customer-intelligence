@@ -205,7 +205,7 @@ A fonte canônica de cada linha é `catalogo_total.json`, com documentos, atribu
 | FX08 | NOVO | 112,281 | QSA 112; CAD 281 | valida_cpf_ativo_receita | RECUSA | Conferir contrato de eventos |
 | FX09 | NOVO | 112,281 | QSA 112 | valida_socio_major_formalizacao | RECUSA | Conferir contrato de eventos |
 | FX10 | NOVO | 112,118,281 | QSA 112,118; CAD 118 | valida_status_componente_formalizacao | RECUSA | Conferir contrato de eventos |
-| FX11 | NOVO | 112,118,281 | QSA 112,118 | gera_codigo_grupo_formalizacao | CONDICIONAL | Conferir contrato de eventos |
+| FX11 | NOVO | passo 1: 112,118,281; passo 2: 120,283 | QSA 112,118 | gera_codigo_grupo_formalizacao | CONDICIONAL | Conferir contrato de eventos |
 | FX12 | NOVO | 112,281 | QSA 112; CAD 281 | valida_cpf_ativo_receita | PENDENTE | Conferir contrato de eventos |
 | FX13 | NOVO | 112,281 | QSA 112; CAD 112 | valida_cnpj_natureza_jurid | PENDENTE | Conferir contrato de eventos |
 | FX14 | NOVO | 112,281 | QSA 112 | valida_qsa | PENDENTE | Conferir contrato de eventos |
