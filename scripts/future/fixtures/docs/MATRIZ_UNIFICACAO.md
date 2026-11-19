@@ -1,44 +1,41 @@
-# Matriz de Unificação — U01 a U21
+# Matriz de Unificação — decisões binárias
 
-**Ação:** `cAcaoGrpEconm=4`. Verificar grupo primário, grupo(s) secundário(s), componentes comuns, participação societária e eventos de migração.
+**Casos:** 21. **Versão:** 4.0.0.
 
-A regra `valida_composicao_unificacao` busca sócios com **>=50% em TODAS as PJs** da solicitação. A regra `valida_composicao_grupo_economico` exige composição no **GE primário**; com primário Isolado de uma PJ, o ramo recuperado tende a recusar (U04–U06).
+> **Oráculo do Motor:** somente `APROVADO` ou `REPROVADO`. No código recuperado, esses valores correspondem semanticamente a `OK` e `Solicitacao Recusada`. A homologação ainda não foi executada.
 
-Para não violar a restrição de sócio único do MEI, no U01 o cenário substitui a PJ68 (MEI) pela PJ112 (não MEI) **somente no snapshot do GE secundário 910102**. Os demais pares usam PJs não MEI.
+Um teste pode ter componentes com decisões diferentes, mas a expectativa consolidada da solicitação é **REPROVADO** se pelo menos um componente for reprovado. A validação de eventos e do estado final é independente, não uma terceira decisão.
 
-| ID | GE primário (tipo) | Secundário (tipo) | PJs envolvidas (`cclub_cli`) | PFs controladoras (QSA) | Regra | Esperado | Efeito e observação |
-|---|---|---|---|---|---|---|---|
-| U01 | 910106 (1) | 910102 (1) | 84,88,66,112 | 111:50%+103:50% | `valida_composicao_grupo_economico` | CONDICIONAL | Controle comum 50/50 em todas as PJs; conferir eventos e tipo final |
-| U02 | 910106 (1) | 910502 (5) | 84,88,92 | 111:50%+115:50% | `valida_composicao_grupo_economico` | CONDICIONAL | Controle comum 50/50 em todas as PJs; conferir eventos e tipo final |
-| U03 | 910106 (1) | 910601 (6) | 84,88,104,106 | 111:50%+125:50% | `valida_composicao_grupo_economico` | CONDICIONAL | Controle comum 50/50 em todas as PJs; conferir eventos e tipo final |
-| U04 | 910502 (5) | 910106 (1) | 92,84,88 | 115:50%+111:50% | `valida_composicao_grupo_economico` | RECUSA | Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE |
-| U05 | 910502 (5) | 910503 (5) | 92,94 | 115:50%+117:50% | `valida_composicao_grupo_economico` | RECUSA | Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE |
-| U06 | 910502 (5) | 910601 (6) | 92,104,106 | 115:50%+125:50% | `valida_composicao_grupo_economico` | RECUSA | Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE |
-| U07 | 910601 (6) | 910106 (1) | 104,106,84,88 | 125:50%+111:50% | `valida_composicao_grupo_economico` | CONDICIONAL | Controle comum 50/50 em todas as PJs; conferir eventos e tipo final |
-| U08 | 910601 (6) | 910502 (5) | 104,106,92 | 125:50%+115:50% | `valida_composicao_grupo_economico` | CONDICIONAL | Controle comum 50/50 em todas as PJs; conferir eventos e tipo final |
-| U09 | 910601 (6) | 910602 (6) | 104,106,108,110 | 125:50%+127:50% | `valida_composicao_grupo_economico` | CONDICIONAL | Controle comum 50/50 em todas as PJs; conferir eventos e tipo final |
-| U10 | 910106 (1) | 910502 (5) | 84,88,92 | 111:100% | `valida_composicao_unificacao` | PARCIAL | Apenas a PF primária controla todas as PJs |
-| U11 | 910106 (1) | 910502 (5) | 84,88,92 | 111:50%+115:50% | `valida_composicao_unificacao` | CONDICIONAL | Duas PFs com 50% em todas as PJs |
-| U12 | 910106 (1) | 910502 (5) | 84,88,92 | 111:49.99%+115:50.01% | `valida_composicao_unificacao` | RECUSA | PF primária 49,99% em uma PJ; não controla todas |
-| U13 | 910106 (1) | 910502 (5) | 84,88,92 | 115:100% | `valida_composicao_unificacao` | RECUSA | Sem controlador comum para todas as PJs |
-| U14 | 910106 (1) | 910502 (5) | 84,88,92 | 111:50%+115:50% | `valida_composicao_unificacao` | CONDICIONAL | Dois controladores 50/50 |
-| U15 | 910106 (1) | 910502 (5) | 84,88,92 |  | `valida_qsa` | RECUSA | QSA ausente de uma PJ |
-| U16 | 910106 (1) | 910502 (5) | 84,88,92 | 111:49%+115:50% | `valida_qsa` | RECUSA | QSA 99% de uma PJ |
-| U17 | 910106 (1) | 910502 (5) | 84,88,92 | 111:50%+111:50%+115:50% | `valida_qsa` | RECUSA | QSA com repetição e total 150% |
-| U18 | 910106 (1) | 910502 (5) | 84,88,92 | 111:100% | `valida_composicao_unificacao` | PARCIAL | Parcial: PF secundária não elegível |
-| U19 | 910106 (1) | 910502 (5) | 84,88,92 | 111:50%+115:50% | `left_anti_componentes_unificacao` | CONDICIONAL | Sobreposição PJ84 entre primário e secundário no snapshot |
-| U20 | 910106 (1) | 910502 (5) | 84,88,92,104,106 | 111:50%+115:50% | `valida_composicao_unificacao` | CONDICIONAL | Unificação de três grupos com terceira PF potencialmente não elegível |
-| U21 | 9999999 (inválido) | 910502 (5) | 92 | 111:50%+115:50% | `flag_ge_primario` | PENDENTE | Primário ausente; falha controlada |
+**Status das expectativas:** todas são propostas de homologação. As classificadas como hipótese no JSON precisam de confirmação funcional; nenhuma é evidência de execução.
 
-## Tabela-verdade e eventos
+| ID | GE e tipo | Componentes antes (`cclub_cli`) | Ação e componentes solicitados (`cclub_cli`, documento) | Preparação exclusiva do caso | Regra-alvo | Decisão por componente | Decisão por passo | **Resultado do Motor** | Efeito a verificar |
+|---|---|---|---|---|---|---|---|---|---|
+| U01 | 910106 (tipo 1) + 910102 (tipo 1) | 84, 88, 111 / sec. 66, 103, 112 | PJ 66 (35650844000162); PF 103 (96641610047); PJ 112 (20010176000131) | QSA: 84,88,66,112; Secundário remove: 68; Secundário inclui: 112 | valida_composicao_grupo_economico | 66:APROVADO; 103:APROVADO; 112:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U02 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_grupo_economico | 92:APROVADO; 115:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U03 | 910106 (tipo 1) + 910601 (tipo 6) | 84, 88, 111 / sec. 104, 106, 125 | PJ 104 (99944451000144); PJ 106 (19271940000143); PF 125 (86038028404) | QSA: 84,88,104,106 | valida_composicao_grupo_economico | 104:APROVADO; 106:APROVADO; 125:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U04 | 910502 (tipo 5) + 910106 (tipo 1) | 92, 115 / sec. 84, 88, 111 | PJ 84 (31929392000100); PJ 88 (49043284000192); PF 111 (77449952602) | QSA: 92,84,88 | valida_composicao_grupo_economico | 84:REPROVADO; 88:REPROVADO; 111:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U05 | 910502 (tipo 5) + 910503 (tipo 5) | 92, 115 / sec. 94, 117 | PJ 94 (23211382000106); PF 117 (01860259391) | QSA: 92,94 | valida_composicao_grupo_economico | 94:REPROVADO; 117:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U06 | 910502 (tipo 5) + 910601 (tipo 6) | 92, 115 / sec. 104, 106, 125 | PJ 104 (99944451000144); PJ 106 (19271940000143); PF 125 (86038028404) | QSA: 92,104,106 | valida_composicao_grupo_economico | 104:REPROVADO; 106:REPROVADO; 125:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U07 | 910601 (tipo 6) + 910106 (tipo 1) | 104, 106, 125 / sec. 84, 88, 111 | PJ 84 (31929392000100); PJ 88 (49043284000192); PF 111 (77449952602) | QSA: 104,106,84,88 | valida_composicao_grupo_economico | 84:APROVADO; 88:APROVADO; 111:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U08 | 910601 (tipo 6) + 910502 (tipo 5) | 104, 106, 125 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 104,106,92 | valida_composicao_grupo_economico | 92:APROVADO; 115:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U09 | 910601 (tipo 6) + 910602 (tipo 6) | 104, 106, 125 / sec. 108, 110, 127 | PJ 108 (74254453000180); PJ 110 (05772590000194); PF 127 (24841583947) | QSA: 104,106,108,110 | valida_composicao_grupo_economico | 108:APROVADO; 110:APROVADO; 127:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U10 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_unificacao | 92:APROVADO; 115:REPROVADO | — | REPROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U11 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_unificacao | 92:APROVADO; 115:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U12 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_unificacao | 92:REPROVADO; 115:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U13 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_unificacao | 92:REPROVADO; 115:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U14 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_unificacao | 92:APROVADO; 115:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U15 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_qsa | 92:REPROVADO; 115:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U16 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_qsa | 92:REPROVADO; 115:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U17 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_qsa | 92:REPROVADO; 115:REPROVADO | — | REPROVADO | SEM_EVENTO_APROVADO |
+| U18 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92 | valida_composicao_unificacao | 92:APROVADO; 115:REPROVADO | — | REPROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U19 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 84,88,92; Secundário inclui: 84 | left_anti_componentes_unificacao | 92:APROVADO; 115:APROVADO | — | APROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U20 | 910106 (tipo 1) + 910502 (tipo 5) | 84, 88, 111 / sec. 92, 115 | PJ 92 (16412297000132); PF 115 (66609568910); PJ 104 (99944451000144); PJ 106 (19271940000143); PF 125 (86038028404) | QSA: 84,88,92,104,106 | valida_composicao_unificacao | 92:APROVADO; 115:APROVADO; 104:APROVADO; 106:APROVADO; 125:REPROVADO | — | REPROVADO | UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL |
+| U21 | 9999999 (tipo ?) + 910502 (tipo 5) | — | PJ 92 (16412297000132); PF 115 (66609568910) | QSA: 92 | flag_ge_primario | 92:REPROVADO; 115:REPROVADO | — | REPROVADO | Confirmar falha controlada; não há ramo explícito para GE primário inexistente |
 
-1. Garantir `flag_ge_primario` calculado segundo a primeira referência de grupo na solicitação, sem confundir com ordem física dos joins.
-2. Garantir soma QSA 100% em cada PJ nos casos positivos. Sócios PF com 50% exatos são majoritários pela comparação inclusiva; 49,99% não são.
-3. Conferir `flag_comp_unificacao` individualmente para PFs/PJs, incluindo aprovação parcial.
-4. Grupo primário: decisão e tipo final homologados; secundários: `DELETE` apenas após aprovação; PJs/PFs migrados sem duplicidade (`left_anti`).
-5. Não aceitar como sucesso a execução que deixa componentes em dois grupos ativos, com órfãos ou com duplicação de eventos.
-6. U19 é um cenário negativo intencional de sobreposição no estado inicial; não transportar essa inconsistência ao cadastro canônico.
+## Critérios de aceite
 
-## Gate funcional
-
-A lógica recuperada utiliza `info_qsa`, `info_componentes_ge`, `flag_socio_major_pj` e valida a composição do primário antes da materialização. Os casos `CONDICIONAL` só terão resultado final aprovado com evidência do processo CRT; não inventar a decisão de transição/eliminação.
+- `APROVADO` e `REPROVADO` são as únicas decisões permitidas para o Motor; não usar status de testes, eventos ou homologação na coluna de resultado.
+- Para decisões negativas, registrar a mensagem exata da regra (ou o defeito se o Motor não produzir recusa), sem alterar os dados para disfarçar divergências.
+- Para aprovação, conferir também efeito persistido e eventos de GE/componente; status do motor não substitui a verificação do processador.
+- Os campos `preparo` são overlays de snapshot, não mudanças permanentes na massa.
+- A matriz e os resultados são **expectativas de teste ainda não homologadas**. Ver os critérios técnicos detalhados no JSON e no [plano](PLANO_TESTES.md).
