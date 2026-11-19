@@ -7,6 +7,15 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from materializar_cenario import materializar
 
 class TestMaterializador(unittest.TestCase):
+    def test_todos_os_casos_geram_snapshot_logico(self):
+        from materializar_cenario import catalogo
+        for caso in catalogo()["casos"]:
+            with self.subTest(id=caso["id"]):
+                out = materializar(caso["id"])
+                self.assertEqual(out["id_cenario"], caso["id"])
+                self.assertIn("tabela_verdade", out)
+                self.assertIn("snapshot", out)
+
     def test_inclusao_positiva(self):
         item = materializar("I01")
         self.assertEqual(item["solicitacao_esqueleto"]["cGrpEconm"], 910101)
