@@ -2057,10 +2057,10 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
-      "efeito_esperado": "SEM_EVENTO_APROVADO",
-      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Primário ausente; falha controlada"
+      "resultado_esperado": "PENDENTE",
+      "efeito_esperado": "Confirmar falha controlada; não há ramo explícito para GE primário inexistente",
+      "situacao_oraculo": "PENDENTE_CONTRATO",
+      "observacao": "Primário ausente; falha controlada — O código pode não rejeitar null propagado; a decisão deve ser definida pelo negócio."
     }
   ]
 }
