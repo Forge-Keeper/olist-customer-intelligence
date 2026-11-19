@@ -7822,10 +7822,10 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
-      "efeito_esperado": "SEM_EVENTO_APROVADO",
-      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Primário ausente; falha controlada"
+      "resultado_esperado": "PENDENTE",
+      "efeito_esperado": "Confirmar falha controlada; não há ramo explícito para GE primário inexistente",
+      "situacao_oraculo": "PENDENTE_CONTRATO",
+      "observacao": "Primário ausente; falha controlada — O código pode não rejeitar null propagado; a decisão deve ser definida pelo negócio."
     },
     {
       "id": "C01",
@@ -11031,8 +11031,60 @@
         "snapshot_restauravel": true
       },
       "situacao_oraculo": "PENDENTE_CONTRATO",
-      "descricao": "Duas solicitações aprovadas devem gerar códigos distintos",
-      "observacao": "Dois grupos novos no mesmo lote; IDs devem ser distintos"
+      "descricao": "Duas solicitações de Formalização independentes devem produzir códigos distintos",
+      "observacao": "Executar dois novos grupos separados, sem reutilizar o mesmo cSoltcAtdmt",
+      "passos": [
+        {
+          "acao": 1,
+          "tipo_grupo": 1,
+          "grupo_alvo": null,
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "qsa_substituir": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            },
+            {
+              "titular": 118,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ]
+        },
+        {
+          "acao": 1,
+          "tipo_grupo": 5,
+          "grupo_alvo": null,
+          "componentes": [
+            120,
+            283
+          ],
+          "qsa_substituir": [
+            {
+              "titular": 120,
+              "socios": [
+                [
+                  283,
+                  100
+                ]
+              ]
+            }
+          ]
+        }
+      ]
     },
     {
       "id": "FX12",
