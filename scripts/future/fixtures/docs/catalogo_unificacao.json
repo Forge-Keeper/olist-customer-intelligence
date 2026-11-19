@@ -1,5 +1,5 @@
 {
-  "versao": "2.0",
+  "versao": "4.0.0",
   "total": 21,
   "casos": [
     {
@@ -117,10 +117,36 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 66,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 103,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 3,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U02",
@@ -212,10 +238,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U03",
@@ -328,10 +374,36 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 104,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 106,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 125,
+          "ocorrencia": 3,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U04",
@@ -430,10 +502,36 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE"
+      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 84,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 88,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 111,
+          "ocorrencia": 3,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U05",
@@ -511,10 +609,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE"
+      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 94,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 117,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U06",
@@ -613,10 +731,36 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE"
+      "observacao": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 104,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 106,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 125,
+          "ocorrencia": 3,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U07",
@@ -729,10 +873,36 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 84,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 88,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 111,
+          "ocorrencia": 3,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U08",
@@ -824,10 +994,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U09",
@@ -940,10 +1130,36 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final"
+      "observacao": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 108,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 110,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 127,
+          "ocorrencia": 3,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U10",
@@ -1023,10 +1239,29 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "PARCIAL",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Apenas a PF primária controla todas as PJs"
+      "observacao": "Apenas a PF primária controla todas as PJs",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Há componentes aprovados e reprovados individualmente; a solicitação consolidada é REPROVADA, sem estado PARCIAL do Motor."
     },
     {
       "id": "U11",
@@ -1118,10 +1353,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Duas PFs com 50% em todas as PJs"
+      "observacao": "Duas PFs com 50% em todas as PJs",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U12",
@@ -1163,11 +1418,11 @@
             "socios": [
               [
                 111,
-                50
+                50.01
               ],
               [
                 115,
-                50
+                49.99
               ]
             ]
           },
@@ -1176,11 +1431,11 @@
             "socios": [
               [
                 111,
-                50
+                50.01
               ],
               [
                 115,
-                50
+                49.99
               ]
             ]
           }
@@ -1213,10 +1468,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PF primária 49,99% em uma PJ; não controla todas"
+      "observacao": "PF primária 49,99% em uma PJ; não controla todas — QSA corrigido para alternância de controle: nenhuma PF possui >=50% em todas as PJs.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U13",
@@ -1296,10 +1571,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Sem controlador comum para todas as PJs"
+      "observacao": "Sem controlador comum para todas as PJs",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U14",
@@ -1391,10 +1686,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Dois controladores 50/50"
+      "observacao": "Dois controladores 50/50",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U15",
@@ -1477,10 +1792,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "QSA ausente de uma PJ"
+      "observacao": "QSA ausente de uma PJ",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U16",
@@ -1572,10 +1907,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "QSA 99% de uma PJ"
+      "observacao": "QSA 99% de uma PJ",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U17",
@@ -1671,10 +2026,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "SEM_EVENTO_APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "QSA com repetição e total 150%"
+      "observacao": "QSA com repetição e total 150%",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U18",
@@ -1754,10 +2129,29 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "PARCIAL",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Parcial: PF secundária não elegível"
+      "observacao": "Parcial: PF secundária não elegível",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Há componentes aprovados e reprovados individualmente; a solicitação consolidada é REPROVADA, sem estado PARCIAL do Motor."
     },
     {
       "id": "U19",
@@ -1851,10 +2245,30 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Sobreposição PJ84 entre primário e secundário no snapshot"
+      "observacao": "Sobreposição PJ84 entre primário e secundário no snapshot",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "left_anti_componentes_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "left_anti_componentes_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "U20",
@@ -1992,10 +2406,44 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "UPDATE_GE_PRIMARIO + DELETE_GE_SECUNDARIO + MIGRACAO_SE_ELEGIVEL",
       "situacao_oraculo": "PENDENTE_CRT",
-      "observacao": "Unificação de três grupos com terceira PF potencialmente não elegível"
+      "observacao": "Unificação de três grupos com terceira PF potencialmente não elegível",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 104,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 106,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 125,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "A PF do terceiro grupo não controla todas as PJs; REPROVADO consolidado, embora outros componentes possam ser APROVADOS."
     },
     {
       "id": "U21",
@@ -2057,10 +2505,35 @@
         "valida_composicao_grupo_economico",
         "valida_qsa"
       ],
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "efeito_esperado": "Confirmar falha controlada; não há ramo explícito para GE primário inexistente",
       "situacao_oraculo": "PENDENTE_CONTRATO",
-      "observacao": "Primário ausente; falha controlada — O código pode não rejeitar null propagado; a decisão deve ser definida pelo negócio."
+      "observacao": "Primário ausente; falha controlada — O código pode não rejeitar null propagado; a decisão deve ser definida pelo negócio.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "flag_ge_primario"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "flag_ge_primario"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     }
+  ],
+  "resultados_motor_permitidos": [
+    "APROVADO",
+    "REPROVADO"
   ]
 }

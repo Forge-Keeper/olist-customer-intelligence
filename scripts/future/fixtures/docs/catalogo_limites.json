@@ -1,5 +1,5 @@
 {
-  "versao": "2.0",
+  "versao": "4.0.0",
   "total": 36,
   "casos": [
     {
@@ -21,10 +21,24 @@
       "preparo_qsa": "74=107:50+299:50",
       "preparo_cadastro": "",
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CPF >=50% limite inclusivo",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B02",
@@ -45,10 +59,24 @@
       "preparo_qsa": "74=107:50.01+299:49.99",
       "preparo_cadastro": "",
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CPF 49,99%",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B03",
@@ -69,10 +97,24 @@
       "preparo_qsa": "74=107:49.99+299:50.01",
       "preparo_cadastro": "",
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CPF 50,01%",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B04",
@@ -93,10 +135,24 @@
       "preparo_qsa": "74=107:100",
       "preparo_cadastro": "",
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "CPF 0% ausente do QSA",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B05",
@@ -117,10 +173,25 @@
       "preparo_qsa": "74=107:50+299:50",
       "preparo_cadastro": "299.cindcd_cpf_valid=null",
       "regra_alvo": "valida_cpf_ativo_receita",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "CPF com indicador nulo",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cpf_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     },
     {
       "id": "B06",
@@ -141,10 +212,25 @@
       "preparo_qsa": "",
       "preparo_cadastro": "293.remover_cadastro=true",
       "regra_alvo": "ORACULO_CPF_AUSENTE",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "CPF não cadastrado; join vazio",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 293,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "ORACULO_CPF_AUSENTE"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     },
     {
       "id": "B07",
@@ -165,10 +251,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.rscit=ATIVA",
       "regra_alvo": "valida_cnpj_ativo_receita",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CNPJ matriz e ativo; positivo base",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B08",
@@ -189,10 +289,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.cindcd_cnpj_valid=0",
       "regra_alvo": "valida_cnpj_ativo_receita",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CNPJ com validade 0",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B09",
@@ -213,10 +327,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.rsit_docto_recta=INAPTA",
       "regra_alvo": "valida_cnpj_ativo_receita",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CNPJ INAPTA",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B10",
@@ -237,10 +365,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.rsit_docto_recta=BAIXADA",
       "regra_alvo": "valida_cnpj_ativo_receita",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CNPJ BAIXADA",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B11",
@@ -261,10 +403,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.rmtriz_flial_cnpj=2",
       "regra_alvo": "valida_cnpj_matriz",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "PJ filial",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_matriz"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B12",
@@ -285,10 +441,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.rnatur_jurid=Organização Religiosa",
       "regra_alvo": "valida_cnpj_natureza_jurid",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Natureza jurídica não permitida",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_natureza_jurid"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B13",
@@ -309,10 +479,25 @@
       "preparo_qsa": "",
       "preparo_cadastro": "112.rnatur_jurid=null",
       "regra_alvo": "valida_cnpj_natureza_jurid",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Natureza jurídica nula",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_natureza_jurid"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     },
     {
       "id": "B14",
@@ -333,10 +518,25 @@
       "preparo_qsa": "112=SEM_SOCIOS",
       "preparo_cadastro": "",
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Empresa sem registro QSA",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     },
     {
       "id": "B15",
@@ -357,10 +557,24 @@
       "preparo_qsa": "112=64:99.99",
       "preparo_cadastro": "",
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "QSA soma 99,99%",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B16",
@@ -381,10 +595,24 @@
       "preparo_qsa": "112=64:100",
       "preparo_cadastro": "",
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "QSA soma exatamente 100%",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B17",
@@ -405,10 +633,24 @@
       "preparo_qsa": "112=64:100.01",
       "preparo_cadastro": "",
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "QSA soma 100,01%",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B18",
@@ -429,10 +671,24 @@
       "preparo_qsa": "118=64:100",
       "preparo_cadastro": "",
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Sócio PJ controladora",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B19",
@@ -453,10 +709,25 @@
       "preparo_qsa": "74=299:50+299:50",
       "preparo_cadastro": "",
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "PF duplicada no QSA",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     },
     {
       "id": "B20",
@@ -483,10 +754,30 @@
       "preparo_qsa": "84=64:100",
       "preparo_cadastro": "",
       "regra_alvo": "valida_composicao_unificacao",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Controle indireto PJ-PJ; sem PF comum demonstrada",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B21",
@@ -507,10 +798,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "valida_cnpj_em_outro_grupo",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "CNPJ já está em 910101",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 62,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_em_outro_grupo"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B22",
@@ -531,10 +836,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "valida_cpf_em_outro_grupo",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "PF já está no próprio GE",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 101,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cpf_em_outro_grupo"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B23",
@@ -555,10 +874,24 @@
       "preparo_qsa": "124=117:50+299:50",
       "preparo_cadastro": "",
       "regra_alvo": "valida_socios_sao_pf",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "PF em Gerencial apesar do controle",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_socios_sao_pf"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B24",
@@ -579,10 +912,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "valida_composicao_formalizacao",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Formalização sem PJ",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 281,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_formalizacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B25",
@@ -603,10 +950,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "valida_composicao_formalizacao",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Formalização sem PF",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_formalizacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B26",
@@ -645,10 +1006,42 @@
       "preparo_qsa": "112=281:50+283:25+285:25",
       "preparo_cadastro": "",
       "regra_alvo": "valida_composicao_formalizacao",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Formalização com três PFs",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_formalizacao"
+        },
+        {
+          "cclub_cli": 281,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_formalizacao"
+        },
+        {
+          "cclub_cli": 283,
+          "ocorrencia": 3,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_formalizacao"
+        },
+        {
+          "cclub_cli": 285,
+          "ocorrencia": 4,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_formalizacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B27",
@@ -669,10 +1062,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.flag_resp_empr=true",
       "regra_alvo": "valida_cnpj_responsabilidade",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Contrato aberto bloqueia exclusão",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 74,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_responsabilidade"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B28",
@@ -693,10 +1100,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "62.rsit_docto_recta=BAIXADA;62.flag_resp_empr=false",
       "regra_alvo": "valida_cnpj_responsabilidade",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Ausência de contrato permite excluir PJ BAIXADA",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 62,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_cnpj_responsabilidade"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B29",
@@ -717,10 +1138,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.flag_resp_empr=false",
       "regra_alvo": "valida_cnpj_responsabilidade",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Operação encerrada não representa responsabilidade ativa",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 74,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_cnpj_responsabilidade"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B30",
@@ -741,10 +1176,25 @@
       "preparo_qsa": "",
       "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.flag_resp_empr=null",
       "regra_alvo": "valida_cnpj_responsabilidade",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Última versão de contrato excluída",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 74,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_responsabilidade"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     },
     {
       "id": "B31",
@@ -765,10 +1215,24 @@
       "preparo_qsa": "",
       "preparo_cadastro": "62.rsit_docto_recta=ATIVA;62.flag_resp_empr=false;62.tem_acao_2=0",
       "regra_alvo": "valida_cnpj_baixado",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "PJ ATIVA sem ação 2",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 62,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_baixado"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B32",
@@ -789,10 +1253,25 @@
       "preparo_qsa": "",
       "preparo_cadastro": "74.rsit_docto_recta=ATIVA;74.flag_resp_empr=true;74.tem_acao_2=1",
       "regra_alvo": "flag_troca_componente",
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Exclusão + Inclusão do mesmo componente",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 74,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "flag_troca_componente"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "pre_condicao_obrigatoria": "Ação 2 de Inclusão do MESMO documento na MESMA solicitação, com tem_acao_2 derivada das ações; sem ela, REPROVAR."
     },
     {
       "id": "B33",
@@ -825,10 +1304,36 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "valida_composicao_grupo_economico",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
       "descricao": "Primário Isolado 1 PJ com composição exigida >=2",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 84,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 88,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 111,
+          "ocorrencia": 3,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B34",
@@ -873,10 +1378,48 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "valida_composicao_unificacao",
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Unificação de três GEs, migração e parcialidade",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 104,
+          "ocorrencia": 3,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 106,
+          "ocorrencia": 4,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        },
+        {
+          "cclub_cli": 125,
+          "ocorrencia": 5,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_composicao_unificacao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "B35",
@@ -903,10 +1446,31 @@
       "preparo_qsa": "",
       "preparo_cadastro": "",
       "regra_alvo": "ORACULO_DEDUPLICACAO_SOLICITACAO",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Mesmo documento repetido em um lote",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "ORACULO_DEDUPLICACAO_SOLICITACAO"
+        },
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "ORACULO_DEDUPLICACAO_SOLICITACAO"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Política proposta: REPROVAR componente repetido, sem deduplicação silenciosa; confirmar com o negócio."
     },
     {
       "id": "B36",
@@ -927,10 +1491,29 @@
       "preparo_qsa": "",
       "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.dt_fim_contrato=2026-11-19",
       "regra_alvo": "valida_cnpj_responsabilidade",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "situacao_oraculo": "DEPENDE_CONTRATO",
       "descricao": "Contrato vence no instante de execução",
-      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas.",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 74,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_responsabilidade"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "CRITERIO_FUNCIONAL_PROPOSTO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Entrada nula, ausente, inconsistente ou sem grupo correto: REPROVAR (fail closed). Divergência na execução deve virar defeito ou revisão funcional, não terceira decisão."
     }
+  ],
+  "resultados_motor_permitidos": [
+    "APROVADO",
+    "REPROVADO"
   ]
 }

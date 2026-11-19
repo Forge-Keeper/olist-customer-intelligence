@@ -1,5 +1,5 @@
 {
-  "versao": "3.0",
+  "versao": "4.0.0",
   "total": 18,
   "casos": [
     {
@@ -29,7 +29,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "componentes_finais_esperados": [
         62,
         64,
@@ -39,7 +39,21 @@
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PJ nova, QSA 100% com controladora PJ64"
+      "observacao": "PJ nova, QSA 100% com controladora PJ64",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I02",
@@ -82,7 +96,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "APROVA",
+      "resultado_esperado": "APROVADO",
       "componentes_finais_esperados": [
         74,
         76,
@@ -92,7 +106,21 @@
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PF majoritária 50% na PJ74"
+      "observacao": "PF majoritária 50% na PJ74",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 299,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I03",
@@ -120,12 +148,27 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "componentes_finais_esperados": null,
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
-      "observacao": "PJ nova em Isolado; confirmar conversão 5→1"
+      "observacao": "PJ nova em Isolado; confirmar conversão 5→1",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "APROVADO pelas validações de elegibilidade recuperadas; a transição do tipo e os eventos são verificados em campos independentes."
     },
     {
       "id": "I04",
@@ -167,12 +210,27 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "componentes_finais_esperados": null,
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
-      "observacao": "PF majoritária 50% em Isolado; manter tipo 5?"
+      "observacao": "PF majoritária 50% em Isolado; manter tipo 5?",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 297,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "APROVADO pelas validações de elegibilidade recuperadas; a transição do tipo e os eventos são verificados em campos independentes."
     },
     {
       "id": "I05",
@@ -201,12 +259,27 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_natureza_jurid",
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "componentes_finais_esperados": null,
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
-      "observacao": "PJ em Gerencial; regra permite PJ, eventos por tipo 6 pendentes"
+      "observacao": "PJ em Gerencial; regra permite PJ, eventos por tipo 6 pendentes",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_cnpj_natureza_jurid"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "APROVADO pelas validações de elegibilidade recuperadas; a transição do tipo e os eventos são verificados em campos independentes."
     },
     {
       "id": "I06",
@@ -253,7 +326,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_socios_sao_pf",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         122,
         124,
@@ -262,7 +335,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PF em tipo 6 apesar de ser majoritária"
+      "observacao": "PF em tipo 6 apesar de ser majoritária",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 295,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_socios_sao_pf"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I07",
@@ -291,7 +378,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_em_outro_grupo",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         62,
         64,
@@ -300,7 +387,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PJ já pertence ao próprio GE"
+      "observacao": "PJ já pertence ao próprio GE",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 62,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_em_outro_grupo"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I08",
@@ -329,7 +430,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_em_outro_grupo",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         66,
         68,
@@ -338,7 +439,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PJ pertence ao GE910101"
+      "observacao": "PJ pertence ao GE910101",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 64,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_em_outro_grupo"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I09",
@@ -367,7 +482,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cpf_em_outro_grupo",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         70,
         72,
@@ -376,7 +491,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PF pertence ao GE910501 e possui 60% da PJ72"
+      "observacao": "PF pertence ao GE910501 e possui 60% da PJ72",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 113,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cpf_em_outro_grupo"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I10",
@@ -424,7 +553,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cpf_ativo_receita",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         74,
         76,
@@ -433,7 +562,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "CPF inválido; os demais atributos são válidos"
+      "observacao": "CPF inválido; os demais atributos são válidos",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 291,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cpf_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I11",
@@ -467,7 +610,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_ativo_receita",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         70,
         72,
@@ -476,7 +619,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "CNPJ inválido e demais condições favoráveis"
+      "observacao": "CNPJ inválido e demais condições favoráveis",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I12",
@@ -510,7 +667,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_ativo_receita",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         80,
         82,
@@ -519,7 +676,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PJ não ativa na Receita"
+      "observacao": "PJ não ativa na Receita",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I13",
@@ -553,7 +724,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_matriz",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         84,
         88,
@@ -562,7 +733,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PJ filial"
+      "observacao": "PJ filial",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_matriz"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I14",
@@ -596,7 +781,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_cnpj_natureza_jurid",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         66,
         68,
@@ -605,7 +790,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "Natureza jurídica fora da lista permitida no shared_rules"
+      "observacao": "Natureza jurídica fora da lista permitida no shared_rules",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_natureza_jurid"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I15",
@@ -644,7 +843,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_qsa",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         70,
         72,
@@ -653,7 +852,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "QSA soma 90% apenas no caso"
+      "observacao": "QSA soma 90% apenas no caso",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I16",
@@ -695,7 +908,7 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "RECUSA",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": [
         98,
         121
@@ -703,7 +916,21 @@
       "evento_grupo_esperado": "NENHUM",
       "evento_componente_esperado": "NENHUM",
       "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
-      "observacao": "PF participa com 40% na PJ98"
+      "observacao": "PF participa com 40% na PJ98",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 289,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "REGRA_DO_CODIGO_RECUPERADO",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "I17",
@@ -752,12 +979,33 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "valida_socio_major",
-      "resultado_esperado": "CONDICIONAL",
+      "resultado_esperado": "APROVADO",
       "componentes_finais_esperados": null,
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
-      "observacao": "Inclusão conjunta PJ+PF sem eventos duplicados"
+      "observacao": "Inclusão conjunta PJ+PF sem eventos duplicados",
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        },
+        {
+          "cclub_cli": 287,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "APROVADO pelas validações de elegibilidade recuperadas; a transição do tipo e os eventos são verificados em campos independentes."
     },
     {
       "id": "I18",
@@ -792,12 +1040,37 @@
         "snapshot_isolado": true
       },
       "regra_alvo": "deduplicacao_solicitacao_inclusao",
-      "resultado_esperado": "PENDENTE",
+      "resultado_esperado": "REPROVADO",
       "componentes_finais_esperados": null,
       "evento_grupo_esperado": "UPDATE (confirmar CRT)",
       "evento_componente_esperado": "INSERT por componente aprovado",
       "situacao_oraculo": "PENDENTE_HOMOLOGACAO",
-      "observacao": "PJ duplicada em uma única solicitação"
+      "observacao": "PJ duplicada em uma única solicitação",
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "deduplicacao_solicitacao_inclusao"
+        },
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "deduplicacao_solicitacao_inclusao"
+        }
+      ],
+      "regra_agregacao": "A solicitação é REPROVADA quando ao menos um componente é REPROVADO; caso contrário, APROVADA.",
+      "fundamento_oraculo": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "justificativa_oraculo": "Política proposta: REPROVAR componente repetido, sem deduplicação silenciosa; confirmar com o negócio."
     }
+  ],
+  "resultados_motor_permitidos": [
+    "APROVADO",
+    "REPROVADO"
   ]
 }

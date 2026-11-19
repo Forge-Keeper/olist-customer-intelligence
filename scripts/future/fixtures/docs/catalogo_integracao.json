@@ -1,5 +1,5 @@
 {
-  "versao": "2.0",
+  "versao": "4.0.0",
   "contagens": {
     "sequencias": 16,
     "integracao": 18
@@ -64,13 +64,73 @@
         281
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            112,
+            281
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 281,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            112,
+            281
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 281,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 281,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C02",
@@ -120,13 +180,64 @@
         118
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "APROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação."
+      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            112,
+            281
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 281,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": null,
+          "grupo_referencia": "codigo_criado_em_passo_1",
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "APROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C03",
@@ -162,11 +273,11 @@
           "acao": 3,
           "grupo_alvo": null,
           "componentes": [
-            84
+            112
           ],
           "cadastro": [
             {
-              "id": 84,
+              "id": 112,
               "rsit_docto_recta": "BAIXADA",
               "flag_resp_empr": false
             }
@@ -182,13 +293,64 @@
         84
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "APROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação."
+      "observacao": "Excluir PJ112 sem contrato depois de formalizar o GE novo.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            112,
+            281
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 281,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 3,
+          "grupo_alvo": null,
+          "grupo_referencia": "codigo_criado_em_passo_1",
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "resultado_esperado": "APROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C04",
@@ -281,13 +443,73 @@
         115
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação."
+      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            112,
+            281
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 281,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 4,
+          "grupo_alvo": null,
+          "grupo_referencia": "codigo_criado_em_passo_1",
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C05",
@@ -335,13 +557,68 @@
         283
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "PJ118 incluída anteriormente deve bloquear nova formalização."
+      "observacao": "PJ118 incluída anteriormente deve bloquear nova formalização.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            118,
+            283
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 283,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 283,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C06",
@@ -376,13 +653,59 @@
         118
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Segundo pedido do mesmo PJ deve recusar já ativo."
+      "observacao": "Segundo pedido do mesmo PJ deve recusar já ativo.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C07",
@@ -423,13 +746,59 @@
         118
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "APROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Remover componente recém-incluído; transição e eventos sem duplicidade."
+      "observacao": "Remover componente recém-incluído; transição e eventos sem duplicidade.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "APROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C08",
@@ -508,13 +877,68 @@
         115
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C09",
@@ -569,13 +993,68 @@
         281
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "APROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            84
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 84,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            112,
+            281
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 281,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "resultado_esperado": "APROVADO"
+        },
+        {
+          "cclub_cli": 281,
+          "resultado_esperado": "APROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C10",
@@ -608,7 +1087,14 @@
             84
           ],
           "qsa": [],
-          "regra": "valida_cnpj_em_outro_grupo"
+          "regra": "valida_cnpj_em_outro_grupo",
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "cindcd_cnpj_valid": 1
+            }
+          ]
         }
       ],
       "grupo_base": 910106,
@@ -616,13 +1102,59 @@
         84
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Troca de GE do mesmo documento: conferir `tem_acao_2` e compatibilidade de status."
+      "observacao": "Inclusão REPROVADA porque PJ84 permanece BAIXADA após exclusão; não mudar o cadastro implicitamente.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            84
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 84,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": 910502,
+          "grupo_referencia": null,
+          "componentes": [
+            84
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 84,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 84,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C11",
@@ -669,13 +1201,59 @@
         84
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Segunda exclusão do mesmo documento deve ser tratada como inexistente ou idempotente."
+      "observacao": "Segunda exclusão do mesmo documento deve ser tratada como inexistente ou idempotente.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            84
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 84,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            84
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 84,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 84,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C12",
@@ -760,13 +1338,68 @@
         115
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            84
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 84,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C13",
@@ -857,13 +1490,73 @@
         283
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "PJ já migrada após unificação não pode formalizar GE novo."
+      "observacao": "PJ já migrada após unificação não pode formalizar GE novo.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 1,
+          "grupo_alvo": null,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            283
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 283,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 283,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C14",
@@ -942,13 +1635,64 @@
         118
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "APROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Adicionar PJ ao grupo primário após unificação."
+      "observacao": "Adicionar PJ ao grupo primário após unificação.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "APROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C15",
@@ -1018,7 +1762,7 @@
           ],
           "cadastro": [
             {
-              "id": 84,
+              "id": 92,
               "rsit_docto_recta": "BAIXADA",
               "flag_resp_empr": false
             }
@@ -1032,13 +1776,64 @@
         115
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "APROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Excluir componente migrado do GE primário após unificação."
+      "observacao": "Excluir PJ92 do GE primário após migração, com situação BAIXADA e sem responsabilidade.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "APROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "C16",
@@ -1158,13 +1953,73 @@
         115
       ],
       "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
-      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "resultado_esperado": "REPROVADO",
       "variantes": [
         "solicitacoes_distintas_sequenciais",
         "mesma_solicitacao_se_contrato_permitir"
       ],
       "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
-      "observacao": "Repetição de unificação com secundário já cancelado não pode duplicar eventos."
+      "observacao": "Repetição de unificação com secundário já cancelado não pode duplicar eventos.",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "APROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_referencia": null,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "resultado_esperado": "REPROVADO"
+            },
+            {
+              "cclub_cli": 115,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "resultado_esperado": "REPROVADO"
+        },
+        {
+          "cclub_cli": 115,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão do segundo pedido; primeiro pedido em resultados_por_passo. O caso C não é uma terceira solicitação.",
+      "fundamento_oraculo": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE"
     },
     {
       "id": "P01",
@@ -1182,7 +2037,7 @@
       ],
       "regra_alvo": "init_validacao",
       "descricao": "Campos de processamento começam em OK / mensagem vazia",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1195,7 +2050,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P02",
@@ -1213,7 +2104,7 @@
       ],
       "regra_alvo": "finish_validacao",
       "descricao": "Recusa preserva motivo e data do retorno",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "REPROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1226,7 +2117,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I12",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910105,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "REPROVADO",
+              "regra_alvo": "valida_cnpj_ativo_receita"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_cnpj_ativo_receita"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P03",
@@ -1244,7 +2171,7 @@
       ],
       "regra_alvo": "valida_status_componente_formalizacao",
       "descricao": "Reprovar uma PF e propagar rejeição da Formalização",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "REPROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1257,7 +2184,69 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "FX10",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 1,
+          "grupo_alvo": null,
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "REPROVADO",
+              "regra_alvo": "valida_status_componente_formalizacao"
+            },
+            {
+              "cclub_cli": 118,
+              "ocorrencia": 2,
+              "resultado_esperado": "REPROVADO",
+              "regra_alvo": "valida_status_componente_formalizacao"
+            },
+            {
+              "cclub_cli": 281,
+              "ocorrencia": 3,
+              "resultado_esperado": "REPROVADO",
+              "regra_alvo": "valida_status_componente_formalizacao"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_status_componente_formalizacao"
+        },
+        {
+          "cclub_cli": 118,
+          "ocorrencia": 2,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_status_componente_formalizacao"
+        },
+        {
+          "cclub_cli": 281,
+          "ocorrencia": 3,
+          "resultado_esperado": "REPROVADO",
+          "regra_alvo": "valida_status_componente_formalizacao"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P04",
@@ -1275,7 +2264,7 @@
       ],
       "regra_alvo": "ORACULO_CHAVE_ACAO_DOCUMENTO",
       "descricao": "Múltiplas ações no mesmo documento sem colisão",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "REPROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1288,7 +2277,54 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "C06",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P05",
@@ -1306,7 +2342,7 @@
       ],
       "regra_alvo": "ORACULO_ISOLAMENTO_SOLICITACAO",
       "descricao": "Mesmo documento em solicitações diferentes",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "REPROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1319,7 +2355,54 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "C06",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P06",
@@ -1337,7 +2420,7 @@
       ],
       "regra_alvo": "ORACULO_MERGE_SOLICITACAO",
       "descricao": "MERGE por _id e cSoltcAtdmt",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1350,7 +2433,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P07",
@@ -1368,7 +2487,7 @@
       ],
       "regra_alvo": "ORACULO_MERGE_SEM_MATCH",
       "descricao": "Solicitação sem destino no MERGE",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1381,7 +2500,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P08",
@@ -1399,7 +2554,7 @@
       ],
       "regra_alvo": "flag_ge_primario",
       "descricao": "Seleção do primário em Unificação",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1412,7 +2567,69 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "U01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "componentes": [
+            66,
+            103,
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 66,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_composicao_grupo_economico"
+            },
+            {
+              "cclub_cli": 103,
+              "ocorrencia": 2,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_composicao_grupo_economico"
+            },
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 3,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_composicao_grupo_economico"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 66,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 103,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        },
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 3,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_composicao_grupo_economico"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P09",
@@ -1430,7 +2647,7 @@
       ],
       "regra_alvo": "ORACULO_CRT_DELETE_GRUPO",
       "descricao": "Cancelar grupo e componentes no consumidor",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1443,7 +2660,56 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "E20",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 3,
+          "grupo_alvo": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "cancelamento_ge_sem_pj"
+            },
+            {
+              "cclub_cli": 115,
+              "ocorrencia": 2,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "cancelamento_ge_sem_pj"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "cancelamento_ge_sem_pj"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "cancelamento_ge_sem_pj"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P10",
@@ -1461,7 +2727,7 @@
       ],
       "regra_alvo": "ORACULO_CRT_DELETE_COMPONENTE",
       "descricao": "Excluir componente e preservar GE",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1474,7 +2740,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "E01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 3,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "exclusao_pj_parcial"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "exclusao_pj_parcial"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P11",
@@ -1492,7 +2794,7 @@
       ],
       "regra_alvo": "ORACULO_CRT_INCLUSAO_SEM_DUPLICIDADE",
       "descricao": "Adicionar PF+PJ, apenas um UPDATE de GE",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1505,7 +2807,56 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I17",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112,
+            287
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_socio_major"
+            },
+            {
+              "cclub_cli": 287,
+              "ocorrencia": 2,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_socio_major"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        },
+        {
+          "cclub_cli": 287,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_socio_major"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P12",
@@ -1523,7 +2874,7 @@
       ],
       "regra_alvo": "ORACULO_CRT_UNIFICACAO_LEFT_ANTI",
       "descricao": "Componente já presente no primário",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1536,7 +2887,56 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "U19",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "componentes": [
+            92,
+            115
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 92,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "left_anti_componentes_unificacao"
+            },
+            {
+              "cclub_cli": 115,
+              "ocorrencia": 2,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "left_anti_componentes_unificacao"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 92,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "left_anti_componentes_unificacao"
+        },
+        {
+          "cclub_cli": 115,
+          "ocorrencia": 2,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "left_anti_componentes_unificacao"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P13",
@@ -1554,7 +2954,7 @@
       ],
       "regra_alvo": "ORACULO_IDEMPOTENCIA_CRT",
       "descricao": "Reexecutar a mesma solicitação sem evento duplicado",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1567,7 +2967,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P14",
@@ -1585,7 +3021,7 @@
       ],
       "regra_alvo": "ORACULO_CONCORRENCIA",
       "descricao": "Executar duas solicitações concorrentes",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "REPROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1598,7 +3034,55 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "C06",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "APROVADO"
+            }
+          ]
+        },
+        {
+          "passo": 2,
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "resultado_esperado": "REPROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 118,
+              "resultado_esperado": "REPROVADO"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "REPROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 118,
+          "resultado_esperado": "REPROVADO"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS",
+      "observacao": " — Concorrência: uma solicitação APROVADA e outra REPROVADA, sem predeterminar qual termina primeiro."
     },
     {
       "id": "P15",
@@ -1616,7 +3100,7 @@
       ],
       "regra_alvo": "ORACULO_RECUPERACAO_PARCIAL",
       "descricao": "Falha após MERGE e antes dos eventos",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1629,7 +3113,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P16",
@@ -1647,7 +3167,7 @@
       ],
       "regra_alvo": "ORACULO_EVENTOS_INTEGRIDADE",
       "descricao": "Evento sem correspondente ativo",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1660,7 +3180,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P17",
@@ -1678,7 +3234,7 @@
       ],
       "regra_alvo": "ORACULO_ISOLAMENTO_AMBIENTE",
       "descricao": "Roteamento DV/HO sem acesso ao produtivo",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1691,7 +3247,43 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     },
     {
       "id": "P18",
@@ -1709,7 +3301,7 @@
       ],
       "regra_alvo": "ORACULO_RETORNO_PONTA_A_PONTA",
       "descricao": "Decisão correta na interface e bases persistidas",
-      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "resultado_esperado": "APROVADO",
       "teste_permite_sintese": true,
       "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
       "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
@@ -1722,7 +3314,47 @@
         "eventos",
         "retorno_interface"
       ],
-      "situacao": "PLANEJADO_NAO_EXECUTADO"
+      "situacao": "PLANEJADO_NAO_EXECUTADO",
+      "cenario_motor_referencia": "I01",
+      "resultados_por_passo": [
+        {
+          "passo": 1,
+          "acao": 2,
+          "grupo_alvo": 910101,
+          "componentes": [
+            112
+          ],
+          "resultado_esperado": "APROVADO",
+          "decisoes_por_componente": [
+            {
+              "cclub_cli": 112,
+              "ocorrencia": 1,
+              "resultado_esperado": "APROVADO",
+              "regra_alvo": "valida_qsa"
+            }
+          ]
+        }
+      ],
+      "decisao_motor_esperada": "APROVADO",
+      "decisoes_por_componente": [
+        {
+          "cclub_cli": 112,
+          "ocorrencia": 1,
+          "resultado_esperado": "APROVADO",
+          "regra_alvo": "valida_qsa"
+        }
+      ],
+      "interpretacao_resultado_esperado": "Decisão da solicitação de referência; a integração tem PASS/FAIL próprio, nunca terceira decisão do Motor.",
+      "fundamento_oraculo": "CENARIO_MOTOR_DE_REFERENCIA",
+      "homologacao_funcional": "NAO_HOMOLOGADO",
+      "resultado_confirmado_por_execucao": false,
+      "estado_eventos": "A_VALIDAR_SEPARADAMENTE",
+      "status_execucao": "NAO_EXECUTADO",
+      "resultado_teste_esperado": "PASS"
     }
+  ],
+  "resultados_motor_permitidos": [
+    "APROVADO",
+    "REPROVADO"
   ]
 }
