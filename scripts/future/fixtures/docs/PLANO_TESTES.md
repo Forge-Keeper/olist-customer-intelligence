@@ -87,3 +87,7 @@ Somente marcar PASS se decisão por componente, mensagens, estado persistido, ef
 - [Regras e cobertura](REGRAS_E_COBERTURA.md): rastreio das 43 chamadas/25 nomes.
 - [Tabelas-verdade](TABELAS_VERDADE.md): modelo de aceite e exemplos.
 - [Execução](EXECUCAO.md): procedimento e papéis.
+
+## 6. Materialização offline reproduzível
+
+Após o gate estático, executar `python scripts/future/fixtures/materializar_cenario.py <ID>` para obter um JSON com snapshot lógico, QSA aplicado, responsabilidade e oráculo do cenário. O comando **não** chama o motor, não envia solicitação e não escreve tabelas. Consulte os avisos emitidos; overlays de borda descritos textualmente e sequências com dependência do passo anterior exigem preparo adicional antes do E2E.
