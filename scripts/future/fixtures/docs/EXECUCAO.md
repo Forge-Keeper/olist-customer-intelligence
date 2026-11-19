@@ -1,87 +1,46 @@
-# Execução integrada, participantes e critérios de aceite
+# Execução integrada e registro de evidências
 
-## Participação das áreas
+## Responsabilidades por função
 
-A divisão abaixo descreve **o que precisa ser combinado**, não uma atribuição já aprovada. Não há, neste estudo, nomes confirmados para os responsáveis técnicos de Frontend, Backend, QA ou homologação funcional.
-
-| Frente | Contribuição esperada | Quem confirma / situação |
-|---|---|---|
-| Engenharia de Dados / Motor GRUP | Contratos Delta, massa sintética, roteamento das leituras, jobs, regras e eventos; evidências técnicas | Trabalho em curso pelo responsável do Motor |
-| Backend | Acordar IDs/documentos das solicitações, disponibilizar cenário de teste, encaminhamento ao motor e contrato de retorno | Responsável e data a combinar com o time |
-| Frontend | Criar e acompanhar solicitações na interface, verificar mensagens e decisões por componente | Responsável e data a combinar com o time |
-| QA / testes integrados | Catálogo e execução de cenários, comparação com esperado, defeitos e regressões | Confirmar participantes e ferramenta de gestão |
-| Negócio / PO | Decidir os comportamentos ambíguos: tipo 6, transições, parcialidade, limites de QSA e regras especiais | Validação funcional a combinar |
-| PM (Levi) | Converter o escopo em card Jira e acompanhar dependências entre as equipes | Levi é o contato informado para a criação do card; demais responsabilidades não presumidas |
-
-## Sequência para não perder tempo
-
-### Etapa 1 — Contratos e dados
-
-- Confirmar schema do cadastral PJ/PF, QSA, responsabilidades, grupos e componentes ativos.
-- Validar as seis tabelas de negócio e suas colunas efetivamente consumidas.
-- Conciliar as fixtures estáticas com o notebook: 100 PF, 100 PJ, 18 GEs, 48 componentes, QSA MEI e não MEI.
-- Revisar o QSA de empresas com sócios distintos, porque o agrupamento antigo por `cclub_cli` pode estar incorreto.
-
-**Saída:** tabelas criadas e massa íntegra no namespace de teste, sem depender de dados de produção.
-
-### Etapa 2 — Roteamento e entrada da solicitação
-
-- Conferir os YAMLs de enriquecimento atuais, ainda incompletos no ledger.
-- Roteamento explícito para fontes sintéticas em DV/HO.
-- Conferir referências de ambiente fixas no código recuperado (`env = 'pr'`) para não atravessar fronteiras.
-- Alinhar com Backend e Frontend o conjunto de solicitações e chaves de correlação.
-
-**Saída:** uma solicitação sintética percorre preparação, enriquecimento e chega à `base_solicitacao` corretamente.
-
-### Etapa 3 — Smoke do motor por operação
-
-Começar por um caso positivo e um negativo por ação. Em seguida ampliar pela ordem: exclusão, inclusão, formalização, unificação. Para cada execução, verificar `resul_soltc`, atualização por `process_motor_grup`, eventos CRT e estado final no consumidor.
-
-**Saída:** quatro operações percorrendo o motor, sem erro estrutural e com resultados verificáveis.
-
-### Etapa 4 — Cobertura dos limites e cruzamentos
-
-Executar os casos do catálogo de cenários, inclusive 16 pares de ações, resultados parciais, tipos anômalos, duplicidades, ausência de join e transição de tipo. Criar fixtures derivadas apenas quando necessário, com valores fixos e versionados.
-
-**Saída:** matriz de evidências com regras exercitadas, casos aprovados, bloqueados e defeitos identificados.
-
-### Etapa 5 — E2E com as equipes
-
-Executar no Frontend os cenários acordados com Backend e Motor, comparar decisão e efeitos persistidos, validar retorno ao usuário e reexecução depois de restaurar a massa inicial.
-
-**Saída:** aceite técnico e funcional por cenário e pendências conhecidas documentadas no card.
-
-## O que cada execução precisa registrar
-
-| Campo | Para quê |
+| Frente | Responsabilidade |
 |---|---|
-| ID do caso e ID da solicitação | Localizar a execução |
-| Ambiente, versão do motor e data | Reproduzir |
-| IDs de GEs e documentos mascarados | Contextualizar sem expor cadastro |
-| Ações e componentes enviados | Conferir o pedido |
-| Resultado individual e consolidado | Conferir regra de negócio |
-| Eventos de grupo e componente | Conferir efeito materializado |
-| Estado final e retorno de Frontend | Conferir jornada |
-| Status, evidência e defeito | Separar PASS/FAIL/BLOCKED |
-| Responsável pela execução | Dar encaminhamento ao caso |
+| Engenharia de Dados | Disponibilizar fixtures, QSA e responsabilidade, validar contratos, preparar snapshots, executar motor e comparar tabelas |
+| Backend | Criar solicitações compatíveis com as chaves e campos do motor, correlacionar decisões e eventos |
+| Frontend | Enviar casos e verificar retorno, mensagens e atualizações |
+| QA | Reproduzir cenário, registrar resultado e anexar evidências de estado antes/depois |
+| Negócio | Homologar o oráculo, aprovar transições, recusas e casos condicionais |
 
-Não basta marcar PASS pelo sucesso do job. Uma solicitação recusada que escreveu DELETE indevido falhou, mesmo que o notebook termine sem exception.
+Não atribuir responsabilidades a pessoas específicas sem confirmação.
 
-## Dependências e pendências abertas
+## Preparação
 
-- Reconciliar processadores `process_crt_*` fotografados com o código atual.
-- Confirmar a regra funcional para grupo gerencial (tipo 6) em formalização, inclusão e transições.
-- Fechar correspondência de nomes e tipos de colunas entre origem, preparação e regras.
-- Verificar inconsistências potenciais de `valida_socio_major_formalizacao`, `flag_formalizacao` e `flag_composicao_unificacao`.
-- Validar QSA com sócios PJ majoritários: a regra recuperada de unificação procura PF controlador de todas as PJs.
-- Verificar seleção de GE secundário em unificação com aprovação parcial.
-- Confirmar comportamento de `append` dos eventos em reexecução; desenhar limite de idempotência.
-- Planejar falha entre atualização da solicitação e geração de eventos; conferir recuperação sem efeito parcial.
-- Resolver caminhos de ambiente e isolamentos de leitura em DV e HO.
-- Identificar quem valida o retorno de Backend/Frontend e quem dá aceite funcional.
+1. Selecionar a branch e capturar o commit/versão do catálogo, com o ambiente de teste.
+2. Executar os testes offline a partir da raiz:
+   `python -m unittest discover -s scripts/future/fixtures/tests -v`
+3. Conferir 100 PF e 100 PJ, QSA de MEIs, estado dos 18 GEs e os dez documentos PF reservados para cenário.
+4. Conferir tabelas de responsabilidade e contratos efetivamente abertos; preservar 70 operações únicas.
+5. Validar ambiente, YAML das regras e schemas. **Nunca rotear mocks para produção.**
+6. Restaurar snapshot e aplicar apenas as alterações de `preparo` do caso selecionado; verificar IDs e percentuais.
 
-## Condição para encerramento da história
+## Executar um caso
 
-A entrega terá evidências de que um pedido criado no Frontend, com cadastros exclusivamente sintéticos, é recebido pelo Backend, enriquecido, validado pelo Motor GRUP, refletido na solicitação original e convertido nos eventos corretos. O resultado chega à interface e pode ser repetido após restauração da massa. Os testes de todas as regras aplicáveis estão registrados, inclusive rejeições, parcialidade, transições, reexecuções e falhas.
+1. Ler no [catálogo JSON](catalogo_total.json) o `id`, grupo, componentes e overrides da solicitação.
+2. Registrar pré-estado: membros/GE/tipo/QSA/responsabilidade e suas flags derivadas.
+3. Abrir a solicitação com ação 1/2/3/4 e chaves `_id` e `cSoltcAtdmt` próprias.
+4. Executar o Motor e capturar o retorno por componente e por solicitação.
+5. Comparar eventos de grupo, eventos de componente e tabelas materializadas; observar mudança de tipo e deltas.
+6. Registrar evidências e divergência com a [tabela-verdade](TABELAS_VERDADE.md).
+7. Restaurar snapshot de teste antes do próximo caso. Nunca usar como pré-estado alterações de uma execução anterior, salvo sequências explicitamente definidas.
 
-Qualquer lacuna funcional ou técnica que não possa ser fechada durante a execução deve permanecer explícita no Jira, com responsável por definição e cenário bloqueado — nunca ser convertida em PASS por ausência de erro de execução.
+## Critérios de avaliação
+
+- `PASS`: regra, mensagens, componentes, grupo, eventos e retorno conferem com oráculo homologado.
+- `FAIL`: diferença demonstrada entre esperado e observado.
+- `BLOCKED`: sem documento cadastral, sem regra oficial, sem esquema, sem liberação de ambiente.
+- `NOT_RUN`: caso preparado, mas execução não realizada.
+
+Casos marcados `CONDICIONAL` ou `PENDENTE` devem permanecer bloqueados para aceite até regra confirmada. Não converter o resultado em aprovação automática por término bem-sucedido do notebook.
+
+## Gate de conclusão
+
+Para cada ID, arquivar versão da massa, ID da solicitação, versões de schemas e motor, oráculo aprovado, mensagens, saídas e hashes/evidências do estado inicial e final. O aceite integrado só ocorre quando comportamento da interface, decisões e persistência estão consistentes.
