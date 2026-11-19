@@ -1,0 +1,936 @@
+{
+  "versao": "2.0",
+  "total": 36,
+  "casos": [
+    {
+      "id": "B01",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "74=107:50+299:50",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CPF >=50% limite inclusivo",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B02",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "74=107:50.01+299:49.99",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CPF 49,99%",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B03",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "74=107:49.99+299:50.01",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CPF 50,01%",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B04",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "74=107:100",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "CPF 0% ausente do QSA",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B05",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "74=107:50+299:50",
+      "preparo_cadastro": "299.cindcd_cpf_valid=null",
+      "regra_alvo": "valida_cpf_ativo_receita",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "CPF com indicador nulo",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B06",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        293
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 293,
+          "tipo": "PF",
+          "documento": "73002842133"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "293.remover_cadastro=true",
+      "regra_alvo": "ORACULO_CPF_AUSENTE",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "CPF não cadastrado; join vazio",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B07",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.rscit=ATIVA",
+      "regra_alvo": "valida_cnpj_ativo_receita",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CNPJ matriz e ativo; positivo base",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B08",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.cindcd_cnpj_valid=0",
+      "regra_alvo": "valida_cnpj_ativo_receita",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CNPJ com validade 0",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B09",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.rsit_docto_recta=INAPTA",
+      "regra_alvo": "valida_cnpj_ativo_receita",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CNPJ INAPTA",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B10",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.rsit_docto_recta=BAIXADA",
+      "regra_alvo": "valida_cnpj_ativo_receita",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CNPJ BAIXADA",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B11",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.rmtriz_flial_cnpj=2",
+      "regra_alvo": "valida_cnpj_matriz",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "PJ filial",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B12",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.rnatur_jurid=Organização Religiosa",
+      "regra_alvo": "valida_cnpj_natureza_jurid",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Natureza jurídica não permitida",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B13",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "112.rnatur_jurid=null",
+      "regra_alvo": "valida_cnpj_natureza_jurid",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Natureza jurídica nula",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B14",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "112=SEM_SOCIOS",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Empresa sem registro QSA",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B15",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "112=64:99.99",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "QSA soma 99,99%",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B16",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "112=64:100",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "QSA soma exatamente 100%",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B17",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "112=64:100.01",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "QSA soma 100,01%",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B18",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        118
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 118,
+          "tipo": "PJ",
+          "documento": "52592529000145"
+        }
+      ],
+      "preparo_qsa": "118=64:100",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_qsa",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Sócio PJ controladora",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B19",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "74=299:50+299:50",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_socio_major",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "PF duplicada no QSA",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B20",
+      "classe": "LIMITE",
+      "acao": 4,
+      "nome_acao": "UNIFICACAO",
+      "grupo_alvo": 910106,
+      "componentes_solicitados": [
+        92,
+        115
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        }
+      ],
+      "preparo_qsa": "84=64:100",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_composicao_unificacao",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Controle indireto PJ-PJ; sem PF comum demonstrada",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B21",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910102,
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_cnpj_em_outro_grupo",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "CNPJ já está em 910101",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B22",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        101
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 101,
+          "tipo": "PF",
+          "documento": "53762447683"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_cpf_em_outro_grupo",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "PF já está no próprio GE",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B23",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910604,
+      "componentes_solicitados": [
+        299
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 299,
+          "tipo": "PF",
+          "documento": "73002900354"
+        }
+      ],
+      "preparo_qsa": "124=117:50+299:50",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_socios_sao_pf",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "PF em Gerencial apesar do controle",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B24",
+      "classe": "LIMITE",
+      "acao": 1,
+      "nome_acao": "FORMALIZACAO",
+      "grupo_alvo": null,
+      "componentes_solicitados": [
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "tipo": "PF",
+          "documento": "73002725765"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_composicao_formalizacao",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Formalização sem PJ",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B25",
+      "classe": "LIMITE",
+      "acao": 1,
+      "nome_acao": "FORMALIZACAO",
+      "grupo_alvo": null,
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_composicao_formalizacao",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Formalização sem PF",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B26",
+      "classe": "LIMITE",
+      "acao": 1,
+      "nome_acao": "FORMALIZACAO",
+      "grupo_alvo": null,
+      "componentes_solicitados": [
+        112,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        },
+        {
+          "cclub_cli": 281,
+          "tipo": "PF",
+          "documento": "73002725765"
+        },
+        {
+          "cclub_cli": 283,
+          "tipo": "PF",
+          "documento": "73002745103"
+        },
+        {
+          "cclub_cli": 285,
+          "tipo": "PF",
+          "documento": "73002764582"
+        }
+      ],
+      "preparo_qsa": "112=281:50+283:25+285:25",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_composicao_formalizacao",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Formalização com três PFs",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B27",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.flag_resp_empr=true",
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Contrato aberto bloqueia exclusão",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B28",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "62.rsit_docto_recta=BAIXADA;62.flag_resp_empr=false",
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Ausência de contrato permite excluir PJ BAIXADA",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B29",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.flag_resp_empr=false",
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "resultado_esperado": "APROVA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Operação encerrada não representa responsabilidade ativa",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B30",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.flag_resp_empr=null",
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Última versão de contrato excluída",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B31",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        62
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 62,
+          "tipo": "PJ",
+          "documento": "39070293000119"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "62.rsit_docto_recta=ATIVA;62.flag_resp_empr=false;62.tem_acao_2=0",
+      "regra_alvo": "valida_cnpj_baixado",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "PJ ATIVA sem ação 2",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B32",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "74.rsit_docto_recta=ATIVA;74.flag_resp_empr=true;74.tem_acao_2=1",
+      "regra_alvo": "flag_troca_componente",
+      "resultado_esperado": "CONDICIONAL",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Exclusão + Inclusão do mesmo componente",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B33",
+      "classe": "LIMITE",
+      "acao": 4,
+      "nome_acao": "UNIFICACAO",
+      "grupo_alvo": 910502,
+      "componentes_solicitados": [
+        84,
+        88,
+        111
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 84,
+          "tipo": "PJ",
+          "documento": "31929392000100"
+        },
+        {
+          "cclub_cli": 88,
+          "tipo": "PJ",
+          "documento": "49043284000192"
+        },
+        {
+          "cclub_cli": 111,
+          "tipo": "PF",
+          "documento": "77449952602"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_composicao_grupo_economico",
+      "resultado_esperado": "RECUSA",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "descricao": "Primário Isolado 1 PJ com composição exigida >=2",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B34",
+      "classe": "LIMITE",
+      "acao": 4,
+      "nome_acao": "UNIFICACAO",
+      "grupo_alvo": 910106,
+      "componentes_solicitados": [
+        92,
+        115,
+        104,
+        106,
+        125
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 92,
+          "tipo": "PJ",
+          "documento": "16412297000132"
+        },
+        {
+          "cclub_cli": 115,
+          "tipo": "PF",
+          "documento": "66609568910"
+        },
+        {
+          "cclub_cli": 104,
+          "tipo": "PJ",
+          "documento": "99944451000144"
+        },
+        {
+          "cclub_cli": 106,
+          "tipo": "PJ",
+          "documento": "19271940000143"
+        },
+        {
+          "cclub_cli": 125,
+          "tipo": "PF",
+          "documento": "86038028404"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "valida_composicao_unificacao",
+      "resultado_esperado": "CONDICIONAL",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Unificação de três GEs, migração e parcialidade",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B35",
+      "classe": "LIMITE",
+      "acao": 2,
+      "nome_acao": "INCLUSAO",
+      "grupo_alvo": 910101,
+      "componentes_solicitados": [
+        112,
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        },
+        {
+          "cclub_cli": 112,
+          "tipo": "PJ",
+          "documento": "20010176000131"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "",
+      "regra_alvo": "ORACULO_DEDUPLICACAO_SOLICITACAO",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Mesmo documento repetido em um lote",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    },
+    {
+      "id": "B36",
+      "classe": "LIMITE",
+      "acao": 3,
+      "nome_acao": "EXCLUSAO",
+      "grupo_alvo": 910104,
+      "componentes_solicitados": [
+        74
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 74,
+          "tipo": "PJ",
+          "documento": "75538340000108"
+        }
+      ],
+      "preparo_qsa": "",
+      "preparo_cadastro": "74.rsit_docto_recta=BAIXADA;74.dt_fim_contrato=2026-11-19",
+      "regra_alvo": "valida_cnpj_responsabilidade",
+      "resultado_esperado": "PENDENTE",
+      "situacao_oraculo": "DEPENDE_CONTRATO",
+      "descricao": "Contrato vence no instante de execução",
+      "observacao": "Executar cenário isoladamente, com snapshot restaurado e registro de flags derivadas."
+    }
+  ]
+}
