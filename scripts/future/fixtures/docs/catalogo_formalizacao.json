@@ -1,0 +1,3183 @@
+{
+  "versao": "2.0",
+  "total": 48,
+  "casos": [
+    {
+      "id": "F01",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [],
+      "documentos_solicitados": [],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F02",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F03",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F04",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F05",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F06",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F07",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F08",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F09",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F10",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "APROVA",
+      "tipo_esperado_se_aprovado": 1,
+      "componentes_finais_se_aprovado": [
+        112,
+        118,
+        281
+      ],
+      "efeito_esperado": "CREATE_GE + INSERT_COMPONENTES",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F11",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "APROVA",
+      "tipo_esperado_se_aprovado": 1,
+      "componentes_finais_se_aprovado": [
+        112,
+        118,
+        281,
+        283
+      ],
+      "efeito_esperado": "CREATE_GE + INSERT_COMPONENTES",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F12",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F13",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F14",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "APROVA",
+      "tipo_esperado_se_aprovado": 1,
+      "componentes_finais_se_aprovado": [
+        112,
+        118,
+        120,
+        281
+      ],
+      "efeito_esperado": "CREATE_GE + INSERT_COMPONENTES",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F15",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "APROVA",
+      "tipo_esperado_se_aprovado": 1,
+      "componentes_finais_se_aprovado": [
+        112,
+        118,
+        120,
+        281,
+        283
+      ],
+      "efeito_esperado": "CREATE_GE + INSERT_COMPONENTES",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F16",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 1,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F17",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [],
+      "documentos_solicitados": [],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F18",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F19",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F20",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F21",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F22",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "APROVA",
+      "tipo_esperado_se_aprovado": 5,
+      "componentes_finais_se_aprovado": [
+        112,
+        281
+      ],
+      "efeito_esperado": "CREATE_GE + INSERT_COMPONENTES",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F23",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "APROVA",
+      "tipo_esperado_se_aprovado": 5,
+      "componentes_finais_se_aprovado": [
+        112,
+        281,
+        283
+      ],
+      "efeito_esperado": "CREATE_GE + INSERT_COMPONENTES",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F24",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F25",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F26",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F27",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F28",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F29",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F30",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F31",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": ""
+    },
+    {
+      "id": "F32",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 5,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_NAO_EXECUTADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F33",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [],
+      "documentos_solicitados": [],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F34",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F35",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F36",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F37",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F38",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F39",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F40",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F41",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F42",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F43",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F44",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    },
+    {
+      "id": "F45",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                64,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F46",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                100
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F47",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281,
+        283
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                50
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Não há ramo de aprovação tipo 6 no código recuperado"
+    },
+    {
+      "id": "F48",
+      "acao": "FORMALIZACAO",
+      "codigo_acao": 1,
+      "grupo_alvo": null,
+      "tipo_grupo_solicitado": 6,
+      "componentes_antes": [],
+      "componentes_solicitados": [
+        112,
+        118,
+        120,
+        281,
+        283,
+        285
+      ],
+      "documentos_solicitados": [
+        {
+          "cclub_cli": 112,
+          "documento": "20010176000131",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 118,
+          "documento": "52592529000145",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 120,
+          "documento": "45639543000191",
+          "tipo": "PJ"
+        },
+        {
+          "cclub_cli": 281,
+          "documento": "73002725765",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 283,
+          "documento": "73002745103",
+          "tipo": "PF"
+        },
+        {
+          "cclub_cli": 285,
+          "documento": "73002764582",
+          "tipo": "PF"
+        }
+      ],
+      "preparo": {
+        "qsa_substituir": [
+          {
+            "titular": 112,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 118,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          },
+          {
+            "titular": 120,
+            "socios": [
+              [
+                281,
+                50
+              ],
+              [
+                283,
+                25
+              ],
+              [
+                285,
+                25
+              ]
+            ]
+          }
+        ],
+        "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ",
+        "responsabilidade": "NAO_INTERFERE_NESTA_REGRA"
+      },
+      "regra_alvo": "valida_composicao_formalizacao",
+      "regras_complementares": [
+        "valida_socio_major_formalizacao",
+        "valida_status_componente_formalizacao",
+        "gera_codigo_grupo_formalizacao"
+      ],
+      "resultado_esperado": "RECUSA",
+      "tipo_esperado_se_aprovado": null,
+      "componentes_finais_se_aprovado": [],
+      "efeito_esperado": "SEM_EVENTO_APROVADO",
+      "situacao_oraculo": "DERIVADO_CODIGO_TIPO_NAO_MAPEADO",
+      "observacao": "Uma ou mais PFs são minoritárias; composição também inválida"
+    }
+  ]
+}
