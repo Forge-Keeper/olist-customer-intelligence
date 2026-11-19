@@ -1,0 +1,1728 @@
+{
+  "versao": "2.0",
+  "contagens": {
+    "sequencias": 16,
+    "integracao": 18
+  },
+  "total": 34,
+  "casos": [
+    {
+      "id": "C01",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        1,
+        1
+      ],
+      "descricao": "Formalização → Formalização",
+      "passos": [
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            112,
+            281
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        },
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            112,
+            281
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+    },
+    {
+      "id": "C02",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        1,
+        2
+      ],
+      "descricao": "Formalização → Inclusão",
+      "passos": [
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            112,
+            281
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        },
+        {
+          "acao": 2,
+          "grupo_alvo": null,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo",
+          "grupo_referencia": "codigo_criado_em_passo_1"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281,
+        118
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação."
+    },
+    {
+      "id": "C03",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        1,
+        3
+      ],
+      "descricao": "Formalização → Exclusão",
+      "passos": [
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            112,
+            281
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        },
+        {
+          "acao": 3,
+          "grupo_alvo": null,
+          "componentes": [
+            84
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado",
+          "grupo_referencia": "codigo_criado_em_passo_1"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281,
+        84
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação."
+    },
+    {
+      "id": "C04",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        1,
+        4
+      ],
+      "descricao": "Formalização → Unificação",
+      "passos": [
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            112,
+            281
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        },
+        {
+          "acao": 4,
+          "grupo_alvo": null,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao",
+          "grupo_referencia": "codigo_criado_em_passo_1"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281,
+        92,
+        115
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Resolver GE gerado pelo primeiro passo; conferir composição antes de 2ª ação."
+    },
+    {
+      "id": "C05",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        2,
+        1
+      ],
+      "descricao": "Inclusão → Formalização",
+      "passos": [
+        {
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        },
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            118,
+            283
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        118,
+        283
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "PJ118 incluída anteriormente deve bloquear nova formalização."
+    },
+    {
+      "id": "C06",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        2,
+        2
+      ],
+      "descricao": "Inclusão → Inclusão",
+      "passos": [
+        {
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        },
+        {
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        118
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Segundo pedido do mesmo PJ deve recusar já ativo."
+    },
+    {
+      "id": "C07",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        2,
+        3
+      ],
+      "descricao": "Inclusão → Exclusão",
+      "passos": [
+        {
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        },
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "cadastro": [
+            {
+              "id": 118,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        118
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Remover componente recém-incluído; transição e eventos sem duplicidade."
+    },
+    {
+      "id": "C08",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        2,
+        4
+      ],
+      "descricao": "Inclusão → Unificação",
+      "passos": [
+        {
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        },
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        118,
+        92,
+        115
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+    },
+    {
+      "id": "C09",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        3,
+        1
+      ],
+      "descricao": "Exclusão → Formalização",
+      "passos": [
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            84
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        },
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            112,
+            281
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        84,
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+    },
+    {
+      "id": "C10",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        3,
+        2
+      ],
+      "descricao": "Exclusão → Inclusão",
+      "passos": [
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            84
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        },
+        {
+          "acao": 2,
+          "grupo_alvo": 910502,
+          "componentes": [
+            84
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        84
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Troca de GE do mesmo documento: conferir `tem_acao_2` e compatibilidade de status."
+    },
+    {
+      "id": "C11",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        3,
+        3
+      ],
+      "descricao": "Exclusão → Exclusão",
+      "passos": [
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            84
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        },
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            84
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        84
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Segunda exclusão do mesmo documento deve ser tratada como inexistente ou idempotente."
+    },
+    {
+      "id": "C12",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        3,
+        4
+      ],
+      "descricao": "Exclusão → Unificação",
+      "passos": [
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            84
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        },
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        84,
+        92,
+        115
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Executar sobre snapshot restaurado; após passo 1 consultar o estado e resolver IDs antes do passo 2."
+    },
+    {
+      "id": "C13",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        4,
+        1
+      ],
+      "descricao": "Unificação → Formalização",
+      "passos": [
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        },
+        {
+          "acao": 1,
+          "grupo_alvo": null,
+          "tipo_grupo": 5,
+          "componentes": [
+            92,
+            283
+          ],
+          "qsa": [
+            {
+              "titular": 112,
+              "socios": [
+                [
+                  281,
+                  100
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_formalizacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        92,
+        115,
+        283
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "PJ já migrada após unificação não pode formalizar GE novo."
+    },
+    {
+      "id": "C14",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        4,
+        2
+      ],
+      "descricao": "Unificação → Inclusão",
+      "passos": [
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        },
+        {
+          "acao": 2,
+          "grupo_alvo": 910106,
+          "componentes": [
+            118
+          ],
+          "qsa": [],
+          "regra": "valida_cnpj_em_outro_grupo"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        92,
+        115,
+        118
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Adicionar PJ ao grupo primário após unificação."
+    },
+    {
+      "id": "C15",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        4,
+        3
+      ],
+      "descricao": "Unificação → Exclusão",
+      "passos": [
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        },
+        {
+          "acao": 3,
+          "grupo_alvo": 910106,
+          "componentes": [
+            92
+          ],
+          "cadastro": [
+            {
+              "id": 84,
+              "rsit_docto_recta": "BAIXADA",
+              "flag_resp_empr": false
+            }
+          ],
+          "regra": "valida_cnpj_baixado"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        92,
+        115
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Excluir componente migrado do GE primário após unificação."
+    },
+    {
+      "id": "C16",
+      "classe": "SEQUENCIA",
+      "acoes": [
+        4,
+        4
+      ],
+      "descricao": "Unificação → Unificação",
+      "passos": [
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        },
+        {
+          "acao": 4,
+          "grupo_alvo": 910106,
+          "grupo_secundario": 910502,
+          "componentes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 88,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            },
+            {
+              "titular": 92,
+              "socios": [
+                [
+                  111,
+                  50
+                ],
+                [
+                  115,
+                  50
+                ]
+              ]
+            }
+          ],
+          "regra": "valida_composicao_unificacao"
+        }
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        92,
+        115
+      ],
+      "regra_alvo": "ORACULO_CORRELACAO_ACOES_E_ISOLAMENTO",
+      "resultado_esperado": "PENDENTE_CONTRATO_DE_SEQUENCIA",
+      "variantes": [
+        "solicitacoes_distintas_sequenciais",
+        "mesma_solicitacao_se_contrato_permitir"
+      ],
+      "eventos_esperados": "Compor efeitos sem duplicação, respeitar recusas e estado intermediário",
+      "observacao": "Repetição de unificação com secundário já cancelado não pode duplicar eventos."
+    },
+    {
+      "id": "P01",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "init_validacao",
+      "descricao": "Campos de processamento começam em OK / mensagem vazia",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P02",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "finish_validacao",
+      "descricao": "Recusa preserva motivo e data do retorno",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P03",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "valida_status_componente_formalizacao",
+      "descricao": "Reprovar uma PF e propagar rejeição da Formalização",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P04",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_CHAVE_ACAO_DOCUMENTO",
+      "descricao": "Múltiplas ações no mesmo documento sem colisão",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P05",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_ISOLAMENTO_SOLICITACAO",
+      "descricao": "Mesmo documento em solicitações diferentes",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P06",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_MERGE_SOLICITACAO",
+      "descricao": "MERGE por _id e cSoltcAtdmt",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P07",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_MERGE_SEM_MATCH",
+      "descricao": "Solicitação sem destino no MERGE",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P08",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "flag_ge_primario",
+      "descricao": "Seleção do primário em Unificação",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P09",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_CRT_DELETE_GRUPO",
+      "descricao": "Cancelar grupo e componentes no consumidor",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P10",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_CRT_DELETE_COMPONENTE",
+      "descricao": "Excluir componente e preservar GE",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P11",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_CRT_INCLUSAO_SEM_DUPLICIDADE",
+      "descricao": "Adicionar PF+PJ, apenas um UPDATE de GE",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P12",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_CRT_UNIFICACAO_LEFT_ANTI",
+      "descricao": "Componente já presente no primário",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P13",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_IDEMPOTENCIA_CRT",
+      "descricao": "Reexecutar a mesma solicitação sem evento duplicado",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P14",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_CONCORRENCIA",
+      "descricao": "Executar duas solicitações concorrentes",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P15",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_RECUPERACAO_PARCIAL",
+      "descricao": "Falha após MERGE e antes dos eventos",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P16",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_EVENTOS_INTEGRIDADE",
+      "descricao": "Evento sem correspondente ativo",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P17",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910106,
+      "componentes_involvidos": [
+        112,
+        281
+      ],
+      "regra_alvo": "ORACULO_ISOLAMENTO_AMBIENTE",
+      "descricao": "Roteamento DV/HO sem acesso ao produtivo",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    },
+    {
+      "id": "P18",
+      "classe": "INTEGRACAO",
+      "acoes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "grupo_base": 910101,
+      "componentes_involvidos": [
+        62,
+        64
+      ],
+      "regra_alvo": "ORACULO_RETORNO_PONTA_A_PONTA",
+      "descricao": "Decisão correta na interface e bases persistidas",
+      "resultado_esperado": "A_DEFINIR_ORACULO_DE_INTEGRACAO",
+      "teste_permite_sintese": true,
+      "preparo": "Snapshot conhecido e solicitação identificada por _id/cSoltcAtdmt",
+      "eventos_esperados": "Coerência entre decisão, atualização da solicitação, eventos e materialização",
+      "campos_evidencia": [
+        "_id",
+        "cSoltcAtdmt",
+        "decisao_por_componente",
+        "estado_antes",
+        "estado_depois",
+        "eventos",
+        "retorno_interface"
+      ],
+      "situacao": "PLANEJADO_NAO_EXECUTADO"
+    }
+  ]
+}
