@@ -1,0 +1,3982 @@
+{
+  "versao": "1.2",
+  "rodada": "R02",
+  "ambiente": "DV",
+  "quantidade_casos": 63,
+  "quantidade_etapas": 64,
+  "casos": [
+    {
+      "rodada": "R02",
+      "cenario": "F01",
+      "slot": 201,
+      "passos": [
+        {
+          "id": "E2E-F01-01",
+          "cenario": "F01",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | aCompoGrpEconm=[]; teste negativo de entrada vazia; pode ser barrado antes do Motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Pedido vazio: se a UI impedir envio, registrar cobertura de interface; regra do Motor fica para integração."
+          ],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F02",
+      "slot": 202,
+      "passos": [
+        {
+          "id": "E2E-F02-01",
+          "cenario": "F02",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F03",
+      "slot": 203,
+      "passos": [
+        {
+          "id": "E2E-F03-01",
+          "cenario": "F03",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F04",
+      "slot": 204,
+      "passos": [
+        {
+          "id": "E2E-F04-01",
+          "cenario": "F04",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F05",
+      "slot": 205,
+      "passos": [
+        {
+          "id": "E2E-F05-01",
+          "cenario": "F05",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F07",
+      "slot": 206,
+      "passos": [
+        {
+          "id": "E2E-F07-01",
+          "cenario": "F07",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F08",
+      "slot": 207,
+      "passos": [
+        {
+          "id": "E2E-F08-01",
+          "cenario": "F08",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F09",
+      "slot": 208,
+      "passos": [
+        {
+          "id": "E2E-F09-01",
+          "cenario": "F09",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F10",
+      "slot": 209,
+      "passos": [
+        {
+          "id": "E2E-F10-01",
+          "cenario": "F10",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F11",
+      "slot": 210,
+      "passos": [
+        {
+          "id": "E2E-F11-01",
+          "cenario": "F11",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281,
+            283
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F12",
+      "slot": 211,
+      "passos": [
+        {
+          "id": "E2E-F12-01",
+          "cenario": "F12",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F13",
+      "slot": 212,
+      "passos": [
+        {
+          "id": "E2E-F13-01",
+          "cenario": "F13",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F14",
+      "slot": 213,
+      "passos": [
+        {
+          "id": "E2E-F14-01",
+          "cenario": "F14",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F15",
+      "slot": 214,
+      "passos": [
+        {
+          "id": "E2E-F15-01",
+          "cenario": "F15",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281,
+            283
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F16",
+      "slot": 215,
+      "passos": [
+        {
+          "id": "E2E-F16-01",
+          "cenario": "F16",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F17",
+      "slot": 216,
+      "passos": [
+        {
+          "id": "E2E-F17-01",
+          "cenario": "F17",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | aCompoGrpEconm=[]; teste negativo de entrada vazia; pode ser barrado antes do Motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Pedido vazio: se a UI impedir envio, registrar cobertura de interface; regra do Motor fica para integração."
+          ],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F18",
+      "slot": 217,
+      "passos": [
+        {
+          "id": "E2E-F18-01",
+          "cenario": "F18",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F19",
+      "slot": 218,
+      "passos": [
+        {
+          "id": "E2E-F19-01",
+          "cenario": "F19",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F20",
+      "slot": 219,
+      "passos": [
+        {
+          "id": "E2E-F20-01",
+          "cenario": "F20",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F21",
+      "slot": 220,
+      "passos": [
+        {
+          "id": "E2E-F21-01",
+          "cenario": "F21",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F23",
+      "slot": 221,
+      "passos": [
+        {
+          "id": "E2E-F23-01",
+          "cenario": "F23",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F24",
+      "slot": 222,
+      "passos": [
+        {
+          "id": "E2E-F24-01",
+          "cenario": "F24",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F25",
+      "slot": 223,
+      "passos": [
+        {
+          "id": "E2E-F25-01",
+          "cenario": "F25",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F26",
+      "slot": 224,
+      "passos": [
+        {
+          "id": "E2E-F26-01",
+          "cenario": "F26",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F27",
+      "slot": 225,
+      "passos": [
+        {
+          "id": "E2E-F27-01",
+          "cenario": "F27",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F28",
+      "slot": 226,
+      "passos": [
+        {
+          "id": "E2E-F28-01",
+          "cenario": "F28",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F29",
+      "slot": 227,
+      "passos": [
+        {
+          "id": "E2E-F29-01",
+          "cenario": "F29",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F30",
+      "slot": 228,
+      "passos": [
+        {
+          "id": "E2E-F30-01",
+          "cenario": "F30",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F31",
+      "slot": 229,
+      "passos": [
+        {
+          "id": "E2E-F31-01",
+          "cenario": "F31",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F32",
+      "slot": 230,
+      "passos": [
+        {
+          "id": "E2E-F32-01",
+          "cenario": "F32",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F33",
+      "slot": 231,
+      "passos": [
+        {
+          "id": "E2E-F33-01",
+          "cenario": "F33",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | aCompoGrpEconm=[]; teste negativo de entrada vazia; pode ser barrado antes do Motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Pedido vazio: se a UI impedir envio, registrar cobertura de interface; regra do Motor fica para integração."
+          ],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F34",
+      "slot": 232,
+      "passos": [
+        {
+          "id": "E2E-F34-01",
+          "cenario": "F34",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F35",
+      "slot": 233,
+      "passos": [
+        {
+          "id": "E2E-F35-01",
+          "cenario": "F35",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F36",
+      "slot": 234,
+      "passos": [
+        {
+          "id": "E2E-F36-01",
+          "cenario": "F36",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F37",
+      "slot": 235,
+      "passos": [
+        {
+          "id": "E2E-F37-01",
+          "cenario": "F37",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F38",
+      "slot": 236,
+      "passos": [
+        {
+          "id": "E2E-F38-01",
+          "cenario": "F38",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F39",
+      "slot": 237,
+      "passos": [
+        {
+          "id": "E2E-F39-01",
+          "cenario": "F39",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F40",
+      "slot": 238,
+      "passos": [
+        {
+          "id": "E2E-F40-01",
+          "cenario": "F40",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F41",
+      "slot": 239,
+      "passos": [
+        {
+          "id": "E2E-F41-01",
+          "cenario": "F41",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F42",
+      "slot": 240,
+      "passos": [
+        {
+          "id": "E2E-F42-01",
+          "cenario": "F42",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F43",
+      "slot": 241,
+      "passos": [
+        {
+          "id": "E2E-F43-01",
+          "cenario": "F43",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F44",
+      "slot": 242,
+      "passos": [
+        {
+          "id": "E2E-F44-01",
+          "cenario": "F44",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F45",
+      "slot": 243,
+      "passos": [
+        {
+          "id": "E2E-F45-01",
+          "cenario": "F45",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F46",
+      "slot": 244,
+      "passos": [
+        {
+          "id": "E2E-F46-01",
+          "cenario": "F46",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F47",
+      "slot": 245,
+      "passos": [
+        {
+          "id": "E2E-F47-01",
+          "cenario": "F47",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281,
+            283
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Não há ramo de aprovação tipo 6 no código recuperado. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "F48",
+      "slot": 246,
+      "passos": [
+        {
+          "id": "E2E-F48-01",
+          "cenario": "F48",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            120,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Uma ou mais PFs minoritárias; composição inválida. | Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            },
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX01",
+      "slot": 247,
+      "passos": [
+        {
+          "id": "E2E-FX01-01",
+          "cenario": "FX01",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            84,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ já em GE ativo (910106)",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX02",
+      "slot": 248,
+      "passos": [
+        {
+          "id": "E2E-FX02-01",
+          "cenario": "FX02",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_ativo_receita",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Indicador CNPJ inválido",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "cindcd_cnpj_valid",
+              "valor": "0"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX03",
+      "slot": 249,
+      "passos": [
+        {
+          "id": "E2E-FX03-01",
+          "cenario": "FX03",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_ativo_receita",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CNPJ inativo",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "INAPTA"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX04",
+      "slot": 250,
+      "passos": [
+        {
+          "id": "E2E-FX04-01",
+          "cenario": "FX04",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_matriz",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ filial",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rmtriz_flial_cnpj",
+              "valor": "2"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX05",
+      "slot": 251,
+      "passos": [
+        {
+          "id": "E2E-FX05-01",
+          "cenario": "FX05",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_natureza_jurid",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Natureza jurídica não permitida",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rnatur_jurid",
+              "valor": "Organização Religiosa"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX06",
+      "slot": 252,
+      "passos": [
+        {
+          "id": "E2E-FX06-01",
+          "cenario": "FX06",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "QSA com soma 90%",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "90.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX07",
+      "slot": 253,
+      "passos": [
+        {
+          "id": "E2E-FX07-01",
+          "cenario": "FX07",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            113
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cpf_em_outro_grupo",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PF já ativa em GE910501",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 113,
+                  "documento": "63124847504",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX08",
+      "slot": 254,
+      "passos": [
+        {
+          "id": "E2E-FX08-01",
+          "cenario": "FX08",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cpf_ativo_receita",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CPF com indicador inválido",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 281,
+              "documento": "73002725765",
+              "campo": "cindcd_cpf_valid",
+              "valor": "0"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX09",
+      "slot": 255,
+      "passos": [
+        {
+          "id": "E2E-FX09-01",
+          "cenario": "FX09",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_socio_major_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CPF minoritário com 40%",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "40.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "60.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX10",
+      "slot": 256,
+      "passos": [
+        {
+          "id": "E2E-FX10-01",
+          "cenario": "FX10",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_status_componente_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Propagação: uma PJ irregular recusa toda solicitação",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 118,
+              "documento": "52592529000145",
+              "campo": "cindcd_cnpj_valid",
+              "valor": "0"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX11",
+      "slot": 257,
+      "passos": [
+        {
+          "id": "E2E-FX11-01",
+          "cenario": "FX11",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "gera_codigo_grupo_formalizacao",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Duas solicitações de Formalização independentes devem produzir códigos distintos | Criar GE novo com chave de solicitação exclusiva. Comparar os códigos gerados nos dois pedidos.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preservar o primeiro GE até comparar os dois códigos gerados."
+          ],
+          "regra_tecnica": "gera_codigo_grupo_formalizacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        },
+        {
+          "id": "E2E-FX11-02",
+          "cenario": "FX11",
+          "passo": 2,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            120,
+            283
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "gera_codigo_grupo_formalizacao",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Segundo GE independente; não reutilizar cSoltcAtdmt. | Criar GE novo com chave de solicitação exclusiva. Comparar os códigos gerados nos dois pedidos.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 120,
+              "documento": "45639543000191",
+              "socios": [
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preservar o primeiro GE até comparar os dois códigos gerados.",
+            "Preservar estado real do passo anterior; não restaurar baseline."
+          ],
+          "regra_tecnica": "gera_codigo_grupo_formalizacao",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX12",
+      "slot": 258,
+      "passos": [
+        {
+          "id": "E2E-FX12-01",
+          "cenario": "FX12",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cpf_ativo_receita",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "Flag de CPF nula e sem resultado explícito de null",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 281,
+              "documento": "73002725765",
+              "campo": "cindcd_cpf_valid",
+              "valor": "null"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX13",
+      "slot": 259,
+      "passos": [
+        {
+          "id": "E2E-FX13-01",
+          "cenario": "FX13",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_natureza_jurid",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "Natureza jurídica nula",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rnatur_jurid",
+              "valor": "null"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "FX14",
+      "slot": 260,
+      "passos": [
+        {
+          "id": "E2E-FX14-01",
+          "cenario": "FX14",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "QSA não encontrado",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": []
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "B24",
+      "slot": 261,
+      "passos": [
+        {
+          "id": "E2E-B24-01",
+          "cenario": "B24",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": null,
+          "grupos_secundarios": [],
+          "componentes": [
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Formalização sem PJ | Overlay textual do catálogo; conferir antes da carga. | Tipo de GE não definido no catálogo; preencher antes de executar. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Definir tipo de GE antes do envio."
+          ],
+          "avisos": [],
+          "regra_tecnica": "valida_composicao_formalizacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "B25",
+      "slot": 262,
+      "passos": [
+        {
+          "id": "E2E-B25-01",
+          "cenario": "B25",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": null,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Formalização sem PF | Overlay textual do catálogo; conferir antes da carga. | Tipo de GE não definido no catálogo; preencher antes de executar. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Definir tipo de GE antes do envio."
+          ],
+          "avisos": [],
+          "regra_tecnica": "valida_composicao_formalizacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R02",
+      "cenario": "B26",
+      "slot": 263,
+      "passos": [
+        {
+          "id": "E2E-B26-01",
+          "cenario": "B26",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": null,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281,
+            283,
+            285
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Formalização com três PFs | Overlay textual do catálogo; conferir antes da carga. | Tipo de GE não definido no catálogo; preencher antes de executar.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 283,
+                  "documento": "73002745103",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                },
+                {
+                  "id": 285,
+                  "documento": "73002764582",
+                  "tipo": "PF",
+                  "percentual": "25.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Definir tipo de GE antes do envio."
+          ],
+          "avisos": [],
+          "regra_tecnica": "valida_composicao_formalizacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    }
+  ]
+}

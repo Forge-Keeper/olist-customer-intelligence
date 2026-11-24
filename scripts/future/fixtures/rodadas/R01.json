@@ -1,0 +1,540 @@
+{
+  "versao": "1.2",
+  "rodada": "R01",
+  "ambiente": "DV",
+  "quantidade_casos": 8,
+  "quantidade_etapas": 8,
+  "casos": [
+    {
+      "rodada": "R01",
+      "cenario": "F22",
+      "slot": 101,
+      "passos": [
+        {
+          "id": "E2E-F22-01",
+          "cenario": "F22",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "F06",
+      "slot": 102,
+      "passos": [
+        {
+          "id": "E2E-F06-01",
+          "cenario": "F06",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Cadastro válido, ativo e matriz se PJ. Novo código GE gerado pelo motor.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1,
+          "cadastro_padrao": "VALIDO_ATIVO_MATRIZ_SE_PJ"
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "I01",
+      "slot": 103,
+      "passos": [
+        {
+          "id": "E2E-I01-01",
+          "cenario": "I01",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ nova, QSA 100% com controladora PJ64 | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "I10",
+      "slot": 104,
+      "passos": [
+        {
+          "id": "E2E-I10-01",
+          "cenario": "I10",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            291
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cpf_ativo_receita",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CPF inválido; os demais atributos são válidos",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 74,
+              "documento": "75538340000108",
+              "socios": [
+                {
+                  "id": 107,
+                  "documento": "70474442462",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 291,
+                  "documento": "73002822701",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 291,
+              "documento": "73002822701",
+              "campo": "cindcd_cpf_valid",
+              "valor": "0"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "E26",
+      "slot": 105,
+      "passos": [
+        {
+          "id": "E2E-E26-01",
+          "cenario": "E26",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CNPJ BAIXADA sem responsabilidade",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "E27",
+      "slot": 106,
+      "passos": [
+        {
+          "id": "E2E-E27-01",
+          "cenario": "E27",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CNPJ BAIXADA mas com contrato aberto",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "U02",
+      "slot": 107,
+      "passos": [
+        {
+          "id": "E2E-U02-01",
+          "cenario": "U02",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910502
+          ],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_grupo_economico",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Controle comum 50/50 em todas as PJs; conferir eventos e tipo final",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 92,
+              "documento": "16412297000132",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R01",
+      "cenario": "U04",
+      "slot": 108,
+      "passos": [
+        {
+          "id": "E2E-U04-01",
+          "cenario": "U04",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [
+            910106
+          ],
+          "componentes": [
+            84,
+            88,
+            111
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_grupo_economico",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Primário Isolado não atende o requisito atual de >=2 PJ no próprio GE",
+          "vinculos_antes": [
+            92,
+            115
+          ],
+          "vinculos_secundario_antes": [
+            84,
+            88,
+            111
+          ],
+          "qsa": [
+            {
+              "titular": 92,
+              "documento": "16412297000132",
+              "socios": [
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    }
+  ]
+}

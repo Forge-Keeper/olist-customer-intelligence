@@ -1,0 +1,2558 @@
+{
+  "versao": "1.2",
+  "rodada": "R04",
+  "ambiente": "DV",
+  "quantidade_casos": 40,
+  "quantidade_etapas": 40,
+  "casos": [
+    {
+      "rodada": "R04",
+      "cenario": "E01",
+      "slot": 401,
+      "passos": [
+        {
+          "id": "E2E-E01-01",
+          "cenario": "E01",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_pj_parcial",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Normal com 3 PJ, remove 1 PJ",
+          "vinculos_antes": [
+            62,
+            64,
+            101,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910101,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E02",
+      "slot": 402,
+      "passos": [
+        {
+          "id": "E2E-E02-01",
+          "cenario": "E02",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "conversao_normal_isolado",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Normal com 3 PJ, remove 2; resta 1 PJ",
+          "vinculos_antes": [
+            62,
+            64,
+            101,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910101,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 5
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E03",
+      "slot": 403,
+      "passos": [
+        {
+          "id": "E2E-E03-01",
+          "cenario": "E03",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62,
+            64,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Normal com 3 PJ, remove todas",
+          "vinculos_antes": [
+            62,
+            64,
+            101,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            },
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "inclusao": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910101,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 7
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E04",
+      "slot": 404,
+      "passos": [
+        {
+          "id": "E2E-E04-01",
+          "cenario": "E04",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "conversao_normal_isolado",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Normal com 2 PJ, remove uma",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E05",
+      "slot": 405,
+      "passos": [
+        {
+          "id": "E2E-E05-01",
+          "cenario": "E05",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62,
+            64
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Normal com 2 PJ, remove as duas",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            },
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 4
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E06",
+      "slot": 406,
+      "passos": [
+        {
+          "id": "E2E-E06-01",
+          "cenario": "E06",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Normal anômalo com 1 PJ, remove última",
+          "vinculos_antes": [
+            62,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910101,
+              "operacao": "REMOVER",
+              "id": 64,
+              "documento": "47911744000121",
+              "nome": "Auto Elétrica Vagalume Noturno MEI"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E07",
+      "slot": 407,
+      "passos": [
+        {
+          "id": "E2E-E07-01",
+          "cenario": "E07",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            92
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Isolado com 1 PJ, remove última",
+          "vinculos_antes": [
+            92,
+            115
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E08",
+      "slot": 408,
+      "passos": [
+        {
+          "id": "E2E-E08-01",
+          "cenario": "E08",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_isolado_anomalo",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Isolado anômalo com 2 PJs, remove uma",
+          "vinculos_antes": [
+            92,
+            115,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910502,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E09",
+      "slot": 409,
+      "passos": [
+        {
+          "id": "E2E-E09-01",
+          "cenario": "E09",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            92,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Isolado anômalo com 2 PJ, remove ambas",
+          "vinculos_antes": [
+            92,
+            115,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "inclusao": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910502,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 5
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E10",
+      "slot": 410,
+      "passos": [
+        {
+          "id": "E2E-E10-01",
+          "cenario": "E10",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910601,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_gerencial",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Gerencial com 3 PJ, remove uma",
+          "vinculos_antes": [
+            104,
+            106,
+            125,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910601,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E11",
+      "slot": 411,
+      "passos": [
+        {
+          "id": "E2E-E11-01",
+          "cenario": "E11",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910601,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            104,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_gerencial",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Gerencial com 3 PJ, remove duas",
+          "vinculos_antes": [
+            104,
+            106,
+            125,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 104,
+              "documento": "99944451000144",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 104,
+              "documento": "99944451000144",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 104,
+              "documento": "99944451000144",
+              "inclusao": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910601,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 5
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E12",
+      "slot": 412,
+      "passos": [
+        {
+          "id": "E2E-E12-01",
+          "cenario": "E12",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910601,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            104,
+            106,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Gerencial com 3 PJ, remove todas",
+          "vinculos_antes": [
+            104,
+            106,
+            125,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 104,
+              "documento": "99944451000144",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 106,
+              "documento": "19271940000143",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 104,
+              "documento": "99944451000144",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 106,
+              "documento": "19271940000143",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 104,
+              "documento": "99944451000144",
+              "inclusao": false
+            },
+            {
+              "id": 106,
+              "documento": "19271940000143",
+              "inclusao": false
+            },
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910601,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 7
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E13",
+      "slot": 413,
+      "passos": [
+        {
+          "id": "E2E-E13-01",
+          "cenario": "E13",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910602,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            108
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_gerencial",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Gerencial com 2 PJ, remove uma",
+          "vinculos_antes": [
+            108,
+            110,
+            127
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 108,
+              "documento": "74254453000180",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 108,
+              "documento": "74254453000180",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 108,
+              "documento": "74254453000180",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E14",
+      "slot": 414,
+      "passos": [
+        {
+          "id": "E2E-E14-01",
+          "cenario": "E14",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910602,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            108,
+            110
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Gerencial com 2 PJ, remove ambas",
+          "vinculos_antes": [
+            108,
+            110,
+            127
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 108,
+              "documento": "74254453000180",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 110,
+              "documento": "05772590000194",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 108,
+              "documento": "74254453000180",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 110,
+              "documento": "05772590000194",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 108,
+              "documento": "74254453000180",
+              "inclusao": false
+            },
+            {
+              "id": 110,
+              "documento": "05772590000194",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 4
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E15",
+      "slot": 415,
+      "passos": [
+        {
+          "id": "E2E-E15-01",
+          "cenario": "E15",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            101
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_pf",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir PF de grupo Normal | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E16",
+      "slot": 416,
+      "passos": [
+        {
+          "id": "E2E-E16-01",
+          "cenario": "E16",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910102,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            103
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "composicao_ge_sem_pf",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir última PF de Normal | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            66,
+            68,
+            103
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E17",
+      "slot": 417,
+      "passos": [
+        {
+          "id": "E2E-E17-01",
+          "cenario": "E17",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_pf_isolado",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir PF de Isolado | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            92,
+            115
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E18",
+      "slot": 418,
+      "passos": [
+        {
+          "id": "E2E-E18-01",
+          "cenario": "E18",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910601,
+          "tipo_grupo": 6,
+          "grupos_secundarios": [],
+          "componentes": [
+            125
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_pf_gerencial",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir PF de Gerencial | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            104,
+            106,
+            125
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E19",
+      "slot": 419,
+      "passos": [
+        {
+          "id": "E2E-E19-01",
+          "cenario": "E19",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910102,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            66,
+            103
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_mista",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir PJ + PF simultaneamente",
+          "vinculos_antes": [
+            66,
+            68,
+            103
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 66,
+              "documento": "35650844000162",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 66,
+              "documento": "35650844000162",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 66,
+              "documento": "35650844000162",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E20",
+      "slot": 420,
+      "passos": [
+        {
+          "id": "E2E-E20-01",
+          "cenario": "E20",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir grupo todo PJ+PF",
+          "vinculos_antes": [
+            92,
+            115
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E21",
+      "slot": 421,
+      "passos": [
+        {
+          "id": "E2E-E21-01",
+          "cenario": "E21",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "componente_inexistente_no_ge",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "Componente livre não pertence ao GE",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E22",
+      "slot": 422,
+      "passos": [
+        {
+          "id": "E2E-E22-01",
+          "cenario": "E22",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            68
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "componente_de_outro_ge",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "PJ pertence ao GE910102",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 68,
+              "documento": "93773779000169",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 68,
+              "documento": "93773779000169",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 68,
+              "documento": "93773779000169",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E23",
+      "slot": 423,
+      "passos": [
+        {
+          "id": "E2E-E23-01",
+          "cenario": "E23",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910103,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            70,
+            72
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir ambas as PJs do Normal",
+          "vinculos_antes": [
+            70,
+            72,
+            105
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 70,
+              "documento": "31297282000164",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 72,
+              "documento": "08730759000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 70,
+              "documento": "31297282000164",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            },
+            {
+              "id": 72,
+              "documento": "08730759000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 70,
+              "documento": "31297282000164",
+              "inclusao": false
+            },
+            {
+              "id": 72,
+              "documento": "08730759000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 4
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E24",
+      "slot": 424,
+      "passos": [
+        {
+          "id": "E2E-E24-01",
+          "cenario": "E24",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            101,
+            281
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_multiplas_pf",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "Excluir duas PFs em snapshot com 2 PFs | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            62,
+            64,
+            101,
+            281
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [
+            {
+              "grupo": 910101,
+              "operacao": "ADICIONAR",
+              "id": 281,
+              "documento": "73002725765",
+              "nome": "PESSOA FISICA SINTETICA 281"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E25",
+      "slot": 425,
+      "passos": [
+        {
+          "id": "E2E-E25-01",
+          "cenario": "E25",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CNPJ ATIVA sem ação 2 e sem responsabilidade",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "ATIVA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E28",
+      "slot": 426,
+      "passos": [
+        {
+          "id": "E2E-E28-01",
+          "cenario": "E28",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            64
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "CNPJ INAPTA e sem responsabilidade",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "campo": "rsit_docto_recta",
+              "valor": "INAPTA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E30",
+      "slot": 427,
+      "passos": [
+        {
+          "id": "E2E-E30-01",
+          "cenario": "E30",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74,
+            76
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "HIPOTESE_FUNCIONAL_A_HOMOLOGAR",
+          "observacoes": "PJ74 recusada por contrato; PJ76 elegível",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            },
+            {
+              "id": 76,
+              "documento": "82080682000154",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            },
+            {
+              "id": 76,
+              "documento": "82080682000154",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "inclusao": false
+            },
+            {
+              "id": 76,
+              "documento": "82080682000154",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 4
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "EX01",
+      "slot": 428,
+      "passos": [
+        {
+          "id": "E2E-EX01-01",
+          "cenario": "EX01",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ BAIXADA e sem responsabilidade",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "EX02",
+      "slot": 429,
+      "passos": [
+        {
+          "id": "E2E-EX02-01",
+          "cenario": "EX02",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            64
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ INAPTA e sem responsabilidade",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "campo": "rsit_docto_recta",
+              "valor": "INAPTA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 64,
+              "documento": "47911744000121",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "EX03",
+      "slot": 430,
+      "passos": [
+        {
+          "id": "E2E-EX03-01",
+          "cenario": "EX03",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ ATIVA sem ação 2",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "ATIVA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "EX04",
+      "slot": 431,
+      "passos": [
+        {
+          "id": "E2E-EX04-01",
+          "cenario": "EX04",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ BAIXADA com operação aberta",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B27",
+      "slot": 432,
+      "passos": [
+        {
+          "id": "E2E-B27-01",
+          "cenario": "B27",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Contrato aberto bloqueia exclusão | Overlay textual do catálogo; conferir antes da carga.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B28",
+      "slot": 433,
+      "passos": [
+        {
+          "id": "E2E-B28-01",
+          "cenario": "B28",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Ausência de contrato permite excluir PJ BAIXADA | Overlay textual do catálogo; conferir antes da carga.",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B29",
+      "slot": 434,
+      "passos": [
+        {
+          "id": "E2E-B29-01",
+          "cenario": "B29",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "Operação encerrada não representa responsabilidade ativa | Overlay textual do catálogo; conferir antes da carga.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "ULTIMA_VERSAO_D",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B30",
+      "slot": 435,
+      "passos": [
+        {
+          "id": "E2E-B30-01",
+          "cenario": "B30",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "Última versão de contrato excluída | Overlay textual do catálogo; conferir antes da carga.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "INDEFINIDO",
+              "flag_esperada": null
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Flag nula não é produzida por isNotNull(); revisar cenário e regra vigente."
+          ],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B31",
+      "slot": 436,
+      "passos": [
+        {
+          "id": "E2E-B31-01",
+          "cenario": "B31",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            62
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "REGRA_DO_CODIGO_RECUPERADO",
+          "observacoes": "PJ ATIVA sem ação 2 | Overlay textual do catálogo; conferir antes da carga.",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "campo": "rsit_docto_recta",
+              "valor": "ATIVA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 62,
+              "documento": "39070293000119",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B36",
+      "slot": 437,
+      "passos": [
+        {
+          "id": "E2E-B36-01",
+          "cenario": "B36",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_responsabilidade",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "Contrato vence no instante de execução | Overlay textual do catálogo; conferir antes da carga.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "VENCIMENTO_A_CONFIRMAR",
+              "data": "2026-11-19"
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Preparação recuperada não filtra vencimento; confirmar contrato e oráculo antes de alterar."
+          ],
+          "avisos": [],
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "E29",
+      "slot": 438,
+      "passos": [
+        {
+          "id": "E2E-E29-01",
+          "cenario": "E29",
+          "passo": 1,
+          "categoria": "Principal",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "flag_troca_componente",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "CNPJ ATIVA+contrato, porém troca via inclusão na mesma solicitação | Obrigatório: ação 2 do mesmo documento na mesma solicitação. GE destino não definido no catálogo.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "ATIVA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "inclusao": true
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [
+            "Confirmar regra de troca e GE destino da Inclusão no mesmo pedido."
+          ],
+          "avisos": [],
+          "regra_tecnica": "flag_troca_componente",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "EX05",
+      "slot": 439,
+      "passos": [
+        {
+          "id": "E2E-EX05-01",
+          "cenario": "EX05",
+          "passo": 1,
+          "categoria": "Variante",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "flag_troca_componente",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "PJ ativa e responsável com Inclusão no mesmo pedido | Obrigatório: ação 2 do mesmo documento na mesma solicitação. GE destino não definido no catálogo.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "ATIVA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "inclusao": true
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [
+            "Confirmar regra de troca e GE destino da Inclusão no mesmo pedido."
+          ],
+          "avisos": [],
+          "regra_tecnica": "flag_troca_componente",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R04",
+      "cenario": "B32",
+      "slot": 440,
+      "passos": [
+        {
+          "id": "E2E-B32-01",
+          "cenario": "B32",
+          "passo": 1,
+          "categoria": "Limite",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910104,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            74
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "flag_troca_componente",
+          "fundamento": "CRITERIO_FUNCIONAL_PROPOSTO",
+          "observacoes": "Exclusão + Inclusão do mesmo componente | Overlay textual do catálogo; conferir antes da carga. | Obrigatório: ação 2 do mesmo documento na mesma solicitação. GE destino não definido no catálogo.",
+          "vinculos_antes": [
+            74,
+            76,
+            107
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "campo": "rsit_docto_recta",
+              "valor": "ATIVA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "modo": "EXIGIR_ATIVA",
+              "flag_esperada": true
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 74,
+              "documento": "75538340000108",
+              "inclusao": true
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [
+            "Confirmar regra de troca e GE destino da Inclusão no mesmo pedido."
+          ],
+          "avisos": [],
+          "regra_tecnica": "flag_troca_componente",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "name": "GRUP - Atualizacao de massas por rodada",
+  "max_concurrent_runs": 1,
+  "queue": {
+    "enabled": false
+  },
+  "parameters": [
+    {
+      "name": "rodada_autorizada",
+      "default": ""
+    },
+    {
+      "name": "diretorio_config",
+      "default": ""
+    },
+    {
+      "name": "aplicar",
+      "default": "false"
+    },
+    {
+      "name": "sem_processamento_pendente",
+      "default": "false"
+    },
+    {
+      "name": "etapa",
+      "default": ""
+    },
+    {
+      "name": "evidencia_anterior",
+      "default": ""
+    }
+  ],
+  "tasks": [
+    {
+      "task_key": "R01_smoke_test",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R01"
+        }
+      }
+    },
+    {
+      "task_key": "R02_formalizacao",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R02"
+        }
+      }
+    },
+    {
+      "task_key": "R03_inclusao",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R03"
+        }
+      }
+    },
+    {
+      "task_key": "R04_exclusao",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R04"
+        }
+      }
+    },
+    {
+      "task_key": "R05_unificacao",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R05"
+        }
+      }
+    },
+    {
+      "task_key": "R06_sequencias",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R06"
+        }
+      }
+    },
+    {
+      "task_key": "R07_integracao",
+      "existing_cluster_id": "PREENCHER_CLUSTER_DV",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R07"
+        }
+      }
+    },
+    {
+      "task_key": "R08_regressao_funcional",
+      "existing_cluster_id": "PREENCHER_CLUSTER_HO",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R08"
+        }
+      }
+    },
+    {
+      "task_key": "R09_regressao_integrada",
+      "existing_cluster_id": "PREENCHER_CLUSTER_HO",
+      "max_retries": 0,
+      "notebook_task": {
+        "notebook_path": "/Workspace/PREENCHER/fixtures/atualizar_massa",
+        "base_parameters": {
+          "rodada": "R09"
+        }
+      }
+    }
+  ]
+}

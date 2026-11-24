@@ -1,0 +1,1172 @@
+{
+  "versao": "1.2",
+  "rodada": "R07",
+  "ambiente": "DV",
+  "quantidade_casos": 18,
+  "quantidade_etapas": 21,
+  "casos": [
+    {
+      "rodada": "R07",
+      "cenario": "P01",
+      "slot": 701,
+      "passos": [
+        {
+          "id": "E2E-P01-01",
+          "cenario": "P01",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Campos de processamento começam em OK / mensagem vazia | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "init_validacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P02",
+      "slot": 702,
+      "passos": [
+        {
+          "id": "E2E-P02-01",
+          "cenario": "P02",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910105,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_ativo_receita",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Recusa preserva motivo e data do retorno | Referência: I12 | Caso de referência: I12",
+          "vinculos_antes": [
+            80,
+            82,
+            109
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I12",
+          "regra_tecnica": "finish_validacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P03",
+      "slot": 703,
+      "passos": [
+        {
+          "id": "E2E-P03-01",
+          "cenario": "P03",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            118,
+            281
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_status_componente_formalizacao",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Reprovar uma PF e propagar rejeição da Formalização | Referência: FX10 | Inconsistência de referência: descrição menciona PF, FX10 invalida PJ118. Confirmar teste pretendido. | Caso de referência: FX10",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            },
+            {
+              "titular": 118,
+              "documento": "52592529000145",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [
+            {
+              "id": 118,
+              "documento": "52592529000145",
+              "campo": "cindcd_cnpj_valid",
+              "valor": "0"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Descrição indica PF; referência FX10 invalida PJ118. Confirmar o alvo."
+          ],
+          "avisos": [],
+          "referencia": "FX10",
+          "regra_tecnica": "valida_status_componente_formalizacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P04",
+      "slot": 704,
+      "passos": [
+        {
+          "id": "E2E-P04-01",
+          "cenario": "P04",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Múltiplas ações no mesmo documento sem colisão | Referência: C06 | Restaurar snapshot antes do passo 1. | C06 contém duas Inclusões, não ações distintas. Confirmar variante de correlação. | Manter dados-base, salvo estado do passo anterior. | Caso de referência: C06",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "C06 possui duas Inclusões; definir variante de ações no mesmo pedido."
+          ],
+          "avisos": [],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_CHAVE_ACAO_DOCUMENTO",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        },
+        {
+          "id": "E2E-P04-02",
+          "cenario": "P04",
+          "passo": 2,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Múltiplas ações no mesmo documento sem colisão | Referência: C06 | Não restaurar snapshot: usar o estado efetivo após o passo 1. | C06 contém duas Inclusões, não ações distintas. Confirmar variante de correlação. | Manter dados-base, salvo estado do passo anterior. | Confirmar se o teste exige pedidos distintos ou ações no mesmo pedido. | Caso de referência: C06",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "C06 possui duas Inclusões; definir variante de ações no mesmo pedido."
+          ],
+          "avisos": [
+            "Preservar estado real do passo anterior; não restaurar baseline.",
+            "Usar a estratégia de correlação/concorrência confirmada, não inferir a ordem dos resultados."
+          ],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_CHAVE_ACAO_DOCUMENTO",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P05",
+      "slot": 705,
+      "passos": [
+        {
+          "id": "E2E-P05-01",
+          "cenario": "P05",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Mesmo documento em solicitações diferentes | Referência: C06 | Restaurar snapshot antes do passo 1. | Manter dados-base, salvo estado do passo anterior. | Caso de referência: C06",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Confirmar isolamento entre pedidos distintos e ausência de efeitos concorrentes."
+          ],
+          "avisos": [],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_ISOLAMENTO_SOLICITACAO",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        },
+        {
+          "id": "E2E-P05-02",
+          "cenario": "P05",
+          "passo": 2,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Mesmo documento em solicitações diferentes | Referência: C06 | Não restaurar snapshot: usar o estado efetivo após o passo 1. | Manter dados-base, salvo estado do passo anterior. | Confirmar se o teste exige pedidos distintos ou ações no mesmo pedido. | Caso de referência: C06",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Confirmar isolamento entre pedidos distintos e ausência de efeitos concorrentes."
+          ],
+          "avisos": [
+            "Preservar estado real do passo anterior; não restaurar baseline.",
+            "Usar a estratégia de correlação/concorrência confirmada, não inferir a ordem dos resultados."
+          ],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_ISOLAMENTO_SOLICITACAO",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P06",
+      "slot": 706,
+      "passos": [
+        {
+          "id": "E2E-P06-01",
+          "cenario": "P06",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "MERGE por _id e cSoltcAtdmt | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_MERGE_SOLICITACAO",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P07",
+      "slot": 707,
+      "passos": [
+        {
+          "id": "E2E-P07-01",
+          "cenario": "P07",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Solicitação sem destino no MERGE | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Injetar ausência de destino do MERGE; não é um terceiro resultado do Motor. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Definir injeção autorizada de ausência de destino no MERGE."
+          ],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_MERGE_SEM_MATCH",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P08",
+      "slot": 708,
+      "passos": [
+        {
+          "id": "E2E-P08-01",
+          "cenario": "P08",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910102
+          ],
+          "componentes": [
+            66,
+            103,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_grupo_economico",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Seleção do primário em Unificação | Referência: U01 | Caso de referência: U01",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": [
+            66,
+            103,
+            112
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 66,
+              "documento": "35650844000162",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [
+            {
+              "grupo": 910102,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            },
+            {
+              "grupo": 910102,
+              "operacao": "REMOVER",
+              "id": 68,
+              "documento": "93773779000169",
+              "nome": "Lavação Carro de Domingo MEI"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "U01",
+          "regra_tecnica": "flag_ge_primario",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 6
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P09",
+      "slot": 709,
+      "passos": [
+        {
+          "id": "E2E-P09-01",
+          "cenario": "P09",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Cancelar grupo e componentes no consumidor | Referência: E20 | Caso de referência: E20",
+          "vinculos_antes": [
+            92,
+            115
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "E20",
+          "regra_tecnica": "ORACULO_CRT_DELETE_GRUPO",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P10",
+      "slot": 710,
+      "passos": [
+        {
+          "id": "E2E-P10-01",
+          "cenario": "P10",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "exclusao_pj_parcial",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Excluir componente e preservar GE | Referência: E01 | Caso de referência: E01",
+          "vinculos_antes": [
+            62,
+            64,
+            101,
+            112
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [
+            {
+              "grupo": 910101,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "E01",
+          "regra_tecnica": "ORACULO_CRT_DELETE_COMPONENTE",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P11",
+      "slot": 711,
+      "passos": [
+        {
+          "id": "E2E-P11-01",
+          "cenario": "P11",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            287
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_socio_major",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Adicionar PF+PJ, apenas um UPDATE de GE | Referência: I17 | Caso de referência: I17",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 287,
+                  "documento": "73002783960",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I17",
+          "regra_tecnica": "ORACULO_CRT_INCLUSAO_SEM_DUPLICIDADE",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P12",
+      "slot": 712,
+      "passos": [
+        {
+          "id": "E2E-P12-01",
+          "cenario": "P12",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910502
+          ],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "left_anti_componentes_unificacao",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Componente já presente no primário | Referência: U19 | Caso de referência: U19",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 92,
+              "documento": "16412297000132",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [
+            {
+              "grupo": 910502,
+              "operacao": "ADICIONAR",
+              "id": 84,
+              "documento": "31929392000100",
+              "nome": "Clínica Sorriso de Jacaré LTDA"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "U19",
+          "regra_tecnica": "ORACULO_CRT_UNIFICACAO_LEFT_ANTI",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 4
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P13",
+      "slot": 713,
+      "passos": [
+        {
+          "id": "E2E-P13-01",
+          "cenario": "P13",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Reexecutar a mesma solicitação sem evento duplicado | Referência: I01 | Criar uma solicitação e reexecutar com os mesmos _id e cSoltcAtdmt; não criar outro pedido. | Manter dados-base, salvo estado do passo anterior. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Reprocessar os mesmos identificadores; não criar nova solicitação."
+          ],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_IDEMPOTENCIA_CRT",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P14",
+      "slot": 714,
+      "passos": [
+        {
+          "id": "E2E-P14-01",
+          "cenario": "P14",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Executar duas solicitações concorrentes | Referência: C06 | Executar dois pedidos distintos concorrentemente no mesmo snapshot. Esperado do par: um APROVADO e um REPROVADO; não predeterminar qual vence. | Caso de referência: C06",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preparar uma vez; enviar dois pedidos em paralelo. Não atribuir aprovação a um pedido específico antes da execução."
+          ],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_CONCORRENCIA",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "oraculo_concorrencia": [
+            "APROVADO",
+            "REPROVADO"
+          ]
+        },
+        {
+          "id": "E2E-P14-02",
+          "cenario": "P14",
+          "passo": 2,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Executar duas solicitações concorrentes | Referência: C06 | Executar dois pedidos distintos concorrentemente no mesmo snapshot. Esperado do par: um APROVADO e um REPROVADO; não predeterminar qual vence. | Caso de referência: C06",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preparar uma vez; enviar dois pedidos em paralelo. Não atribuir aprovação a um pedido específico antes da execução.",
+            "Usar a estratégia de correlação/concorrência confirmada, não inferir a ordem dos resultados."
+          ],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_CONCORRENCIA",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 0,
+          "oraculo_concorrencia": [
+            "APROVADO",
+            "REPROVADO"
+          ]
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P15",
+      "slot": 715,
+      "passos": [
+        {
+          "id": "E2E-P15-01",
+          "cenario": "P15",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Falha após MERGE e antes dos eventos | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Injetar falha após MERGE e antes dos eventos. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Definir injeção autorizada de falha após MERGE e antes de eventos."
+          ],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_RECUPERACAO_PARCIAL",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P16",
+      "slot": 716,
+      "passos": [
+        {
+          "id": "E2E-P16-01",
+          "cenario": "P16",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Evento sem correspondente ativo | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Injetar evento sem vínculo ativo correspondente. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [
+            "Definir injeção autorizada de evento sem vínculo ativo."
+          ],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_EVENTOS_INTEGRIDADE",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P17",
+      "slot": 717,
+      "passos": [
+        {
+          "id": "E2E-P17-01",
+          "cenario": "P17",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Roteamento DV/HO sem acesso ao produtivo | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Validar isolamento e roteamento DV/HO; nunca acessar PR. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Conferir roteamento de todos os sistemas; não executar em PR."
+          ],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_ISOLAMENTO_AMBIENTE",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R07",
+      "cenario": "P18",
+      "slot": 718,
+      "passos": [
+        {
+          "id": "E2E-P18-01",
+          "cenario": "P18",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Decisão correta na interface e bases persistidas | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Conferir retorno no frontend/backend e nas bases. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_RETORNO_PONTA_A_PONTA",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    }
+  ]
+}

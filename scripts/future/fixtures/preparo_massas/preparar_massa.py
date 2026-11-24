@@ -96,7 +96,11 @@ class MassaGRUP:
         self.schemas = {}
         self.meta = {}
         self._ultimo = None
+        self._refs = REFS
         self._validar_destinos()
+
+    def _ref(self, i):
+        return self._refs[str(i)]
 
     def _table(self, role):
         return self.cfg['tabelas'][role]
@@ -181,7 +185,7 @@ class MassaGRUP:
         return (self.F.length(raw)<=len(doc)) & raw.rlike('^[0-9]+$') & (self.F.lpad(raw,len(doc),'0')==doc)
 
     def _cad_pred(self, i, doc):
-        role=ref(i)['tipo'].lower()
+        role=self._ref(i)['tipo'].lower()
         return role,self._eq(role,'id',i)&self._doc_eq(role,'documento',doc)
 
     def _check_baseline_data(self):
@@ -259,12 +263,16 @@ class MassaGRUP:
         for socio in patch['socios']:
             pct=Decimal(socio['percentual'])
             if vals['qsa_escala']=='fracao_0_1':pct/=100
-            rows.append(self._row('qsa',{'titular':patch['documento'],'percentual':pct,'indicador':vals['qsa_indicador'],'nome_socio':ref(socio['id'])['nome'],'fim':vals['qsa_fim'],'id_socio':socio['id'],'documento_socio':socio['documento'],'data_origem':vals['qsa_data_origem']},self.cfg.get('defaults_qsa',{})))
+            rows.append(self._row('qsa',{'titular':patch['documento'],'percentual':pct,'indicador':vals['qsa_indicador'],'nome_socio':self._ref(socio['id'])['nome'],'fim':vals['qsa_fim'],'id_socio':socio['id'],'documento_socio':socio['documento'],'data_origem':vals['qsa_data_origem']},self.cfg.get('defaults_qsa',{})))
         return rows
 
     def _link_row(self, patch):
         vals=self.cfg['valores'];i=patch['id']
-        return self._row('componentes',{'grupo':patch['grupo'],'documento':patch['documento'],'nome':patch['nome'],'tipo':vals['tipo_componente_pj'] if ref(i)['tipo']=='PJ' else vals['tipo_componente_pf']},self.cfg.get('defaults_componentes',{}))
+        defaults=dict(self.cfg.get('defaults_componentes',{}))
+        doc=patch['documento']; partes={'raiz':doc[:9] if len(doc)==11 else doc[:8], 'filial':'0' if len(doc)==11 else doc[8:12], 'controle':doc[-2:]}
+        for campo,parte in self.cfg.get('clonagem',{}).get('derivadas',{}).get('componentes',{}).items():
+            defaults[campo]=partes[parte]
+        return self._row('componentes',{'grupo':patch['grupo'],'documento':patch['documento'],'nome':patch['nome'],'tipo':vals['tipo_componente_pj'] if self._ref(i)['tipo']=='PJ' else vals['tipo_componente_pf']},defaults)
 
     def _delta(self, role):
         from delta.tables import DeltaTable
@@ -325,7 +333,7 @@ class MassaGRUP:
         ops=copy.deepcopy(p['cadastro']);v=self.cfg['valores']
         if p.get('cadastro_padrao')=='VALIDO_ATIVO_MATRIZ_SE_PJ':
             for i in p['componentes']:
-                x=ref(i);fields={'cindcd_cpf_valid':v['cpf_valido']} if x['tipo']=='PF' else {'cindcd_cnpj_valid':v['cnpj_valido'],'rsit_docto_recta':v['pj_ativa'],'rmtriz_flial_cnpj':v['pj_matriz']}
+                x=self._ref(i);fields={'cindcd_cpf_valid':v['cpf_valido']} if x['tipo']=='PF' else {'cindcd_cnpj_valid':v['cnpj_valido'],'rsit_docto_recta':v['pj_ativa'],'rmtriz_flial_cnpj':v['pj_matriz']}
                 ops.extend({'id':i,'documento':x['documento'],'campo':k,'valor':value} for k,value in fields.items())
         return ops
 
@@ -343,7 +351,7 @@ class MassaGRUP:
             p['tipo_grupo']=confirmation['tipo_grupo']
         if c in ('E29','B32','EX05'):
             dest=confirmation.get('grupo_destino_inclusao')
-            if type(dest) is not int or dest not in {x['grupo_base'] for x in REFS.values()} or dest==p['grupo']:
+            if type(dest) is not int or dest not in {x['grupo_base'] for x in self._refs.values()} or dest==p['grupo']:
                 raise ValueError('Informe grupo_destino_inclusao existente e distinto do GE de exclusão.')
             for a in p['acoes_mesmo_pedido']:
                 if a['inclusao']:a['grupo_destino_inclusao']=dest
@@ -353,8 +361,18 @@ class MassaGRUP:
         # P03/P04/P05/C05/C13: justificativa deve confirmar os dados existentes.
         # P07/P15/P16: somente a massa de referência é preparada; injeção manual autorizada.
 
-    def preparar(self, cenario, passo=1, *, aplicar=False, sem_processamento_pendente=False, passo_anterior_concluido=False):
-        p=plano(cenario,passo)
+    def retomar_sequencia(self, etapa, anterior, evidencia):
+        """Retoma controle de sessao apos validacao do estado persistido pelo Job."""
+        p=plano(etapa)
+        if p['passo'] <= 1 or p['restaurar_antes'] or anterior != f"E2E-{p['cenario']}-{p['passo']-1:02d}" or not evidencia.strip():
+            raise PermissionError('Retomada exige passo anterior correspondente e evidencia de conclusao.')
+        self._baseline()
+        self._ultimo=anterior
+
+    def preparar(self, cenario, passo=1, *, aplicar=False, sem_processamento_pendente=False, passo_anterior_concluido=False, plano_isolado=None):
+        p=plano(cenario,passo) if plano_isolado is None else copy.deepcopy(plano_isolado)
+        if plano_isolado is not None and (p['restaurar_antes'] or self._refs is REFS):
+            raise PermissionError('Plano isolado exige referencias exclusivas e nao pode restaurar a massa.')
         p['cadastro_efetivo']=self._cad_ops(p)
         if not aplicar:return p
         if not sem_processamento_pendente:raise PermissionError('Aguarde jobs, eventos e consumidores antes de alterar massa.')
@@ -366,7 +384,7 @@ class MassaGRUP:
         # Compile typed rows and check mapped fields before any writes, including RESTORE.
         cad=defaultdict(dict);remover=set()
         for x in p['cadastro_efetivo']:
-            i=x['id'];role=ref(i)['tipo'].lower()
+            i=x['id'];role=self._ref(i)['tipo'].lower()
             if x['campo']=='remover_cadastro':remover.add(i)
             else:
                 name,value=self._typed(role,x['campo'],x['valor']);cad[i][name]=value
@@ -380,7 +398,7 @@ class MassaGRUP:
         # From this point failure may leave partial changes across tables; stop and restore explicitly.
         try:
             for i in set(cad)|remover:
-                role,pred=self._cad_pred(i,ref(i)['documento'])
+                role,pred=self._cad_pred(i,self._ref(i)['documento'])
                 if self._df(role).filter(pred).count()!=1:raise ValueError(f'Cadastro {i} não localizado de forma única.')
                 if i in remover:self._delta(role).delete(pred)
                 else:self._delta(role).update(condition=pred,set={k:self.F.lit(v).cast(self._dtype(role,k)) for k,v in cad[i].items()})
@@ -397,7 +415,7 @@ class MassaGRUP:
                 expected=Counter(rows)
                 if Counter(tuple(r[f.name] for f in self.schemas['qsa'].fields) for r in df.collect())!=expected:raise ValueError(f'QSA divergente: {q["titular"]}')
             for x,row in links:
-                role='componentes';vals=self.cfg['valores'];tipo=vals['tipo_componente_pj'] if ref(x['id'])['tipo']=='PJ' else vals['tipo_componente_pf']
+                role='componentes';vals=self.cfg['valores'];tipo=vals['tipo_componente_pj'] if self._ref(x['id'])['tipo']=='PJ' else vals['tipo_componente_pf']
                 pred=self._eq(role,'grupo',x['grupo'])&self._doc_eq(role,'documento',x['documento'])&self._eq(role,'tipo',tipo)
                 n=self._df(role).filter(pred).count()
                 if x['operacao']=='REMOVER':
@@ -411,7 +429,7 @@ class MassaGRUP:
                     if self._df(role).filter(pred).count()!=1:raise ValueError('Vínculo não inserido.')
             for x in p['responsabilidade']:self._apply_resp(x)
         except Exception as e:
-            raise RuntimeError(f'Preparo {p["id"]} interrompido; NÃO enviar pedido. Estado pode estar parcialmente alterado. Restaure o baseline com ambiente ocioso antes de repetir o cenário completo.') from e
+            raise RuntimeError(f'Preparo {p["id"]} interrompido; NÃO enviar pedido. Estado pode estar parcialmente alterado. Isole e reconcilie o cenário; não restaure outras rodadas sem autorização.') from e
         self._ultimo=p['id']
         return {'id':p['id'],'ambiente':self.cfg['ambiente'],'preparo_aplicado':True,'versoes':{r:self._version(r) for r in ROLES},'solicitacao':{k:p.get(k) for k in ('acao','grupo','tipo_grupo','grupos_secundarios','grupo_dinamico','componentes','acoes_mesmo_pedido')},'esperado_motor':p['esperado_motor'],'avisos':p['avisos']+p['bloqueios'],'proximo':'Conferir pré-condições e enviar pelo Frontend. Não é resultado E2E.'}
 

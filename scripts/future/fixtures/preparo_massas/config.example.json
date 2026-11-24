@@ -23,5 +23,6 @@
   "defaults_qsa": {},
   "defaults_componentes": {},
   "confirmacoes_cenarios": {},
-  "baseline_arquivo": "baseline_DV.json"
+  "baseline_arquivo": "baseline_DV.json",
+  "estado_arquivo": ""
 }

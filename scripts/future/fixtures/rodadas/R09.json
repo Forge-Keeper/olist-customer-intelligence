@@ -1,0 +1,1035 @@
+{
+  "versao": "1.2",
+  "rodada": "R09",
+  "ambiente": "HO",
+  "quantidade_casos": 12,
+  "quantidade_etapas": 17,
+  "casos": [
+    {
+      "rodada": "R09",
+      "cenario": "C02",
+      "slot": 901,
+      "passos": [
+        {
+          "id": "E2E-C02-01",
+          "cenario": "C02",
+          "passo": 1,
+          "categoria": "Sequência",
+          "acao": 1,
+          "nome_acao": "Formalização",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            281
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_formalizacao",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Incluir PJ118 no GE recém-formalizado | Restaurar snapshot antes do passo 1.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 281,
+                  "documento": "73002725765",
+                  "tipo": "PF",
+                  "percentual": "100.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "regra_tecnica": "valida_composicao_formalizacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        },
+        {
+          "id": "E2E-C02-02",
+          "cenario": "C02",
+          "passo": 2,
+          "categoria": "Sequência",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": null,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Incluir PJ118 no GE recém-formalizado | Não restaurar snapshot: usar o estado efetivo após o passo 1. | Manter dados-base, salvo estado do passo anterior. | Resolver GE gerado no passo 1 após executar o passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preservar estado real do passo anterior; não restaurar baseline."
+          ],
+          "grupo_dinamico": "GE gerado no passo 1",
+          "regra_tecnica": "valida_cnpj_em_outro_grupo",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "C07",
+      "slot": 902,
+      "passos": [
+        {
+          "id": "E2E-C07-01",
+          "cenario": "C07",
+          "passo": 1,
+          "categoria": "Sequência",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Excluir PJ118 recém-incluída | Restaurar snapshot antes do passo 1. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "regra_tecnica": "valida_cnpj_em_outro_grupo",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        },
+        {
+          "id": "E2E-C07-02",
+          "cenario": "C07",
+          "passo": 2,
+          "categoria": "Sequência",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_baixado",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Excluir PJ118 recém-incluída | Não restaurar snapshot: usar o estado efetivo após o passo 1.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 118,
+              "documento": "52592529000145",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 118,
+              "documento": "52592529000145",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preservar estado real do passo anterior; não restaurar baseline."
+          ],
+          "regra_tecnica": "valida_cnpj_baixado",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "C14",
+      "slot": 903,
+      "passos": [
+        {
+          "id": "E2E-C14-01",
+          "cenario": "C14",
+          "passo": 1,
+          "categoria": "Sequência",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910502
+          ],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_unificacao",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Incluir PJ118 após unificação | Restaurar snapshot antes do passo 1.",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 92,
+              "documento": "16412297000132",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "regra_tecnica": "valida_composicao_unificacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        },
+        {
+          "id": "E2E-C14-02",
+          "cenario": "C14",
+          "passo": 2,
+          "categoria": "Sequência",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Incluir PJ118 após unificação | Não restaurar snapshot: usar o estado efetivo após o passo 1. | Manter dados-base, salvo estado do passo anterior.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preservar estado real do passo anterior; não restaurar baseline."
+          ],
+          "regra_tecnica": "valida_cnpj_em_outro_grupo",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "C16",
+      "slot": 904,
+      "passos": [
+        {
+          "id": "E2E-C16-01",
+          "cenario": "C16",
+          "passo": 1,
+          "categoria": "Sequência",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910502
+          ],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_unificacao",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Repetir unificação do secundário já processado | Restaurar snapshot antes do passo 1.",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": [
+            92,
+            115
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 92,
+              "documento": "16412297000132",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "regra_tecnica": "valida_composicao_unificacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 3
+        },
+        {
+          "id": "E2E-C16-02",
+          "cenario": "C16",
+          "passo": 2,
+          "categoria": "Sequência",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910502
+          ],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_composicao_unificacao",
+          "fundamento": "HIPOTESE_SEQUENCIA_A_HOMOLOGAR",
+          "observacoes": "Repetir unificação do secundário já processado | Não restaurar snapshot: usar o estado efetivo após o passo 1.",
+          "vinculos_antes": null,
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 92,
+              "documento": "16412297000132",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 115,
+                  "documento": "66609568910",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preservar estado real do passo anterior; não restaurar baseline."
+          ],
+          "regra_tecnica": "valida_composicao_unificacao",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 3
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P02",
+      "slot": 905,
+      "passos": [
+        {
+          "id": "E2E-P02-01",
+          "cenario": "P02",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910105,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_ativo_receita",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Recusa preserva motivo e data do retorno | Referência: I12 | Caso de referência: I12",
+          "vinculos_antes": [
+            80,
+            82,
+            109
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 112,
+              "documento": "20010176000131",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I12",
+          "regra_tecnica": "finish_validacao",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P06",
+      "slot": 906,
+      "passos": [
+        {
+          "id": "E2E-P06-01",
+          "cenario": "P06",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "MERGE por _id e cSoltcAtdmt | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_MERGE_SOLICITACAO",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P08",
+      "slot": 907,
+      "passos": [
+        {
+          "id": "E2E-P08-01",
+          "cenario": "P08",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 4,
+          "nome_acao": "Unificação",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [
+            910102
+          ],
+          "componentes": [
+            66,
+            103,
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_composicao_grupo_economico",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Seleção do primário em Unificação | Referência: U01 | Caso de referência: U01",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": [
+            66,
+            103,
+            112
+          ],
+          "qsa": [
+            {
+              "titular": 84,
+              "documento": "31929392000100",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 88,
+              "documento": "49043284000192",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 66,
+              "documento": "35650844000162",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            },
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 111,
+                  "documento": "77449952602",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 103,
+                  "documento": "96641610047",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [
+            {
+              "grupo": 910102,
+              "operacao": "ADICIONAR",
+              "id": 112,
+              "documento": "20010176000131",
+              "nome": "Bazar Tem de Tudo Mesmo LTDA"
+            },
+            {
+              "grupo": 910102,
+              "operacao": "REMOVER",
+              "id": 68,
+              "documento": "93773779000169",
+              "nome": "Lavação Carro de Domingo MEI"
+            }
+          ],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "U01",
+          "regra_tecnica": "flag_ge_primario",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 6
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P09",
+      "slot": 908,
+      "passos": [
+        {
+          "id": "E2E-P09-01",
+          "cenario": "P09",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 3,
+          "nome_acao": "Exclusão",
+          "grupo": 910502,
+          "tipo_grupo": 5,
+          "grupos_secundarios": [],
+          "componentes": [
+            92,
+            115
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "cancelamento_ge_sem_pj",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Cancelar grupo e componentes no consumidor | Referência: E20 | Caso de referência: E20",
+          "vinculos_antes": [
+            92,
+            115
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "campo": "rsit_docto_recta",
+              "valor": "BAIXADA"
+            }
+          ],
+          "responsabilidade": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "modo": "SEM_REGISTRO",
+              "flag_esperada": false
+            }
+          ],
+          "acoes_mesmo_pedido": [
+            {
+              "id": 92,
+              "documento": "16412297000132",
+              "inclusao": false
+            }
+          ],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "E20",
+          "regra_tecnica": "ORACULO_CRT_DELETE_GRUPO",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 2
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P11",
+      "slot": 909,
+      "passos": [
+        {
+          "id": "E2E-P11-01",
+          "cenario": "P11",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112,
+            287
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_socio_major",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Adicionar PF+PJ, apenas um UPDATE de GE | Referência: I17 | Caso de referência: I17",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [
+            {
+              "titular": 112,
+              "documento": "20010176000131",
+              "socios": [
+                {
+                  "id": 64,
+                  "documento": "47911744000121",
+                  "tipo": "PJ",
+                  "percentual": "50.00"
+                },
+                {
+                  "id": 287,
+                  "documento": "73002783960",
+                  "tipo": "PF",
+                  "percentual": "50.00"
+                }
+              ]
+            }
+          ],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I17",
+          "regra_tecnica": "ORACULO_CRT_INCLUSAO_SEM_DUPLICIDADE",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 1
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P13",
+      "slot": 910,
+      "passos": [
+        {
+          "id": "E2E-P13-01",
+          "cenario": "P13",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Reexecutar a mesma solicitação sem evento duplicado | Referência: I01 | Criar uma solicitação e reexecutar com os mesmos _id e cSoltcAtdmt; não criar outro pedido. | Manter dados-base, salvo estado do passo anterior. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Reprocessar os mesmos identificadores; não criar nova solicitação."
+          ],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_IDEMPOTENCIA_CRT",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P14",
+      "slot": 911,
+      "passos": [
+        {
+          "id": "E2E-P14-01",
+          "cenario": "P14",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Executar duas solicitações concorrentes | Referência: C06 | Executar dois pedidos distintos concorrentemente no mesmo snapshot. Esperado do par: um APROVADO e um REPROVADO; não predeterminar qual vence. | Caso de referência: C06",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preparar uma vez; enviar dois pedidos em paralelo. Não atribuir aprovação a um pedido específico antes da execução."
+          ],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_CONCORRENCIA",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0,
+          "oraculo_concorrencia": [
+            "APROVADO",
+            "REPROVADO"
+          ]
+        },
+        {
+          "id": "E2E-P14-02",
+          "cenario": "P14",
+          "passo": 2,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910106,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            118
+          ],
+          "esperado_motor": "REPROVADO",
+          "regra": "valida_cnpj_em_outro_grupo",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Executar duas solicitações concorrentes | Referência: C06 | Executar dois pedidos distintos concorrentemente no mesmo snapshot. Esperado do par: um APROVADO e um REPROVADO; não predeterminar qual vence. | Caso de referência: C06",
+          "vinculos_antes": [
+            84,
+            88,
+            111
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [
+            "Preparar uma vez; enviar dois pedidos em paralelo. Não atribuir aprovação a um pedido específico antes da execução.",
+            "Usar a estratégia de correlação/concorrência confirmada, não inferir a ordem dos resultados."
+          ],
+          "referencia": "C06",
+          "regra_tecnica": "ORACULO_CONCORRENCIA",
+          "restaurar_antes": false,
+          "alteracoes_fisicas": 0,
+          "oraculo_concorrencia": [
+            "APROVADO",
+            "REPROVADO"
+          ]
+        }
+      ]
+    },
+    {
+      "rodada": "R09",
+      "cenario": "P18",
+      "slot": 912,
+      "passos": [
+        {
+          "id": "E2E-P18-01",
+          "cenario": "P18",
+          "passo": 1,
+          "categoria": "Integração",
+          "acao": 2,
+          "nome_acao": "Inclusão",
+          "grupo": 910101,
+          "tipo_grupo": 1,
+          "grupos_secundarios": [],
+          "componentes": [
+            112
+          ],
+          "esperado_motor": "APROVADO",
+          "regra": "valida_qsa",
+          "fundamento": "CENARIO_MOTOR_DE_REFERENCIA",
+          "observacoes": "Decisão correta na interface e bases persistidas | Referência: I01 | Manter dados-base, salvo estado do passo anterior. | Conferir retorno no frontend/backend e nas bases. | Caso de referência: I01",
+          "vinculos_antes": [
+            62,
+            64,
+            101
+          ],
+          "vinculos_secundario_antes": null,
+          "qsa": [],
+          "cadastro": [],
+          "responsabilidade": [],
+          "acoes_mesmo_pedido": [],
+          "vinculos": [],
+          "bloqueios": [],
+          "avisos": [],
+          "referencia": "I01",
+          "regra_tecnica": "ORACULO_RETORNO_PONTA_A_PONTA",
+          "restaurar_antes": true,
+          "alteracoes_fisicas": 0
+        }
+      ]
+    }
+  ]
+}
