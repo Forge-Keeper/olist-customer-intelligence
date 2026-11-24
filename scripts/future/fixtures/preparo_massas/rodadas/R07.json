@@ -1,0 +1,318 @@
+{
+  "rodada": "R07",
+  "ambiente": "DV",
+  "casos": 18,
+  "etapas": 21,
+  "execucoes": [
+    {
+      "ordem": 1,
+      "id": "E2E-P01-01",
+      "cenario": "P01",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 2,
+      "id": "E2E-P02-01",
+      "cenario": "P02",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "REPROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 1,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 3,
+      "id": "E2E-P03-01",
+      "cenario": "P03",
+      "passo": 1,
+      "acao": "Formalização",
+      "restaurar_antes": true,
+      "esperado_motor": "REPROVADO",
+      "qsa_titulares": 2,
+      "cadastro_campos": 1,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "Descrição indica PF; referência FX10 invalida PJ118. Confirmar o alvo."
+      ]
+    },
+    {
+      "ordem": 4,
+      "id": "E2E-P04-01",
+      "cenario": "P04",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "C06 possui duas Inclusões; definir variante de ações no mesmo pedido."
+      ]
+    },
+    {
+      "ordem": 5,
+      "id": "E2E-P04-02",
+      "cenario": "P04",
+      "passo": 2,
+      "acao": "Inclusão",
+      "restaurar_antes": false,
+      "esperado_motor": "REPROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "C06 possui duas Inclusões; definir variante de ações no mesmo pedido."
+      ]
+    },
+    {
+      "ordem": 6,
+      "id": "E2E-P05-01",
+      "cenario": "P05",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "Confirmar isolamento entre pedidos distintos e ausência de efeitos concorrentes."
+      ]
+    },
+    {
+      "ordem": 7,
+      "id": "E2E-P05-02",
+      "cenario": "P05",
+      "passo": 2,
+      "acao": "Inclusão",
+      "restaurar_antes": false,
+      "esperado_motor": "REPROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "Confirmar isolamento entre pedidos distintos e ausência de efeitos concorrentes."
+      ]
+    },
+    {
+      "ordem": 8,
+      "id": "E2E-P06-01",
+      "cenario": "P06",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 9,
+      "id": "E2E-P07-01",
+      "cenario": "P07",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "Definir injeção autorizada de ausência de destino no MERGE."
+      ]
+    },
+    {
+      "ordem": 10,
+      "id": "E2E-P08-01",
+      "cenario": "P08",
+      "passo": 1,
+      "acao": "Unificação",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 4,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 2,
+      "bloqueios": []
+    },
+    {
+      "ordem": 11,
+      "id": "E2E-P09-01",
+      "cenario": "P09",
+      "passo": 1,
+      "acao": "Exclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 1,
+      "responsabilidade": 1,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 12,
+      "id": "E2E-P10-01",
+      "cenario": "P10",
+      "passo": 1,
+      "acao": "Exclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 1,
+      "responsabilidade": 1,
+      "vinculos": 1,
+      "bloqueios": []
+    },
+    {
+      "ordem": 13,
+      "id": "E2E-P11-01",
+      "cenario": "P11",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 1,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 14,
+      "id": "E2E-P12-01",
+      "cenario": "P12",
+      "passo": 1,
+      "acao": "Unificação",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 3,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 1,
+      "bloqueios": []
+    },
+    {
+      "ordem": 15,
+      "id": "E2E-P13-01",
+      "cenario": "P13",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 16,
+      "id": "E2E-P14-01",
+      "cenario": "P14",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 17,
+      "id": "E2E-P14-02",
+      "cenario": "P14",
+      "passo": 2,
+      "acao": "Inclusão",
+      "restaurar_antes": false,
+      "esperado_motor": "REPROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 18,
+      "id": "E2E-P15-01",
+      "cenario": "P15",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "Definir injeção autorizada de falha após MERGE e antes de eventos."
+      ]
+    },
+    {
+      "ordem": 19,
+      "id": "E2E-P16-01",
+      "cenario": "P16",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": [
+        "Definir injeção autorizada de evento sem vínculo ativo."
+      ]
+    },
+    {
+      "ordem": 20,
+      "id": "E2E-P17-01",
+      "cenario": "P17",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    },
+    {
+      "ordem": 21,
+      "id": "E2E-P18-01",
+      "cenario": "P18",
+      "passo": 1,
+      "acao": "Inclusão",
+      "restaurar_antes": true,
+      "esperado_motor": "APROVADO",
+      "qsa_titulares": 0,
+      "cadastro_campos": 0,
+      "responsabilidade": 0,
+      "vinculos": 0,
+      "bloqueios": []
+    }
+  ]
+}

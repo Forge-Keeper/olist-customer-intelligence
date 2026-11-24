@@ -1,0 +1,12 @@
+{
+  "rodada": "R00",
+  "ambiente": "DV/HO",
+  "checklist": [
+    "Conferir 100 PFs, 100 PJs e documentos da referência",
+    "Conferir 18 GEs, 48 vínculos, QSA MEI e não MEI e 70 operações",
+    "Confirmar schemas e tabelas sintéticas exclusivas",
+    "Confirmar jobs, Backend, Frontend, eventos e consumidores sem acesso a PR",
+    "Capturar baseline Delta separado por ambiente após carga",
+    "Validar ausência de processamento pendente antes de cada alteração"
+  ]
+}

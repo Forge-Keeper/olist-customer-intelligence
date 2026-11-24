@@ -1,0 +1,27 @@
+{
+  "ambiente": "DV",
+  "namespace_autorizados": [],
+  "massa_exclusiva_confirmada": false,
+  "contratos_confirmados": false,
+  "tabelas": {
+    "pf": "", "pj": "", "qsa": "", "responsabilidade": "", "grupos": "", "componentes": ""
+  },
+  "colunas": {
+    "pf": {"id": "cclub_cli", "documento": "ccpf_pssoa", "cindcd_cpf_valid": "cindcd_cpf_valid"},
+    "pj": {"id": "cclub_cli", "documento": "ccnpj_empr", "cindcd_cnpj_valid": "cindcd_cnpj_valid", "rsit_docto_recta": "rsit_docto_recta", "rscit": "rsit_docto_recta", "rmtriz_flial_cnpj": "rmtriz_flial_cnpj", "rnatur_jurid": ""},
+    "qsa": {"titular": "ccnpj_empr", "percentual": "pprtcp_soctr", "indicador": "cindcd_quadr_soctr", "nome_socio": "ipartc_empr", "fim": "dfim_prtcp_soctr", "id_socio": "cclub_cli", "documento_socio": "ccpf_cnpj_pssoa_soctr", "data_origem": "dptcao_orige"},
+    "responsabilidade": {"raiz": "ccpf_cnpj", "filial": "cflial_cpf_cnpj", "tipo": "ctpo_pssoa", "centro": "cctro_custo", "carteira": "ccart", "operacao": "noper_cli", "versao": "hextrc_hpu", "atualizacao": "catulz_reg", "inicio": "dinic_contr", "vencimento": "dvcto_contr"},
+    "grupos": {"id": "cgrp_econm", "tipo": "ctpo_grp_econm"},
+    "componentes": {"grupo": "cgrp_econm", "documento": "ccpf_cnpj_pssoa_coplt", "nome": "icompo_grp_econm", "tipo": "ctpo_pssoa"}
+  },
+  "valores": {
+    "cpf_valido": 1, "cnpj_valido": 1, "pj_ativa": "ATIVA", "pj_matriz": 1,
+    "tipo_componente_pj": "J", "tipo_componente_pf": "F", "tipo_responsabilidade_pj": "J",
+    "qsa_indicador": 1, "qsa_fim": "1001-10-01", "qsa_data_origem": "2026-05-05",
+    "qsa_escala": "percentual_0_100", "responsabilidade_exclusao": "D"
+  },
+  "defaults_qsa": {},
+  "defaults_componentes": {},
+  "confirmacoes_cenarios": {},
+  "baseline_arquivo": "baseline_DV.json"
+}

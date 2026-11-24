@@ -1,0 +1,34 @@
+test_documentos_e_vinculos_base (test_preparo.CatalogoTest.test_documentos_e_vinculos_base) ... ok
+test_flags_derivadas (test_preparo.CatalogoTest.test_flags_derivadas) ... ok
+test_hash_fonte (test_preparo.CatalogoTest.test_hash_fonte) ... ok
+test_plano_copia (test_preparo.CatalogoTest.test_plano_copia) ... ok
+test_qsa_limites (test_preparo.CatalogoTest.test_qsa_limites) ... ok
+test_rodadas (test_preparo.CatalogoTest.test_rodadas) ... ok
+test_sequencias (test_preparo.CatalogoTest.test_sequencias) ... ok
+test_total_e_oraculo (test_preparo.CatalogoTest.test_total_e_oraculo) ... ok
+test_vinculos_especiais (test_preparo.CatalogoTest.test_vinculos_especiais) ... ok
+test_allowlist (test_preparo.ProtecoesTest.test_allowlist) ... ok
+test_ambiente_pr (test_preparo.ProtecoesTest.test_ambiente_pr) ... ok
+test_bloqueios_responsabilidade (test_preparo.ProtecoesTest.test_bloqueios_responsabilidade) ... ok
+test_cadastro_padrao (test_preparo.ProtecoesTest.test_cadastro_padrao) ... ok
+test_config_exemplo_recusada (test_preparo.ProtecoesTest.test_config_exemplo_recusada) ... ok
+test_config_sintetica (test_preparo.ProtecoesTest.test_config_sintetica) ... ok
+test_identificador_invalido (test_preparo.ProtecoesTest.test_identificador_invalido) ... ok
+test_p14_sem_segundo_preparo (test_preparo.ProtecoesTest.test_p14_sem_segundo_preparo) ... ok
+test_passo_anterior_obrigatorio (test_preparo.ProtecoesTest.test_passo_anterior_obrigatorio) ... ok
+test_prod_mesmo_com_allowlist (test_preparo.ProtecoesTest.test_prod_mesmo_com_allowlist) ... ok
+test_sem_confirmacao_nao_escreve (test_preparo.ProtecoesTest.test_sem_confirmacao_nao_escreve) ... ok
+test_tabelas_duplicadas (test_preparo.ProtecoesTest.test_tabelas_duplicadas) ... ok
+test_tipo_grupo_pendente (test_preparo.ProtecoesTest.test_tipo_grupo_pendente) ... ok
+test_troca_requer_destino (test_preparo.ProtecoesTest.test_troca_requer_destino) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.008s
+
+OK
+
+Conferência adicional: 237 etapas comparadas com catálogo v4.0.0.
+Hash canônico FNV-1a: 48482347 (ação, GE alvo, componentes, resultado, QSA, cadastro/flags e vínculos).
+295 etapas de campanha: 237 DV + 58 HO.
+Não foram executados Spark/Delta, Databricks, Backend, Frontend ou Motor GRUP.
+Validação física e confirmação dos contratos pendentes em DV.
