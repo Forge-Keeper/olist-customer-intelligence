@@ -1,0 +1,98 @@
+[
+  {
+    "rodada": "R01",
+    "ambiente": "DV",
+    "casos": 8,
+    "etapas": 8,
+    "lotes": 5,
+    "verificacoes": 3,
+    "PREPARO_LOTE": 8
+  },
+  {
+    "rodada": "R02",
+    "ambiente": "DV",
+    "casos": 63,
+    "etapas": 64,
+    "lotes": 26,
+    "verificacoes": 37,
+    "PREPARO_LOTE": 60,
+    "UPDATE_INTERMEDIARIO": 1,
+    "BLOQUEADO": 3
+  },
+  {
+    "rodada": "R03",
+    "ambiente": "DV",
+    "casos": 41,
+    "etapas": 41,
+    "lotes": 18,
+    "verificacoes": 24,
+    "PREPARO_LOTE": 40,
+    "BLOQUEADO": 1
+  },
+  {
+    "rodada": "R04",
+    "ambiente": "DV",
+    "casos": 40,
+    "etapas": 40,
+    "lotes": 19,
+    "verificacoes": 7,
+    "PREPARO_LOTE": 35,
+    "BLOQUEADO": 5
+  },
+  {
+    "rodada": "R05",
+    "ambiente": "DV",
+    "casos": 31,
+    "etapas": 31,
+    "lotes": 24,
+    "verificacoes": 7,
+    "PREPARO_LOTE": 28,
+    "BLOQUEADO": 3
+  },
+  {
+    "rodada": "R06",
+    "ambiente": "DV",
+    "casos": 16,
+    "etapas": 32,
+    "lotes": 16,
+    "verificacoes": 0,
+    "PREPARO_LOTE": 16,
+    "SEM_UPDATE": 6,
+    "UPDATE_INTERMEDIARIO": 8,
+    "BLOQUEADO": 2
+  },
+  {
+    "rodada": "R07",
+    "ambiente": "DV",
+    "casos": 18,
+    "etapas": 21,
+    "lotes": 12,
+    "verificacoes": 0,
+    "PREPARO_LOTE": 12,
+    "BLOQUEADO": 8,
+    "CONCORRENTE_SEM_UPDATE": 1
+  },
+  {
+    "rodada": "R08",
+    "ambiente": "HO",
+    "casos": 40,
+    "etapas": 41,
+    "lotes": 24,
+    "verificacoes": 6,
+    "PREPARO_LOTE": 39,
+    "UPDATE_INTERMEDIARIO": 1,
+    "BLOQUEADO": 1
+  },
+  {
+    "rodada": "R09",
+    "ambiente": "HO",
+    "casos": 12,
+    "etapas": 17,
+    "lotes": 12,
+    "verificacoes": 0,
+    "PREPARO_LOTE": 12,
+    "SEM_UPDATE": 3,
+    "UPDATE_INTERMEDIARIO": 1,
+    "CONCORRENTE_SEM_UPDATE": 1
+  }
+]

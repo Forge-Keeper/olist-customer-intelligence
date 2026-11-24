@@ -77,17 +77,5 @@
   "defaults_componentes": {},
   "confirmacoes_cenarios": {},
   "baseline_arquivo": "",
-  "clonagem": {
-    "confirmada": false,
-    "nomes": {
-      "pf": "",
-      "pj": "",
-      "grupos": "igrp_econm"
-    },
-    "tipo_responsabilidade_pf": "",
-    "raiz_pf_digitos": null,
-    "preservar": {},
-    "derivadas": {},
-    "diretorio_saida": ""
-  }
+  "estado_arquivo": ""
 }

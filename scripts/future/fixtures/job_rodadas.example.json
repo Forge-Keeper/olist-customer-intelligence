@@ -1,5 +1,5 @@
 {
-  "name": "GRUP - Atualizacao de massas por rodada",
+  "name": "GRUP - Preparacao de massas por rodada v1.3",
   "max_concurrent_runs": 1,
   "queue": {
     "enabled": false
@@ -14,6 +14,22 @@
       "default": ""
     },
     {
+      "name": "lote",
+      "default": "1"
+    },
+    {
+      "name": "caso",
+      "default": ""
+    },
+    {
+      "name": "modo",
+      "default": "preparar"
+    },
+    {
+      "name": "etapa",
+      "default": ""
+    },
+    {
       "name": "aplicar",
       "default": "false"
     },
@@ -22,12 +38,16 @@
       "default": "false"
     },
     {
-      "name": "etapa",
-      "default": ""
+      "name": "anterior_concluido",
+      "default": "false"
     },
     {
       "name": "evidencia_anterior",
       "default": ""
+    },
+    {
+      "name": "recuperar",
+      "default": "false"
     }
   ],
   "tasks": [

@@ -193,9 +193,11 @@ class MassaGRUP:
         for role in ('pf','pj'):
             df=self._df(role); idc=self._col(role,'id'); dc=self._col(role,'documento'); n=11 if role=='pf' else 14
             rows=df.select(idc,dc).collect()
-            if len(rows)!=100 or len({r[0] for r in rows})!=100:
+            if len(rows)!=100 or {int(r[0]) for r in rows} != set(range(101,300,2) if role=='pf' else range(62,261,2)):
                 raise ValueError(f'Baseline {role}: esperados 100 cadastros únicos.')
             docs={int(r[0]):str(r[1]).zfill(n) for r in rows}
+            if len(set(docs.values()))!=100 or any(len(d)!=n or not d.isdigit() for d in docs.values()):
+                raise ValueError(f'Baseline {role}: documentos inválidos ou duplicados.')
             for x in REFS.values():
                 if x['tipo'].lower()==role and docs.get(x['id'])!=x['documento']:
                     raise ValueError(f'Documento não conciliado: {role} cclub_cli={x["id"]}')
@@ -369,10 +371,15 @@ class MassaGRUP:
         self._baseline()
         self._ultimo=anterior
 
-    def preparar(self, cenario, passo=1, *, aplicar=False, sem_processamento_pendente=False, passo_anterior_concluido=False, plano_isolado=None):
-        p=plano(cenario,passo) if plano_isolado is None else copy.deepcopy(plano_isolado)
-        if plano_isolado is not None and (p['restaurar_antes'] or self._refs is REFS):
-            raise PermissionError('Plano isolado exige referencias exclusivas e nao pode restaurar a massa.')
+    def preparar(self, cenario, passo=1, *, aplicar=False, sem_processamento_pendente=False, passo_anterior_concluido=False, plano_isolado=None, plano_lote=None):
+        if plano_isolado is not None or self._refs != REFS:
+            raise PermissionError('Clonagem de identidades desativada na v1.3.')
+        p=plano(cenario,passo) if plano_lote is None else copy.deepcopy(plano_lote)
+        if plano_lote is not None:
+            from dados_rodadas import validar_plano
+            validar_plano(p)
+        if any(x['campo'] == 'remover_cadastro' for x in p['cadastro']):
+            raise PermissionError('Não excluir cadastros dos 200 clientes; B06 bloqueado em E2E.')
         p['cadastro_efetivo']=self._cad_ops(p)
         if not aplicar:return p
         if not sem_processamento_pendente:raise PermissionError('Aguarde jobs, eventos e consumidores antes de alterar massa.')
@@ -387,7 +394,10 @@ class MassaGRUP:
             i=x['id'];role=self._ref(i)['tipo'].lower()
             if x['campo']=='remover_cadastro':remover.add(i)
             else:
-                name,value=self._typed(role,x['campo'],x['valor']);cad[i][name]=value
+                name,value=self._typed(role,x['campo'],x['valor'])
+                if name in (self._col(role,'id'),self._col(role,'documento')):
+                    raise PermissionError('Mapeamento físico tenta alterar identidade cadastral.')
+                cad[i][name]=value
         qrows=[(q,self._qsa_rows(q)) for q in p['qsa']]
         links=[(x,self._link_row(x) if x['operacao']=='ADICIONAR' else None) for x in p['vinculos']]
         for x in p['responsabilidade']:

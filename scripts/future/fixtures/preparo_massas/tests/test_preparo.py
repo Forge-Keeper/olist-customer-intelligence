@@ -121,18 +121,18 @@ class ProtecoesTest(unittest.TestCase):
         with self.assertRaises(ValueError):preflight_config(c)
 
     def test_cadastro_padrao(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config()
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS
         ops=m._cad_ops(plano('F22'))
         self.assertEqual({(x['id'],x['campo']) for x in ops},{(112,'cindcd_cnpj_valid'),(112,'rsit_docto_recta'),(112,'rmtriz_flial_cnpj'),(281,'cindcd_cpf_valid')})
 
     def test_bloqueios_responsabilidade(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config()
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS
         for c in ('B30','B36'):
             m.cfg['confirmacoes_cenarios'][f'E2E-{c}-01']={'justificativa':'teste'}
             with self.assertRaises(ValueError):m._check_manual(plano(c))
 
     def test_troca_requer_destino(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config()
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS
         with self.assertRaises(ValueError):m._check_manual(plano('E29'))
         m.cfg['confirmacoes_cenarios']['E2E-E29-01']={'justificativa':'teste offline'}
         with self.assertRaises(ValueError):m._check_manual(plano('E29'))
@@ -141,23 +141,23 @@ class ProtecoesTest(unittest.TestCase):
         self.assertEqual(p['acoes_mesmo_pedido'][0]['grupo_destino_inclusao'],910105)
 
     def test_tipo_grupo_pendente(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config()
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS
         m.cfg['confirmacoes_cenarios']['E2E-B24-01']={'justificativa':'teste offline','tipo_grupo':5}
         p=plano('B24');m._check_manual(p);self.assertEqual(p['tipo_grupo'],5)
 
     def test_sem_confirmacao_nao_escreve(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._ultimo=None
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS;m._ultimo=None
         self.assertEqual(m.preparar('B01')['id'],'E2E-B01-01')
         with self.assertRaises(PermissionError):m.preparar('B01',aplicar=True)
         with self.assertRaises(PermissionError):m.restaurar()
         with self.assertRaises(PermissionError):m.capturar_baseline()
 
     def test_passo_anterior_obrigatorio(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._ultimo='E2E-C02-01'
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS;m._ultimo='E2E-C02-01'
         with self.assertRaises(PermissionError):m.preparar('C03',2,aplicar=True,sem_processamento_pendente=True,passo_anterior_concluido=True)
 
     def test_p14_sem_segundo_preparo(self):
-        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._ultimo='E2E-P14-01'
+        m=MassaGRUP.__new__(MassaGRUP);m.cfg=config();m._refs=REFS;m._ultimo='E2E-P14-01'
         with self.assertRaises(ValueError):m.preparar('P14',2,aplicar=True,sem_processamento_pendente=True,passo_anterior_concluido=True)
 
 if __name__=='__main__':unittest.main()

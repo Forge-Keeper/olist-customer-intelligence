@@ -1,3 +1,5 @@
+> **Histórico do preparo por cenário.** O fluxo operacional vigente da sprint está em [RODADAS.md](../RODADAS.md) (v1.3). Não utilizar o fluxo legado em paralelo com os lotes. A exclusão de cadastro e a clonagem de identidades foram desativadas. Não sobrescrever documentos nem criar clientes.
+
 # Motor GRUP — preparo operacional das massas sintéticas
 
 **Versão 1.0 | Sprint de testes integrados e E2E em DV e HO**

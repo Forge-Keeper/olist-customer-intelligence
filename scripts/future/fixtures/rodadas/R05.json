@@ -1,14 +1,230 @@
 {
-  "versao": "1.2",
+  "versao": "1.3",
   "rodada": "R05",
   "ambiente": "DV",
   "quantidade_casos": 31,
   "quantidade_etapas": 31,
+  "ordem_original": [
+    "U01",
+    "U03",
+    "U05",
+    "U06",
+    "U07",
+    "U08",
+    "U09",
+    "U10",
+    "U11",
+    "U12",
+    "U13",
+    "U14",
+    "U15",
+    "U16",
+    "U17",
+    "U18",
+    "U19",
+    "U20",
+    "U21",
+    "UX01",
+    "UX02",
+    "UX03",
+    "UX04",
+    "UX05",
+    "UX06",
+    "UX07",
+    "UX08",
+    "UX09",
+    "B20",
+    "B33",
+    "B34"
+  ],
+  "lotes": [
+    {
+      "lote": 1,
+      "casos": [
+        "U01"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 2,
+      "casos": [
+        "U03"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 3,
+      "casos": [
+        "U05"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 4,
+      "casos": [
+        "U06"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 5,
+      "casos": [
+        "U07"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 6,
+      "casos": [
+        "U08"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 7,
+      "casos": [
+        "U09"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 8,
+      "casos": [
+        "U10"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 9,
+      "casos": [
+        "UX06",
+        "U11"
+      ],
+      "verificar_recusas": [
+        "E2E-UX06-01"
+      ]
+    },
+    {
+      "lote": 10,
+      "casos": [
+        "U12",
+        "UX08"
+      ],
+      "verificar_recusas": [
+        "E2E-U12-01",
+        "E2E-UX08-01"
+      ]
+    },
+    {
+      "lote": 11,
+      "casos": [
+        "U13"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 12,
+      "casos": [
+        "U14"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 13,
+      "casos": [
+        "U15",
+        "UX09"
+      ],
+      "verificar_recusas": [
+        "E2E-U15-01",
+        "E2E-UX09-01"
+      ]
+    },
+    {
+      "lote": 14,
+      "casos": [
+        "U16",
+        "UX04"
+      ],
+      "verificar_recusas": [
+        "E2E-U16-01",
+        "E2E-UX04-01"
+      ]
+    },
+    {
+      "lote": 15,
+      "casos": [
+        "U17"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 16,
+      "casos": [
+        "U18"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 17,
+      "casos": [
+        "U19"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 18,
+      "casos": [
+        "U20"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 19,
+      "casos": [
+        "U21"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 20,
+      "casos": [
+        "UX01"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 21,
+      "casos": [
+        "UX02"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 22,
+      "casos": [
+        "UX03"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 23,
+      "casos": [
+        "UX05"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 24,
+      "casos": [
+        "UX07"
+      ],
+      "verificar_recusas": []
+    }
+  ],
   "casos": [
     {
-      "rodada": "R05",
       "cenario": "U01",
-      "slot": 501,
       "passos": [
         {
           "id": "E2E-U01-01",
@@ -142,9 +358,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U03",
-      "slot": 502,
       "passos": [
         {
           "id": "E2E-U03-01",
@@ -263,9 +477,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U05",
-      "slot": 503,
       "passos": [
         {
           "id": "E2E-U05-01",
@@ -345,9 +557,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U06",
-      "slot": 504,
       "passos": [
         {
           "id": "E2E-U06-01",
@@ -447,9 +657,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U07",
-      "slot": 505,
       "passos": [
         {
           "id": "E2E-U07-01",
@@ -568,9 +776,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U08",
-      "slot": 506,
       "passos": [
         {
           "id": "E2E-U08-01",
@@ -669,9 +875,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U09",
-      "slot": 507,
       "passos": [
         {
           "id": "E2E-U09-01",
@@ -790,9 +994,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U10",
-      "slot": 508,
       "passos": [
         {
           "id": "E2E-U10-01",
@@ -873,9 +1075,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U11",
-      "slot": 509,
       "passos": [
         {
           "id": "E2E-U11-01",
@@ -974,9 +1174,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U12",
-      "slot": 510,
       "passos": [
         {
           "id": "E2E-U12-01",
@@ -1075,9 +1273,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U13",
-      "slot": 511,
       "passos": [
         {
           "id": "E2E-U13-01",
@@ -1158,9 +1354,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U14",
-      "slot": 512,
       "passos": [
         {
           "id": "E2E-U14-01",
@@ -1259,9 +1453,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U15",
-      "slot": 513,
       "passos": [
         {
           "id": "E2E-U15-01",
@@ -1347,9 +1539,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U16",
-      "slot": 514,
       "passos": [
         {
           "id": "E2E-U16-01",
@@ -1448,9 +1638,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U17",
-      "slot": 515,
       "passos": [
         {
           "id": "E2E-U17-01",
@@ -1555,9 +1743,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U18",
-      "slot": 516,
       "passos": [
         {
           "id": "E2E-U18-01",
@@ -1638,9 +1824,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U19",
-      "slot": 517,
       "passos": [
         {
           "id": "E2E-U19-01",
@@ -1747,9 +1931,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U20",
-      "slot": 518,
       "passos": [
         {
           "id": "E2E-U20-01",
@@ -1888,9 +2070,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "U21",
-      "slot": 519,
       "passos": [
         {
           "id": "E2E-U21-01",
@@ -1950,9 +2130,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX01",
-      "slot": 520,
       "passos": [
         {
           "id": "E2E-UX01-01",
@@ -2058,9 +2236,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX02",
-      "slot": 521,
       "passos": [
         {
           "id": "E2E-UX02-01",
@@ -2166,9 +2342,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX03",
-      "slot": 522,
       "passos": [
         {
           "id": "E2E-UX03-01",
@@ -2274,9 +2448,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX04",
-      "slot": 523,
       "passos": [
         {
           "id": "E2E-UX04-01",
@@ -2375,9 +2547,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX05",
-      "slot": 524,
       "passos": [
         {
           "id": "E2E-UX05-01",
@@ -2483,9 +2653,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX06",
-      "slot": 525,
       "passos": [
         {
           "id": "E2E-UX06-01",
@@ -2585,9 +2753,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX07",
-      "slot": 526,
       "passos": [
         {
           "id": "E2E-UX07-01",
@@ -2686,9 +2852,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX08",
-      "slot": 527,
       "passos": [
         {
           "id": "E2E-UX08-01",
@@ -2787,9 +2951,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "UX09",
-      "slot": 528,
       "passos": [
         {
           "id": "E2E-UX09-01",
@@ -2875,9 +3037,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "B20",
-      "slot": 529,
       "passos": [
         {
           "id": "E2E-B20-01",
@@ -2937,9 +3097,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "B33",
-      "slot": 530,
       "passos": [
         {
           "id": "E2E-B33-01",
@@ -2987,9 +3145,7 @@
       ]
     },
     {
-      "rodada": "R05",
       "cenario": "B34",
-      "slot": 531,
       "passos": [
         {
           "id": "E2E-B34-01",

@@ -1,3 +1,5 @@
+> **Versão operacional vigente: v1.3.** Para a sprint, utilize [RODADAS.md](RODADAS.md), `atualizar_massa.py`, `job_rodadas.example.json` e a planilha atualizada. Não criar, excluir ou remapear os 200 clientes compartilhados. A v1.2 foi desativada; B06 fica bloqueado em E2E. O restante deste README documenta as fixtures e o fluxo histórico.
+
 ## Política obrigatória: somente dois resultados de Motor
 
 A decisão funcional esperada é **APROVADO** ou **REPROVADO**. No resultado técnico recuperado, correspondem respectivamente a `retorno_solt=OK` e `retorno_solt=Solicitacao Recusada`. Não existe `CONDICIONAL`, `PARCIAL` ou `PENDENTE` como terceira resposta do Motor.

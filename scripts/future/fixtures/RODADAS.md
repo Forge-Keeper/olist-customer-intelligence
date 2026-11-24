@@ -1,50 +1,78 @@
-# GRUP — preparação de massas por rodada (v1.2)
+# GRUP — preparação por rodada e lote (v1.3)
 
-## Uso operacional
+**Versão operacional vigente. Não executar v1.2.** O Frontend, Backend e Motor usam os mesmos 100 PF e 100 PJ. O módulo v1.3 não cria clientes, não muda `cclub_cli`, CPF, CNPJ ou nome, e não remove cadastros. Os 18 GEs originais são usados; os códigos novos de Formalização continuam sendo gerados pelo Motor. A versão 1.2, que criava identidades por slot, está desativada no código. Caso já tenha sido carregada, reconciliar os três sistemas e recuperar a massa original antes de capturar/utilizar R00; a v1.3 recusa cadastros fora da faixa.
 
-A versão 1.2 substitui o fluxo de preparo por caso da versão 1.1 para esta sprint. A carga inicial das seis tabelas sintéticas e o R00 continuam iguais. Capture o baseline Delta uma única vez antes da campanha, usando `preparo_massas/main.py` (ou `MassaGRUP.capturar_baseline`). A versão do catálogo original é preservada; o novo mapa de solicitações deve ser utilizado no Frontend em lugar da planilha com os documentos antigos.
+## Arquivos e limites da distribuição
 
-Os nove arquivos `rodadas/R01.json` a `R09.json` contêm os planos completos de cada caso, seus passos e um slot exclusivo por rodada/caso. O código lê apenas o JSON da rodada selecionada para determinar o que preparar. `dados_rodadas.py` remapeia os clientes, CPFs/CNPJs, grupos e referências. `massa_rodada.py` lê as versões históricas das tabelas sintéticas do R00, clona somente o fechamento de dependências (componentes de grupos e QSA nos dois sentidos), conserva características cadastrais e operações, aplica os overlays iniciais em memória e acrescenta as linhas preparadas às seis tabelas. Não sobrescreve os registros originais, nem restaura o baseline entre casos/rodadas. `atualizar_massa.py` é o notebook compartilhado.
+- `atualizar_massa.py`: mesmo notebook em todas as nove tasks; o parâmetro fixo `rodada` escolhe `rodadas/RXX.json`.
+- `dados_rodadas.py`: regras offline de compatibilidade; `massa_rodada.py`: chama o módulo existente de preparação Delta, com uma restauração por lote independente.
+- `rodadas/R01.json` a `R09.json`: nove planos autossuficientes de alterações e casos, agrupados em lotes. `mapa_solicitacoes.csv`: índice operacional com os documentos originais. `resumo_lotes.json`: contagens. `gerar_lotes.py`: reprodutor offline dos lotes a partir da ordem de execução original, sem alterar o catálogo de negócio.
+- `docs/GRUP_Solicitacoes_Testes_E2E_DV_HO.xlsx`: planilha v1.3, 12 abas, chaves Rodada + ID lógico, ordem no lote e marcação das recusas a conferir.
+- `job_rodadas.example.json`: configuração Jobs API 2.2 com nove tasks; `config_rodadas.example.json`: contratos a preencher.
 
-| Rodada | Ambiente | Casos | Etapas |
-|---|---|---:|---:|
-| R01 — Smoke | DV | 8 | 8 |
-| R02 — Formalização | DV | 63 | 64 |
-| R03 — Inclusão | DV | 41 | 41 |
-| R04 — Exclusão | DV | 40 | 40 |
-| R05 — Unificação | DV | 31 | 31 |
-| R06 — Sequências | DV | 16 | 32 |
-| R07 — Integração | DV | 18 | 21 |
-| R08 — Regressão funcional | HO | 40 | 41 |
-| R09 — Regressão integrada | HO | 12 | 17 |
+O catálogo versionado documenta o CPF/CNPJ de 61 dos 200 clientes. Não existe fonte completa com documentos e perfis dos 139 restantes neste pacote. Optou-se por preservar todas as identidades dos 217 casos originais e redistribuir **os casos em lotes**, em vez de substituir pessoas por outras sem comprovar seus documentos, vínculos e atributos. O R00 lê/valida a lista física completa de 100 PF (IDs ímpares 101–299) e 100 PJ (IDs pares 62–260), compara com os 61 registros documentados e verifica a imutabilidade dos 200 documentos em cada execução. O roteiro não inventa documentos nem assume que os outros 139 são intercambiáveis. A otimização integral do uso dos 200 clientes exige a relação cadastral sintética completa, inclusive situação, matriz/filial, natureza jurídica, nomes, QSA MEI e vínculos em todos os sistemas.
 
-269 ocorrências de caso, 295 etapas (217 casos distintos e 237 etapas em DV, mais 52 casos e 58 etapas em HO). 251 primeiras etapas sem bloqueio catalogado; 15 updates intermediários sem bloqueio; 5 passos seguintes sem alteração física; 2 passos P14 que não requerem nova preparação; 22 etapas com bloqueios do catálogo (18 primeiros passos e 4 passos seguintes). As expectativas binárias não foram homologadas nesta entrega.
+O particionamento DSATUR determinístico utiliza os clientes, GEs, membros, condições cadastrais, raízes de responsabilidade e dependências QSA diretas conhecidas. Não promete mínimo global. Casos que podem modificar o mesmo escopo ficam separados. Recusas simples podem compartilhar o lote quando as pré-condições se equivalem; são executadas primeiro e cada uma exige conferência de que as seis tabelas não mudaram. A expectativa de reprovação não garante ausência de efeitos: uma divergência interrompe o lote. Ensaios Pxx de integração são isolados. Sequências preservam estado entre passos. Na execução física, o QSA do R00, inclusive MEI, é acrescentado à análise de conflito; se aparecer incompatibilidade adicional, o lote não escreve e pode ser dividido pelo parâmetro `caso`.
 
-## Configuração
+| Rodada | Ambiente | Casos | Etapas | Lotes | Updates intermediários | Recusas a conferir | Bloqueadas |
+|---|---|---:|---:|---:|---:|---:|---:|
+| R01 | DV | 8 | 8 | 5 | 0 | 3 | 0 |
+| R02 | DV | 63 | 64 | 26 | 1 | 37 | 3 |
+| R03 | DV | 41 | 41 | 18 | 0 | 24 | 1 |
+| R04 | DV | 40 | 40 | 19 | 0 | 7 | 5 |
+| R05 | DV | 31 | 31 | 24 | 0 | 7 | 3 |
+| R06 | DV | 16 | 32 | 16 | 8 | 0 | 2 |
+| R07 | DV | 18 | 21 | 12 | 0 | 0 | 8 |
+| R08 | HO | 40 | 41 | 24 | 1 | 6 | 1 |
+| R09 | HO | 12 | 17 | 12 | 1 | 0 | 0 |
+| Total | | 269 | 295 | 156 | 11 | 84 | 23 |
 
-1. Importar o diretório `fixtures/` no workspace autorizado, mantendo os módulos Python e JSON no mesmo layout, incluindo `preparo_massas/preparar_massa.py` e `preparo_massas/cenarios.json` (dependência legada para o catálogo/base). O notebook `atualizar_massa.py` precisa poder importar os módulos do diretório. Não usar o `preparar_task.py` antigo em conjunto com este fluxo.
-2. Copiar `config_rodadas.example.json` para `config_DV.json` e `config_HO.json`, em diretório persistente. Preencher os mapeamentos originais, nomes reais das seis tabelas Delta sintéticas exclusivas, namespaces `_wks` e valores físicos. O baseline e `clonagem.diretorio_saida` são caminhos absolutos persistentes, separados por ambiente/campanha. As tabelas precisam ter `mock.synthetic=true`. O baseline original precisa conter os 100 PF, 100 PJ, 18 GEs, 48 vínculos, QSA e responsabilidade reconciliados. O código confere vínculos, cadastros de referência e relacionamentos; não presume dados MEI desconhecidos.
-3. Em `clonagem.nomes`, mapear as colunas de nome PF, PJ e GE. Confirmar `tipo_responsabilidade_pf` e `raiz_pf_digitos` conforme schema real. As colunas extras não identitárias podem ser listadas por papel em `clonagem.preservar`; para colunas derivadas de documento em PF/PJ/componentes, mapear coluna física para `raiz`, `filial` ou `controle` em `clonagem.derivadas`. Não declarar chaves ou referências extras como não identitárias; se o schema incluir outras chaves não suportadas, ajustar o mapeamento/código antes de escrever. Verificar capacidade dos tipos, nomes, raiz e código de grupo, além de disponibilidade das faixas sintéticas. Marcar `clonagem.confirmada`, `massa_exclusiva_confirmada` e `contratos_confirmados` apenas após a conferência. Nenhum acesso a dados produtivos.
-4. Importar `job_rodadas.example.json` como modelo de configurações do Jobs API 2.2 ou criar as nove tasks na UI. Substituir IDs de compute e caminho do notebook. Sem agendamento, sem dependências, sem retry automático. Em workspaces separados, distribuir R01–R07 em DV e R08–R09 em HO.
+250 primeiras etapas não bloqueadas, agrupadas em 156 lotes; 11 updates intermediários; 9 passos seguintes sem novo update; 2 passos concorrentes P14 sem novo preparo; 23 etapas bloqueadas (22 anteriores e B06). Portanto, são previstos 167 runs com escrita, e até 84 conferências sem escrita nas tabelas. As conferências atualizam apenas o arquivo de estado. O número pode aumentar se o QSA físico ou uma falha exigir dividir um lote. A decisão do Motor permanece APROVADO/REPROVADO; o status de teste é PASS/FAIL/BLOCKED/NOT_RUN. As expectativas não estão homologadas pelo pacote.
 
-## Execução do Job
+## Configuração inicial
 
-Todas as tasks apontam para `atualizar_massa.py`; apenas `rodada` (R01…R09) muda por task. No Job, `rodada_autorizada` deve corresponder à task selecionada; outras tasks retornam sem escrever, mesmo se iniciadas por engano. `diretorio_config` é constante no ambiente. `aplicar=false` (default) compila o preview sem escrever. Para aplicar a rodada, após confirmar ausência de processamento, preencher:
+1. Importar os arquivos mantendo o layout `fixtures/`. `atualizar_massa.py` é notebook Databricks; os outros `.py` e JSONs são arquivos de workspace/Git folder importáveis. Não usar `preparar_task.py` legado em paralelo com a v1.3.
+2. Copiar `config_rodadas.example.json` para `config_DV.json` e `config_HO.json`. Preencher nomes das seis tabelas Delta sintéticas exclusivas, namespace `_wks`, mapeamentos e valores físicos, `defaults_qsa` e `defaults_componentes` conforme contratos. O selo `mock.synthetic=true` é obrigatório. Confirmar o roteamento real do Frontend, Backend e Motor e que todas as tabelas são de teste. Usar caminhos absolutos persistentes e distintos por ambiente/campanha para `baseline_arquivo` e `estado_arquivo` (por exemplo, Volume autorizado). Nunca mapear um campo cadastral para a coluna de identidade/documento. Não editar CPFs/CNPJs para encaixar no catálogo.
+3. Concluir R00 com exatamente os 200 clientes originais, 18 GEs, 48 vínculos, QSA MEI/não MEI e responsabilidade conferidos. Capturar o baseline com `preparo_massas/main.py` ou `MassaGRUP.capturar_baseline`. Não sobrescrever baseline. O R00 deve refletir o estado original, não o estado da v1.2.
+4. Criar o Job pelo modelo `job_rodadas.example.json`, preenchendo IDs de compute e caminho do notebook. Sem schedule, sem dependências automáticas, `max_concurrent_runs=1`, `max_retries=0`, fila desabilitada. DV e HO separados em workspaces distintos: 7 tasks DV e 2 HO. Não executar outros jobs ou operações de massa simultaneamente.
+
+## Execução manual
+
+Selecione apenas a task da rodada. O parâmetro `rodada_autorizada` evita escrita nas demais tasks se o Job inteiro for acionado. O `lote` vem do Excel/CSV; siga `Ordem no lote`, não a ordem das abas. `diretorio_config` é o caminho persistente da configuração. O primeiro preparo da campanha não exige evidência de lote anterior. `aplicar=false` é preview; ainda lê o baseline e verifica identidades/conflitos, mas não escreve. Antes de qualquer run, aguarde processamento e consumidores. A preparação restaura R00 uma vez e consolida os overlays iniciais; nenhum pedido é criado pelo Job.
+
+Exemplo: R01, lote 1, F06 e F22 compartilham PJ112/PF281 com o mesmo QSA. Primeiro prepare:
 
 ```json
-{"rodada_autorizada":"R03","aplicar":"true","sem_processamento_pendente":"true","diretorio_config":"/Volumes/.../config","etapa":""}
+{"rodada_autorizada":"R01","lote":"1","modo":"preparar","aplicar":"true","sem_processamento_pendente":"true"}
 ```
 
-A task prepara todos os casos independentes não bloqueados da rodada em um único run. O relatório `<ambiente>_<rodada>.json` lista identidades, planos remapeados, linhas e status. Somente envie pedidos pelo Frontend após `PREPARADA`. Consulte `rodadas/mapa_solicitacoes.csv` para os novos documentos e GEs (importe como texto para preservar dígitos). Este CSV é o substituto operacional da planilha anterior, que usa IDs antigos. Nomes sintéticos contêm rodada, caso e ID-base. `9999999` continua ausente propositalmente; códigos gerados pelo Motor devem ser capturados na execução. O status PREPARADO não é aprovação do Motor.
+Com estado PREPARADA e sistemas reconciliados, executar F06 pelo Frontend (tipo 1). Se o resultado esperado for confirmado, conferir que não houve mudança nas seis tabelas antes de F22 (tipo 5). A mesma task verifica, sem escrever nas tabelas:
 
-## Sequências
+```json
+{"rodada_autorizada":"R01","lote":"1","modo":"conferir","etapa":"E2E-F06-01","aplicar":"true","sem_processamento_pendente":"true","anterior_concluido":"true","evidencia_anterior":"referencia da evidencia F06"}
+```
 
-Casos independentes têm slots diferentes; todos os passos da mesma sequência compartilham o mesmo slot. Quando o segundo passo não exige mudança física, execute-o diretamente no Frontend após concluir o anterior. Para os 15 passos com atualização intermediária, executar novamente **a mesma task**, preenchendo `etapa` com o ID do segundo passo e `evidencia_anterior` com a referência de evidência do primeiro pedido concluído, além das confirmações acima. Essa execução atualiza apenas os registros isolados do caso, sem restaurar baseline nem tocar outros casos. P14 é uma preparação, dois pedidos concorrentes, sem passo 2 de preparação. P13 reprocessa o mesmo pedido. Nenhum vencedor é predeterminado em P14. Bloqueios do catálogo não são removidos; confirmar e revisar os dados da rodada antes de uma nova campanha para resolvê-los. Não inserir overlays incompatíveis do segundo passo antecipadamente.
+Enviar F22 apenas após `RECUSA_SEM_ALTERACAO` e validação do retorno/eventos no Backend e Frontend. O hash cobre as seis tabelas sintéticas, não os sistemas externos. Se uma recusa modificar a massa ou falhar por motivo inesperado, não continuar; registrar defeito, reconciliar e reexecutar separadamente.
 
-## Segurança e limitações
+Para avançar a um novo lote, manter `modo=preparar`, `etapa` vazia, novo número de lote, e informar `anterior_concluido=true` com evidência de conclusão/reconciliação do anterior. Confirmar que não há atualizações pendentes de sequência. É possível executar um único caso de um lote com `caso=ID` (por exemplo, `F22`) quando o lote inteiro estiver incompatível no ambiente, registrando o desdobramento. Não modificar manualmente o estado JSON. O Job não seleciona ou cria solicitações automaticamente.
 
-As faixas propostas são determinísticas, não consultadas em bases oficiais: IDs = 1.000.000 + slot×1.000 + ID-base; CPF base 720.000.000 + slot×1.000 + ID-base; CNPJ raiz 83.000.000 + slot×1.000 + ID-base, preservando filial; dígitos verificadores recalculados; GE = 920.000 + slot×50 + índice do GE-base; operação = 9.800.000.000 + slot×1.000 + índice da operação-base. São para uso exclusivo em ambiente de teste, não garantem inexistência de documentos reais nem compatibilidade com faixas corporativas. Confirmar reservas, tipos e geração de GEs antes de escrever; colisões detectadas interrompem a carga. O remapeamento rejeita raiz compartilhada no baseline em vez de inventar uma relação de matriz/filial.
+Para `UPDATE_INTERMEDIARIO`, mesma rodada/lote/caso preparado, usar `modo=intermediario`, `etapa=E2E-C03-02` (exemplo), confirmação de conclusão do passo anterior e evidência. Não restaurar baseline; aplicar apenas o overlay do segundo passo. `SEM_UPDATE`: conferir a condição original e executar diretamente no Frontend após conclusão do passo anterior. P14: dois pedidos concorrentes, uma preparação; não predeterminar vencedor. P13: reprocessar o mesmo pedido. A planilha e o JSON preservam esses casos especiais.
 
-O Job tem `max_concurrent_runs=1`; não iniciar outros Jobs, cargas ou testes enquanto prepara. Não há transação distribuída entre as seis tabelas. O relatório persistente impede reexecução automática da mesma rodada e registra EM_PREPARO/FALHA/PREPARADA; em falha, não enviar solicitações, reconciliar apenas as identidades do lote antes de uma nova campanha. Não apagar relatório para contornar a proteção. Não restaurar o baseline global automaticamente: isso poderia apagar cenários já executados. Preservar versões históricas Delta durante a sprint (sem VACUUM que as invalide). As tabelas precisam ser efetivamente consumidas pelo Frontend/Backend/Motor; sincronização, cache, filas e eventual carga adicional de cadastro do Frontend não são automatizados. Verificar essa integração e fazer um smoke em DV antes de HO.
+## Segurança, recuperação e bloqueios
 
-O catálogo original, regras, resultados binários e antigos scripts são mantidos como referência. Os arquivos novos são validados offline; nenhum teste Spark/Delta ou execução corporativa foi realizado.
+- RESTORE somente nas seis tabelas **sintéticas exclusivas** e após verificar o histórico legível, a identidade dos objetos e a correspondência de todos os documentos. Não apaga nenhum cliente original; restaura atributos e relações, não a identidade cadastral. Exige autorização operacional para sincronizar/reconciliar Backend, Frontend, caches, filas, eventos, CDF e consumidores. A restauração Delta **não** restaura esses outros estados. Se não houver exclusividade/reconciliação, não utilizar a preparação em lote.
+- O controle persistente registra `EM_PREPARO`, `PREPARADA` ou `FALHA`, baseline/configuração/catálogo, lote e verificações/updates pendentes. Não é lock distribuído. Se houver interrupção, não criar solicitação. Reconciliar os sistemas, informar `anterior_concluido=true`, `evidencia_anterior` e `recuperar=true` no modo preparar, para restaurar e reiniciar explicitamente um lote ou caso. Não apagar estado para contornar o gate. Não executar VACUUM que invalide o baseline durante a sprint.
+- B06 exige cadastro ausente. Isso não é permitido na massa compartilhada de 200 clientes; permanece no catálogo, bloqueado para E2E. Testar separadamente via integração autorizada da ausência de lookup, sem excluir PF/PJ. Demais bloqueios mantidos. Para resolver um bloqueio, revisar catálogo/contrato e regenerar o plano; não adulterar o arquivo do Job para ignorar bloqueios.
+- Nenhum valor de `flag_resp_empr` ou `tem_acao_2` é forçado; a origem e a solicitação real derivam a condição. Não inventar contrato de responsabilidade para suprir condição ausente. Os códigos de GE gerados pelo Motor devem ser obtidos do retorno real; `9999999` permanece inexistente propositalmente.
+- O ambiente corporativo não foi acessado. O baseline cadastral completo, QSA MEI, contratos físicos, permissões, RESTORE, sincronização de todos os sistemas e oráculos funcionais precisam ser validados em DV antes de HO. Os testes offline simulam a camada de execução; não demonstram comportamento real do Motor.
+
+## Validação offline
+
+Na pasta `fixtures/`:
+
+```bash
+python -m unittest discover -s preparo_massas/tests -p test_preparo.py -v
+python -m unittest discover -s tests -p test_rodadas_v13.py -v
+```
+
+23 testes anteriores + 15 novos = 38 aprovados. O gerador pode ser executado em diretório de saída de revisão: `python gerar_lotes.py --destino /caminho/revisao` (origem padrão: `preparo_massas/rodadas`). A geração não escreve em tabelas. Não usar o Excel v1.2 ou mapas com IDs de sete dígitos.

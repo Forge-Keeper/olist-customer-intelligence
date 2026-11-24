@@ -1,14 +1,144 @@
 {
-  "versao": "1.2",
+  "versao": "1.3",
   "rodada": "R06",
   "ambiente": "DV",
   "quantidade_casos": 16,
   "quantidade_etapas": 32,
+  "ordem_original": [
+    "C01",
+    "C02",
+    "C03",
+    "C04",
+    "C05",
+    "C06",
+    "C07",
+    "C08",
+    "C09",
+    "C10",
+    "C11",
+    "C12",
+    "C13",
+    "C14",
+    "C15",
+    "C16"
+  ],
+  "lotes": [
+    {
+      "lote": 1,
+      "casos": [
+        "C01"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 2,
+      "casos": [
+        "C02"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 3,
+      "casos": [
+        "C03"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 4,
+      "casos": [
+        "C04"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 5,
+      "casos": [
+        "C05"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 6,
+      "casos": [
+        "C06"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 7,
+      "casos": [
+        "C07"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 8,
+      "casos": [
+        "C08"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 9,
+      "casos": [
+        "C09"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 10,
+      "casos": [
+        "C10"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 11,
+      "casos": [
+        "C11"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 12,
+      "casos": [
+        "C12"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 13,
+      "casos": [
+        "C13"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 14,
+      "casos": [
+        "C14"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 15,
+      "casos": [
+        "C15"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 16,
+      "casos": [
+        "C16"
+      ],
+      "verificar_recusas": []
+    }
+  ],
   "casos": [
     {
-      "rodada": "R06",
       "cenario": "C01",
-      "slot": 601,
       "passos": [
         {
           "id": "E2E-C01-01",
@@ -103,9 +233,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C02",
-      "slot": 602,
       "passos": [
         {
           "id": "E2E-C02-01",
@@ -187,9 +315,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C03",
-      "slot": 603,
       "passos": [
         {
           "id": "E2E-C03-01",
@@ -285,9 +411,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C04",
-      "slot": 604,
       "passos": [
         {
           "id": "E2E-C04-01",
@@ -427,9 +551,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C05",
-      "slot": 605,
       "passos": [
         {
           "id": "E2E-C05-01",
@@ -516,9 +638,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C06",
-      "slot": 606,
       "passos": [
         {
           "id": "E2E-C06-01",
@@ -589,9 +709,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C07",
-      "slot": 607,
       "passos": [
         {
           "id": "E2E-C07-01",
@@ -676,9 +794,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C08",
-      "slot": 608,
       "passos": [
         {
           "id": "E2E-C08-01",
@@ -807,9 +923,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C09",
-      "slot": 609,
       "passos": [
         {
           "id": "E2E-C09-01",
@@ -908,9 +1022,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C10",
-      "slot": 610,
       "passos": [
         {
           "id": "E2E-C10-01",
@@ -1008,9 +1120,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C11",
-      "slot": 611,
       "passos": [
         {
           "id": "E2E-C11-01",
@@ -1109,9 +1219,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C12",
-      "slot": 612,
       "passos": [
         {
           "id": "E2E-C12-01",
@@ -1254,9 +1362,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C13",
-      "slot": 613,
       "passos": [
         {
           "id": "E2E-C13-01",
@@ -1404,9 +1510,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C14",
-      "slot": 614,
       "passos": [
         {
           "id": "E2E-C14-01",
@@ -1538,9 +1642,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C15",
-      "slot": 615,
       "passos": [
         {
           "id": "E2E-C15-01",
@@ -1686,9 +1788,7 @@
       ]
     },
     {
-      "rodada": "R06",
       "cenario": "C16",
-      "slot": 616,
       "passos": [
         {
           "id": "E2E-C16-01",

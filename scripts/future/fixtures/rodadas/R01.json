@@ -1,14 +1,68 @@
 {
-  "versao": "1.2",
+  "versao": "1.3",
   "rodada": "R01",
   "ambiente": "DV",
   "quantidade_casos": 8,
   "quantidade_etapas": 8,
+  "ordem_original": [
+    "F22",
+    "F06",
+    "I01",
+    "I10",
+    "E26",
+    "E27",
+    "U02",
+    "U04"
+  ],
+  "lotes": [
+    {
+      "lote": 1,
+      "casos": [
+        "F06",
+        "F22"
+      ],
+      "verificar_recusas": [
+        "E2E-F06-01"
+      ]
+    },
+    {
+      "lote": 2,
+      "casos": [
+        "I10",
+        "I01"
+      ],
+      "verificar_recusas": [
+        "E2E-I10-01"
+      ]
+    },
+    {
+      "lote": 3,
+      "casos": [
+        "E27",
+        "E26"
+      ],
+      "verificar_recusas": [
+        "E2E-E27-01"
+      ]
+    },
+    {
+      "lote": 4,
+      "casos": [
+        "U02"
+      ],
+      "verificar_recusas": []
+    },
+    {
+      "lote": 5,
+      "casos": [
+        "U04"
+      ],
+      "verificar_recusas": []
+    }
+  ],
   "casos": [
     {
-      "rodada": "R01",
       "cenario": "F22",
-      "slot": 101,
       "passos": [
         {
           "id": "E2E-F22-01",
@@ -57,9 +111,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "F06",
-      "slot": 102,
       "passos": [
         {
           "id": "E2E-F06-01",
@@ -108,9 +160,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "I01",
-      "slot": 103,
       "passos": [
         {
           "id": "E2E-I01-01",
@@ -148,9 +198,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "I10",
-      "slot": 104,
       "passos": [
         {
           "id": "E2E-I10-01",
@@ -214,9 +262,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "E26",
-      "slot": 105,
       "passos": [
         {
           "id": "E2E-E26-01",
@@ -274,9 +320,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "E27",
-      "slot": 106,
       "passos": [
         {
           "id": "E2E-E27-01",
@@ -334,9 +378,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "U02",
-      "slot": 107,
       "passos": [
         {
           "id": "E2E-U02-01",
@@ -435,9 +477,7 @@
       ]
     },
     {
-      "rodada": "R01",
       "cenario": "U04",
-      "slot": 108,
       "passos": [
         {
           "id": "E2E-U04-01",

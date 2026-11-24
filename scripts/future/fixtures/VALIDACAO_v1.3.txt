@@ -1,0 +1,49 @@
+Validação offline v1.3 (nenhuma execução corporativa).
+test_documentos_e_vinculos_base (test_preparo.CatalogoTest.test_documentos_e_vinculos_base) ... ok
+test_flags_derivadas (test_preparo.CatalogoTest.test_flags_derivadas) ... ok
+test_hash_fonte (test_preparo.CatalogoTest.test_hash_fonte) ... ok
+test_plano_copia (test_preparo.CatalogoTest.test_plano_copia) ... ok
+test_qsa_limites (test_preparo.CatalogoTest.test_qsa_limites) ... ok
+test_rodadas (test_preparo.CatalogoTest.test_rodadas) ... ok
+test_sequencias (test_preparo.CatalogoTest.test_sequencias) ... ok
+test_total_e_oraculo (test_preparo.CatalogoTest.test_total_e_oraculo) ... ok
+test_vinculos_especiais (test_preparo.CatalogoTest.test_vinculos_especiais) ... ok
+test_allowlist (test_preparo.ProtecoesTest.test_allowlist) ... ok
+test_ambiente_pr (test_preparo.ProtecoesTest.test_ambiente_pr) ... ok
+test_bloqueios_responsabilidade (test_preparo.ProtecoesTest.test_bloqueios_responsabilidade) ... ok
+test_cadastro_padrao (test_preparo.ProtecoesTest.test_cadastro_padrao) ... ok
+test_config_exemplo_recusada (test_preparo.ProtecoesTest.test_config_exemplo_recusada) ... ok
+test_config_sintetica (test_preparo.ProtecoesTest.test_config_sintetica) ... ok
+test_identificador_invalido (test_preparo.ProtecoesTest.test_identificador_invalido) ... ok
+test_p14_sem_segundo_preparo (test_preparo.ProtecoesTest.test_p14_sem_segundo_preparo) ... ok
+test_passo_anterior_obrigatorio (test_preparo.ProtecoesTest.test_passo_anterior_obrigatorio) ... ok
+test_prod_mesmo_com_allowlist (test_preparo.ProtecoesTest.test_prod_mesmo_com_allowlist) ... ok
+test_sem_confirmacao_nao_escreve (test_preparo.ProtecoesTest.test_sem_confirmacao_nao_escreve) ... ok
+test_tabelas_duplicadas (test_preparo.ProtecoesTest.test_tabelas_duplicadas) ... ok
+test_tipo_grupo_pendente (test_preparo.ProtecoesTest.test_tipo_grupo_pendente) ... ok
+test_troca_requer_destino (test_preparo.ProtecoesTest.test_troca_requer_destino) ... ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 0.009s
+
+OK
+test_cobertura_e_oraculos (test_rodadas_v13.Catalogo.test_cobertura_e_oraculos) ... ok
+test_identidades (test_rodadas_v13.Catalogo.test_identidades) ... ok
+test_job_nove_tasks (test_rodadas_v13.Catalogo.test_job_nove_tasks) ... ok
+test_limites_qsa_separados (test_rodadas_v13.Catalogo.test_limites_qsa_separados) ... ok
+test_lotes_completos_sem_conflito (test_rodadas_v13.Catalogo.test_lotes_completos_sem_conflito) ... ok
+test_mapa_e_documentos (test_rodadas_v13.Catalogo.test_mapa_e_documentos) ... ok
+test_protecoes_identidade (test_rodadas_v13.Catalogo.test_protecoes_identidade) ... ok
+test_ambiente_e_processamento (test_rodadas_v13.ExecucaoSimulada.test_ambiente_e_processamento) ... ok
+test_falha_e_recuperacao (test_rodadas_v13.ExecucaoSimulada.test_falha_e_recuperacao) ... ok
+test_mapeamento_identidade_recusado (test_rodadas_v13.ExecucaoSimulada.test_mapeamento_identidade_recusado) ... ok
+test_preview_sem_escrita (test_rodadas_v13.ExecucaoSimulada.test_preview_sem_escrita) ... ok
+test_recusa_com_mutacao_interrompe (test_rodadas_v13.ExecucaoSimulada.test_recusa_com_mutacao_interrompe) ... ok
+test_recusa_compartilhada_e_proximo_lote (test_rodadas_v13.ExecucaoSimulada.test_recusa_compartilhada_e_proximo_lote) ... ok
+test_sequencia_sem_restaurar (test_rodadas_v13.ExecucaoSimulada.test_sequencia_sem_restaurar) ... ok
+test_um_preparo_por_lote (test_rodadas_v13.ExecucaoSimulada.test_um_preparo_por_lote) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.429s
+
+OK
